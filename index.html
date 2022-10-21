@@ -8,10 +8,11 @@
                 src: url(kremlin.ttf);
             }
             @keyframes bg-slide {
-                from { transform: translateX(0); }
+                from { transform: translateX(00%); }
                 to { transform: translateX(-50%); }
             }
             .wrapper {
+                background-color: #101010;
                 position: absolute;
                 width: 100%;
                 top: 0;
@@ -22,15 +23,22 @@
             }
             .bg {
                 width: 200%;
-                background-image: url(bkg-loop.png);
+                background-image: url(numbers.png);
+                opacity: 0.10;
+                zoom: 80%;
                 position: absolute;
                 top: 0;
                 bottom: 0;
                 left: 0;
                 animation: bg-slide 50s linear infinite;
+                /* Firefox */
+                image-rendering: crisp-edges;
+                /* Chromium + Safari */
+                image-rendering: pixelated;
             }
             .vignette {
                 background: url(vignette.png) center center fixed;
+                opacity: 100;
                 background-size: 100% 100%;
                 background-position: center;
                 position: absolute;
@@ -39,30 +47,37 @@
                 left: 0;
                 right: 0;
             }
+            .content {
+                position: relative;
+            }
             h1, h2 {
                 font-family: kremlin;
                 text-align: center;
                 color: white;
-            }
-            h1 {
-                font-size: 200px;
-            }
-            h2{
-                font-size: 50px;
             }
             p {
                 font-family: Arial, Helvetica, sans-serif;
                 text-align: center;
                 color: white;
             }
+            #footer {
+                font-family: kremlin;
+                position:fixed;
+                left:0px;
+                bottom:0px;
+                height:20px;
+                width:100%;
+}
         </style>
     </head>
     <body>
         <div class="wrapper">
             <div class="bg"></div>
-            <div class="vignette">
-                <h1 class="">BITWISE</h1>
-                <h2>UNDER CONSTRUCTION</h2>
+            <div class="vignette"></div>
+            <div class="content">
+                <h1 style="font-size: 200px;">BITWISE</h1>
+                <h2 style="font-size: 50px;">UNDER CONSTRUCTION</h2>
+                <p id="footer">DIGIT 2022</p>
             </div>
         </div>
     </body>
