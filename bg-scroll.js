@@ -3,7 +3,14 @@ var scrollSpeed = 0.5;
 // Set the initial position of the background
 var bgPosition = 0;
 // Set the width of the background image
-var bgWidth = 1307;
+// Create a new Image object
+var bgimg = new Image();
+
+// Set the "src" attribute of the Image object to the relative URL of the background image
+bgimg.src = "https://www.bitwise.live/res/numbers.png";
+
+// Get the width of the background image
+var bgWidth = bgimg.width;
 
 // Function to move the background image
 function moveBackground() {
