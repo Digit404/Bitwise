@@ -1,0 +1,58 @@
+@font-face {
+    font-family: kremlin;
+    src: url(kremlin.ttf);
+}
+.wrapper {
+    background-color: #101010;
+    position: relative;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+.bg {
+    width: 200%;
+    background-image: url(numbers.png);
+    opacity: 0.10;
+    zoom: 80%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    /* Firefox */
+    image-rendering: crisp-edges;
+    /* Chromium + Safari */
+    image-rendering: pixelated;
+}
+.vignette {
+    background: url(vignette.png) center center fixed;
+    opacity: 100;
+    background-size: 100% 100%;
+    background-position: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.content {
+    position: relative;
+}
+#title {
+    font-family: kremlin;
+    text-align: center;
+    color: white;
+}
+#footer {
+    color: white;
+    text-align: center;
+    font-family: kremlin;
+    position:relative;
+    left:0px;
+    bottom:0px;
+    height:20px;
+    width:100%;
+}
