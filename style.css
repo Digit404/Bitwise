@@ -1,9 +1,9 @@
 @font-face {
-    font-family: kremlin;
+    font-family: 'kremlin';
     src: url(https://www.bitwise.live/res/kremlin.ttf);
 }
 @font-face {
-    font-family: Fira Code;
+    font-family: 'firacode';
     src: url(https://www.bitwise.live/res/FiraCode.ttf);
 }
 .wrapper {
@@ -46,7 +46,7 @@
     position: relative;
 }
 .title {
-    font-family: kremlin;
+    font-family: 'kremlin';
     text-align: center;
     color: white;
 }
@@ -54,7 +54,7 @@
     background-color: rgba(0,0,0,0.7);
     color: white;
     text-align: center;
-    font-family: kremlin;
+    font-family: 'kremlin';
     position: fixed;
     bottom:0px;
     height:20px;
@@ -70,7 +70,7 @@
     font-weight: bold;
     font-size: larger;
     color: white;
-    font-family: Fira Code;
+    font-family: 'firacode';
     width: 50%;
     text-align: center;
     margin-left: auto;
