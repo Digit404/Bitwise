@@ -7,7 +7,7 @@ var bgPosition = 0;
 var bgimg = new Image();
 
 // Set the "src" attribute of the Image object to the relative URL of the background image
-bgimg.src = "https://www.bitwise.live/res/numbers.png";
+bgimg.src = "/res/numbers.png";
 
 // Get the width of the background image
 var bgWidth = bgimg.width;
