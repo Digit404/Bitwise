@@ -1,6 +1,6 @@
 @font-face {
     font-family: kremlin;
-    src: url(kremlin.ttf);
+    src: url(./res/kremlin.ttf);
 }
 .wrapper {
     background-color: #101010;
@@ -15,7 +15,7 @@
 }
 .bg {
     width: 200%;
-    background-image: url(numbers.png);
+    background-image: url(./res/numbers.png);
     opacity: 0.10;
     zoom: 80%;
     position: absolute;
@@ -28,7 +28,7 @@
     image-rendering: pixelated;
 }
 .vignette {
-    background: url(vignette.png) center center fixed;
+    background: url(./res/vignette.png) center center fixed;
     opacity: 100;
     background-size: 100% 100%;
     background-position: center;
