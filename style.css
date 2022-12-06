@@ -41,7 +41,7 @@
 .content {
     position: relative;
 }
-#title {
+.title {
     font-family: kremlin;
     text-align: center;
     color: white;
