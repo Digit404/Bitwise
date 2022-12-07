@@ -1,21 +1,163 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Not Found</title>
     <link rel="shortcut icon" href="./res/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./style.css">
     <style>
-        .bg {
-            background-image: url(./res/404.png);
+        @font-face {
+            font-family: 'kremlin';
+            src: url(https://www.bitwise.live/res/kremlin.ttf);
         }
-        .h1 {
-            font-size: 20vw; 
-            margin-bottom: 10px; 
-            margin-top:10vh;
+
+        @font-face {
+            font-family: 'firacode';
+            src: url(https://www.bitwise.live/res/FiraCode.ttf);
+        }
+
+        body::-webkit-scrollbar {
+            width: 0 !important;
+        }
+
+        body {
+            overflow: -moz-scrollbars-none;
+        }
+
+        .wrapper {
+            background-color: #101010;
+            position: relative;
+            width: 100%;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .bg {
+            width: 300%;
+            opacity: 0.10;
+            zoom: 80%;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            /* Firefox */
+            image-rendering: crisp-edges;
+            /* Chromium + Safari */
+            image-rendering: pixelated;
+            background-image: url(https://www.bitwise.live/res/404.png);
+        }
+
+        .vignette {
+            background: url(https://www.bitwise.live/res/vignette.png) center center fixed;
+            opacity: 100;
+            background-size: 100% 100%;
+            background-position: center;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .content {
+            position: relative;
+            text-align: center;
+        }
+
+        .title {
+            font-family: 'kremlin', sans-serif;
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            font-size: 20vw;
+            margin-bottom: 10px;
+            margin-top: 10vh;
+        }
+
+        #footer {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            font-family: 'kremlin', sans-serif;
+            position: fixed;
+            bottom: 0px;
+            height: 20px;
+            width: 200px;
+            margin-bottom: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius: 10px 10px;
+            right: 0;
+            text-decoration: none;
+        }
+
+        .text {
+            font-weight: bold;
+            font-size: larger;
+            color: white;
+            font-family: 'firacode', sans-serif;
+            width: 50%;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 50px;
+        }
+
+        .button1 {
+            color: #101010;
+            font-family: "kremlin";
+            font-size: x-large;
+            background-color: white;
+            box-shadow: 0px 10px 5px #101010a0;
+            padding: 10px 40px;
+            border-radius: 10px;
+            border-color: #00000000;
+            cursor: pointer;
+        }
+
+        .button1:active {
+            background-color: #808080;
+        }
+
+        .button1:hover {
+            background-color: #aaaaaa;
         }
     </style>
-    <script src="./bg-scroll.js"></script>
+    <script>
+        // Set the scroll speed of the background
+        var scrollSpeed = 0.5;
+        // Set the initial position of the background
+        var bgPosition = 0;
+        // Set the width of the background image
+        var bgWidth = 1307;
+
+        // Function to move the background image
+        function moveBackground() {
+            // Get the current scroll position of the page
+            var scrollTop = window.pageYOffset;
+            // Set the parallax factor for the background image
+            var parallaxFactor = 0.5;
+            // Increment the background position by the scroll speed
+            bgPosition -= scrollSpeed;
+            // If the background position is less than or equal to the negative width of the background, reset the position to 0
+            if (bgPosition <= -bgWidth) {
+                bgPosition = 0;
+            }
+            // Set the background position using the CSS "left" property and the current scroll position and parallax factor
+            document.getElementsByClassName("bg")[0].style.left = bgPosition + "px";
+            document.getElementsByClassName("bg")[0].style.top = (scrollTop * parallaxFactor) + "px";
+        }
+        // Set the interval for moving the background image
+        setInterval(moveBackground, 10);
+    </script>
 </head>
+
 <body style="margin: 0px">
     <div class="wrapper">
         <div class="bg"></div>
@@ -27,4 +169,5 @@
         </div>
     </div>
 </body>
+
 </html>
