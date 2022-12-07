@@ -6,6 +6,12 @@
     font-family: 'firacode';
     src: url(https://www.bitwise.live/res/FiraCode.ttf);
 }
+body::-webkit-scrollbar {
+    width: 0 !important;
+}
+body {
+    overflow: -moz-scrollbars-none;
+}
 .wrapper {
     background-color: #101010;
     position: relative;
@@ -93,5 +99,8 @@ h1{
     cursor: pointer;
 }
 .button1:active{
+    background-color: #808080;
+}
+.button1:hover {
     background-color: #aaaaaa;
 }
