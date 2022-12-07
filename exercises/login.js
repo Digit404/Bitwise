@@ -14,6 +14,7 @@ function login(){
             document.getElementById("beans").style.color = "#ff2424"
             document.getElementById("whatwhat").innerHTML = "LOCKED"
             document.getElementById("whatwhat").style.backgroundColor = "#FFFFFFA0";
+            document.getElementById("bg").style.backgroundImage = "url(https://www.bitwise.live/res/locked.png)"
         }
         else {
             attempts++;
