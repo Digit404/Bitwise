@@ -1,66 +1,86 @@
-// initialize state
-let currentValue = 0;
-let previousValue = null;
-let currentOperator = null;
+// Global variables
+let displayValue = "0"; // current value displayed on calculator screen
+let firstOperand = null; // the first operand of the calculation
+let operator = null; // the operator of the calculation
+let waitingForSecondOperand = false; // flag for when the calculator is waiting for the second operand
 
-const thDisplay = document.getElementById('thDisplay');
+// Helper function to update the calculator screen
+function updateDisplay() {
+  document.getElementById("thDisplay").innerText = displayValue;
+}
 
-// reset calculator state
+// Function to reset the calculator
 function Reset() {
-    currentValue = 0;
-    previousValue = null;
-    currentOperator = null;
-    thDisplay.innerHTML = currentValue;
+  displayValue = "0";
+  firstOperand = null;
+  operator = null;
+  waitingForSecondOperand = false;
+  updateDisplay();
 }
 
-// handle number buttons
-function ClickNumber(sender) {
-    const number = parseInt(sender.innerHTML);
-    currentValue = currentValue * 10 + number;
-    thDisplay.innerHTML = currentValue;
+// Function to handle clicks on the number buttons
+function ClickNumber(btn) {
+  let btnValue = btn.innerText;
+
+  if (waitingForSecondOperand === true) {
+    // if the calculator is waiting for the second operand, reset the display and set the waiting flag to false
+    displayValue = btnValue;
+    waitingForSecondOperand = false;
+  } else {
+    // if the current display value is "0", replace it with the clicked number
+    // otherwise, concatenate the clicked number to the current display value
+    displayValue = displayValue === "0" ? btnValue : displayValue + btnValue;
+  }
+
+  updateDisplay();
 }
 
-// handle operator buttons
-function ClickOperator(sender) {
-    if (currentOperator !== null) {
-        // compute result if an operator was already clicked
-        Compute();
-    }
+// Function to handle clicks on the operator buttons
+function ClickOperator(btn) {
+  let btnValue = btn.innerText;
 
-    // store operator
-    currentOperator = sender.innerHTML;
+  // if the calculator is waiting for the second operand, set the operator and return
+  if (waitingForSecondOperand === true) {
+    operator = btnValue;
+    return;
+  }
 
-    // store current value and start new input
-    previousValue = currentValue;
-    currentValue = 0;
+  // if the first operand is null, set it to the current display value
+  if (firstOperand === null) {
+    firstOperand = parseFloat(displayValue);
+  } else {
+    // if the first operand and operator are not null, perform the calculation and update the display value
+    let result = performCalculation(firstOperand, operator, parseFloat(displayValue));
+    displayValue = String(result);
+    firstOperand = result;
+  }
+
+  // set the operator and waiting flag
+  operator = btnValue;
+  waitingForSecondOperand = true;
+
+  updateDisplay();
 }
 
-// handle equals button
-function Compute() {
-    let result;
-    switch (currentOperator) {
-        case '+':
-            result = previousValue + currentValue;
-            break;
-        case '-':
-            result = previousValue - currentValue;
-            break;
-        case 'X':
-            result = previousValue * currentValue;
-            break;
-        case '/':
-            result = previousValue / currentValue;
-            break;
-    }
-
-    currentValue = result;
-    previousValue = null;
-    currentOperator = null;
-    thDisplay.innerHTML = currentValue;
-}
-
-// handle plus-minus button
+// Function to handle the "Flip" button
 function Flip() {
-    currentValue *= -1;
-    thDisplay.innerHTML = currentValue;
+  // if the current display value is not "0", multiply it by -1
+  if (displayValue !== "0") {
+    displayValue = String(parseFloat(displayValue) * -1);
+  }
+
+  updateDisplay();
+}
+
+// Helper function to perform the calculation
+function performCalculation(firstOperand, operator, secondOperand) {
+  if (operator === "+") {
+    return firstOperand + secondOperand;
+  } else if (operator === "-") {
+    return firstOperand - secondOperand;
+  } else if (operator === "X") {
+    return firstOperand * secondOperand;
+  } else if (operator === "/") {
+    return firstOperand / secondOperand;
+  }
 }
