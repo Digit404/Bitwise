@@ -11,6 +11,7 @@ function login(){
     if(username === "username" && password === "password" && attempts < 2){
         document.getElementById("beans").innerHTML = "BEANS";
         document.getElementById("whatwhat").innerHTML = "OKAY!"
+        document.getElementById("whatwhat").onclick = "./index.html"
     }
     else{
         if(attempts >= 2){
