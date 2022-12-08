@@ -41,7 +41,7 @@
                             <button class="button1" id="btnReset" onclick="Reset()">C</button>
                         </td>
                         <td colspan="2">
-                            <button class="button1" id="btnEquals" style='font-family: firacode;' onclick="ClickOperator(this)">=</button>
+                            <button class="button1" id="btnEquals" style='font-family: firacode;' onclick="solve()">=</button>
                         </td>
                     </tr>
                     <tr>
@@ -63,7 +63,7 @@
                         <td><button class="button1" id="btn2" onclick="ClickNumber(this)">2</button></td>
                         <td><button class="button1" id="btn3" onclick="ClickNumber(this)">3</button></td>
                         <td>
-                            <button class="button1" id="btnMultiply" onclick="ClickOperator(this)">X</button>
+                            <button class="button1" id="btnMultiply" style='font-family: firacode;' onclick="ClickOperator(this)">*</button>
                         </td>
                     </tr>
                     <tr>
@@ -72,7 +72,7 @@
                         </td>
                         <td><button class="button1" id="btn0" onclick="ClickNumber(this)">0</button></td>
                         <td>
-                            <button class="button1" id="btnDecimal" onclick="ClickNumber(this)">.</button>
+                            <button class="button1" id="btnDecimal" onclick="decimal()">.</button>
                         </td>
                         <td>
                             <button class="button1" id="btnDivision" style='font-family: firacode;' onclick="ClickOperator(this)">/</button>
@@ -81,7 +81,7 @@
                 </tbody>
             </table>
             
-            <script src="calculator.js"></script>
+            <script src="./calc.js"></script>
             <a id="footer" href="./index.html">DIGIT 2022</a>
         </div>
     </div>

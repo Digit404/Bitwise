@@ -6,11 +6,11 @@ var bgWidth = 1307;
 // Function to move the background image
 function moveBackground() {
     // Set the scroll speed of the background
-    var scrollSpeed = 0.5;
+    var scrollSpeed = document.getElementById("ScrollSpeed").value / 100;
     // Get the current scroll position of the page
     var scrollTop = window.pageYOffset;
     // Set the parallax factor for the background image
-    var parallaxFactor = 0.5;
+    var parallaxFactor = document.getElementById("parallax").value / 100;
     // Increment the background position by the scroll speed
     bgPosition -= scrollSpeed;
     // If the background position is less than or equal to the negative width of the background, reset the position to 0

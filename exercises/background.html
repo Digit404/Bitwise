@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bitwise</title>
+    <link rel="shortcut icon" href="../res/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .slider {
+            -webkit-appearance: none;
+            width: 50%;
+            height: 15px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+            margin-bottom:100px;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #04AA6D;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #04AA6D;
+            cursor: pointer;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .checkboxes {
+            display: flex;
+            justify-content: center;
+            color:white;
+            font-family: "kremlin";
+            font-size: 200%;
+        }
+        .checkboxes label {
+            margin-right: 40px;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
+    <script src="./background.js"></script>
+</head>
+
+<body style="margin: 0px">
+    <div class="wrapper">
+        <div class="bg"></div>
+        <div class="vignette"></div>
+        <div class="content">
+            <h1 class="title">BACKGROUND</h1>
+            <div class="checkboxes">
+                <input type="checkbox" id="vignette" style = "outline: none;" checked>
+                <label for="vignette">VIGNETTE</label>
+                <input type="checkbox" id="background" style = "outline: none;" checked>
+                <label for="background">BACKGROUND</label>
+            </div>
+            <script>
+                // Get a reference to the checkbox
+                const background = document.getElementById("background");
+                
+                // Add an event listener to the checkbox that listens for changes in the checked attribute
+                background.addEventListener("change", function() {
+                  // If the checkbox is not checked, set the background opacity to 50%
+                  if (!this.checked) {
+                    document.getElementsByClassName("bg")[0].style.opacity = 0;
+                  } else {
+                    // If the checkbox is checked, set the background opacity to 100%
+                    document.getElementsByClassName("bg")[0].style.opacity = 0.1;
+                  }
+                });
+                // Get a reference to the checkbox
+                const vignette = document.getElementById("vignette");
+                
+                // Add an event listener to the checkbox that listens for changes in the checked attribute
+                vignette.addEventListener("change", function() {
+                  // If the checkbox is not checked, set the background opacity to 50%
+                  if (!this.checked) {
+                    document.getElementsByClassName("vignette")[0].style.opacity = 0;
+                  } else {
+                    // If the checkbox is checked, set the background opacity to 100%
+                    document.getElementsByClassName("vignette")[0].style.opacity = 1;
+                  }
+                });
+            </script>
+            <h2 style="font-size: 50px;" class="title">PARALLAX</h2>
+            <input type="range" id="parallax" min="0" max="100" value="50" class="slider">
+            <h2 style="font-size: 50px;" class="title">SCROLL SPEED</h2>
+            <input type="range" id="ScrollSpeed" min="0" max="1000" value="50" class="slider">
+            <p class="text" style="padding-bottom: 100px;">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ultrices mi tempus imperdiet nulla malesuada. Eu scelerisque felis imperdiet proin
+                fermentum leo vel orci. Et pharetra pharetra massa massa ultricies mi quis. Ac turpis egestas sed
+                tempus. Ut enim blandit volutpat maecenas. Amet massa vitae tortor condimentum lacinia. Vulputate odio
+                ut enim blandit. Aliquet eget sit amet tellus. Est ante in nibh mauris.<br><br>
+
+                Turpis egestas maecenas pharetra convallis. Vulputate enim nulla aliquet porttitor lacus. Eget velit
+                aliquet sagittis id consectetur purus ut. Sem viverra aliquet eget sit amet tellus cras adipiscing.
+                Ultricies integer quis auctor elit sed vulputate mi. In eu mi bibendum neque egestas congue quisque
+                egestas. Facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum. Quam vulputate
+                dignissim suspendisse in est ante in nibh mauris. Est lorem ipsum dolor sit amet consectetur adipiscing
+                elit. Quam pellentesque nec nam aliquam sem et tortor consequat id. Morbi tincidunt ornare massa eget
+                egestas purus. Malesuada fames ac turpis egestas integer eget aliquet. Nullam vehicula ipsum a arcu
+                cursus vitae. Sed risus pretium quam vulputate dignissim. Praesent semper feugiat nibh sed pulvinar
+                proin gravida. A lacus vestibulum sed arcu non odio euismod lacinia.<br><br>
+
+                Elementum sagittis vitae et leo duis ut. Dui id ornare arcu odio ut sem. Leo duis ut diam quam nulla
+                porttitor massa id neque. Dignissim convallis aenean et tortor at risus viverra adipiscing. Sed tempus
+                urna et pharetra pharetra massa massa. Scelerisque in dictum non consectetur a erat nam. Donec
+                adipiscing tristique risus nec feugiat in fermentum posuere. Sit amet nisl suscipit adipiscing. At
+                lectus urna duis convallis convallis. Non pulvinar neque laoreet suspendisse interdum consectetur
+                libero. At consectetur lorem donec massa. Scelerisque in dictum non consectetur a erat nam. Mauris a
+                diam maecenas sed enim ut sem. Vel eros donec ac odio tempor orci dapibus. Adipiscing diam donec
+                adipiscing tristique risus nec. Nulla facilisi etiam dignissim diam quis enim. Vulputate enim nulla
+                aliquet porttitor lacus luctus accumsan. Tristique risus nec feugiat in fermentum posuere urna. Sed
+                turpis tincidunt id aliquet risus feugiat in ante metus.<br><br>
+
+                Ultrices mi tempus imperdiet nulla malesuada. Ornare massa eget egestas purus viverra accumsan in nisl
+                nisi. Porttitor leo a diam sollicitudin. Etiam non quam lacus suspendisse faucibus interdum posuere
+                lorem ipsum. Pulvinar neque laoreet suspendisse interdum consectetur. Amet est placerat in egestas erat
+                imperdiet sed euismod. Id diam vel quam elementum pulvinar. Nisl suscipit adipiscing bibendum est
+                ultricies integer. Commodo nulla facilisi nullam vehicula. Dictum non consectetur a erat. Ut sem nulla
+                pharetra diam sit amet nisl suscipit. In hac habitasse platea dictumst quisque sagittis purus sit amet.
+                Orci nulla pellentesque dignissim enim sit amet venenatis urna cursus. Id aliquet risus feugiat in.
+                Mattis enim ut tellus elementum sagittis vitae. Id consectetur purus ut faucibus. Nunc sed blandit
+                libero volutpat sed cras ornare arcu.<br><br>
+
+                Curabitur gravida arcu ac tortor dignissim. Cursus vitae congue mauris rhoncus aenean vel elit
+                scelerisque mauris. Semper auctor neque vitae tempus quam pellentesque. Bibendum at varius vel pharetra
+                vel. Sit amet nulla facilisi morbi tempus. Lacus laoreet non curabitur gravida arcu ac tortor. Netus et
+                malesuada fames ac turpis egestas. Et egestas quis ipsum suspendisse ultrices gravida dictum fusce ut.
+                Massa eget egestas purus viverra accumsan in nisl nisi scelerisque. Vel risus commodo viverra maecenas
+                accumsan lacus vel facilisis. Rhoncus aenean vel elit scelerisque mauris pellentesque pulvinar
+                pellentesque habitant. At ultrices mi tempus imperdiet nulla malesuada.<br><br>
+
+                Cursus risus at ultrices mi tempus imperdiet. Gravida rutrum quisque non tellus orci ac. Suspendisse
+                ultrices gravida dictum fusce ut placerat orci nulla. Diam phasellus vestibulum lorem sed risus
+                ultricies tristique. Mattis rhoncus urna neque viverra. Egestas pretium aenean pharetra magna. Vel quam
+                elementum pulvinar etiam. Bibendum at varius vel pharetra vel. Pretium fusce id velit ut tortor pretium
+                viverra. Malesuada proin libero nunc consequat interdum. Porttitor rhoncus dolor purus non enim praesent
+                elementum facilisis leo. Mauris commodo quis imperdiet massa tincidunt nunc. Quam nulla porttitor massa
+                id neque aliquam vestibulum morbi blandit. Nulla porttitor massa id neque aliquam vestibulum morbi.
+                Tellus at urna condimentum mattis pellentesque. Dignissim convallis aenean et tortor. Facilisis leo vel
+                fringilla est ullamcorper. Sed odio morbi quis commodo odio aenean sed adipiscing diam. Pellentesque
+                elit eget gravida cum sociis natoque.<br><br>
+
+                Cursus sit amet dictum sit amet justo donec. Et leo duis ut diam quam. Leo vel fringilla est ullamcorper
+                eget nulla facilisi etiam dignissim. Suspendisse in est ante in nibh mauris cursus. Vel pharetra vel
+                turpis nunc eget lorem. At lectus urna duis convallis. Ac turpis egestas sed tempus urna. Mi ipsum
+                faucibus vitae aliquet nec. Sagittis orci a scelerisque purus semper. Sit amet mattis vulputate enim
+                nulla. Euismod elementum nisi quis eleifend quam adipiscing vitae. Vel orci porta non pulvinar neque.
+                Vestibulum sed arcu non odio euismod lacinia at. Vulputate sapien nec sagittis aliquam malesuada
+                bibendum arcu vitae elementum. Pharetra vel turpis nunc eget. Duis at consectetur lorem donec massa
+                sapien faucibus et.<br><br>
+
+                Platea dictumst quisque sagittis purus sit amet volutpat. Gravida quis blandit turpis cursus in hac
+                habitasse. Sit amet venenatis urna cursus eget. Fermentum odio eu feugiat pretium nibh ipsum consequat
+                nisl vel. Egestas pretium aenean pharetra magna ac. Sit amet dictum sit amet. A diam sollicitudin tempor
+                id. Massa enim nec dui nunc mattis. Scelerisque viverra mauris in aliquam. Eu mi bibendum neque egestas
+                congue quisque egestas. Sed risus ultricies tristique nulla aliquet. A pellentesque sit amet porttitor.
+                Tempus imperdiet nulla malesuada pellentesque elit. Faucibus pulvinar elementum integer enim neque
+                volutpat ac.<br><br>
+
+                Tincidunt nunc pulvinar sapien et ligula ullamcorper malesuada. Amet tellus cras adipiscing enim eu
+                turpis egestas. Id neque aliquam vestibulum morbi blandit cursus risus at. Amet est placerat in egestas
+                erat imperdiet sed. Lectus quam id leo in. Tortor consequat id porta nibh venenatis cras sed felis.
+                Tempus quam pellentesque nec nam aliquam sem. Dui ut ornare lectus sit amet est. Neque ornare aenean
+                euismod elementum nisi quis. Fusce ut placerat orci nulla. Vitae proin sagittis nisl rhoncus mattis
+                rhoncus urna.<br><br>
+
+                Scelerisque purus semper eget duis at tellus at urna condimentum. Quam vulputate dignissim suspendisse
+                in est. Accumsan tortor posuere ac ut consequat semper viverra nam. Leo urna molestie at elementum. Orci
+                eu lobortis elementum nibh tellus molestie nunc. Nec dui nunc mattis enim ut tellus elementum sagittis
+                vitae. Mauris commodo quis imperdiet massa tincidunt nunc pulvinar. Mauris ultrices eros in cursus
+                turpis massa tincidunt dui ut. Id velit ut tortor pretium viverra suspendisse potenti nullam. Nibh
+                praesent tristique magna sit amet. Netus et malesuada fames ac turpis. Ut aliquam purus sit amet luctus
+                venenatis lectus magna fringilla. Tellus at urna condimentum mattis pellentesque id nibh tortor id.
+                Penatibus et magnis dis parturient montes nascetur ridiculus mus mauris. Viverra orci sagittis eu
+                volutpat odio facilisis mauris sit amet. Ultricies mi quis hendrerit dolor magna eget est lorem. Morbi
+                tristique senectus et netus et malesuada.<br><br>
+            </p>
+            <a id="footer" href="./index.html">DIGIT 2022</a>
+        </div>
+    </div>
+</body>
+
+</html>
