@@ -1,6 +1,6 @@
 @font-face {
-    font-family: 'kremlin';
-    src: url(https://www.bitwise.live/res/kremlin.ttf);
+    font-family: 'bitwise';
+    src: url(https://www.bitwise.live/res/bitwise.ttf);
 }
 @font-face {
     font-family: 'firacode';
@@ -53,7 +53,7 @@ body {
     text-align: center;
 }
 .title {
-    font-family: 'kremlin', sans-serif;
+    font-family: 'bitwise', sans-serif;
     text-align: center;
     color: white;
 }
@@ -64,7 +64,7 @@ h1{
     background-color: rgba(0,0,0,0.7);
     color: white;
     text-align: center;
-    font-family: 'kremlin', sans-serif;
+    font-family: 'bitwise', sans-serif;
     position: fixed;
     bottom:0px;
     height:20px;
@@ -90,7 +90,7 @@ h1{
 }
 .button1 {
     color: #101010;
-    font-family: "kremlin";
+    font-family: 'bitwise';
     font-size: x-large;
     background-color: white;
     box-shadow: 0px 10px 5px #101010a0;
