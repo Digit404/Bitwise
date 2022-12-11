@@ -12,6 +12,7 @@ function login(){
         document.getElementById("beans").innerHTML = "BEANS";
         document.getElementById("whatwhat").innerHTML = "OKAY!"
         document.getElementById("whatwhat").onclick = "./index.html"
+        document.getElementById("bg").setAttribute('style', 'background-image: url(/res/beans.png); opacity: 0.1;');
     }
     else{
         if(attempts >= 2){

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bitwise</title>
+    <link rel="shortcut icon" href="../res/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        select {
+            padding: 15px 5px;
+            font-family: "firacode";
+            font-size: 20px;
+            text-align: center;
+        }
+
+        textarea {
+            margin-bottom: 50px;
+            padding: 1vw;
+            font-family: "firacode";
+            font-size: 15px;
+            background-color: #101010;
+            color: white;
+            font-weight: bold;
+            outline: none;
+        }
+
+        .title {
+            margin-bottom: 5vh;
+        }
+
+        .options {
+            margin-bottom: 5vh;
+            outline: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .button1 {
+            margin-left: 1vw;
+        }
+
+        .label {
+            margin-bottom: 20px;
+        }
+        .checkbox {
+            height: 20px;
+            width: 20px;
+            vertical-align: text-bottom;
+        }
+    </style>
+    <script src="../bg-scroll.js"></script>
+</head>
+
+<body style="margin: 0px">
+    <div class="wrapper">
+        <div class="bg"></div>
+        <div class="vignette"></div>
+        <div class="content">
+            <h1 class="title">LIST MAKER</h1>
+            <div class="label">
+                <label>Input</label>
+            </div>
+            <textarea id="input" rows="20" cols="100"></textarea>
+            <div class="options">
+                <input type="checkbox" id="multiline" class="checkbox">
+                <label for="multiline">Multiline Output</label>
+                <input type="checkbox" id="quotes" class="checkbox">
+                <label for="quotes">Quotes</label>
+                <select id="format">
+                    <option value="pylist">Python List</option>
+                    <option value="tuple">Python Tuple</option>
+                    <option value="cpp">C++ Array</option>
+                    <option value="csv">CSV</option>
+                </select>
+                <button class="button1" onclick="format()">MAKE LIST</button>
+            </div>
+            <div class="label">
+                <label>Output</label>
+            </div>
+            <textarea id="output" rows="20" cols="100"></textarea>
+            <script src="list-maker.js" />
+            <a id="footer" href="./">DIGIT 2022</a>
+        </div>
+    </div>
+</body>
+
+</html>
