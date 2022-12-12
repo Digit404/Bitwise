@@ -29,8 +29,7 @@
         }
 
         .options {
-            margin-bottom: 5vh;
-            outline: none;
+            margin-top: 10px;
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             -khtml-user-select: none;
@@ -45,11 +44,17 @@
 
         .label {
             margin-bottom: 20px;
+            margin-top: 4vh;
         }
+
         .checkbox {
             height: 20px;
             width: 20px;
             vertical-align: text-bottom;
+            outline: none;
+        }
+        .disabled {
+            opacity: 0.5;
         }
     </style>
     <script src="../bg-scroll.js"></script>
@@ -76,7 +81,14 @@
                     <option value="cpp">C++ Array</option>
                     <option value="csv">CSV</option>
                 </select>
-                <button class="button1" onclick="format()">MAKE LIST</button>
+                <input type="checkbox" id="checkAdv" class="checkbox">
+                <label for="checkAdv">Advanced Options</label>
+            </div>
+            <div class="options" id="advOptions" style="display: none;">
+                <input type="checkbox" id="wordWrap" class="checkbox" style="opacity: 0.5;" disabled>
+                <label for="wordWrap">Word Wrap</label>
+                <input type="checkbox" id="numQuote" class="checkbox" style="opacity: 0.5;" disabled>
+                <label for="NumQuote">Remove Quotes Around Numbers</label>
             </div>
             <div class="label">
                 <label>Output</label>

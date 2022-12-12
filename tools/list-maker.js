@@ -1,28 +1,79 @@
+// Get references to all the input and output elements in the HTML
+var inputBox = document.getElementById("input");
+var formatDropDown = document.getElementById("format");
+var outputBox = document.getElementById("output");
+var quoteCheck = document.getElementById("quotes");
+var mlCheck = document.getElementById("multiline");
+var advCheck = document.getElementById("checkAdv");
+var quotesCheck = document.getElementById('quotes');
+var numQuoteCheck = document.getElementById('numQuote');
+var wordWrapCheck = document.getElementById('wordWrap');
+var advOptions = document.getElementById("advOptions");
+
+// Function to word wrap the text to 80 characters per line
+function wordWrap(text) {
+    let output = "\n    "; // indent each line with 4 spaces
+    let lineLength = 0;
+    for (let i = 0; i < text.length; i++) {
+        // If adding the current string to the line would make it more than 80 characters,
+        // move to the next line
+        if (lineLength + text[i].length > 80) {
+            output += "\n    ";
+            lineLength = 0;
+        }
+
+        // Add the current string to the line, followed by a comma and space
+        // unless it is the last string in the array
+        if (i < text.length - 1) {
+            output += text[i] + ", ";
+            lineLength += text[i].length + 2;
+        } else {
+            output += text[i];
+        }
+    }
+    return output + "\n"; // add a newline after the last string
+}
+
+// Main format function that is called on an interval
 function format() {
-    // get the input value and split it into an array of lines
-    var text = document.getElementById("input").value.split("\n");
+    var text = inputBox.value.split("\n"); // split the input text by newlines
+    var format = formatDropDown.value; // get the selected format
 
-    // get the selected format
-    var format = document.getElementById("format").value;
-
-    // check if the quotes checkbox is checked
-    if (document.getElementById("quotes").checked) {
-        // add quotes around each element in the input array
+    // If the quote checkbox is checked, add quotes around each string
+    if (quoteCheck.checked) {
         for (var i = 0; i < text.length; i++) {
-            text[i] = '"' + text[i] + '"';
+            // If the "exclude numbers" checkbox is checked and the current string is a number,
+            // don't add quotes around it
+            if (!(numQuoteCheck.checked && !isNaN(text[i]))) {
+                text[i] = '"' + text[i] + '"';
+            }
         }
     }
 
-    // check if the multiline checkbox is checked
-    if (document.getElementById("multiline").checked) {
-        // format the input array as a multi-line string
+    // If the word wrap checkbox is checked, use the word wrap function to format the text
+    if (wordWrapCheck.checked) {
+        text = wordWrap(text);
+    }
+    // If the multiline checkbox is checked, format the text as a comma-separated list with
+    // each item on its own line, indented by 4 spaces
+    else if (mlCheck.checked) {
         text = '\n    ' + text.join(",\n    ") + "\n";
+        // Add an event listener to the multiline checkbox that enables and disables the word wrap checkbox
+        mlCheck.addEventListener('change', function () {
+            if (this.checked) {
+                wordWrapCheck.disabled = false;
+                wordWrapCheck.style.opacity = 1;
+            } else {
+                wordWrapCheck.disabled = true;
+                wordWrapCheck.style.opacity = 0.5;
+            }
+        });
     } else {
-        // format the input array as a single-line string
         text = text.join(", ");
     }
 
-    // add the appropriate formatting to the output string, based on the selected format
+    // Check the format dropdown to determine how to enclose the text
+    // and then set the output to the formatted text
     switch (format) {
         case "pylist":
             text = "[" + text + "]";
@@ -34,7 +85,35 @@ function format() {
             text = "{" + text + "}";
             break;
     }
-
-    // update the output element with the formatted string
-    document.getElementById("output").value = text;
+    outputBox.value = text;
 }
+
+advCheck.addEventListener("change", function () {
+    if (!this.checked) {
+        advOptions.style.display = 'none';
+    } else {
+        advOptions.style.display = 'block';
+    }
+});
+
+mlCheck.addEventListener('change', function () {
+    if (this.checked) {
+        wordWrapCheck.disabled = false;
+        wordWrapCheck.style.opacity = 1;
+    } else {
+        wordWrapCheck.disabled = true;
+        wordWrapCheck.style.opacity = 0.5;
+    }
+});
+
+quotesCheck.addEventListener('change', function () {
+    if (this.checked) {
+        numQuoteCheck.disabled = false;
+        numQuoteCheck.style.opacity = 1;
+    } else {
+        numQuoteCheck.disabled = true;
+        numQuoteCheck.style.opacity = 0.5;
+    }
+});
+
+setInterval(format, 10)

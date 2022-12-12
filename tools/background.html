@@ -79,11 +79,11 @@
                 
                 // Add an event listener to the checkbox that listens for changes in the checked attribute
                 background.addEventListener("change", function() {
-                  // If the checkbox is not checked, set the background opacity to 50%
+                  // If the checkbox is not checked, set the background opacity to 0
                   if (!this.checked) {
                     document.getElementsByClassName("bg")[0].style.opacity = 0;
                   } else {
-                    // If the checkbox is checked, set the background opacity to 100%
+                    // If the checkbox is checked, set the background opacity to .1
                     document.getElementsByClassName("bg")[0].style.opacity = 0.1;
                   }
                 });
@@ -92,11 +92,11 @@
                 
                 // Add an event listener to the checkbox that listens for changes in the checked attribute
                 vignette.addEventListener("change", function() {
-                  // If the checkbox is not checked, set the background opacity to 50%
+                  // If the checkbox is not checked, set the background opacity to 0
                   if (!this.checked) {
                     document.getElementsByClassName("vignette")[0].style.opacity = 0;
                   } else {
-                    // If the checkbox is checked, set the background opacity to 100%
+                    // If the checkbox is checked, set the background opacity to .1
                     document.getElementsByClassName("vignette")[0].style.opacity = 1;
                   }
                 });
