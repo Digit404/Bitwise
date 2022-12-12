@@ -44,30 +44,20 @@ function format() {
         for (var i = 0; i < text.length; i++) {
             // If the "exclude numbers" checkbox is checked and the current string is a number,
             // don't add quotes around it
-            if (!(numQuoteCheck.checked && !isNaN(text[i]))) {
+            if (!(numQuoteCheck.checked && quoteCheck.checked && !isNaN(text[i]))) {
                 text[i] = '"' + text[i] + '"';
             }
         }
     }
 
     // If the word wrap checkbox is checked, use the word wrap function to format the text
-    if (wordWrapCheck.checked) {
+    if (wordWrapCheck.checked && mlCheck.checked) {
         text = wordWrap(text);
     }
     // If the multiline checkbox is checked, format the text as a comma-separated list with
     // each item on its own line, indented by 4 spaces
     else if (mlCheck.checked) {
         text = '\n    ' + text.join(",\n    ") + "\n";
-        // Add an event listener to the multiline checkbox that enables and disables the word wrap checkbox
-        mlCheck.addEventListener('change', function () {
-            if (this.checked) {
-                wordWrapCheck.disabled = false;
-                wordWrapCheck.style.opacity = 1;
-            } else {
-                wordWrapCheck.disabled = true;
-                wordWrapCheck.style.opacity = 0.5;
-            }
-        });
     } else {
         text = text.join(", ");
     }
