@@ -1,6 +1,5 @@
 // Get references to all the input and output elements in the HTML
 var inputBox = document.getElementById("input");
-var formatDropDown = document.getElementById("format");
 var outputBox = document.getElementById("output");
 var quoteCheck = document.getElementById("quotes");
 var mlCheck = document.getElementById("multiline");
@@ -20,13 +19,13 @@ var outDelim = ", "
 
 // Function to word wrap the text to 80 characters per line
 function wordWrap(text) {
-    let output = "\n    "; // indent each line with 4 spaces
+    let output = ""; // indent each line with 4 spaces
     let lineLength = 0;
     for (let i = 0; i < text.length; i++) {
         // If adding the current string to the line would make it more than 80 characters,
         // move to the next line
         if (lineLength + text[i].length > 80) {
-            output += "\n    ";
+            output += "\n";
             lineLength = 0;
         }
 
@@ -39,15 +38,13 @@ function wordWrap(text) {
             output += text[i];
         }
     }
-    return output + "\n"; // add a newline after the last string
+    return output;
 };
 
 // Main format function that is called on an interval
 function format() {
     var text = [inputBox.value];
-    var format = formatDropDown.value; // get the selected format
-    let delimiters = ["\n", ", ", ","];
-    delimiters = delimiters.concat(inputDelimBox.value.split("|")); // get all delimiters separated by "|"
+    let delimiters = inputDelimBox.value.split("|").concat(["\n", ", ", ","]); // get all delimiters separated by "|"
 
     outDelim = outDelimBox.value; // set the output delimiters
 
@@ -73,42 +70,29 @@ function format() {
     if (wordWrapCheck.checked && mlCheck.checked) {
         text = wordWrap(text);
     }
-    // If the multiline checkbox is checked, format the text as a comma-separated list with
-    // each item on its own line, indented by 4 spaces
+    // If the multiline checkbox is checked, format the text as a comma-separated list with each item on its own line
     else if (mlCheck.checked) {
-        text = '\n    ' + text.join(outDelim + "\n    ") + "\n";
+        text = text.join(outDelim + "\n");
     } else {
         text = text.join(outDelim);
-    }
-
-    // Check the format dropdown to determine how to enclose the text
-    // and then set the output to the formatted text
-    switch (format) {
-        case "pylist":
-            text = "[" + text + "]";
-            break;
-        case "tuple":
-            text = "(" + text + ")";
-            break;
-        case "cpp":
-            text = "{" + text + "}";
-            break;
     }
 
     outputBox.value = text;
 };
 
+// copy function for copying the text to clipboard
 function copy() {
     navigator.clipboard.writeText(outputBox.value);
     document.getElementById("copyButton").innerHTML = "COPIED!";
 
     setTimeout(function () {
         document.getElementById("copyButton").innerHTML = "COPY";
-    }, 3000); // Change the text back to "COPY" after 1000 milliseconds (1 second)
+    }, 3000); // Change the text back to "COPY" after 3000 milliseconds (3 second)
 };
 
 window.copy = copy;
 
+// advanced options checkbox listener
 advCheck.addEventListener("change", function () {
     if (!this.checked) {
         advOptions.style.display = 'none';
@@ -117,6 +101,7 @@ advCheck.addEventListener("change", function () {
     }
 });
 
+// delim options checkbox listener
 showDelimCheck.addEventListener("change", function () {
     if (!this.checked) {
         delimOptions.style.display = 'none';
@@ -125,6 +110,7 @@ showDelimCheck.addEventListener("change", function () {
     }
 });
 
+// multiline checkbox listener
 mlCheck.addEventListener('change', function () {
     if (this.checked) {
         wordWrapCheck.disabled = false;
@@ -135,6 +121,7 @@ mlCheck.addEventListener('change', function () {
     }
 });
 
+// quotes checkbox listener
 quotesCheck.addEventListener('change', function () {
     if (this.checked) {
         numQuoteCheck.disabled = false;
