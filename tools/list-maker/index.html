@@ -14,7 +14,7 @@
         }
 
         textarea {
-            margin-bottom: 50px;
+            border-radius: 10px;
             padding: 1vw;
             font-family: "firacode";
             font-size: 15px;
@@ -28,8 +28,12 @@
             margin-bottom: 5vh;
         }
 
+        .option-block {
+            margin: 5vh;
+        }
+
         .options {
-            margin-top: 10px;
+            margin: 1vh;
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             -khtml-user-select: none;
@@ -42,19 +46,19 @@
             margin-left: 1vw;
         }
 
-        .label {
-            margin-bottom: 20px;
-            margin-top: 4vh;
-        }
-
         .checkbox {
             height: 20px;
             width: 20px;
             vertical-align: text-bottom;
             outline: none;
         }
+
         .disabled {
             opacity: 0.5;
+        }
+
+        .button1 {
+            margin: 5vh;
         }
     </style>
     <script src="../../bg-scroll.js"></script>
@@ -70,31 +74,37 @@
                 <label>Input</label>
             </div>
             <textarea id="input" rows="20" cols="100"></textarea>
-            <div class="options">
-                <input type="checkbox" id="multiline" class="checkbox">
-                <label for="multiline">Multiline Output</label>
-                <input type="checkbox" id="quotes" class="checkbox">
-                <label for="quotes">Quotes</label>
-                <select id="format">
-                    <option value="pylist">Python List</option>
-                    <option value="tuple">Python Tuple</option>
-                    <option value="cpp">C++ Array</option>
-                    <option value="csv">CSV</option>
-                </select>
-                <input type="checkbox" id="checkAdv" class="checkbox">
-                <label for="checkAdv">Advanced Options</label>
-            </div>
-            <div class="options" id="advOptions" style="display: none;">
-                <input type="checkbox" id="wordWrap" class="checkbox" style="opacity: 0.5;" disabled>
-                <label for="wordWrap">Word Wrap</label>
-                <input type="checkbox" id="numQuote" class="checkbox" style="opacity: 0.5;" disabled>
-                <label for="NumQuote">Raw Numbers</label>
+            <div class="option-block">
+                <div class="options">
+                    <input type="checkbox" id="multiline" class="checkbox">
+                    <label for="multiline" title="Tabbed multiline list">Multiline Output</label>
+                    <input type="checkbox" id="quotes" class="checkbox">
+                    <label for="quotes" title="Put quotes around everything">Quotes</label>
+                    <select id="format">
+                        <option value="pylist">Python List</option>
+                        <option value="tuple">Python Tuple</option>
+                        <option value="cpp">C++ Array</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                    <input type="checkbox" id="checkAdv" class="checkbox">
+                    <label for="checkAdv" title="Advanced options">Advanced Options</label>
+                </div>
+                <div class="options" id="advOptions" style="display: none;">
+                    <input type="checkbox" id="wordWrap" class="checkbox" style="opacity: 0.5;" disabled>
+                    <label for="wordWrap" title="Multiline wrap after 80 characters">Word Wrap</label>
+                    <input type="checkbox" id="numQuote" class="checkbox" style="opacity: 0.5;" disabled>
+                    <label for="NumQuote" title="Exclude quotes around numbers">Raw Numbers</label>
+                </div>
             </div>
             <div class="label">
                 <label>Output</label>
             </div>
-            <textarea id="output" rows="20" cols="100"></textarea>
-            <script src="./list-maker.js"></script>
+            <div>
+                <textarea id="output" rows="20" cols="100" readonly></textarea>
+                <br>
+                <button class="button1" onclick="copy()" id="copyButton">COPY</button>
+            </div>
+            <script src="./list-maker.js" type="module"></script>
             <a id="footer" href="../">DIGIT 2022</a>
         </div>
     </div>

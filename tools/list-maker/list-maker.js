@@ -9,6 +9,7 @@ var quotesCheck = document.getElementById('quotes');
 var numQuoteCheck = document.getElementById('numQuote');
 var wordWrapCheck = document.getElementById('wordWrap');
 var advOptions = document.getElementById("advOptions");
+var mathCheck = document.getElementById("numMath");
 
 // Function to word wrap the text to 80 characters per line
 function wordWrap(text) {
@@ -32,7 +33,7 @@ function wordWrap(text) {
         }
     }
     return output + "\n"; // add a newline after the last string
-}
+};
 
 // Main format function that is called on an interval
 function format() {
@@ -76,7 +77,18 @@ function format() {
             break;
     }
     outputBox.value = text;
-}
+};
+
+function copy() {
+    navigator.clipboard.writeText(outputBox.value);
+    document.getElementById("copyButton").innerHTML = "COPIED!";
+
+    setTimeout(function() {
+        document.getElementById("copyButton").innerHTML = "COPY";
+    }, 3000); // Change the text back to "COPY" after 1000 milliseconds (1 second)
+};
+
+window.copy = copy;
 
 advCheck.addEventListener("change", function () {
     if (!this.checked) {
