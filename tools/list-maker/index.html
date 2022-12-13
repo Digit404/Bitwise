@@ -53,12 +53,23 @@
             outline: none;
         }
 
+        #delimiters{
+            vertical-align: middle;
+            outline: none;
+            border: none;
+        }
+
         .disabled {
             opacity: 0.5;
         }
 
         .button1 {
             margin: 5vh;
+        }
+
+        input {
+            font-family: "firacode";
+            font-weight: bold;
         }
     </style>
     <script src="../../bg-scroll.js"></script>
@@ -93,7 +104,15 @@
                     <input type="checkbox" id="wordWrap" class="checkbox" style="opacity: 0.5;" disabled>
                     <label for="wordWrap" title="Multiline wrap after 80 characters">Word Wrap</label>
                     <input type="checkbox" id="numQuote" class="checkbox" style="opacity: 0.5;" disabled>
-                    <label for="NumQuote" title="Exclude quotes around numbers">Raw Numbers</label>
+                    <label for="numQuote" title="Exclude quotes around numbers">Raw Numbers</label>
+                    <input type="checkbox" class="checkbox" id="showDelimCheck">
+                    <label for="showDelimCheck" title="Show extra delimiter options">Show Delimiter Options</label>
+                </div>
+                <div class="options" id="delimOptions" style="display:none;">
+                    <label title='Additional characters that split list. Newline and "," are default. Separate delimiters with "|"'>Extra Delimiters</label>
+                    <input type="text" id="inputDelimBox" style="width: 50px;">
+                    <label for="outDelimBox" title="Delimiter characters in the output">Output Delimiter</label>
+                    <input type="text" id="outDelimBox" value=",&nbsp" style="width: 50px;">
                 </div>
             </div>
             <div class="label">

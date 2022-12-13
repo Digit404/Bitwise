@@ -10,6 +10,13 @@ var numQuoteCheck = document.getElementById('numQuote');
 var wordWrapCheck = document.getElementById('wordWrap');
 var advOptions = document.getElementById("advOptions");
 var mathCheck = document.getElementById("numMath");
+var inputDelimCheck = document.getElementById("inputDelimCheck");
+var inputDelimBox = document.getElementById("inputDelimBox");
+var showDelimCheck = document.getElementById("showDelimCheck");
+var delimOptions = document.getElementById("delimOptions");
+var outDelimBox = document.getElementById("outDelimBox");
+
+var outDelim = ", "
 
 // Function to word wrap the text to 80 characters per line
 function wordWrap(text) {
@@ -26,8 +33,8 @@ function wordWrap(text) {
         // Add the current string to the line, followed by a comma and space
         // unless it is the last string in the array
         if (i < text.length - 1) {
-            output += text[i] + ", ";
-            lineLength += text[i].length + 2;
+            output += text[i] + outDelim;
+            lineLength += text[i].length + outDelim.length;
         } else {
             output += text[i];
         }
@@ -37,12 +44,23 @@ function wordWrap(text) {
 
 // Main format function that is called on an interval
 function format() {
-    var text = inputBox.value.split("\n"); // split the input text by newlines
+    var text = [inputBox.value];
     var format = formatDropDown.value; // get the selected format
+    let delimiters = ["\n", ", ", ","];
+    delimiters = delimiters.concat(inputDelimBox.value.split("|")); // get all delimiters separated by "|"
+
+    outDelim = outDelimBox.value; // set the output delimiters
+
+    for (let i = 0; i < delimiters.length; i++) {
+        // for each of the delimiters
+        if (delimiters[i] !== "") {
+            text = text.flatMap(str => str.split(delimiters[i])); // split on each of the delimiters, this is how you flatten the list.
+        }
+    }
 
     // If the quote checkbox is checked, add quotes around each string
     if (quoteCheck.checked) {
-        for (var i = 0; i < text.length; i++) {
+        for (let i = 0; i < text.length; i++) {
             // If the "exclude numbers" checkbox is checked and the current string is a number,
             // don't add quotes around it
             if (!(numQuoteCheck.checked && quoteCheck.checked && !isNaN(text[i]))) {
@@ -58,9 +76,9 @@ function format() {
     // If the multiline checkbox is checked, format the text as a comma-separated list with
     // each item on its own line, indented by 4 spaces
     else if (mlCheck.checked) {
-        text = '\n    ' + text.join(",\n    ") + "\n";
+        text = '\n    ' + text.join(outDelim + "\n    ") + "\n";
     } else {
-        text = text.join(", ");
+        text = text.join(outDelim);
     }
 
     // Check the format dropdown to determine how to enclose the text
@@ -76,6 +94,7 @@ function format() {
             text = "{" + text + "}";
             break;
     }
+
     outputBox.value = text;
 };
 
@@ -83,7 +102,7 @@ function copy() {
     navigator.clipboard.writeText(outputBox.value);
     document.getElementById("copyButton").innerHTML = "COPIED!";
 
-    setTimeout(function() {
+    setTimeout(function () {
         document.getElementById("copyButton").innerHTML = "COPY";
     }, 3000); // Change the text back to "COPY" after 1000 milliseconds (1 second)
 };
@@ -95,6 +114,14 @@ advCheck.addEventListener("change", function () {
         advOptions.style.display = 'none';
     } else {
         advOptions.style.display = 'block';
+    }
+});
+
+showDelimCheck.addEventListener("change", function () {
+    if (!this.checked) {
+        delimOptions.style.display = 'none';
+    } else {
+        delimOptions.style.display = 'block';
     }
 });
 
