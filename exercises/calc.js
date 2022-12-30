@@ -1,16 +1,16 @@
 var value = 0;
 
-function update(){
+function update() {
     document.getElementById("thDisplay").innerHTML = value;
 }
 
-function Reset(){
+function Reset() {
     value = 0;
     update();
 }
 
-function ClickNumber(button){
-    if(value === 0){
+function ClickNumber(button) {
+    if (value === 0) {
         value = button.innerHTML;
     }
     else {
@@ -19,24 +19,24 @@ function ClickNumber(button){
     update();
 }
 
-function decimal(){
-    if(!isNaN(eval(String(value) + "."))){
+function decimal() {
+    if (!isNaN(eval(String(value) + "."))) {
         value = String(value) + ".";
     }
     update();
 }
 
-function ClickOperator(button){
+function ClickOperator(button) {
     value = String(value) + button.innerText;
     update();
 }
 
-function solve(){
+function solve() {
     value = eval(value);
     update();
 }
 
-function Flip(){
+function Flip() {
     value = eval(value) * -1;
     update();
 }

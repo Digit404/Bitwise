@@ -10,14 +10,16 @@
             font-size: 16px;
             padding: 5px 10px;
         }
-        table{
+
+        table {
             font-family: "firacode";
             color: white;
-            margin-left:auto;
+            margin-left: auto;
             margin-right: auto;
         }
+
         .content {
-            margin:auto;
+            margin: auto;
         }
     </style>
     <script src="../bg-scroll.js"></script>
@@ -41,14 +43,16 @@
                             <button class="button1" id="btnReset" onclick="Reset()">C</button>
                         </td>
                         <td colspan="2">
-                            <button class="button1" id="btnEquals" style='font-family: firacode;' onclick="solve()">=</button>
+                            <button class="button1" id="btnEquals" style='font-family: firacode;'
+                                onclick="solve()">=</button>
                         </td>
                     </tr>
                     <tr>
                         <td><button class="button1" id="btn7" onclick="ClickNumber(this)">7</button></td>
                         <td><button class="button1" id="btn8" onclick="ClickNumber(this)">8</button></td>
                         <td><button class="button1" id="btn9" onclick="ClickNumber(this)">9</button></td>
-                        <td><button class="button1" id="btnPlus" style='font-family: firacode;' onclick="ClickOperator(this)">+</button></td>
+                        <td><button class="button1" id="btnPlus" style='font-family: firacode;'
+                                onclick="ClickOperator(this)">+</button></td>
                     </tr>
                     <tr>
                         <td><button class="button1" id="btn4" onclick="ClickNumber(this)">4</button></td>
@@ -63,24 +67,27 @@
                         <td><button class="button1" id="btn2" onclick="ClickNumber(this)">2</button></td>
                         <td><button class="button1" id="btn3" onclick="ClickNumber(this)">3</button></td>
                         <td>
-                            <button class="button1" id="btnMultiply" style='font-family: firacode;' onclick="ClickOperator(this)">*</button>
+                            <button class="button1" id="btnMultiply" style='font-family: firacode;'
+                                onclick="ClickOperator(this)">*</button>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <button class="button1" id="btnFlip" style='font-family: firacode;' onclick="Flip()"><u>+</u></button>
+                            <button class="button1" id="btnFlip" style='font-family: firacode;'
+                                onclick="Flip()"><u>+</u></button>
                         </td>
                         <td><button class="button1" id="btn0" onclick="ClickNumber(this)">0</button></td>
                         <td>
                             <button class="button1" id="btnDecimal" onclick="decimal()">.</button>
                         </td>
                         <td>
-                            <button class="button1" id="btnDivision" style='font-family: firacode;' onclick="ClickOperator(this)">/</button>
+                            <button class="button1" id="btnDivision" style='font-family: firacode;'
+                                onclick="ClickOperator(this)">/</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            
+
             <script src="./calc.js"></script>
             <a id="footer" href="./">DIGIT 2022</a>
         </div>

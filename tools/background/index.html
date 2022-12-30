@@ -6,48 +6,14 @@
     <link rel="shortcut icon" href="../../res/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../../style.css">
     <style>
-        .slider {
-            appearance: none;
-            width: 50%;
-            height: 15px;
-            border-radius: 5px;
-            background: #d3d3d3;
-            outline: none;
-            opacity: 0.7;
-            -webkit-transition: .2s;
-            transition: opacity .2s;
-            margin-bottom:100px;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            background: #04AA6D;
-            cursor: pointer;
-        }
-
-        .slider::-moz-range-thumb {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            background: #04AA6D;
-            cursor: pointer;
-        }
-
-        .slider:hover {
-            opacity: 1;
-        }
-
         .checkboxes {
             display: flex;
             justify-content: center;
-            color:white;
+            color: white;
             font-family: 'bitwise';
             font-size: 200%;
         }
+
         .checkboxes label {
             margin-right: 40px;
             -webkit-touch-callout: none;
@@ -56,6 +22,10 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+        }
+
+        .slider {
+            width: 50%;
         }
     </style>
     <script src="./background.js"></script>
@@ -68,37 +38,37 @@
         <div class="content">
             <h1 class="title" style="margin-bottom: 10px;">BACKGROUND</h1>
             <div class="checkboxes">
-                <input type="checkbox" id="vignette" style = "outline: none;" checked>
+                <input type="checkbox" id="vignette" style="outline: none;" checked>
                 <label for="vignette">VIGNETTE</label>
-                <input type="checkbox" id="background" style = "outline: none;" checked>
+                <input type="checkbox" id="background" style="outline: none;" checked>
                 <label for="background">BACKGROUND</label>
             </div>
             <script>
                 // Get a reference to the checkbox
                 const background = document.getElementById("background");
-                
+
                 // Add an event listener to the checkbox that listens for changes in the checked attribute
-                background.addEventListener("change", function() {
-                  // If the checkbox is not checked, set the background opacity to 0
-                  if (!this.checked) {
-                    document.getElementsByClassName("bg")[0].style.opacity = 0;
-                  } else {
-                    // If the checkbox is checked, set the background opacity to .1
-                    document.getElementsByClassName("bg")[0].style.opacity = 0.1;
-                  }
+                background.addEventListener("change", function () {
+                    // If the checkbox is not checked, set the background opacity to 0
+                    if (!this.checked) {
+                        document.getElementsByClassName("bg")[0].style.opacity = 0;
+                    } else {
+                        // If the checkbox is checked, set the background opacity to .1
+                        document.getElementsByClassName("bg")[0].style.opacity = 0.1;
+                    }
                 });
                 // Get a reference to the checkbox
                 const vignette = document.getElementById("vignette");
-                
+
                 // Add an event listener to the checkbox that listens for changes in the checked attribute
-                vignette.addEventListener("change", function() {
-                  // If the checkbox is not checked, set the background opacity to 0
-                  if (!this.checked) {
-                    document.getElementsByClassName("vignette")[0].style.opacity = 0;
-                  } else {
-                    // If the checkbox is checked, set the background opacity to .1
-                    document.getElementsByClassName("vignette")[0].style.opacity = 1;
-                  }
+                vignette.addEventListener("change", function () {
+                    // If the checkbox is not checked, set the background opacity to 0
+                    if (!this.checked) {
+                        document.getElementsByClassName("vignette")[0].style.opacity = 0;
+                    } else {
+                        // If the checkbox is checked, set the background opacity to .1
+                        document.getElementsByClassName("vignette")[0].style.opacity = 1;
+                    }
                 });
             </script>
             <h2 style="font-size: 50px;" class="title">PARALLAX</h2>

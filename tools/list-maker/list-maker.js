@@ -47,6 +47,7 @@ function format() {
     let delimiters = inputDelimBox.value.split("|").concat(["\n", ", ", ","]); // get all delimiters separated by "|"
 
     outDelim = outDelimBox.value; // set the output delimiters
+    outDelim = outDelim.replace(/\u00a0/g, " ");
 
     for (let i = 0; i < delimiters.length; i++) {
         // for each of the delimiters

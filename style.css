@@ -2,13 +2,16 @@
     font-family: 'bitwise';
     src: url(https://www.bitwise.live/res/bitwise.ttf);
 }
+
 @font-face {
     font-family: 'firacode';
     src: url(https://www.bitwise.live/res/FiraCode.ttf);
 }
+
 body::-webkit-scrollbar {
     width: 0 !important;
 }
+
 body {
     overflow: -moz-scrollbars-none;
     font-weight: bold;
@@ -16,6 +19,7 @@ body {
     color: white;
     font-family: 'firacode', sans-serif;
 }
+
 .wrapper {
     background-color: #101010;
     position: relative;
@@ -27,6 +31,7 @@ body {
     overflow-x: hidden;
     min-height: 100vh;
 }
+
 .bg {
     width: 300%;
     background-image: url(https://www.bitwise.live/res/numbers.png);
@@ -41,6 +46,7 @@ body {
     /* Chromium + Safari */
     image-rendering: pixelated;
 }
+
 .vignette {
     background: url(https://www.bitwise.live/res/vignette.png) center center fixed;
     opacity: 100;
@@ -52,27 +58,31 @@ body {
     left: 0;
     right: 0;
 }
+
 .content {
     position: relative;
     text-align: center;
 }
+
 .title {
     font-family: 'bitwise', sans-serif;
     text-align: center;
     color: white;
 }
-h1{
+
+h1 {
     font-size: 11vw;
 }
+
 #footer {
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0, 0, 0, 0.7);
     color: white;
     text-align: center;
     font-family: 'bitwise', sans-serif;
     position: fixed;
-    bottom:0px;
-    height:20px;
-    width:200px;
+    bottom: 0px;
+    height: 20px;
+    width: 200px;
     margin-bottom: 10px;
     margin-right: 10px;
     padding-top: 10px;
@@ -81,6 +91,7 @@ h1{
     right: 0;
     text-decoration: none;
 }
+
 .text {
     width: 50%;
     text-align: center;
@@ -88,6 +99,7 @@ h1{
     margin-right: auto;
     margin-top: 50px;
 }
+
 .button1 {
     color: #101010;
     font-family: 'bitwise';
@@ -99,9 +111,67 @@ h1{
     border-color: #00000000;
     cursor: pointer;
 }
-.button1:active{
+
+.button1:active {
     background-color: #808080;
 }
+
 .button1:hover {
     background-color: #aaaaaa;
+}
+
+textarea {
+    border-radius: 10px;
+    padding: 1vw;
+    font-family: "firacode";
+    font-size: 16px;
+    background-color: #101010;
+    color: white;
+    font-weight: bold;
+    outline: none;
+}
+
+input[type="number"] {
+    border-radius: 10px;
+    border-color: white;
+    font-family: "firacode";
+    font-size: 16px;
+    background-color: #101010;
+    color: white;
+    font-weight: bold;
+    outline: none;
+}
+
+.slider {
+    appearance: none;
+    height: 15px;
+    border-radius: 5px;
+    background: #aaaaaa;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    margin-bottom: 100px;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+}
+
+.slider:hover {
+    opacity: 1;
 }

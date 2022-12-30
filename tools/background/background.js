@@ -1,7 +1,7 @@
 // Set the initial position of the background
 var bgPosition = 0;
 // Set the width of the background image
-var bgWidth = 1307;
+const bgWidth = 1307;
 
 // Function to move the background image
 function moveBackground() {

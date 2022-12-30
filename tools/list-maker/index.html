@@ -6,17 +6,6 @@
     <link rel="shortcut icon" href="../../res/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../../style.css">
     <style>
-        textarea {
-            border-radius: 10px;
-            padding: 1vw;
-            font-family: "firacode";
-            font-size: 15px;
-            background-color: #101010;
-            color: white;
-            font-weight: bold;
-            outline: none;
-        }
-
         .title {
             margin-bottom: 5vh;
         }
@@ -46,7 +35,7 @@
             outline: none;
         }
 
-        #delimiters{
+        #delimiters {
             vertical-align: middle;
             outline: none;
             border: none;
@@ -96,7 +85,9 @@
                     <label for="showDelimCheck" title="Show extra delimiter options">Show Delimiter Options</label>
                 </div>
                 <div class="options" id="delimOptions" style="display:none;">
-                    <label title='Additional characters that split list. Newline and "," are default. Separate delimiters with "|"'>Extra Delimiters</label>
+                    <label
+                        title='Additional characters that split list. Newline and "," are default. Separate delimiters with "|"'>Extra
+                        Delimiters</label>
                     <input type="text" id="inputDelimBox" style="width: 50px;">
                     <label for="outDelimBox" title="Delimiter characters in the output">Output Delimiter</label>
                     <input type="text" id="outDelimBox" value=",&nbsp" style="width: 50px;">
