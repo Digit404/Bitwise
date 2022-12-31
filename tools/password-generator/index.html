@@ -12,11 +12,11 @@
         }
 
         .subtitle {
-            margin-bottom: 10vh;
+            margin-bottom: 5%;
         }
 
         .content {
-            min-height: 150vh;
+            min-height: 1500px;
         }
 
         .label {
@@ -108,11 +108,7 @@
                 <label for="inputBox">Word Bank</label>
             </div>
             <div id="banks">
-                <p style="font-size:large;">Default:</p>
-                <p onclick="elements.toggle()" class="selection" id="elements">Elements</p>
-                <p onclick="moons.toggle()" class="selection" id="moons">Moons</p>
-                <p onclick="mythology.toggle()" class="selection" id="mythology">Mythology</p>
-                <p onclick="astrology.toggle()" class="selection" id="astrology">Astrology</p>
+                <p style="font-size:large;" onclick="Wordbank.enableAll()">Default:</p>
             </div>
             <textarea id="inputBox" rows="20" cols="80"></textarea>
             <br>

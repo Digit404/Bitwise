@@ -14,7 +14,14 @@ class Wordbank {
     constructor(words, buttonID) {
         this.words = words;
         this.isActive = false;
-        this.button = document.getElementById(buttonID);
+
+        // add button to 
+        this.button = document.createElement('p')
+        this.button.className = "selection"
+        this.button.innerHTML = buttonID
+        this.button.onclick = this.toggle.bind(this)
+        selectBanks.appendChild(this.button)
+
         Wordbank.banks.push(this);
     }
 
@@ -56,6 +63,21 @@ class Wordbank {
      */
     static pullRandom() {
         return Wordbank.allWords()[randomInt(0, Wordbank.allWords().length)];
+    }
+
+    /**
+     * Enables all banks, unless all banks are inactive then it disables all
+     */
+    static enableAll() {
+        if (Wordbank.banks.every(bank => bank.isActive)) {
+            Wordbank.banks.forEach(bank => bank.toggle());
+        } else {
+            for (let bank of Wordbank.banks) {
+                if (!bank.isActive) {
+                    bank.toggle();
+                }
+            }
+        }
     }
 }
 
@@ -125,33 +147,37 @@ var lengthAlert = new alertMessage("SORRY!", "We couldn't find a combination of 
 
 // wordbanks
 var elements = new Wordbank(
-    ["hydrogen", "helium", "lithium", "beryllium", "boron", "carbon", "nitrogen", "oxygen", "fluorine", "neon",
+    [
+        "hydrogen", "helium", "lithium", "beryllium", "boron", "carbon", "nitrogen", "oxygen", "fluorine", "neon",
         "sodium", "magnesium", "aluminum", "silicon", "phosphorus", "sulfur", "chlorine", "argon", "potassium",
         "calcium", "scandium", "titanium", "vanadium", "chromium", "manganese", "cobalt", "nickel", "copper",
         "zinc", "gallium", "germanium", "arsenic", "selenium", "bromine", "krypton", "cadmium", "iodine", "xenon",
         "tungsten", "osmium", "iridium", "mercury", "thallium", "bismuth", "polonium", "radon", "radium", "thorium",
-        "uranium", "neptunium", "plutonium", "americium"],
-    "elements"
+        "uranium", "neptunium", "plutonium", "americium"
+    ], "Elements"
 );
 
 var moons = new Wordbank(
-    ["luna", "phobos", "deimos", "europa", "ganymede", "callisto", "mimas", "enceladus", "tethys", "dione",
+    [
+        "luna", "phobos", "deimos", "europa", "ganymede", "callisto", "mimas", "enceladus", "tethys", "dione",
         "rhea", "titan", "hyperion", "iapetus", "phoebe", "ariel", "umbriel", "oberon", "miranda", "triton",
-        "nereid", "vanth", "charon"],
-    "moons"
+        "nereid", "vanth", "charon"
+    ], "Moons"
 );
 
 var mythology = new Wordbank(
-    ['zues', 'jupiter', 'juno', 'poseidon', 'neptune', 'kronos', 'saturn', 'aphrodite', 'venus', 'pluto',
+    [
+        'zues', 'jupiter', 'juno', 'poseidon', 'neptune', 'kronos', 'saturn', 'aphrodite', 'venus', 'pluto',
         'vulcan', 'demeter', 'apollo', 'athena', 'artemis', 'ares', 'mars', 'hermes', 'mercury', 'gaia', 'terra', 'uranus',
         'aurora', 'luna', 'helios', 'sol', 'hercules', 'odysseus', 'ulysses', 'atlas', 'boreas', 'castor', 'chronos', 'hermes',
-        'kratos', 'morpheus', 'pollux', 'tartarus'],
-    "mythology"
+        'kratos', 'morpheus', 'pollux', 'tartarus'
+    ], "Mythology"
 )
 
 var astrology = new Wordbank(
-    ["aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricon", "aquarius", "pisces"],
-    "astrology"
+    [
+        "aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricon", "aquarius", "pisces"
+    ], "Astrology"
 )
 
 // elements start on
