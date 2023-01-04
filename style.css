@@ -18,6 +18,7 @@ body {
     font-size: larger;
     color: white;
     font-family: 'firacode', sans-serif;
+    margin: 0px;
 }
 
 .wrapper {
@@ -101,23 +102,25 @@ h1 {
 }
 
 .button1 {
-    color: #101010;
+    color: white;
     font-family: 'bitwise';
     font-size: x-large;
-    background-color: white;
+    background-color: #10101070;
+    backdrop-filter: blur(5px);
     box-shadow: 0px 10px 5px #101010a0;
     padding: 10px 40px;
+    border-style: solid;
     border-radius: 10px;
-    border-color: #00000000;
+    border-color: white;
+    border-width: 3px;
     cursor: pointer;
-}
-
-.button1:active {
-    background-color: #808080;
+    transition: all 0.5s;
 }
 
 .button1:hover {
-    background-color: #aaaaaa;
+    background-color: white;
+    transform: scale(1.05);
+    color: #101010;
 }
 
 textarea {
