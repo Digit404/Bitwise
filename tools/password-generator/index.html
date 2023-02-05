@@ -105,7 +105,7 @@
     <div class="wrapper">
         <div class="bg"></div>
         <div class="vignette"></div>
-        <div class="content">
+        <main class="content">
             <h1 class="title">PASSWORD GENERATOR</h1>
             <p class="subtitle">Generates secure, easy to pronounce, and easy to remember passwords using a modular word
                 bank</p>
@@ -115,7 +115,7 @@
             <div id="banks">
                 <p style="font-size:large;" onclick="Wordbank.enableAll()">Default:</p>
             </div>
-            <textarea id="inputBox" rows="20" cols="80"></textarea>
+            <textarea id="inputBox" rows="20" cols="80" placeholder="[Add words to use in the generated password]" autofocus></textarea>
             <br>
             <div>
                 <label for="lengthBox">Target Length:</label>
@@ -126,12 +126,12 @@
             <div class="label">
                 <label for="outbox">Generated Password</label>
             </div>
-            <textarea id="outbox"></textarea>
+            <textarea id="outbox" placeholder="Press 'Generate' to create password"></textarea>
             <br>
             <p id="outLength">Length: </p>
             <button class="button1" onclick="copy()" id="copyButton">COPY</button>
             <a id="footer" href="../">DIGIT 2022</a>
-        </div>
+        </main>
         <div id="alert" hidden>
             <div id="alertPopup">
                 <h2 id="alertTitle">ALERT</h2>
