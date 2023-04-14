@@ -14,13 +14,24 @@ class Wordbank {
     constructor(words, buttonID) {
         this.words = words;
         this.isActive = false;
+        this.isHovered = false;
 
         // add button to 
         this.button = document.createElement('p')
-        this.button.className = "selection"
+        this.button.className = "bank"
         this.button.innerHTML = buttonID
         this.button.onclick = this.toggle.bind(this)
         selectBanks.appendChild(this.button)
+
+        this.button.addEventListener('mouseover', e => {
+            this.button.classList.add(this.isActive ? 'bankHoverActive' : 'bankHover')
+            this.isHovered = true;
+        })
+
+        this.button.addEventListener('mouseout', () => {
+            this.button.classList.remove('bankHover', 'bankHoverActive')
+            this.isHovered = false;
+        })
 
         Wordbank.banks.push(this);
     }
@@ -38,8 +49,11 @@ class Wordbank {
             alertMessage.hide();
         }
         this.isActive = !this.isActive;
-        this.button.style.backgroundColor = this.isActive ? "white" : "#101010";
-        this.button.style.color = this.isActive ? "#101010" : "white";
+        this.button.classList.toggle('bankActive')
+        this.button.classList.remove('bankHover', 'bankHoverActive')
+        if (this.isHovered) {
+            this.button.classList.add(this.isActive ? 'bankHoverActive' : 'bankHover')
+        }
         updateInputBox();
     }
 
