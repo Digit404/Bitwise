@@ -114,7 +114,7 @@ h1 {
     border-color: white;
     border-width: 3px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.5s;
 }
 
 .button1:hover {
