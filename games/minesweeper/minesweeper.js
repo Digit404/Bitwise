@@ -1,5 +1,3 @@
-print = console.log;
-
 const fieldWidth = 30;
 const fieldHeight = 16;
 const tileSize = 16;
@@ -10,26 +8,7 @@ const ctx = fieldCanvas.getContext("2d");
 
 const tileSheet = new Image();
 
-tileSheet.src = "https://www.bitwise.live/games/minesweeper/res/Minesweeper.png";
-ctx.imageSmoothingEnabled = false;
-
-let imageLoaded = false;
-tileSheet.onload = function () {
-    imageLoaded = true;
-};
-
-function loadImage() {
-    if (imageLoaded) {
-        // Retry after a short delay if the image hasn't finished loading yet
-        setTimeout(loadImage, 50);
-    }
-    console.log('troublesome image loaded')
-}
-
-// Call the drawImage function to draw the image on the canvas
-loadImage();
-
-console.log(tileSheet.complete)
+tileSheet.src = "./res/Minesweeper.png?";
 
 ctx.drawImage(tileSheet, 16, 0, tileSize, tileSize, 0, 0, tileSize * scale, tileSize * scale);
 
