@@ -1,10 +1,12 @@
 const fieldWidth = 30;
 const fieldHeight = 16;
 const tileSize = 64;
-const scale = 0.5;
+const scale = .75;
 const mineCount = 100;
 
 const fieldCanvas = document.getElementById("field");
+
+const mineCounter = document.querySelector("#mine-count");
 
 fieldCanvas.width = fieldWidth * tileSize * scale;
 fieldCanvas.height = fieldHeight * tileSize * scale;
@@ -13,11 +15,12 @@ const ctx = fieldCanvas.getContext("2d");
 
 const tileSheet = new Image();
 
-const newGameButton = document.querySelector("#newGame")
+const newGameButton = document.querySelector("#newGame");
 
 tileSheet.src = "./res/minesweeper.png";
 
 let firstClick;
+let flaggedCount = 0;
 
 class Tile {
     static tiles = [];
@@ -32,7 +35,7 @@ class Tile {
     }
 
     draw() {
-        console.log("drawing ", this, " with ", this.getTileCoords())
+        console.log("drawing ", this, " with ", this.getTileCoords());
         ctx.drawImage(
             tileSheet, // source image
             this.getTileCoords().x, // crop x
@@ -56,7 +59,7 @@ class Tile {
 
     getTileCoords() {
         let x, y;
-         if (this.isFlagged) {
+        if (this.isFlagged) {
             x = 4;
             y = 1;
         } else if (!this.isFlipped) {
@@ -135,6 +138,8 @@ class Tile {
                 Tile.runSurrounding(this.x, this.y, (tile) => {
                     tile.flip();
                 });
+            } else if (this.mineCount === -1) {
+                mineCounter.innerHTML = "YOU LOSE"
             }
         }
     }
@@ -142,14 +147,13 @@ class Tile {
     click() {
         if (!this.isFlipped) {
             this.flip();
-        }
-        else {
-            this.chord()
+        } else {
+            this.chord();
         }
     }
 
     chord() {
-        let count = 0
+        let count = 0;
         for (let j = this.y - 1; j <= this.y + 1; j++) {
             for (let i = this.x - 1; i <= this.x + 1; i++) {
                 // Check if the indices are within the valid range
@@ -169,16 +173,23 @@ class Tile {
 
         if (count === this.mineCount) {
             Tile.runSurrounding(this.x, this.y, (tile) => {
-                tile.flip()
-            })
+                tile.flip();
+            });
         }
     }
 
     flag() {
         if (!this.isFlipped) {
-            this.isFlagged = !this.isFlagged;
+            if (this.isFlagged) {
+                this.isFlagged = false;
+                flaggedCount--;
+            } else if (!this.isFlagged) {
+                this.isFlagged = true;
+                flaggedCount++;
+            }
         }
-        this.draw()
+        mineCounter.innerHTML = mineCount - flaggedCount
+        this.draw();
     }
 }
 
@@ -223,4 +234,4 @@ fieldCanvas.addEventListener("contextmenu", (e) => {
 
 newGameButton.addEventListener("click", function () {
     Tile.initialize({ x: fieldWidth, y: fieldHeight });
-})
+});
