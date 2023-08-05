@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5 mb-5 p-5 card shadow">
+        
+        <p>Final HP XP: 0, Final HP Level: 0</p>
+        <form action="POST" id="thething" class="row">
+            <div class="col">
+                <h3>Please provide the current XP and target levels for the following skills:</h3>
+
+                <div class="form-group">
+                    <label for="HP">HP XP:</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" name="HP" id="HP" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="pasteClipboard('HP')">Paste</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <!-- Attack -->
+                    <div class="form-group col-md-6">
+                        <label for="attack">Current Attack XP:</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="attack" id="attack">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="pasteClipboard('attack')">Paste</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="attack-target">Target Attack Level:</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="attack-target" id="attack-target">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="pasteClipboard('attack-target')">Paste</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Strength -->
+                    <div class="form-group col-md-6">
+                        <label for="strength">Current Strength XP:</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="strength" id="strength">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="pasteClipboard('strength')">Paste</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="strength-target">Target Strength Level:</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="strength-target" id="strength-target">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="pasteClipboard('strength-target')">Paste</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Defense -->
+                    <div class="form-group col-md-6">
+                        <label for="defense">Current Defense XP:</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="defense" id="defense">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="pasteClipboard('defense')">Paste</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="defense-target">Target Defense Level:</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="defense-target" id="defense-target">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="pasteClipboard('defense-target')">Paste</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Magic -->
+                    <div class="form-group col-md-6">
+                        <label for="magic">Current Magic XP:</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="magic" id="magic">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="pasteClipboard('magic')">Paste</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="magic-target">Target Magic Level:</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="magic-target" id="magic-target">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="pasteClipboard('magic-target')">Paste</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ranged -->
+                    <div class="form-group col-md-6">
+                        <label for="ranged">Current Ranged XP:</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="ranged" id="ranged">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="pasteClipboard('ranged')">Paste</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="ranged-target">Target Ranged Level:</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" name="ranged-target" id="ranged-target">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    onclick="pasteClipboard('ranged-target')">Paste</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Calculate</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="./hpcalc.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
