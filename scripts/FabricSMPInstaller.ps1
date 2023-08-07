@@ -25,7 +25,13 @@ Write-Host "Creating folders..."
 
 $appDataPath = [System.Environment]::GetFolderPath('ApplicationData')
 $minecraftPath = Join-Path $appDataPath ".minecraft/"
-$profilePath = Join-Path $minecraftPath "profiles/Fabric SMP/"
+
+if ($args.Length -gt 0) {
+    $profilePath = Join-Path $minecraftPath "profiles/$($args[0])/"
+} else {
+    $profilePath = Join-Path $minecraftPath "profiles/Fabric SMP/"
+}
+
 $resourcepacksPath = Join-Path $profilePath "resourcepacks/" 
 $modsPath = Join-Path $profilePath "mods/" 
 
