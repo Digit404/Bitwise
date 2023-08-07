@@ -39,7 +39,7 @@ if ($confirm -eq "y" -or $confirm -eq "Y") {
 
     $vanillaTweaks = "VanillaTweaks_1.20.zip"
 
-    Write-Host "Downloading $($vanillaTweaks)"
+    Write-Host "Downloading $($vanillaTweaks)..."
 
     Invoke-WebRequest "https://cdn.discordapp.com/attachments/1061066185778667661/1137873427965939732/VanillaTweaks_1.20.zip" -OutFile $(Join-Path $resourcepacksPath $vanillaTweaks)
 }
@@ -129,11 +129,16 @@ $totalMods = [Mod]::mods.Count
 # Use a regular foreach loop to access and work with the instances in the $mods list
 foreach ($mod in [Mod]::mods) {
     $currentIndex = [Mod]::mods.IndexOf($mod) + 1
-    Write-Host "($currentIndex of $totalMods) Downloading $($mod.modName)"
+    Write-Host "($currentIndex of $totalMods) Downloading $($mod.modName)..."
     $mod.download()
 }
 
 $ProgressPreference = "Continue"  # Reset progress preference back to default
+
+$confirm = Read-Host "Copy options from main profile? (y/n)"
+if ($confirm -eq "y" -or $confirm -eq "Y") {
+    Copy-Item -Path $(Join-Path $minecraftPath "options.txt") -Destination $(Join-Path $profilePath "options.txt")
+}
 
 Write-Host "Part 2. Setting up the installation."
 
@@ -145,11 +150,6 @@ if (Test-Path $minecraftLancher) {
 }
 else {
     Write-Host "Unable to find Minecraft lancher, please launch it."
-}
-
-$confirm = Read-Host "Copy options from main profile? (y/n)"
-if ($confirm -eq "y" -or $confirm -eq "Y") {
-    Copy-Item -Path $(Join-Path $minecraftPath "options.txt") -Destination $(Join-Path $profilePath "options.txt")
 }
 
 Write-Host "1. Create new installation"
