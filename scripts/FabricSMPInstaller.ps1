@@ -1,3 +1,4 @@
+# Version 1.0
 Write-Host "Part 1. Installing Iris and Fabric."
 
 $ProgressPreference = "SilentlyContinue"
