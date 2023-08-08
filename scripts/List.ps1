@@ -1,15 +1,18 @@
 class Script {
-    static $scripts = @()
-    [string] $Name
-    [string] $Description
+    static [System.Collections.ArrayList]$scripts = @()
+    [string]$Name
+    [string]$Description
 
-    Script ([string]$name, [string]$description) {
+    Script([string]$name, [string]$description) {
         $this.Name = $name
         $this.Description = $description
 
-        [Script]::scripts += $this
+        [Script]::scripts.Add($this)
     }
 }
+
+# Example usage
+[void][Script]::scripts.Clear()  # Clear the scripts array before adding new scripts
 
 [Script]::new("FabricSMPInstaller.ps1", "A simple Minecraft script to download and install fabric and many mods for an SMP server.")  | Out-Null
 
