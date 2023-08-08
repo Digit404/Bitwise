@@ -4,9 +4,6 @@ class Script {
     [string] $Description
 
     Script ([string]$name, [string]$description) {
-        if (-not [Script]::scripts) {
-            [Script]::scripts = @()
-        }
         $this.Name = $name
         $this.Description = $description
 
@@ -14,6 +11,10 @@ class Script {
     }
 }
 
+[Script]::new("FabricSMPInstaller.ps1", "A simple Minecraft script to download and install fabric and many mods for an SMP server.")  | Out-Null
+
 Write-Host "Here is a list of scripts available:"
 
-[Script]::new("FabricSMPInstaller.ps1", "A simple Minecraft script to download and install fabric and many mods for an SMP server.")
+Write-Host ([Script]::scripts | Format-Table | Out-String) -ForegroundColor Blue
+
+Write-Host "You can run any of these scripts using the powershell command ""iwr www.bitwise.live/scrips/{script name}.ps1 | iex""`n"
