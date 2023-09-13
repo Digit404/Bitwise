@@ -130,7 +130,9 @@ function Download-Mods {
     "https://cdn.modrinth.com/data/ccKDOlHs/versions/m23n3uIM/owo-lib-0.11.1%2B1.20.jar",
     "https://cdn.modrinth.com/data/yBW8D80W/versions/Vsx4I8Np/lambdynamiclights-2.3.1%2B1.20.1.jar",
     "https://cdn.modrinth.com/data/AANobbMI/versions/hiO9bwqc/sodium-fabric-mc1.20.1-0.5.0.jar",
-    "https://cdn.modrinth.com/data/yUBXc3AH/versions/soKX5h3N/libz-1.0.1.jar"
+    "https://cdn.modrinth.com/data/yUBXc3AH/versions/soKX5h3N/libz-1.0.1.jar",
+    "https://cdn.modrinth.com/data/5sy6g3kz/versions/8W0DfPzM/bettercombat-fabric-1.7.3%2B1.20.1.jar",
+    "https://cdn.modrinth.com/data/wGKYL7st/versions/KnHNGyLj/combatroll-fabric-1.2.1%2B1.20.1.jar"
 
     [Mod]::mods = @()
 
