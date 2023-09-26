@@ -5,12 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown to September 30, 2023</title>
+    <link rel="shortcut icon" href="./res/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../../style.css">
     <link href="https://pvinis.github.io/iosevka-webfont/7.0.2/iosevka.css" rel="stylesheet" />
     <style>
         body {
             background-color: #000;
-            font-family: Arial, sans-serif;
+            font-family: 'Iosevka Web', monospace;
             text-align: center;
             margin: 0;
             padding: 0;
@@ -21,15 +22,19 @@
         }
 
         h1 {
-            font-size: 200%;
-            font-family: 'Iosevka Web', sans-serif;
+            font-size: 2vw;
+            font-family: 'Iosevka Web', monospace;
         }
 
         #countdown {
-            font-family: 'Iosevka Web', sans-serif;
+            font-family: 'Iosevka Web', monospace;
             width: 100%;
-            font-size: 750%;
+            font-size: 10vw;
             margin-top: 20px;
+        }
+        p {
+            color: #222;
+            font-size: 1vw;
         }
     </style>
 </head>
@@ -38,6 +43,7 @@
     <div class="content">
         <h1>Shutdown in:</h1>
         <div id="countdown">00:00:00:00</div>
+        <p>dd:hh:mm:ss</p>
     </div>
 
     <script src="countdown.js"></script>
