@@ -1,7 +1,9 @@
 // Set the date we're counting down to
-const countdownDate = new Date("October 1, 2023 00:00:00").getTime();
+const countdownDate = new Date("September 27, 2023 14:00:00").getTime();
 
 const countdown = document.getElementById("countdown");
+
+const body = document.querySelector("body")
 
 function pad(d) {
     return d < 10 ? "0" + d.toString() : d.toString();
@@ -23,8 +25,9 @@ updateCountdown = () => {
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         if (days < 1) {
-            const redValue = 255 - Math.floor(255 - (255 / (24 * 3600)) * (distance / 1000));
-            countdown.style.color = `rgb(255, ${redValue}, ${redValue})`;
+            const redValue = Math.floor((255 / (24 * 3600)) * (distance / 1000));
+            countdown.style.color = `rgb(${redValue}, ${redValue}, ${redValue})`;
+            body.style.backgroundColor = `rgb(${255 - redValue}, 0, 0)`
         }
 
         countdown.innerHTML = `${pad(days)}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
