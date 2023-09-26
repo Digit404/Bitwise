@@ -1,5 +1,5 @@
 // Set the date we're counting down to
-const countdownDate = new Date("September 30, 2023 00:00:00").getTime();
+const countdownDate = new Date("October 1, 2023 00:00:00").getTime();
 
 function pad(d) {
     return (d < 10) ? '0' + d.toString() : d.toString();
@@ -12,7 +12,7 @@ const countdownInterval = setInterval(function () {
 
     if (distance <= 0) {
         clearInterval(countdownInterval);
-        document.getElementById("countdown").innerHTML = "EXPIRED";
+        document.getElementById("countdown").innerHTML = "SHUTDOWN";
     } else {
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
