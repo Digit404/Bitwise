@@ -17,7 +17,8 @@ updateCountdown = () => {
         document.querySelector("h1").style.display = "none"
         document.querySelector("p").style.display = "none"
         countdown.innerHTML = "SHUTDOWN";
-        countdown.style.color = "#f00"
+        body.style.backgroundColor = "#000"
+        countdown.style.color = "#FFF"
     } else {
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
