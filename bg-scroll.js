@@ -1,6 +1,5 @@
 // Cache the background element to avoid multiple DOM queries
 var bgElement;
-console.log(bgElement);
 
 // Set the initial position of the background
 var bgPosition = 0;
