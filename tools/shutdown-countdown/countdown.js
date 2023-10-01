@@ -16,7 +16,7 @@ updateCountdown = () => {
     if (distance <= 0) {
         document.querySelector("h1").style.display = "none"
         document.querySelector("p").style.display = "none"
-        countdown.innerHTML = "SHUTDOWN";
+        countdown.innerHTML = "NEVER MIND";
         body.style.backgroundColor = "#000"
         countdown.style.color = "#FFF"
     } else {
