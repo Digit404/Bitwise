@@ -1,5 +1,5 @@
 // Set the date we're counting down to
-const countdownDate = new Date("October 1, 2023 00:00:00").getTime();
+const countdownDate = new Date("November 17, 2023 00:00:00").getTime();
 
 const countdown = document.getElementById("countdown");
 
@@ -16,7 +16,7 @@ updateCountdown = () => {
     if (distance <= 0) {
         document.querySelector("h1").style.display = "none"
         document.querySelector("p").style.display = "none"
-        countdown.innerHTML = "NEVER MIND";
+        countdown.innerHTML = "SHUTDOWN";
         body.style.backgroundColor = "#000"
         countdown.style.color = "#FFF"
     } else {
