@@ -1,5 +1,4 @@
-// Set the date we're counting down to
-const countdownDate = new Date("January 19, 2024 23:59:59").getTime();
+const countdownDate = new Date("March 8, 2024 23:59:59").getTime();
 
 const countdown = document.getElementById("countdown");
 
