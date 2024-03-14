@@ -44,3 +44,5 @@ function prompt {
 	Write-Host ("$Name $($Colors.Yellow)$currentDir $($Colors.White)>") -NoNewLine
 	return " "
 }
+
+New-Alias new "New-Object"
