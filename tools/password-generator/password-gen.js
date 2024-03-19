@@ -167,7 +167,7 @@ var moons = new Wordbank(
 
 var mythology = new Wordbank(
     [
-        'zues', 'jupiter', 'juno', 'poseidon', 'neptune', 'kronos', 'saturn', 'aphrodite', 'venus', 'pluto',
+        'zeus', 'jupiter', 'juno', 'poseidon', 'neptune', 'kronos', 'saturn', 'aphrodite', 'venus', 'pluto',
         'vulcan', 'demeter', 'apollo', 'athena', 'artemis', 'ares', 'mars', 'hermes', 'mercury', 'gaia', 'terra', 'uranus',
         'aurora', 'luna', 'helios', 'sol', 'hercules', 'odysseus', 'ulysses', 'atlas', 'boreas', 'castor', 'chronos', 'hermes',
         'kratos', 'morpheus', 'pollux', 'tartarus'
@@ -176,8 +176,29 @@ var mythology = new Wordbank(
 
 var astrology = new Wordbank(
     [
-        "aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricon", "aquarius", "pisces"
+        "aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces", 
+        "zodiac"
     ], "Astrology"
+)
+
+var geography = new Wordbank(
+    [
+        "himalayas", "andes", "caucasus", "appalachia", "ural", "alpine", "apennines", "cascade", "sierra", "carpathian",
+        "yellowstone", "sahara", "mohave", "everest", "amazon", "nile", "kilimanjaro", "taiga", "alaska", "yukon", "fuji", "etna",
+        "sinai", "danube", "tundra", "siberia", "corsica", "sicily", "borneo", "tahiti", "caspian", "tigris", "euphrates", "crete",
+        "rhine", "elbrus", "olympus", "negev", "gobi", "mississippi", "Yosemite"
+    ], "Geography"
+)
+
+var cities = new Wordbank (
+    [
+        "amsterdam", "cairo", "dublin", "florence", "geneva", "havana", "istanbul", "kyoto", "tokyo", "lisbon", "marrakech", 
+        "oslo", "paris", "quito", "rome", "vienna", "warsaw", "brussels", "detroit", "glasgow", "moscow", "prague", "quebec", 
+        "budapest", "copenhagen", "denver", "hiroshima", "jerusalem", "munich", "orlando", "perth", "vancouver", "toronto ", 
+        "odessa", "brisbane", "lubbock", "houston", "austin", "boston", "jericho", "laredo", "cleveland", "philadelphia ", 
+        "nashville", "oxford", "albuquerque", "seoul", "berlin"
+    ],
+    "Cities"
 )
 
 // elements start on
