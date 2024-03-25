@@ -41,8 +41,17 @@ function prompt {
 		$currentDir = "~" + $currentDir.Substring($homeDir.Length)
 	}
 
-	Write-Host ("$Name $($Colors.Yellow)$currentDir $($Colors.White)>") -NoNewLine
-	return " "
+	Write-Time
+
+	return "$Name $($Colors.Yellow)$currentDir $($Colors.White)> "
+}
+
+function Write-Time {
+	$TermialWidth = $Host.UI.RawUI.BufferSize.Width
+
+	Move-Cursor -X ($TermialWidth - 5) -Absolute
+	Write-Host (Get-Date -Format "HH:mm") -ForegroundColor DarkGray -NoNewline
+	Write-Host "`r" -NoNewline
 }
 
 New-Alias new "New-Object"

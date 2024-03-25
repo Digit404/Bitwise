@@ -1,29 +1,30 @@
 function Move-Cursor {
     param (
-        [int]$X,
-        [int]$Y
+        [Parameter()]
+        [AllowNull()]
+        [nullable[int]]$X,
+
+        [Parameter()]
+        [AllowNull()]
+        [nullable[int]]$Y,
+
+        [Parameter()]
+        [switch]$Absolute,
+
+        [Parameter()]
+        [switch]$Relative # Doesn't do anything but good for peace of mind
     )
 
-    $cursorPos = $Host.UI.RawUI.CursorPosition
+    $cursorPos = $Host.UI.RawUI.CursorPosition # Current cursor position
     $pos = New-Object System.Management.Automation.Host.Coordinates
 
-    $pos.X = $X + $cursorPos.X
-    $pos.Y = $Y + $cursorPos.Y
-
-    $Host.UI.RawUI.CursorPosition = $pos
-}
-
-function Set-Cursor {
-    param (
-        [int]$X,
-        [int]$Y
-    )
-
-    $cursorPos = $Host.UI.RawUI.CursorPosition
-    $pos = New-Object System.Management.Automation.Host.Coordinates
-
-    $pos.X = $X ?? $cursorPos.X
-    $pos.Y = $Y ?? $cursorPos.Y
+    if ($Absolute) {
+        $pos.X = $X ?? $cursorPos.X
+        $pos.Y = $Y ?? $cursorPos.Y
+    } else {
+        $pos.X = $X + $cursorPos.X
+        $pos.Y = $Y + $cursorPos.Y
+    }
 
     $Host.UI.RawUI.CursorPosition = $pos
 }
