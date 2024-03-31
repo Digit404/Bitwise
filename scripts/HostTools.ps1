@@ -64,3 +64,84 @@ function New-Temp {
 
     return ($tempFile + $Extension)
 }
+
+function Add-Path {
+    [CmdletBinding(DefaultParameterSetName='User')]
+    param (
+        [Parameter(Mandatory, ValueFromPipeline, Position=0)]
+        [string]$Path,
+
+        [Parameter(ParameterSetName='User')]
+        [Alias("AsUser")]
+        [switch]$User,
+
+        [Parameter(ParameterSetName='Machine')]
+        [Alias("AsMachine")]
+        [switch]$Machine,
+
+        [Parameter(ParameterSetName='Process')]
+        [Alias("Temp", "Temporary")]
+        [switch]$Process
+    )
+    
+    $Scope = $PSCmdlet.ParameterSetName
+
+    $Path = Resolve-Path -Path $Path -ErrorAction Stop
+
+    Write-Host "Adding $Path to $Scope PATH..."
+
+    $SystemPath = [Environment]::GetEnvironmentVariable("PATH", $Scope).Split(";")
+
+    if ($SystemPath -contains $Path) {
+        throw "$Path already in PATH!"
+    }
+
+    # clean up empty strings
+    $SystemPath = $SystemPath.Where({ $_ -ne ""})
+
+    $SystemPath += $Path
+
+    $NewPath = $SystemPath -join ";"
+
+    [Environment]::SetEnvironmentVariable("PATH", $NewPath, $Scope)
+}
+
+function Remove-Path {
+    [CmdletBinding(DefaultParameterSetName='User')]
+    param (
+        [Parameter(Mandatory, ValueFromPipeline, Position=0)]
+        [string]$Path,
+
+        [Parameter(ParameterSetName='User')]
+        [Alias("AsUser")]
+        [switch]$User,
+
+        [Parameter(ParameterSetName='Machine')]
+        [Alias("AsMachine")]
+        [switch]$Machine,
+
+        [Parameter(ParameterSetName='Process')]
+        [Alias("Temp", "Temporary")]
+        [switch]$Process
+    )
+    
+    $Scope = $PSCmdlet.ParameterSetName
+
+    $Path = Resolve-Path $Path -ErrorAction Stop
+
+    Write-Host "Removing $Path from $Scope PATH..."
+
+    $SystemPath = [Environment]::GetEnvironmentVariable("PATH", $Scope).Split(";")
+    
+    $PathInPath = $SystemPath.Where({ $_ -eq $Path })
+
+    $SystemPath = $SystemPath.Where({ $_ -ne $Path -and $_ -ne ""})
+
+    if (-not $PathInPath) {
+        throw "$Path not in PATH!"
+    }
+
+    $NewPath = $SystemPath -join ";"
+
+    [Environment]::SetEnvironmentVariable("PATH", $NewPath, $Scope)
+}
