@@ -357,10 +357,6 @@ Compresses the input video file to a target size of 50MB and saves the compresse
 - The function performs a two-pass encoding for optimal compression. It may take longer to process large video files.
 #>
 function Compress-Video {
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute(
-        'PSUseDeclaredVarsMoreThanAssignments', $null,
-        Justification = 'Variable is used in another scope'
-    )]
     param(
         [Parameter(Mandatory,ValueFromPipeline)]
         [Alias("Path","InputVideo","Input","InputPath")]
@@ -379,7 +375,7 @@ function Compress-Video {
     $durationSec = & ffmpeg -i $videoPath 2>&1 | Select-String "Duration" | ForEach-Object {
         $_ -replace ".*Duration: (\d+):(\d+):(\d+).*", '$1 $2 $3' -split ' ' | 
         ForEach-Object { [int]$_ } | 
-        ForEach-Object -Begin { $totalSec = 0 } -Process { $totalSec = $totalSec * 60 + $_ } -End { $totalSec }
+        ForEach-Object -Begin { $totalSec = 0; $totalSec | Out-Null } -Process { $totalSec = $totalSec * 60 + $_ } -End { $totalSec }
     }
 
     # Calculations for video bit rate
