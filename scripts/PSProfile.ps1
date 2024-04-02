@@ -41,7 +41,8 @@ function prompt {
 		$currentDir = "~" + $currentDir.Substring($homeDir.Length)
 	}
 
-	Write-Time
+	# Uncomment the following line to print time on prompt, requires HostTools.ps1 to be sourced in the profile
+	# Write-Time
 
 	return "$Name $($Colors.Yellow)$currentDir $($Colors.White)> "
 }

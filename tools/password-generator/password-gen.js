@@ -186,7 +186,7 @@ var geography = new Wordbank(
         "himalayas", "andes", "caucasus", "appalachia", "ural", "alpine", "apennines", "cascade", "sierra", "carpathian",
         "yellowstone", "sahara", "mohave", "everest", "amazon", "nile", "kilimanjaro", "taiga", "alaska", "yukon", "fuji", "etna",
         "sinai", "danube", "tundra", "siberia", "corsica", "sicily", "borneo", "tahiti", "caspian", "tigris", "euphrates", "crete",
-        "rhine", "elbrus", "olympus", "negev", "gobi", "mississippi", "Yosemite"
+        "rhine", "elbrus", "olympus", "negev", "gobi", "mississippi", "yosemite", "ibeza"
     ], "Geography"
 )
 
