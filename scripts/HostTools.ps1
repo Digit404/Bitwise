@@ -413,3 +413,316 @@ function Object {
     $object = New-Object psobject -Property $InputObject
     return $object
 }
+
+$BoxChars = @{
+    Corner = @{
+        TopLeft = '┌'
+        TopRight = '┐'
+        BottomLeft = '└'
+        BottomRight = '┘'
+        Rounded = @{
+            TopLeft = '╭'
+            TopRight = '╮'
+            BottomLeft = '╰'
+            BottomRight = '╯'
+        }
+    
+    }
+    Horizontal = '─'
+    Vertical = '│'
+    Cap = @{
+        Left = '╴'
+        Right = '╶'
+        Top = '╵'
+        Bottom = '╷'
+    }
+}
+
+$COLORS = @{
+    DARKRED = "$ESC[31m"
+    DARKGREEN = "$ESC[32m"
+    DARKYELLOW = "$ESC[33m"
+    DARKBLUE = "$ESC[34m"
+    DARKMAGENTA = "$ESC[35m"
+    DARKCYAN = "$ESC[36m"
+    GRAY = "$ESC[37m"
+    DARKGRAY = "$ESC[90m"
+    RED = "$ESC[91m"
+    GREEN = "$ESC[92m"
+    YELLOW = "$ESC[93m"
+    BLUE = "$ESC[94m"
+    MAGENTA = "$ESC[95m"
+    CYAN = "$ESC[96m"
+    WHITE = "$ESC[97m"
+    DARKWHITE = "$ESC[37m" # not a real color
+    BLACK = "$ESC[90m"
+    DARKBLACK = "$ESC[90m"
+    # Bright colors (just the same as the normal colors)
+    BRIGHTRED = "$ESC[91m"
+    BRIGHTGREEN = "$ESC[92m"
+    BRIGHTYELLOW = "$ESC[93m"
+    BRIGHTBLUE = "$ESC[94m"
+    BRIGHTMAGENTA = "$ESC[95m"
+    BRIGHTCYAN = "$ESC[96m"
+    BRIGHTWHITE = "$ESC[97m"
+    BRIGHTBLACK = "$ESC[37m"
+}
+
+<#
+.SYNOPSIS
+Draws a box with text in the console.
+
+.DESCRIPTION
+The DrawBox function draws a box with text inside it in the console. The box can have a label, customizable colors, padding, margins, and more.
+
+.PARAMETER Text
+The text to display inside the box.
+
+.PARAMETER Label
+The label text to display at the top of the box.
+
+.PARAMETER Width
+The width of the box in characters.
+
+.PARAMETER Height
+The height of the box in characters.
+
+.PARAMETER Padding
+The padding inside the box in characters.
+
+.PARAMETER PaddingX
+The horizontal padding inside the box in characters.
+
+.PARAMETER PaddingY
+The vertical padding inside the box in characters.
+
+.PARAMETER MarginX
+The horizontal margin outside the box in characters.
+
+.PARAMETER MarginY
+The vertical margin outside the box in characters.
+
+.PARAMETER BorderColor
+The color of the box border. Default is Gray.
+
+.PARAMETER TextColor
+The color of the text inside the box. Default is Gray.
+
+.PARAMETER AutoMargin
+Automatically centers the box horizontally in the console window.
+
+.PARAMETER Justify
+Justifies the text inside the box.
+
+.PARAMETER Rounded
+Draws the box with rounded corners.
+
+.EXAMPLE
+DrawBox -Text "Hello, World!" -Width 20 -Height 5 -BorderColor Green
+
+Draws a green box with the text "Hello, World!" centered inside.
+
+.EXAMPLE
+DrawBox -Text "This is a very long line of text that will wrap inside the box." -Width 30 -AutoMargin -Rounded -BorderColor DarkCyan -TextColor Yellow
+
+Draws a rounded box with a dark cyan border and yellow text that is automatically centered in the console. The text wraps inside the box.
+
+.NOTES
+This function uses characters from the BoxChars hashtable to draw the box.
+#>
+function DrawBox {
+    param (
+        [string]$Text,
+        [string]$Label,
+        [int]$Width,
+        [int]$Height,
+        [int]$Padding,
+        [int]$PaddingX,
+        [int]$PaddingY,
+        [int]$MarginX,
+        [int]$MarginY,
+        [System.ConsoleColor]$BorderColor,
+        [System.ConsoleColor]$TextColor,
+        [switch]$AutoMargin,
+        [switch]$Justify,
+        [switch]$Rounded
+    )
+
+    # Add extra chars to label
+    if ($Label) {
+        $Label = "$($BoxChars.Cap.Left)$Label$($BoxChars.Cap.Right)"
+    }
+
+    if (!$BorderColor) {
+        $BorderColor = 'Gray'
+    }
+
+    if (!$TextColor) {
+        $TextColor = 'Gray'
+    }
+
+    # Calculate padding
+    if (!$PaddingX) {
+        $PaddingX = $Padding
+    }
+
+    if (!$PaddingY) {
+        $PaddingY = $Padding
+    }
+
+    # Adjust width and height to fit text
+    if ($Text) {
+        $SplitText = $Text -split "`n"
+
+        $MaxLength = 0
+
+        for ($i = 0; $i -lt $SplitText.Length; $i++) {
+            $SplitText[$i] = (" " * $PaddingX) + $SplitText[$i] + (" " * $PaddingX)
+            $MaxLength = [Math]::Max($MaxLength, $SplitText[$i].Length)
+        }
+        if (!$Width) {
+            $Width = $MaxLength
+        }
+        if (!$Height) {
+            $Height = $SplitText.Length + ($PaddingY * 2)
+        }
+        
+        if (!$Justify) {
+            for ($i = 0; $i -lt $SplitText.Length; $i++) {
+                $LengthDiff = ($MaxLength - $SplitText[$i].Length) / 2
+                $SplitText[$i] = (" " * $LengthDiff) + $SplitText[$i]
+            }
+        }
+    }
+
+    if ($Label.Length % 2 -ne 0 -xor $Width % 2 -ne 0) {
+        $Label += $BoxChars.Horizontal
+    }
+
+    # Make sure width is not less than label
+    if ($Width -lt $label.Length) {
+        $Width = $Label.Length
+    }
+
+    if ($AutoMargin) {
+        $MarginX = $Host.UI.RawUI.BufferSize.Width / 2 - $Width / 2
+    }
+
+    # Generate padding if height is larger than text height
+    if ($Height -gt $SplitText.Length) {
+        [double]$PaddingY = ($Height - $SplitText.Length) / 2
+    }
+
+    $Corner = if ($Rounded) {
+        $BoxChars.Corner.Rounded
+    } else {
+        $BoxChars.Corner
+    }
+
+    $LabelPos = $Width / 2 - $Label.Length / 2
+
+    Write-Host ("`n" * $MarginY) -NoNewline
+
+    Write-Host (" " * $MarginX) -NoNewline
+    Write-Host $Corner.TopLeft -ForegroundColor $BorderColor -NoNewline
+    Write-Host ([string]$BoxChars.Horizontal * [Math]::Floor($LabelPos)) -ForegroundColor $BorderColor -NoNewline
+    Write-Host $Label -ForegroundColor $BorderColor -NoNewline
+    Write-Host ([string]$BoxChars.Horizontal * [Math]::Ceiling($LabelPos)) -ForegroundColor $BorderColor -NoNewline
+    Write-Host $Corner.TopRight -ForegroundColor $BorderColor
+
+    for ($i = 0; $i -lt $Height; $i++) {
+        Write-Host (" " * $MarginX) -NoNewline
+        Write-Host $BoxChars.Vertical -ForegroundColor $BorderColor -NoNewline
+        if ($i -lt [Math]::Floor($PaddingY) -or $i -ge [Math]::Floor($Height - $PaddingY)) {
+            Write-Host (" " * $Width) -NoNewline
+        } else {
+            for ($j = 0; $j -lt $Width; $j++) {
+                # Use null coaslescing if available, but stupid PowerShell 5.1 doesn't recognize
+                $char = if ($SplitText[[Math]::floor($i - $PaddingY)][$j]) {
+                    $SplitText[[Math]::floor($i - $PaddingY)][$j]
+                } else {
+                    " "
+                }
+
+                Write-Host $char -ForegroundColor $TextColor -NoNewline
+            }
+        }
+        Write-Host $BoxChars.Vertical -ForegroundColor $BorderColor
+    }
+
+    Write-Host (" " * $MarginX) -NoNewline
+    Write-Host $Corner.BottomLeft -ForegroundColor $BorderColor -NoNewline
+    Write-Host ([string]$BoxChars.Horizontal * $Width) -ForegroundColor $BorderColor -NoNewline
+    Write-Host $Corner.BottomRight -ForegroundColor $BorderColor
+
+    Write-Host ("`n" * $MarginY) -NoNewline
+}
+
+# wrapper function for SetEnvironmentVariable
+function Set-EnvironmentVariable {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string] $Name,
+
+        [Parameter(Mandatory)]
+        [string] $Value,
+
+        [Parameter()]
+        [string] $Scope = "Process"
+    )
+
+    [Environment]::SetEnvironmentVariable($Name, $Value, $Scope)
+}
+
+<#
+.SYNOPSIS
+Opens the target location of a shortcut file.
+
+.DESCRIPTION
+The Open-Shortcut function opens the target location of a specified shortcut file (.lnk) using the Windows Script Host object model. It resolves the full path of the shortcut file, retrieves the target path from the shortcut object, and then sets the current location to the target path.
+
+.PARAMETER ShortcutPath
+The path to the shortcut file (.lnk). This parameter is mandatory and must be provided.
+
+.EXAMPLE
+Open-Shortcut C:\Users\MyUser\Desktop\MyShortcut.lnk
+
+Opens the target location of the 'MyShortcut.lnk' file on the desktop.
+
+.EXAMPLE
+Get-ChildItem *.lnk | Open-Shortcut
+
+Opens the target locations of all shortcut files in the current directory.
+
+.NOTES
+This function requires the Windows Script Host object model (WScript.Shell) to read and interact with shortcut files.
+
+The function releases the COM object used to create the shortcut object to avoid potential memory leaks.
+
+.LINK
+https://learn.microsoft.com/en-us/windows/win32/ipc/shorthuts
+
+#>
+function Open-Shortcut {
+	param
+	(
+	    [Parameter(Mandatory, Position=0)]
+	    [string]$ShortcutPath
+	)
+	
+    if (-not (Test-Path $ShortcutPath)) {
+    	Write-Warning "$ShortcutPath does not exist."
+    	return
+    }
+
+    $ShortcutPath = Resolve-Path $ShortcutPath
+    
+	$shell = New-Object -ComObject WScript.Shell
+	$shortcut = $shell.CreateShortcut($ShortcutPath)
+	$targetPath = $shortcut.TargetPath
+	
+	Set-Location $targetPath
+
+	[System.Runtime.InteropServices.Marshal]::ReleaseComObject($shell) | Out-Null
+}
