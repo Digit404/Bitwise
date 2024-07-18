@@ -333,69 +333,162 @@ function Update-Metadata {
 
 <#
 .SYNOPSIS
-Compresses a video file to a target size using FFmpeg.
+Compresses a video file using FFmpeg.
 
 .DESCRIPTION
-The Compress-Video function compresses a video file to a target size specified in megabytes (MB) using FFmpeg. It performs a two-pass encoding to optimize the video bitrate and achieve the desired file size.
+The Compress-Video function takes an input video file and compresses it using FFmpeg. It offers three methods of compression: by target size, by target bitrate, or by quality. The function uses a two-pass encoding process for optimal results.
 
 .PARAMETER InputFile
-Specifies the path to the input video file. This parameter is mandatory.
+Specifies the path to the input video file. This parameter is mandatory and can accept pipeline input.
 
 .PARAMETER TargetSizeMB
-Specifies the target size of the compressed video file in megabytes (MB). This parameter is mandatory.
+Specifies the target size of the output video in megabytes. This parameter is part of the 'Size' parameter set.
 
-.PARAMETER OutFile
-Specifies the path to save the compressed video file. This parameter is mandatory.
+.PARAMETER TargetBitRateKbps
+Specifies the target bitrate of the output video in kilobits per second. This parameter is part of the 'BitRate' parameter set.
+
+.PARAMETER Quality
+Specifies the quality level for the output video. This parameter is part of the 'Quality' parameter set and is the default parameter. Default value is 1.
+
+A quality value of 1 was chosen as a balanced setting, aiming to provide a good compromise between 
+video quality and file size for most scenarios. It corresponds to a base bitrate of 4000 Kbps 
+(or 500 KB/s) per megapixel at 60 fps, which translates to approximately 8.33 KB per megapixel per frame.
+
+The actual bitrate scales linearly with the quality value, resolution, and frame rate. Higher quality 
+values result in better video quality but larger file sizes, while lower values produce smaller files 
+at the cost of quality.
+
+For example, for a 1080p (2.07 megapixels) video at 30 fps:
+- Quality 1.0: Balanced setting (default)--would result in a bitrate of about 4,140 Kbps
+- Quality 2.0: High quality, larger file size--would result in a bitrate of about 8,280 Kbps
+- Quality 0.5: Lower quality, smaller file size--would result in a bitrate of about 2,070 Kbps
+
+Users can adjust the quality value to fine-tune the balance between video quality and file size 
+according to their specific needs.
+
+.PARAMETER OutDir
+Specifies the output directory for the compressed video. If not specified, the current working directory is used.
+
+.PARAMETER TargetFPS
+Specifies the target frame rate for the output video. If not specified, the original frame rate is maintained.
+
+.PARAMETER AudioBitRateKbps
+Specifies the audio bitrate in kilobits per second. Default value is 128Kbps.
 
 .EXAMPLE
-Compress-Video -InputFile "C:\Videos\input.mp4" -TargetSizeMB 50 -OutFile "C:\Videos\output.mp4"
-Compresses the input video file to a target size of 50MB and saves the compressed video as output.mp4.
+Compress-Video -InputFile "C:\Videos\input.mp4" -Quality 2
+Compresses the input video using a quality level of 2 and saves it in the current directory.
+
+.EXAMPLE
+Compress-Video -InputFile "C:\Videos\input.mp4" -TargetSizeMB 100 -OutDir "D:\Compressed"
+Compresses the input video to approximately 100MB and saves it in the D:\Compressed directory.
+
+.EXAMPLE
+Compress-Video -InputFile "C:\Videos\input.mp4" -TargetBitRateKbps 5000 -TargetFPS 30
+Compresses the input video to a bitrate of 5000Kbps and sets the frame rate to 30 FPS.
+
+.EXAMPLE
+Get-ChildItem "C:\Videos\*.mp4" | Compress-Video -Quality 3 -OutDir "D:\Compressed"
+Compresses all MP4 files in the C:\Videos directory using a quality level of 3 and saves them in the D:\Compressed directory.
 
 .NOTES
-- This function requires FFmpeg to be installed and accessible in the system's PATH environment variable.
-- The audio bitrate is assumed to be 128kbps. You can adjust it as necessary.
-- The function performs a two-pass encoding for optimal compression. It may take longer to process large video files.
+This function requires FFmpeg to be installed on the system and accessible via the PATH environment variable.
+The function uses a fixed audio bitrate of 128Kbps. Adjust the $audioBitRateKbps variable if needed.
+Temporary log files are created during the compression process and are automatically removed upon completion.
+
+.LINK
+https://ffmpeg.org/
 #>
+
 function Compress-Video {
+    [CmdletBinding(DefaultParameterSetName='Quality')]
     param(
-        [Parameter(Mandatory,ValueFromPipeline)]
-        [Alias("Path","InputVideo","Input","InputPath")]
+        [Parameter(Mandatory, ValueFromPipeline, Position=0)]
+        [Alias('Path', 'InputVideo', 'Input', 'InputPath')]
         [string]$InputFile,
 
-        [Parameter(Mandatory)]
-        [Alias("MB","TargetSize","SizeMB","Size")]
-        [int]$TargetSizeMB,
+        [Parameter(ParameterSetName='Size', Mandatory=$true)]
+        [Alias('MB', 'TargetSize', 'SizeMB', 'Size')]
+        [Nullable[int]]$TargetSizeMB,
 
-        [Parameter(Mandatory)]
-        [Alias("Output","OutputVideo","OutVideo","OutputFile","OutputPath")]
-        [string]$OutFile
+        [Parameter(ParameterSetName='BitRate', Mandatory=$true)]
+        [Alias('Kbps', 'BitRate', 'TargetBR')]
+        [Nullable[int]]$TargetBitRateKbps,
+
+        [Parameter(ParameterSetName='Quality', Mandatory=$true)]
+        [Alias('Qual')]
+        [Nullable[double]]$Quality,
+
+        [Parameter()]
+        [Alias('Output', 'OutputVideo', 'OutVideo', 'OutputFile', 'OutputPath')]
+        [string]$OutDir = $PWD,
+
+        [Parameter()]
+        [Alias('FPS', 'FrameRate')]
+        [Nullable[int]]$TargetFPS,
+
+        [Parameter()]
+        [Alias('AudioBR', 'AudioBitRate', 'ABR')]
+        [int]$AudioBitRateKbps = 128
     )
 
-    # Calculate duration in seconds
-    $durationSec = & ffmpeg -i $videoPath 2>&1 | Select-String "Duration" | ForEach-Object {
-        $_ -replace ".*Duration: (\d+):(\d+):(\d+).*", '$1 $2 $3' -split ' ' | 
-        ForEach-Object { [int]$_ } | 
-        ForEach-Object -Begin { $totalSec = 0; $totalSec | Out-Null } -Process { $totalSec = $totalSec * 60 + $_ } -End { $totalSec }
+    begin {
+        if ($PSCmdlet.ParameterSetName -eq 'Quality') {
+            $Quality = $null -ne $Quality ? $Quality : 1
+        }
     }
 
-    # Calculations for video bit rate
-    $targetSizeKB = $targetSizeMB * 1024
-    $audioBitRateKbps = 128 # Assuming an audio bitrate, adjust as necessary
-    $videoBitRateKbps = ($targetSizeKB * 8 - $audioBitRateKbps * $durationSec) / $durationSec
+    Process {
+        # Calculate duration in seconds
+        $durationSec = [math]::Ceiling([double](ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$InputFile"))
 
-    # FFMPEG commands for two-pass encode
-    $ffmpegCmdPass1 = "ffmpeg -y -i `"$videoPath`" -c:v libx264 -b:v ${videoBitRateKbps}k -pass 1 -an -f mp4 NUL"
-    $ffmpegCmdPass2 = "ffmpeg -i `"$videoPath`" -c:v libx264 -b:v ${videoBitRateKbps}k -pass 2 -c:a aac -b:a ${audioBitRateKbps}k `"$outputPath`""
+        # Extract video resolution (width and height)
+        $videoInfo = ffprobe -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate -of csv=p=0:s=x "$InputFile"
+        $resolution = $videoInfo.Split('x')
+        $width = [int]$resolution[0]
+        $height = [int]$resolution[1]
+        $frameRate = [double]($resolution[2] -replace '/.*', '')
+        $megaPixels = ($width * $height) / 1000000
 
-    # Execute the two-pass encoding
-    Write-Host "Starting first pass..."
-    Invoke-Expression $ffmpegCmdPass1
-    Write-Host "Starting second pass..."
-    Invoke-Expression $ffmpegCmdPass2
+        # Calculations for video bit rate
+        switch ($PSCmdlet.ParameterSetName) {
+            'Quality' {
+                $framerateRatio = $frameRate / 60.0
+                $videoBitRateKbps = $Quality * 4000 * $megaPixels * $framerateRatio
+            }
+            'Size' {
+                $targetSizeKB = [Math]::Ceiling($TargetSizeMB * 95 / 100) * 1024
+                $videoBitRateKbps = [math]::Ceiling(($targetSizeKB * 8 - $audioBitRateKbps * $durationSec) / $durationSec)
+            }
+            'BitRate' {
+                $videoBitRateKbps = $TargetBitRateKbps
+            }
+        }
 
-    Write-Host "Encoding complete. File saved to $outputPath"
+        # Get output file path
+        $outFile = Join-Path -Path $OutDir -ChildPath ("$((Get-Item (Split-Path -Leaf $inputFile)).BaseName)_compressed.mp4")
 
-    # Clean up: Delete the log files generated by the two-pass process
-    Remove-Item ffmpeg2pass-0.log*
-    Write-Host "Clean-up complete. Temporary files removed."
+        # FFMPEG commands for two-pass encode
+        $ffmpegCmdPass1 = "ffmpeg -y -i `"$InputFile`" -c:v libx264 -b:v ${videoBitRateKbps}k -pass 1 -an -f null NUL"
+        $ffmpegCmdPass2 = "ffmpeg -i `"$InputFile`" -c:v libx264 -b:v ${videoBitRateKbps}k -pass 2 -c:a aac -b:a ${audioBitRateKbps}k"
+
+        # Add FPS cap if specified
+        if ($null -ne $TargetFPS) {
+            $ffmpegCmdPass2 += " -r $TargetFPS"
+        }
+
+        $ffmpegCmdPass2 += " `"$outFile`""
+
+        # Execute the two-pass encoding
+        Write-Host "Starting first pass for $InputFile..."
+        Invoke-Expression $ffmpegCmdPass1
+        Write-Host "Starting second pass for $InputFile..."
+        Invoke-Expression $ffmpegCmdPass2
+
+        Write-Host "Encoding complete. File saved to $outFile"
+
+        # Clean up: Delete the log files generated by the two-pass process
+        Remove-Item ffmpeg2pass-0.log* -ErrorAction SilentlyContinue
+        Write-Host "Clean-up complete. Temporary files removed."
+    }
 }

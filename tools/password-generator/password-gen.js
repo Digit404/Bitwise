@@ -194,8 +194,8 @@ var cities = new Wordbank (
     [
         "amsterdam", "cairo", "dublin", "florence", "geneva", "havana", "istanbul", "kyoto", "tokyo", "lisbon", "marrakech", 
         "oslo", "paris", "quito", "rome", "vienna", "warsaw", "brussels", "detroit", "glasgow", "moscow", "prague", "quebec", 
-        "budapest", "copenhagen", "denver", "hiroshima", "jerusalem", "munich", "orlando", "perth", "vancouver", "toronto ", 
-        "odessa", "brisbane", "lubbock", "houston", "austin", "boston", "jericho", "laredo", "cleveland", "philadelphia ", 
+        "budapest", "copenhagen", "denver", "hiroshima", "jerusalem", "munich", "orlando", "perth", "vancouver", "toronto", 
+        "odessa", "brisbane", "lubbock", "houston", "austin", "boston", "jericho", "laredo", "cleveland", "philadelphia", 
         "nashville", "oxford", "albuquerque", "seoul", "berlin"
     ],
     "Cities"

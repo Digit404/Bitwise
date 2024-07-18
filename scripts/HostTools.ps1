@@ -438,36 +438,6 @@ $BoxChars = @{
     }
 }
 
-$COLORS = @{
-    DARKRED = "$ESC[31m"
-    DARKGREEN = "$ESC[32m"
-    DARKYELLOW = "$ESC[33m"
-    DARKBLUE = "$ESC[34m"
-    DARKMAGENTA = "$ESC[35m"
-    DARKCYAN = "$ESC[36m"
-    GRAY = "$ESC[37m"
-    DARKGRAY = "$ESC[90m"
-    RED = "$ESC[91m"
-    GREEN = "$ESC[92m"
-    YELLOW = "$ESC[93m"
-    BLUE = "$ESC[94m"
-    MAGENTA = "$ESC[95m"
-    CYAN = "$ESC[96m"
-    WHITE = "$ESC[97m"
-    DARKWHITE = "$ESC[37m" # not a real color
-    BLACK = "$ESC[90m"
-    DARKBLACK = "$ESC[90m"
-    # Bright colors (just the same as the normal colors)
-    BRIGHTRED = "$ESC[91m"
-    BRIGHTGREEN = "$ESC[92m"
-    BRIGHTYELLOW = "$ESC[93m"
-    BRIGHTBLUE = "$ESC[94m"
-    BRIGHTMAGENTA = "$ESC[95m"
-    BRIGHTCYAN = "$ESC[96m"
-    BRIGHTWHITE = "$ESC[97m"
-    BRIGHTBLACK = "$ESC[37m"
-}
-
 <#
 .SYNOPSIS
 Draws a box with text in the console.
@@ -696,13 +666,7 @@ Get-ChildItem *.lnk | Open-Shortcut
 Opens the target locations of all shortcut files in the current directory.
 
 .NOTES
-This function requires the Windows Script Host object model (WScript.Shell) to read and interact with shortcut files.
-
 The function releases the COM object used to create the shortcut object to avoid potential memory leaks.
-
-.LINK
-https://learn.microsoft.com/en-us/windows/win32/ipc/shorthuts
-
 #>
 function Open-Shortcut {
 	param
@@ -725,4 +689,212 @@ function Open-Shortcut {
 	Set-Location $targetPath
 
 	[System.Runtime.InteropServices.Marshal]::ReleaseComObject($shell) | Out-Null
+}
+
+<#
+.SYNOPSIS
+Refreshes the Windows font cache by stopping the Font Cache Service, clearing the font cache files, and restarting the service.
+
+.DESCRIPTION
+The RefreshFontCache function stops the Windows Font Cache Service, deletes all font cache files from the local app data folder, and then restarts the service. This can help resolve font-related issues on Windows systems.
+
+.EXAMPLE
+RefreshFontCache
+
+This command will refresh the Windows font cache by executing the steps described above.
+
+.NOTES
+Requires administrative privileges to stop and start services.
+#>
+function RefreshFontCache {
+    [CmdletBinding()]
+    param ()
+    
+    # Refreshing the font cache
+    Write-Host "Stopping the Windows Font Cache Service..." -ForegroundColor Yellow
+    Stop-Service -Name "FontCache" -Force
+
+    Write-Host "Clearing the font cache files..." -ForegroundColor Yellow
+    $fontCachePath = "$env:LocalAppData\FontCache"
+    if (Test-Path -Path $fontCachePath) {
+        Remove-Item -Path "$fontCachePath\*" -Force -Recurse
+    }
+
+    Write-Host "Starting the Windows Font Cache Service..." -ForegroundColor Yellow
+    Start-Service -Name "FontCache"
+    
+    Write-Host "Font cache refreshed successfully!" -ForegroundColor Green
+}
+
+<#
+.SYNOPSIS
+Converts various input types (null, byte array, numeric types, file paths, and strings) to a byte array.
+
+.DESCRIPTION
+The Get-Bytes function takes an input and converts it into a byte array. It handles:
+- Null input by returning null.
+- Byte arrays by returning them directly.
+- Numeric types by converting them to byte arrays using the appropriate method.
+- File paths by reading the file contents into a byte array.
+- Strings by encoding them as UTF-8 byte arrays.
+
+.PARAMETER InputData
+The input data to be converted into a byte array. This can be null, a byte array, a numeric type, a file path, or a string.
+
+.EXAMPLE
+$bytes = Get-Bytes -InputData $null
+
+This command returns null since the input data is null.
+
+.EXAMPLE
+$bytes = Get-Bytes -InputData "Hello, World!"
+
+This command converts the string "Hello, World!" into a UTF-8 byte array and returns it.
+
+.EXAMPLE
+$bytes = Get-Bytes -InputData 12345
+
+This command converts the integer 12345 into a byte array and returns it.
+
+.EXAMPLE
+$bytes = Get-Bytes -InputData "C:\path\to\file.txt"
+
+This command reads the contents of the specified file into a byte array and returns it.
+
+.NOTES
+Make sure the necessary permissions are in place to access files if providing a file path.
+#>
+function Get-Bytes {
+    param (
+        [Parameter(Mandatory=$true)]
+        [AllowNull()]
+        [AllowEmptyString()]
+        [Object]$InputData
+    )
+    
+    if ($null -eq $InputData) {
+        # If the input is null, return null
+        return $null
+    }
+    elseif ($InputData -is [byte[]]) {
+        # InputData is already a byte array, return it as-is
+        return $InputData
+    }
+    elseif ($InputData -is [System.ValueType]) {
+        # InputData is a numeric type, convert it to a byte array
+        $bytes = [BitConverter]::GetBytes($InputData)
+        return $bytes
+    }
+    elseif (Test-Path $InputData -PathType Leaf) {
+        # InputData is a file path
+        try {
+            $bytes = [System.IO.File]::ReadAllBytes($InputData)
+            return $bytes
+        }
+        catch {
+            Write-Error "Failed to read file: $_"
+            return $null
+        }
+    }
+    else {
+        # InputData is not a file path nor numeric type, convert string to byte array
+        $bytes = [System.Text.Encoding]::UTF8.GetBytes($InputData)
+        return $bytes
+    }
+}
+
+<#
+.SYNOPSIS
+Displays the structure of a specified directory, showing files and subdirectories with tree-like formatting and color coding based on file types.
+
+.DESCRIPTION
+The Show-FileStructure function recursively lists the contents of a directory in a tree-like format. Files and directories are color-coded based on their type:
+- Directories: DarkCyan
+- Root directory: Blue
+- Files: DarkYellow (with different colors for specific file types)
+
+.PARAMETER Path
+Specifies the path of the directory to display. Defaults to the current working directory ($PWD).
+
+.PARAMETER Prefix
+Used internally to format the tree structure. Default is an empty string.
+
+.PARAMETER IsLast
+Used internally to identify if the current item is the last in its parent directory. Switch parameter.
+
+.PARAMETER IsSubDir
+Used internally to specify if the current item is a subdirectory. Switch parameter.
+
+.EXAMPLE
+Show-FileStructure -Path "C:\MyDirectory"
+
+This command displays the structure of "C:\MyDirectory" with files and subdirectories in a tree-like formatted output.
+#>
+function Show-FileStructure {
+    param (
+        [string]$Path = $PWD,
+        [string]$Prefix = "",
+        [switch]$IsLast,
+        [switch]$IsSubDir
+    )
+
+    $FolderColor = "DarkCyan"
+    $RootColor = "Blue"
+    $FileColor = "DarkYellow"
+    $LineColor = "White"
+
+    $item = Get-Item $Path
+
+    # Function to determine color based on file extension
+    function Get-ItemColor($item) {
+        if ($item.PSIsContainer) { $FolderColor }
+        else {
+            $Extension = $item.Extension.ToLower()
+            switch -Regex ($Extension) {
+                # Executables
+                '^\.?(exe|bat|cmd|ps1|sh|app)$' { "Red" }
+                
+                # Media
+                '^\.?(mp3|wav|flac|ogg|mp4|avi|mkv|mov|wmv|jpg|jpeg|png|gif|bmp|svg|webp)$' { "Green" }
+                
+                # Documents
+                '^\.?(doc|docx|pdf|txt|md|rtf|csv|xlsx|xls|pptx|ppt)$' { "White" }
+                
+                # Archives
+                '^\.?(zip|rar|7z|tar|gz)$' { "DarkGray" }
+                
+                # Code files
+                '^\.?(py|js|html|css|cpp|c|java|go|rb|php)$' { "Green" }
+                
+                # Config files
+                '^\.?(json|xml|yaml|yml|ini|conf)$' { "Cyan" }
+                
+                # Default
+                default { $FileColor }
+            }
+        }
+    }
+
+    # Display the current item
+    if (!$IsSubDir) {
+        Write-Host "$($item.Name)" -ForegroundColor $RootColor
+    } else {
+        $symbol = if ($IsLast) { "└─" } else { "├─" }
+        Write-Host "$Prefix$symbol " -NoNewline -ForegroundColor $LineColor
+        Write-Host "$($item.Name)" -ForegroundColor (Get-ItemColor $item)
+    }
+
+    # If it's a directory, process its contents
+    if ($item.PSIsContainer) {
+        $children = Get-ChildItem $item.FullName | Sort-Object { $_.PSIsContainer } -Descending
+        $childCount = $children.Count
+
+        for ($i = 0; $i -lt $childCount; $i++) {
+            $child = $children[$i]
+            $newPrefix = if (!$IsSubDir) { "" } elseif ($IsLast) { "$Prefix   " } else { "$Prefix│  " }
+            $isLastChild = ($i -eq $childCount - 1)
+
+            Show-FileStructure -Path $child.FullName -Prefix $newPrefix -IsLast:$isLastChild -IsSubDir
+        }
+    }
 }
