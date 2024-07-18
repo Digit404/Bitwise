@@ -44,7 +44,10 @@ function prompt {
 	# Uncomment the following line to print time on prompt, requires HostTools.ps1 to be sourced in the profile
 	# Write-Time
 
-	return "$Name $($Colors.Yellow)$currentDir $($Colors.White)> "
+	Set-PSReadLineOption -PromptText "> "
+
+	"$Name $($Colors.Yellow)$currentDir $($Colors.Reset)$('>' * ($nestedPromptLevel + 1)) "
+	return ""
 }
 
 function Write-Time {
