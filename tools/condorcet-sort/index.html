@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Condorcet Sort</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #111;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent the body from extending when falling */
+        }
+
+        .title {
+            font-size: 4vw;
+            margin-bottom: 1vh;
+            text-align: center;
+        }
+
+        .title>input {
+            box-sizing: border-box;
+            font-weight: bold;
+            font-family: monospace;
+            background-color: #111;
+            color: #55f;
+            border: none;
+            border-bottom: 3px solid #fff;
+            font-size: 4vw;
+            text-align: center;
+            width: 20%;
+        }
+
+        .title>input:focus {
+            outline: none;
+        }
+
+        .container {
+            margin-top: 5vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .choice-1,
+        .choice-2 {
+            width: 40%;
+            height: 50vh;
+            margin: 50px;
+            border-radius: 50px;
+            background-color: white;
+            color: black;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            animation: rotate-shake 1s cubic-bezier(.36,.07,.19,.97) infinite;
+        }
+
+        .choice-text {
+            font-size: 5vw;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        @keyframes rotate-shake {
+            0%, 100% {
+                transform: rotate(1deg);
+            }
+            50% {
+                transform: rotate(-1deg);
+            }
+        }
+
+        @keyframes fall-off {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .win {
+            background-color: #3c4;
+            animation: none;
+            transition: background-color 300ms;
+        }
+
+        .lose {
+            background-color: #f33;
+            transition: background-color 300ms;
+            animation: fall-off 2s forwards;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">Which choice is the <input value="best" /></h1>
+
+    <div class="container">
+        <div class="choice-1">
+            <span class="choice-text">cash</span>
+        </div>
+        <div class="choice-2">
+            <span class="choice-text">money</span>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.choice-1').addEventListener('click', function() {
+            this.classList.add('win');
+            document.querySelector('.choice-2').classList.add('lose');
+        });
+
+        document.querySelector('.choice-2').addEventListener('click', function() {
+            this.classList.add('lose');
+            document.querySelector('.choice-1').classList.add('win');
+        });
+    </script>
+</body>
+</html>
