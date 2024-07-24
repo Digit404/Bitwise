@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Condorcet Sort</title>
+    <link rel="shortcut icon" href="https://www.bitwise.live/res/favicon.png" type="image/png">
     <style>
         body {
             font-family: sans-serif;
@@ -11,26 +13,26 @@
             color: #fff;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Prevent the body from extending when falling */
+            overflow: hidden;
         }
 
         .title {
-            font-size: 4vw;
+            font-size: 5vw;
             margin-bottom: 1vh;
             text-align: center;
+            user-select: none;
         }
 
         .title>input {
-            box-sizing: border-box;
             font-weight: bold;
             font-family: monospace;
-            background-color: #111;
+            background-color: #00000000;
             color: #55f;
             border: none;
-            border-bottom: 3px solid #fff;
+            border-bottom: 0.3vw solid #fff;
             font-size: 4vw;
             text-align: center;
-            width: 20%;
+            width: 20vw;
         }
 
         .title>input:focus {
@@ -42,37 +44,58 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: row;
         }
 
-        .choice-1,
-        .choice-2 {
+        .choice {
             width: 40%;
             height: 50vh;
             margin: 50px;
             border-radius: 50px;
             background-color: white;
             color: black;
-            text-align: center;
             display: flex;
-            align-items: center;
             justify-content: center;
             cursor: pointer;
             user-select: none;
-            animation: rotate-shake 1s cubic-bezier(.36,.07,.19,.97) infinite;
+            animation: shakey-shake 1s cubic-bezier(.36, .07, .19, .97) infinite;
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 20px 20px rgba(0, 0, 0, 0.4);
         }
 
         .choice-text {
-            font-size: 5vw;
             font-weight: bold;
-            margin-bottom: 30px;
+            font-size: 5vw;
+            max-width: 100%;
+            max-height: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        @keyframes rotate-shake {
-            0%, 100% {
+        @keyframes shakey-shake {
+
+            0%,
+            100% {
                 transform: rotate(1deg);
             }
+
             50% {
                 transform: rotate(-1deg);
+            }
+        }
+
+        @keyframes quiver {
+
+            0%,
+            100% {
+                transform: rotate(0.25deg);
+            }
+
+            50% {
+                transform: rotate(-0.25deg);
             }
         }
 
@@ -87,37 +110,193 @@
             background-color: #3c4;
             animation: none;
             transition: background-color 300ms;
+            cursor: default;
         }
 
         .lose {
             background-color: #f33;
             transition: background-color 300ms;
             animation: fall-off 2s forwards;
+            cursor: default;
+        }
+
+        /* input screen styles */
+        #input-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #choices-input {
+            width: 60%;
+            height: 200px;
+            margin: 20px 0;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 10px;
+            background-color: #222;
+            color: #fff;
+            border: 1px solid #fff;
+            resize: none;
+        }
+
+        #choices-input::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        #choices-input::-webkit-scrollbar-track {
+            background: var(--middle);
+        }
+
+        #choices-input::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 5px;
+        }
+
+        #choices-input::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+
+        #start-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #3c4;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #comparison-screen {
+            display: none;
+        }
+
+        /* stack vertically on small screens */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .choice {
+                width: 80%;
+                height: 30vh;
+                margin: 20px;
+            }
         }
     </style>
 </head>
-<body>
-    <h1 class="title">Which choice is the <input value="best" /></h1>
 
-    <div class="container">
-        <div class="choice-1">
-            <span class="choice-text">cash</span>
-        </div>
-        <div class="choice-2">
-            <span class="choice-text">money</span>
+<body>
+    <div id="input-screen">
+        <h1 class="title">Enter your choices</h1>
+        <textarea id="choices-input" placeholder="Enter choices, one per line"></textarea>
+        <button id="start-button">Start Comparison</button>
+    </div>
+
+    <div id="comparison-screen">
+        <h1 class="title">Which choice is the <input value="best" /></h1>
+
+        <div class="container">
+            <div id="choice-1" class="choice">
+                <span class="choice-text"></span>
+            </div>
+            <div id="choice-2" class="choice">
+                <span class="choice-text"></span>
+            </div>
         </div>
     </div>
 
     <script>
-        document.querySelector('.choice-1').addEventListener('click', function() {
-            this.classList.add('win');
-            document.querySelector('.choice-2').classList.add('lose');
+        function fitText(element) {
+            let fontSize = 100;
+            element.style.fontSize = fontSize + 'px';
+            while (element.scrollWidth > element.offsetWidth || element.scrollHeight > element.offsetHeight) {
+                fontSize--;
+                element.style.fontSize = fontSize + 'px';
+            }
+        }
+
+        let choices = [];
+        let comparisons = [];
+        let scores = {};
+
+        document.getElementById('start-button').addEventListener('click', function () {
+            choices = document.getElementById('choices-input').value.split('\n').filter(choice => choice.trim() !== '');
+            if (choices.length < 2) {
+                alert('Please enter at least two choices.');
+                return;
+            }
+            document.getElementById('input-screen').style.display = 'none';
+            document.getElementById('comparison-screen').style.display = 'block';
+            initializeComparisons();
+            updateChoices();
         });
 
-        document.querySelector('.choice-2').addEventListener('click', function() {
-            this.classList.add('lose');
-            document.querySelector('.choice-1').classList.add('win');
+        function initializeComparisons() {
+            comparisons = [];
+            for (let i = 0; i < choices.length; i++) {
+                for (let j = i + 1; j < choices.length; j++) {
+                    comparisons.push([choices[i], choices[j]]);
+                }
+            }
+            scores = Object.fromEntries(choices.map(choice => [choice, 0]));
+        }
+
+        function updateChoices() {
+            if (comparisons.length === 0) {
+                showResults();
+                return;
+            }
+            let [choice1, choice2] = comparisons[0];
+            document.querySelector('#choice-1 .choice-text').textContent = choice1;
+            document.querySelector('#choice-2 .choice-text').textContent = choice2;
+            document.querySelectorAll('.choice-text').forEach(fitText);
+        }
+
+        document.querySelector('#choice-1').addEventListener('click', function () {
+            this.classList.add('win');
+            document.querySelector('#choice-2').classList.add('lose');
+            recordPreference(comparisons[0][0], comparisons[0][1]);
+            setTimeout(nextComparison, 2000);
         });
+
+        document.querySelector('#choice-2').addEventListener('click', function () {
+            this.classList.add('win');
+            document.querySelector('#choice-1').classList.add('lose');
+            recordPreference(comparisons[0][1], comparisons[0][0]);
+            setTimeout(nextComparison, 2000);
+        });
+
+        function recordPreference(winner, loser) {
+            scores[winner]++;
+        }
+
+        function nextComparison() {
+            comparisons.shift();
+            document.querySelectorAll('.choice').forEach(choice => {
+                choice.classList.remove('win', 'lose');
+            });
+            updateChoices();
+        }
+
+        function showResults() {
+            let sortedChoices = condorcetSort(choices, scores);
+            let resultHTML = '<h2>Sorted Results:</h2><ol>';
+            sortedChoices.forEach(choice => {
+                resultHTML += `<li>${choice} (Score: ${scores[choice]})</li>`;
+            });
+            resultHTML += '</ol>';
+            document.getElementById('comparison-screen').innerHTML = resultHTML;
+        }
+
+        function condorcetSort(choices, scores) {
+            return choices.sort((a, b) => scores[b] - scores[a]);
+        }
+
+        window.addEventListener('resize', () => document.querySelectorAll('.choice-text').forEach(fitText));
     </script>
 </body>
+
 </html>
