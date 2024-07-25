@@ -138,8 +138,12 @@
             border-radius: 10px;
             background-color: #222;
             color: #fff;
-            border: 1px solid #fff;
+            border: none;
             resize: none;
+        }
+
+        #choices-input:focus {
+            outline: 1px solid white;
         }
 
         #choices-input::-webkit-scrollbar {
@@ -162,7 +166,7 @@
         #start-button {
             padding: 10px 20px;
             font-size: 18px;
-            background-color: #3c4;
+            background-color: rgb(22, 141, 36);
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -184,6 +188,43 @@
                 height: 30vh;
                 margin: 20px;
             }
+        }
+
+        #results-screen {
+            display: none;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #results-screen h2 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        #results-screen ol {
+            list-style-position: inside;
+            padding: 0;
+        }
+
+        #results-screen li {
+            background-color: #222;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #results-screen .score {
+            background-color: #3c4;
+            color: #111;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -207,6 +248,8 @@
             </div>
         </div>
     </div>
+
+    <div id="results-screen"></div>
 
     <script>
         function fitText(element) {
@@ -259,14 +302,14 @@
             this.classList.add('win');
             document.querySelector('#choice-2').classList.add('lose');
             recordPreference(comparisons[0][0], comparisons[0][1]);
-            setTimeout(nextComparison, 2000);
+            setTimeout(nextComparison, 1000);
         });
 
         document.querySelector('#choice-2').addEventListener('click', function () {
             this.classList.add('win');
             document.querySelector('#choice-1').classList.add('lose');
             recordPreference(comparisons[0][1], comparisons[0][0]);
-            setTimeout(nextComparison, 2000);
+            setTimeout(nextComparison, 1000);
         });
 
         function recordPreference(winner, loser) {
@@ -283,12 +326,14 @@
 
         function showResults() {
             let sortedChoices = condorcetSort(choices, scores);
-            let resultHTML = '<h2>Sorted Results:</h2><ol>';
+            let resultHTML = '<h2>Sorted Results</h2><ol>';
             sortedChoices.forEach(choice => {
-                resultHTML += `<li>${choice} (Score: ${scores[choice]})</li>`;
+                resultHTML += `<li>${choice} <span class="score">Score: ${scores[choice]}</span></li>`;
             });
             resultHTML += '</ol>';
-            document.getElementById('comparison-screen').innerHTML = resultHTML;
+            document.getElementById('results-screen').innerHTML = resultHTML;
+            document.getElementById('comparison-screen').style.display = 'none';
+            document.getElementById('results-screen').style.display = 'block';
         }
 
         function condorcetSort(choices, scores) {
