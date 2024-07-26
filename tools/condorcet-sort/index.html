@@ -64,6 +64,10 @@
             box-shadow: 0 20px 20px rgba(0, 0, 0, 0.4);
         }
 
+        .choice.appear {
+            animation: pop-in 0.5s ease-in-out forwards;
+        }
+
         .choice-text {
             font-weight: bold;
             font-size: 5vw;
@@ -87,28 +91,64 @@
             }
         }
 
-        @keyframes quiver {
-
-            0%,
-            100% {
-                transform: rotate(0.25deg);
+        @keyframes pop-in {
+            0% {
+                transform: scale(0);
             }
 
-            50% {
-                transform: rotate(-0.25deg);
+            80% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+
+        }
+
+        @keyframes spin-out {
+            0% {
+                transform: rotate(0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: rotate(-500deg) scale(0);
+                opacity: 1;
             }
         }
 
-        @keyframes fall-off {
+        @keyframes tada {
+            from {
+                transform: scale3d(1, 1, 1);
+            }
+
+            10%,
+            20% {
+                transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+            }
+
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+            }
+
+            40%,
+            60%,
+            80% {
+                transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+            }
+
             to {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
+                transform: scale3d(1, 1, 1);
             }
         }
 
         .win {
             background-color: #3c4;
-            animation: none;
+            animation: tada 1s;
             transition: background-color 300ms;
             cursor: default;
         }
@@ -116,7 +156,7 @@
         .lose {
             background-color: #f33;
             transition: background-color 300ms;
-            animation: fall-off 2s forwards;
+            animation: spin-out 0.6s ease-in both;
             cursor: default;
         }
 
@@ -255,6 +295,7 @@
         function fitText(element) {
             let fontSize = 100;
             element.style.fontSize = fontSize + 'px';
+            // reduce font size until content fits within element
             while (element.scrollWidth > element.offsetWidth || element.scrollHeight > element.offsetHeight) {
                 fontSize--;
                 element.style.fontSize = fontSize + 'px';
@@ -265,12 +306,15 @@
         let comparisons = [];
         let scores = {};
 
+        // start button event listener
         document.getElementById('start-button').addEventListener('click', function () {
+            // get and validate choices
             choices = document.getElementById('choices-input').value.split('\n').filter(choice => choice.trim() !== '');
             if (choices.length < 2) {
                 alert('Please enter at least two choices.');
                 return;
             }
+            // switch to comparison screen
             document.getElementById('input-screen').style.display = 'none';
             document.getElementById('comparison-screen').style.display = 'block';
             initializeComparisons();
@@ -279,25 +323,30 @@
 
         function initializeComparisons() {
             comparisons = [];
+            // create pairwise comparisons
             for (let i = 0; i < choices.length; i++) {
                 for (let j = i + 1; j < choices.length; j++) {
                     comparisons.push([choices[i], choices[j]]);
                 }
             }
+            // initialize scores
             scores = Object.fromEntries(choices.map(choice => [choice, 0]));
         }
 
         function updateChoices() {
+            // if no more comparisons, show results
             if (comparisons.length === 0) {
                 showResults();
                 return;
             }
+            // update choice texts for comparison
             let [choice1, choice2] = comparisons[0];
             document.querySelector('#choice-1 .choice-text').textContent = choice1;
             document.querySelector('#choice-2 .choice-text').textContent = choice2;
             document.querySelectorAll('.choice-text').forEach(fitText);
         }
 
+        // choice 1 click event listener
         document.querySelector('#choice-1').addEventListener('click', function () {
             this.classList.add('win');
             document.querySelector('#choice-2').classList.add('lose');
@@ -305,6 +354,7 @@
             setTimeout(nextComparison, 1000);
         });
 
+        // choice 2 click event listener
         document.querySelector('#choice-2').addEventListener('click', function () {
             this.classList.add('win');
             document.querySelector('#choice-1').classList.add('lose');
@@ -313,33 +363,65 @@
         });
 
         function recordPreference(winner, loser) {
+            // increment score for winner
             scores[winner]++;
         }
 
         function nextComparison() {
+            // remove first comparison and reset styles
             comparisons.shift();
-            document.querySelectorAll('.choice').forEach(choice => {
+            const choices = document.querySelectorAll('.choice');
+            choices.forEach(choice => {
                 choice.classList.remove('win', 'lose');
+                void choice.offsetWidth; // trigger reflow
+                choice.classList.add('appear');
             });
+            setTimeout(() => {
+                choices.forEach(choice => {
+                    choice.classList.remove('appear');
+                });
+            }, 500);
             updateChoices();
         }
 
         function showResults() {
-            let sortedChoices = condorcetSort(choices, scores);
-            let resultHTML = '<h2>Sorted Results</h2><ol>';
+            const sortedChoices = condorcetSort(choices, scores);
+
+            const fragment = document.createDocumentFragment();
+
+            const heading = document.createElement('h2');
+            heading.textContent = 'Sorted Results';
+            fragment.appendChild(heading);
+
+            const ol = document.createElement('ol');
             sortedChoices.forEach(choice => {
-                resultHTML += `<li>${choice} <span class="score">Score: ${scores[choice]}</span></li>`;
+                const li = document.createElement('li');
+                li.textContent = choice;
+
+                const span = document.createElement('span');
+                span.className = 'score';
+                span.textContent = `Score: ${scores[choice]}`;
+
+                li.appendChild(span);
+                ol.appendChild(li);
             });
-            resultHTML += '</ol>';
-            document.getElementById('results-screen').innerHTML = resultHTML;
+
+            fragment.appendChild(ol);
+
+            const resultsScreen = document.getElementById('results-screen');
+            resultsScreen.innerHTML = '';
+            resultsScreen.appendChild(fragment);
+
             document.getElementById('comparison-screen').style.display = 'none';
-            document.getElementById('results-screen').style.display = 'block';
+            resultsScreen.style.display = 'block';
         }
 
         function condorcetSort(choices, scores) {
+            // sort choices by scores
             return choices.sort((a, b) => scores[b] - scores[a]);
         }
 
+        // resize event listener to adjust text
         window.addEventListener('resize', () => document.querySelectorAll('.choice-text').forEach(fitText));
     </script>
 </body>
