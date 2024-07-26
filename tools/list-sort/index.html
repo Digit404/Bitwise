@@ -293,7 +293,7 @@
         <div class="content">
             <div id="input-screen">
                 <h1 class="title">Input List</h1>
-                <textarea id="choices-input" placeholder="Enter values separated by new lines"></textarea>
+                <textarea id="choices-input" placeholder="Enter values separated by new lines and commas"></textarea>
                 <button id="start-button" class="button">Start Comparison</button>
             </div>
 
@@ -310,7 +310,12 @@
                 </div>
             </div>
 
-            <div id="results-screen"></div>
+            <div id="results-screen">
+                <h2>sorted results</h2>
+                <ol id="results-list"></ol>
+                <button id="copy-button" class="button">Copy JSON</button>
+                <button id="restart-button" class="button">Restart</button>
+            </div>
 
             <a id="footer" href="../">BACK</a>
         </div>
@@ -420,12 +425,9 @@
         // display sorted results
         function showResults() {
             const sortedChoices = [...choices].sort((a, b) => scores[b] - scores[a]);
-            const fragment = document.createDocumentFragment();
-            const heading = document.createElement('h2');
-            heading.textContent = 'Sorted Results';
-            fragment.appendChild(heading);
+            const resultsList = document.getElementById('results-list');
+            resultsList.innerHTML = '';
 
-            const ol = document.createElement('ol');
             sortedChoices.forEach(choice => {
                 const li = document.createElement('li');
                 li.textContent = choice;
@@ -433,44 +435,26 @@
                 span.className = 'score';
                 span.textContent = `Score: ${scores[choice]}`;
                 li.appendChild(span);
-                ol.appendChild(li);
+                resultsList.appendChild(li);
             });
-            fragment.appendChild(ol);
-
-            const copyButton = document.createElement('button');
-            copyButton.id = 'copy-button';
-            copyButton.className = 'button';
-            copyButton.textContent = 'Copy JSON';
-            copyButton.addEventListener('click', (e) => {
-                const sortedJson = JSON.stringify(sortedChoices);
-                navigator.clipboard.writeText(sortedJson).then(() => {
-                    e.target.textContent = 'Copied!';
-                    setTimeout(() => {
-                        e.target.textContent = 'Copy JSON';
-                    }, 2000);
-                });
-            });
-            fragment.appendChild(copyButton);
-
-            const restartButton = document.createElement('button');
-            restartButton.id = 'restart-button';
-            restartButton.className = 'button';
-            restartButton.textContent = 'Restart';
-            restartButton.addEventListener('click', () => {
-                // show input screen
-                document.getElementById('comparison-screen').style.display = 'none';
-                document.getElementById('results-screen').style.display = 'none';
-                document.getElementById('input-screen').style.display = 'flex';
-            });
-            fragment.appendChild(restartButton);
-
-            const resultsScreen = document.getElementById('results-screen');
-            resultsScreen.innerHTML = '';
-            resultsScreen.appendChild(fragment);
 
             document.getElementById('comparison-screen').style.display = 'none';
-            resultsScreen.style.display = 'block';
+            document.getElementById('results-screen').style.display = 'block';
         }
+
+        document.getElementById('copy-button').addEventListener('click', function () {
+            const sortedChoices = JSON.stringify([...choices].sort((a, b) => scores[b] - scores[a]));
+            navigator.clipboard.writeText(sortedChoices)
+                .then(() => {
+                    this.textContent = 'copied!';
+                    setTimeout(() => this.textContent = 'copy json', 2000);
+                });
+        });
+
+        document.getElementById('restart-button').addEventListener('click', function () {
+            document.getElementById('results-screen').style.display = 'none';
+            document.getElementById('input-screen').style.display = 'flex';
+        });
 
         // fit text on window resize
         window.addEventListener('resize', () => document.querySelectorAll('.choice-text').forEach(fitText));
