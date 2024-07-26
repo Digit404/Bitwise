@@ -446,8 +446,8 @@
             const sortedChoices = JSON.stringify([...choices].sort((a, b) => scores[b] - scores[a]));
             navigator.clipboard.writeText(sortedChoices)
                 .then(() => {
-                    this.textContent = 'copied!';
-                    setTimeout(() => this.textContent = 'copy json', 2000);
+                    this.textContent = 'Copied!';
+                    setTimeout(() => this.textContent = 'Copy JSON', 2000);
                 });
         });
 
