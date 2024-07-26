@@ -8,29 +8,19 @@
     src: url(https://www.bitwise.live/res/FiraCode.ttf);
 }
 
-body::-webkit-scrollbar {
-    width: 0 !important;
-}
-
 body {
-    overflow: -moz-scrollbars-none;
-    font-weight: bold;
     font-size: larger;
     color: white;
     font-family: 'firacode', sans-serif;
-    margin: 0px;
+    margin: 0;
 }
 
 .wrapper {
     background-color: #101010;
     position: relative;
     width: 100%;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow-x: hidden;
     min-height: 100vh;
+    overflow: hidden;
 }
 
 .bg {
@@ -42,10 +32,12 @@ body {
     top: 0;
     bottom: 0;
     left: 0;
+    right: 0;
     /* Firefox */
     image-rendering: crisp-edges;
     /* Chromium + Safari */
     image-rendering: pixelated;
+    overflow: hidden;
 }
 
 .vignette {
@@ -58,11 +50,13 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
+    pointer-events: none;
 }
 
 .content {
     position: relative;
     text-align: center;
+    z-index: 1;
 }
 
 .title {
@@ -81,7 +75,7 @@ h1 {
     text-align: center;
     font-family: 'bitwise', sans-serif;
     position: fixed;
-    bottom: 0px;
+    bottom: 0;
     height: 20px;
     width: 200px;
     margin-bottom: 10px;
@@ -130,7 +124,6 @@ textarea {
     font-size: 16px;
     background-color: #101010;
     color: white;
-    font-weight: bold;
     outline: none;
 }
 
@@ -141,7 +134,6 @@ input[type="number"] {
     font-size: 16px;
     background-color: #101010;
     color: white;
-    font-weight: bold;
     outline: none;
 }
 
@@ -152,7 +144,6 @@ input[type="number"] {
     background: #aaaaaa;
     outline: none;
     opacity: 0.7;
-    -webkit-transition: .2s;
     transition: opacity .2s;
     margin-bottom: 100px;
 }
@@ -177,4 +168,22 @@ input[type="number"] {
 
 .slider:hover {
     opacity: 1;
+}
+
+/* scrollbar styles */
+body::-webkit-scrollbar {
+    width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #111;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 5px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Condorcet Sort</title>
+    <title>List Sort</title>
     <link rel="shortcut icon" href="https://www.bitwise.live/res/favicon.png" type="image/png">
     <style>
         body {
-            font-family: sans-serif;
+            font-family: "Fira Code", monospace;
             background-color: #111;
             color: #fff;
             margin: 0;
@@ -17,7 +17,7 @@
         }
 
         .title {
-            font-size: 5vw;
+            font-size: 4vw;
             margin-bottom: 1vh;
             text-align: center;
             user-select: none;
@@ -26,11 +26,11 @@
         .title>input {
             font-weight: bold;
             font-family: monospace;
+            font-size: 4vw;
             background-color: #00000000;
             color: #55f;
             border: none;
             border-bottom: 0.3vw solid #fff;
-            font-size: 4vw;
             text-align: center;
             width: 20vw;
         }
@@ -114,7 +114,7 @@
 
             100% {
                 transform: rotate(-500deg) scale(0);
-                opacity: 1;
+                opacity: 0;
             }
         }
 
@@ -213,6 +213,17 @@
             cursor: pointer;
         }
 
+        #start-button:hover {
+            background-color: rgb(22, 141, 36, 0.8);
+        }
+
+        #start-button.error {
+            background-color: #f33;
+        }
+        #start-button.error:hover {
+            background-color: rgb(194, 39, 39);
+        }
+
         #comparison-screen {
             display: none;
         }
@@ -266,13 +277,36 @@
             border-radius: 20px;
             font-weight: bold;
         }
+
+        @font-face {
+            font-family: 'bitwise';
+            src: url(https://www.bitwise.live/res/bitwise.ttf);
+        }
+
+        #footer {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            font-family: 'bitwise', sans-serif;
+            position: fixed;
+            font-size: larger;
+            bottom: 0px;
+            height: 20px;
+            width: 200px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            padding: 10px 0px;
+            border-radius: 10px 10px;
+            right: 0;
+            text-decoration: none;
+        }
     </style>
 </head>
 
 <body>
     <div id="input-screen">
-        <h1 class="title">Enter your choices</h1>
-        <textarea id="choices-input" placeholder="Enter choices, one per line"></textarea>
+        <h1 class="title">Input List</h1>
+        <textarea id="choices-input" placeholder="Enter values separated by new lines"></textarea>
         <button id="start-button">Start Comparison</button>
     </div>
 
@@ -291,6 +325,8 @@
 
     <div id="results-screen"></div>
 
+    <a id="footer" href="../">BACK</a>
+
     <script>
         function fitText(element) {
             let fontSize = 100;
@@ -307,11 +343,17 @@
         let scores = {};
 
         // start button event listener
-        document.getElementById('start-button').addEventListener('click', function () {
+        document.getElementById('start-button').addEventListener('click', function (e) {
             // get and validate choices
             choices = document.getElementById('choices-input').value.split('\n').filter(choice => choice.trim() !== '');
             if (choices.length < 2) {
-                alert('Please enter at least two choices.');
+                e.target.innerHTML = 'Please enter at least 2 choices';
+                e.target.classList.add('error');
+
+                setTimeout(() => {
+                    e.target.classList.remove('error');
+                    e.target.innerHTML = 'Start Comparison';
+                }, 2000);
                 return;
             }
             // switch to comparison screen
