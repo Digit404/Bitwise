@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../../style.css">
     <script src="../../bg-scroll.js"></script>
     <style>
+        /* global styles */
         body {
             font-family: "Fira Code", monospace;
             background-color: #111;
@@ -18,6 +19,7 @@
             overflow: hidden;
         }
 
+        /* title styles */
         .title {
             font-family: "Fira Code", monospace !important;
             font-size: 4vw;
@@ -26,10 +28,11 @@
             user-select: none;
         }
 
-        .title>input {
+        .title>.input {
             font-weight: bold;
             font-family: monospace;
             font-size: 4vw;
+            padding: 0 1vw;
             background-color: #00000000;
             color: #55f;
             border: none;
@@ -38,10 +41,11 @@
             width: 20vw;
         }
 
-        .title>input:focus {
+        .title>.input:focus {
             outline: none;
         }
 
+        /* container styles */
         .container {
             margin-top: 5vh;
             display: flex;
@@ -50,6 +54,7 @@
             flex-direction: row;
         }
 
+        /* choice styles */
         .choice {
             width: 40%;
             height: 50vh;
@@ -82,6 +87,7 @@
             justify-content: center;
         }
 
+        /* animations */
         @keyframes shakey-shake {
 
             0%,
@@ -106,7 +112,6 @@
             100% {
                 transform: scale(1);
             }
-
         }
 
         @keyframes spin-out {
@@ -149,6 +154,7 @@
             }
         }
 
+        /* win and lose states */
         .win {
             background-color: #3c4;
             animation: tada 1s;
@@ -189,6 +195,7 @@
             outline: 1px solid #fff;
         }
 
+        /* custom scrollbar for choices input */
         #choices-input::-webkit-scrollbar {
             width: 10px;
         }
@@ -206,6 +213,7 @@
             background: #888;
         }
 
+        /* button styles */
         #start-button {
             --color: rgb(22, 141, 36);
         }
@@ -222,19 +230,7 @@
             display: none;
         }
 
-        /* stack vertically on small screens */
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .choice {
-                width: 80%;
-                height: 30vh;
-                margin: 20px;
-            }
-        }
-
+        /* results screen styles */
         #results-screen {
             display: none;
             padding: 20px;
@@ -278,9 +274,17 @@
             font-weight: bold;
         }
 
-        @font-face {
-            font-family: 'bitwise';
-            src: url(https://www.bitwise.live/res/bitwise.ttf);
+        /* responsive design for small screens */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .choice {
+                width: 80%;
+                height: 30vh;
+                margin: 20px;
+            }
         }
     </style>
 </head>
@@ -298,7 +302,7 @@
             </div>
 
             <div id="comparison-screen">
-                <h1 class="title">Which choice is the <input value="best" /></h1>
+                <h1 class="title">Which choice is the <span class="input" role="textbox" contenteditable>best</span></h1>
 
                 <div class="container">
                     <div id="choice-1" class="choice">
@@ -311,7 +315,7 @@
             </div>
 
             <div id="results-screen">
-                <h2>sorted results</h2>
+                <h2>Sorted Results</h2>
                 <ol id="results-list"></ol>
                 <button id="copy-button" class="button">Copy JSON</button>
                 <button id="restart-button" class="button">Restart</button>
@@ -384,6 +388,16 @@
             document.querySelector('#choice-1 .choice-text').textContent = choice1;
             document.querySelector('#choice-2 .choice-text').textContent = choice2;
             document.querySelectorAll('.choice-text').forEach(fitText);
+            // trigger appear animation
+            const choiceElements = document.querySelectorAll('.choice');
+            choiceElements.forEach(choice => {
+                choice.classList.remove('win', 'lose');
+                void choice.offsetWidth; // trigger reflow
+                choice.classList.add('appear');
+            });
+            setTimeout(() => {
+                choiceElements.forEach(choice => choice.classList.remove('appear'));
+            }, 500);
         }
 
         // choice 1 click event
@@ -410,15 +424,6 @@
         // show next comparison
         function nextComparison() {
             comparisons.shift();
-            const choiceElements = document.querySelectorAll('.choice');
-            choiceElements.forEach(choice => {
-                choice.classList.remove('win', 'lose');
-                void choice.offsetWidth; // trigger reflow
-                choice.classList.add('appear');
-            });
-            setTimeout(() => {
-                choiceElements.forEach(choice => choice.classList.remove('appear'));
-            }, 500);
             updateChoices();
         }
 
