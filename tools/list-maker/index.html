@@ -24,8 +24,8 @@
             user-select: none;
         }
 
-        .button1 {
-            margin-left: 1vw;
+        .mainButton {
+            margin: 5vh;
         }
 
         .checkbox {
@@ -43,10 +43,6 @@
 
         .disabled {
             opacity: 0.5;
-        }
-
-        .button1 {
-            margin: 5vh;
         }
 
         input {
@@ -99,7 +95,7 @@
             <div>
                 <textarea id="output" rows="20" cols="100" readonly></textarea>
                 <br>
-                <button class="button1" onclick="copy()" id="copyButton">COPY</button>
+                <button class="button mainButton" onclick="copy()" id="copyButton">COPY</button>
             </div>
             <script src="./list-maker.js" type="module"></script>
             <a id="footer" href="../">BACK</a>

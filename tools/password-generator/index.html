@@ -23,7 +23,7 @@
             margin-top: 2vh;
         }
 
-        .button1 {
+        .mainButton {
             margin: 2vh 0;
         }
 
@@ -120,7 +120,7 @@
                 <label for="lengthBox">Minimum Length:</label>
                 <input type="number" id="lengthBox" value="12">
                 <input type="range" id="lengthSlider" max="24" min="6" class="slider" value="12">
-                <button class="button1" id="generateButton" onclick="generate()">GENERATE</button>
+                <button class="button mainButton" id="generateButton" onclick="generate()">GENERATE</button>
             </div>
             <div class="label">
                 <label for="outbox">Generated Password</label>
@@ -128,15 +128,15 @@
             <textarea id="outbox"></textarea>
             <br>
             <p id="outLength">Length: </p>
-            <button class="button1" onclick="copy()" id="copyButton">COPY</button>
+            <button class="button mainButton" onclick="copy()" id="copyButton">COPY</button>
             <a id="footer" href="../">BACK</a>
         </div>
         <div id="alert" hidden>
             <div id="alertPopup">
                 <h2 id="alertTitle">ALERT</h2>
                 <p id="alertText">[alert text]</p>
-                <button class="button1" onclick="" id="alertButton">YES</button>
-                <button class="button1" onclick="alertMessage.hide()" id="alertHide">NO</button>
+                <button class="button mainButton" onclick="" id="alertButton">YES</button>
+                <button class="button mainButton" onclick="alertMessage.hide()" id="alertHide">NO</button>
             </div>
         </div>
         <script src="password-gen.js"></script>

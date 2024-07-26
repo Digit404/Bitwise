@@ -7,6 +7,7 @@
     <title>List Sort</title>
     <link rel="shortcut icon" href="https://www.bitwise.live/res/favicon.png" type="image/png">
     <link rel="stylesheet" href="../../style.css">
+    <script src="../../bg-scroll.js"></script>
     <style>
         body {
             font-family: "Fira Code", monospace;
@@ -18,7 +19,7 @@
         }
 
         .title {
-            font-family: "Fira Code", monospace;
+            font-family: "Fira Code", monospace !important;
             font-size: 4vw;
             margin-bottom: 1vh;
             text-align: center;
@@ -178,14 +179,14 @@
             padding: 10px;
             font-size: 16px;
             border-radius: 10px;
-            background-color: #222;
+            background-color: #111;
             color: #fff;
-            border: none;
+            border: 1px solid white;
             resize: none;
         }
 
         #choices-input:focus {
-            outline: 1px solid white;
+            outline: 1px solid #fff;
         }
 
         #choices-input::-webkit-scrollbar {
@@ -206,27 +207,15 @@
         }
 
         #start-button {
-            padding: 10px 20px;
-            font-size: 18px;
-            color: rgb(22, 141, 36);
-            background-color: #00000000;
-            border: 2px solid rgb(22, 141, 36);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 300ms;
+            --color: rgb(22, 141, 36);
         }
 
         #start-button:hover {
-            background-color: rgb(22, 141, 36);
             color: white;
-            transition: 300ms;
         }
 
         #start-button.error {
-            background-color: #f33;
-        }
-        #start-button.error:hover {
-            background-color: rgb(194, 39, 39);
+            --color: #f33;
         }
 
         #comparison-screen {
@@ -265,7 +254,8 @@
         }
 
         #results-screen li {
-            background-color: #222;
+            background-color: #111;
+            border: 1px solid #fff;
             margin-bottom: 10px;
             padding: 15px;
             border-radius: 10px;
@@ -283,6 +273,11 @@
             font-weight: bold;
         }
 
+        .button {
+            margin: 20px;
+            font-weight: bold;
+        }
+
         @font-face {
             font-family: 'bitwise';
             src: url(https://www.bitwise.live/res/bitwise.ttf);
@@ -291,34 +286,41 @@
 </head>
 
 <body>
-    <div id="input-screen">
-        <h1 class="title">Input List</h1>
-        <textarea id="choices-input" placeholder="Enter values separated by new lines"></textarea>
-        <button id="start-button">Start Comparison</button>
-    </div>
+    <div class="wrapper">
+        <div class="bg"></div>
+        <div class="vignette"></div>
 
-    <div id="comparison-screen">
-        <h1 class="title">Which choice is the <input value="best" /></h1>
+        <div class="content">
+            <div id="input-screen">
+                <h1 class="title">Input List</h1>
+                <textarea id="choices-input" placeholder="Enter values separated by new lines"></textarea>
+                <button id="start-button" class="button">Start Comparison</button>
+            </div>
 
-        <div class="container">
-            <div id="choice-1" class="choice">
-                <span class="choice-text"></span>
+            <div id="comparison-screen">
+                <h1 class="title">Which choice is the <input value="best" /></h1>
+
+                <div class="container">
+                    <div id="choice-1" class="choice">
+                        <span class="choice-text"></span>
+                    </div>
+                    <div id="choice-2" class="choice">
+                        <span class="choice-text"></span>
+                    </div>
+                </div>
             </div>
-            <div id="choice-2" class="choice">
-                <span class="choice-text"></span>
-            </div>
+
+            <div id="results-screen"></div>
+
+            <a id="footer" href="../">BACK</a>
         </div>
     </div>
 
-    <div id="results-screen"></div>
-
-    <a id="footer" href="../">BACK</a>
-
     <script>
+        // fit text to element by adjusting font size
         function fitText(element) {
             let fontSize = 100;
             element.style.fontSize = fontSize + 'px';
-            // reduce font size until content fits within element
             while (element.scrollWidth > element.offsetWidth || element.scrollHeight > element.offsetHeight) {
                 fontSize--;
                 element.style.fontSize = fontSize + 'px';
@@ -331,51 +333,55 @@
 
         // start button event listener
         document.getElementById('start-button').addEventListener('click', function (e) {
-            // get and validate choices
-            choices = document.getElementById('choices-input').value.split('\n').filter(choice => choice.trim() !== '');
-            if (choices.length < 2) {
-                e.target.innerHTML = 'Please enter at least 2 choices';
-                e.target.classList.add('error');
+            // get and process choices
+            choices = document.getElementById('choices-input').value
+                .split(/[\n,]+/)
+                .map(choice => choice.trim())
+                .filter((choice, index, self) => choice !== '' && self.indexOf(choice) === index);
 
+            // require at least 2 unique choices
+            if (choices.length < 2) {
+                e.target.innerHTML = 'Please enter at least 2 unique choices';
+                e.target.classList.add('error');
                 setTimeout(() => {
                     e.target.classList.remove('error');
                     e.target.innerHTML = 'Start Comparison';
                 }, 2000);
                 return;
             }
+
             // switch to comparison screen
             document.getElementById('input-screen').style.display = 'none';
             document.getElementById('comparison-screen').style.display = 'block';
+
             initializeComparisons();
             updateChoices();
         });
 
+        // initialize comparisons and scores
         function initializeComparisons() {
             comparisons = [];
-            // create pairwise comparisons
             for (let i = 0; i < choices.length; i++) {
                 for (let j = i + 1; j < choices.length; j++) {
                     comparisons.push([choices[i], choices[j]]);
                 }
             }
-            // initialize scores
             scores = Object.fromEntries(choices.map(choice => [choice, 0]));
         }
 
+        // update displayed choices
         function updateChoices() {
-            // if no more comparisons, show results
             if (comparisons.length === 0) {
                 showResults();
                 return;
             }
-            // update choice texts for comparison
             let [choice1, choice2] = comparisons[0];
             document.querySelector('#choice-1 .choice-text').textContent = choice1;
             document.querySelector('#choice-2 .choice-text').textContent = choice2;
             document.querySelectorAll('.choice-text').forEach(fitText);
         }
 
-        // choice 1 click event listener
+        // choice 1 click event
         document.querySelector('#choice-1').addEventListener('click', function () {
             this.classList.add('win');
             document.querySelector('#choice-2').classList.add('lose');
@@ -383,7 +389,7 @@
             setTimeout(nextComparison, 1000);
         });
 
-        // choice 2 click event listener
+        // choice 2 click event
         document.querySelector('#choice-2').addEventListener('click', function () {
             this.classList.add('win');
             document.querySelector('#choice-1').classList.add('lose');
@@ -391,33 +397,30 @@
             setTimeout(nextComparison, 1000);
         });
 
+        // update score of winner
         function recordPreference(winner, loser) {
-            // increment score for winner
             scores[winner]++;
         }
 
+        // show next comparison
         function nextComparison() {
-            // remove first comparison and reset styles
             comparisons.shift();
-            const choices = document.querySelectorAll('.choice');
-            choices.forEach(choice => {
+            const choiceElements = document.querySelectorAll('.choice');
+            choiceElements.forEach(choice => {
                 choice.classList.remove('win', 'lose');
                 void choice.offsetWidth; // trigger reflow
                 choice.classList.add('appear');
             });
             setTimeout(() => {
-                choices.forEach(choice => {
-                    choice.classList.remove('appear');
-                });
+                choiceElements.forEach(choice => choice.classList.remove('appear'));
             }, 500);
             updateChoices();
         }
 
+        // display sorted results
         function showResults() {
-            const sortedChoices = choices.sort((a, b) => scores[b] - scores[a]);
-
+            const sortedChoices = [...choices].sort((a, b) => scores[b] - scores[a]);
             const fragment = document.createDocumentFragment();
-
             const heading = document.createElement('h2');
             heading.textContent = 'Sorted Results';
             fragment.appendChild(heading);
@@ -426,16 +429,40 @@
             sortedChoices.forEach(choice => {
                 const li = document.createElement('li');
                 li.textContent = choice;
-
                 const span = document.createElement('span');
                 span.className = 'score';
                 span.textContent = `Score: ${scores[choice]}`;
-
                 li.appendChild(span);
                 ol.appendChild(li);
             });
-
             fragment.appendChild(ol);
+
+            const copyButton = document.createElement('button');
+            copyButton.id = 'copy-button';
+            copyButton.className = 'button';
+            copyButton.textContent = 'Copy JSON';
+            copyButton.addEventListener('click', (e) => {
+                const sortedJson = JSON.stringify(sortedChoices);
+                navigator.clipboard.writeText(sortedJson).then(() => {
+                    e.target.textContent = 'Copied!';
+                    setTimeout(() => {
+                        e.target.textContent = 'Copy JSON';
+                    }, 2000);
+                });
+            });
+            fragment.appendChild(copyButton);
+
+            const restartButton = document.createElement('button');
+            restartButton.id = 'restart-button';
+            restartButton.className = 'button';
+            restartButton.textContent = 'Restart';
+            restartButton.addEventListener('click', () => {
+                // show input screen
+                document.getElementById('comparison-screen').style.display = 'none';
+                document.getElementById('results-screen').style.display = 'none';
+                document.getElementById('input-screen').style.display = 'flex';
+            });
+            fragment.appendChild(restartButton);
 
             const resultsScreen = document.getElementById('results-screen');
             resultsScreen.innerHTML = '';
@@ -445,7 +472,7 @@
             resultsScreen.style.display = 'block';
         }
 
-        // resize event listener to adjust text
+        // fit text on window resize
         window.addEventListener('resize', () => document.querySelectorAll('.choice-text').forEach(fitText));
     </script>
 </body>
