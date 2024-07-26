@@ -8,6 +8,12 @@
     src: url(https://www.bitwise.live/res/FiraCode.ttf);
 }
 
+*::selection {
+    background-color: #fff;
+    color: #111;
+    border-radius: 5px;
+}
+
 body {
     font-size: larger;
     color: white;
@@ -63,9 +69,13 @@ body {
     font-family: 'bitwise', sans-serif;
     text-align: center;
     color: white;
+    font-size: 6vw;
 }
 
-h1 {
+.big-title {
+    font-family: 'bitwise', sans-serif;
+    text-align: center;
+    color: white;
     font-size: 11vw;
 }
 
@@ -77,14 +87,22 @@ h1 {
     position: fixed;
     bottom: 0;
     height: 20px;
-    width: 200px;
+    width: 250px;
     margin-bottom: 10px;
     margin-right: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     border-radius: 10px 10px;
     right: 0;
     text-decoration: none;
+    font-size: larger;
+    transition: 300ms;
+}
+
+#footer:hover {
+    background-color: #fff;
+    color: #101010;
+    transition: 300ms;
 }
 
 .text {
@@ -95,6 +113,12 @@ h1 {
     margin-top: 50px;
 }
 
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
 .button1 {
     color: white;
     font-family: 'bitwise';
@@ -102,7 +126,7 @@ h1 {
     background-color: #10101070;
     backdrop-filter: blur(5px);
     box-shadow: 0px 10px 5px #101010a0;
-    padding: 10px 40px;
+    padding: 15px 40px;
     border-style: solid;
     border-radius: 10px;
     border-color: white;

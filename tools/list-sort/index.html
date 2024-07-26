@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List Sort</title>
     <link rel="shortcut icon" href="https://www.bitwise.live/res/favicon.png" type="image/png">
+    <link rel="stylesheet" href="../../style.css">
     <style>
         body {
             font-family: "Fira Code", monospace;
@@ -17,6 +18,7 @@
         }
 
         .title {
+            font-family: "Fira Code", monospace;
             font-size: 4vw;
             margin-bottom: 1vh;
             text-align: center;
@@ -206,15 +208,18 @@
         #start-button {
             padding: 10px 20px;
             font-size: 18px;
-            background-color: rgb(22, 141, 36);
-            color: #fff;
-            border: none;
-            border-radius: 5px;
+            color: rgb(22, 141, 36);
+            background-color: #00000000;
+            border: 2px solid rgb(22, 141, 36);
+            border-radius: 10px;
             cursor: pointer;
+            transition: 300ms;
         }
 
         #start-button:hover {
-            background-color: rgb(22, 141, 36, 0.8);
+            background-color: rgb(22, 141, 36);
+            color: white;
+            transition: 300ms;
         }
 
         #start-button.error {
@@ -281,24 +286,6 @@
         @font-face {
             font-family: 'bitwise';
             src: url(https://www.bitwise.live/res/bitwise.ttf);
-        }
-
-        #footer {
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            text-align: center;
-            font-family: 'bitwise', sans-serif;
-            position: fixed;
-            font-size: larger;
-            bottom: 0px;
-            height: 20px;
-            width: 200px;
-            margin-bottom: 10px;
-            margin-right: 10px;
-            padding: 10px 0px;
-            border-radius: 10px 10px;
-            right: 0;
-            text-decoration: none;
         }
     </style>
 </head>
@@ -427,7 +414,7 @@
         }
 
         function showResults() {
-            const sortedChoices = condorcetSort(choices, scores);
+            const sortedChoices = choices.sort((a, b) => scores[b] - scores[a]);
 
             const fragment = document.createDocumentFragment();
 
@@ -456,11 +443,6 @@
 
             document.getElementById('comparison-screen').style.display = 'none';
             resultsScreen.style.display = 'block';
-        }
-
-        function condorcetSort(choices, scores) {
-            // sort choices by scores
-            return choices.sort((a, b) => scores[b] - scores[a]);
         }
 
         // resize event listener to adjust text
