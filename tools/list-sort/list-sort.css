@@ -178,33 +178,6 @@ body {
     outline: 1px solid #fff;
 }
 
-/* custom scrollbar for choices input */
-#choices-input::-webkit-scrollbar {
-    width: 10px;
-}
-
-#choices-input::-webkit-scrollbar-track {
-    background: var(--middle);
-}
-
-#choices-input::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 5px;
-}
-
-#choices-input::-webkit-scrollbar-thumb:hover {
-    background: #888;
-}
-
-/* button styles */
-#start-button {
-    --color: rgb(22, 141, 36);
-}
-
-#start-button:hover {
-    color: white;
-}
-
 #start-button.error {
     --color: #f33;
 }
@@ -237,7 +210,7 @@ body {
     position: absolute;
     top: -30px;
     right: -30px;
-    background-color: #ffcc00;
+    background-color: #fff;
     color: #111;
     padding: 5px 10px;
     border-radius: 20px;
@@ -260,7 +233,7 @@ body {
 }
 
 #results-screen .rank {
-    background-color: rgb(63, 98, 226);
+    background-color: #fff;
     color: #111;
     padding: 5px 10px;
     width: 25px;
