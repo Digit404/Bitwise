@@ -17,14 +17,14 @@ window.addEventListener("resize", () =>
 );
 
 // function to combine arrays during merge sort
-function merge(left, right, compare) {
+async function merge(left, right, compare) {
     let result = [];
     let i = 0,
         j = 0;
 
     while (i < left.length && j < right.length) {
         // compare elements
-        if (compare(left[i], right[j]) <= 0) {
+        if (await compare(left[i], right[j]) === left[i]) {
             result.push(left[i++]);
         } else {
             result.push(right[j++]);
@@ -41,7 +41,7 @@ async function insertionSort(arr, compare) {
         let j = i - 1;
 
         // compare and find position
-        while (j >= 0 && (await compare(arr[j], key)) !== arr[j]) {
+        while (j >= 0 && await compare(arr[j], key) === key) {
             arr[j + 1] = arr[j];
             j--;
         }
