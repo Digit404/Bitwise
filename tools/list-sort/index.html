@@ -323,13 +323,13 @@
             <div id="input-screen">
                 <h1 class="title">Input List</h1>
                 <textarea id="choices-input" placeholder="Enter values separated by new lines and commas"></textarea>
-                <p>Superlative:</p>
-                <span class="input" contenteditable>best</span>
                 <button id="start-button" class="button">Start Comparison</button>
+                <p>Superlative:</p>
+                <span class="input" contenteditable></span>
             </div>
 
             <div id="comparison-screen">
-                <h1 class="title">Which choice is the <span class="input" role="textbox" contenteditable>best</span>
+                <h1 class="title">Which choice is the <span class="input" role="textbox" contenteditable></span>
                 </h1>
 
                 <div class="container">
@@ -414,13 +414,11 @@
             return merge(left, right, compare);
         }
 
-        async function compare(a, b) {
-            // present the dilemma to the human sorter
-
-            return await presentChoice(a, b);
-        }
-
+        // set superlative
         let superlative = 'best';
+        document.querySelector('#input-screen>.input').textContent = superlative;
+        document.querySelector("#comparison-screen>.title>.input").textContent = superlative;
+
         let sorted = [];
 
         // start button event listener
@@ -449,11 +447,12 @@
             document.getElementById('input-screen').style.display = 'none';
             document.getElementById('comparison-screen').style.display = 'block';
 
-            sorted = await mergeInsertionSort(choices, compare);
+            sorted = await mergeInsertionSort(choices, presentChoice);
 
             buildResults(sorted);
         });
 
+        // function to build results list
         function buildResults(sorted) {
             const resultsList = document.getElementById('results-list');
             resultsList.innerHTML = '';
@@ -465,18 +464,19 @@
                 rank.classList.add('rank');
                 li.appendChild(rank);
 
+                // create best badge for the best item
                 if (item === sorted[0]) {
                     const bestBadge = document.createElement('span');
                     bestBadge.textContent = superlative;
                     bestBadge.classList.add('best-badge');
                     li.appendChild(bestBadge);
-                    li.classList.add('best');
                 }
 
                 li.appendChild(document.createTextNode(item));
                 resultsList.appendChild(li);
             }
 
+            // switch to results screen
             document.getElementById('comparison-screen').style.display = 'none';
             document.getElementById('results-screen').style.display = 'block';
         }
@@ -514,6 +514,7 @@
             });
         }
 
+        // copy button event listener
         document.getElementById('copy-button').addEventListener('click', function () {
             const sortedChoices = JSON.stringify(sorted);
             navigator.clipboard.writeText(sortedChoices)
