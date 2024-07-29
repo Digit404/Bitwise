@@ -62,7 +62,6 @@ body {
 .content {
     position: relative;
     text-align: center;
-    z-index: 1;
 }
 
 .title {
@@ -202,19 +201,31 @@ input[type="number"] {
 }
 
 /* scrollbar styles */
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 10px;
 }
 
-body::-webkit-scrollbar-track {
-    background: #111;
+*::-webkit-scrollbar-track {
+    background: #1110;
 }
 
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     background: #333;
     border-radius: 5px;
 }
 
-body::-webkit-scrollbar-thumb:hover {
+*::-webkit-scrollbar-thumb:hover {
     background: #555;
+}
+
+*::-webkit-resizer {
+    background-color: #1110;
+}
+
+*::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+body {
+    background-color: #111;
 }
