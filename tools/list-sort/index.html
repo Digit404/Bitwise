@@ -29,20 +29,29 @@
         }
 
         .title>.input {
+            font-size: 4vw;
+            width: 20vw;
+            border-bottom: 0.3vw solid #fff;
+        }
+
+        #input-screen .input {
+            font-size: 2vw;
+            border-bottom: 0.2vw solid #fff;
+            margin-bottom: 2vh;
+        }
+
+        .input:focus {
+            outline: none;
+        }
+
+        .input {
             font-weight: bold;
             font-family: monospace;
-            font-size: 4vw;
             padding: 0 1vw;
             background-color: #00000000;
             color: #55f;
             border: none;
-            border-bottom: 0.3vw solid #fff;
             text-align: center;
-            width: 20vw;
-        }
-
-        .title>.input:focus {
-            outline: none;
         }
 
         /* container styles */
@@ -249,7 +258,22 @@
             padding: 0;
         }
 
+        #results-screen .best-badge {
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            background-color: #ffcc00;
+            color: #111;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            animation: tada 2s infinite;
+            transform: rotate(20deg);
+        }
+
         #results-screen li {
+            position: relative;
+            /* necessary for absolute positioning of the badge */
             background-color: #111;
             border: 1px solid #fff;
             margin-bottom: 10px;
@@ -261,11 +285,12 @@
             align-items: center;
         }
 
-        #results-screen .score {
-            background-color: #3c4;
+        #results-screen .rank {
+            background-color: rgb(63, 98, 226);
             color: #111;
             padding: 5px 10px;
-            border-radius: 20px;
+            width: 25px;
+            border-radius: 25px;
             font-weight: bold;
         }
 
@@ -298,11 +323,14 @@
             <div id="input-screen">
                 <h1 class="title">Input List</h1>
                 <textarea id="choices-input" placeholder="Enter values separated by new lines and commas"></textarea>
+                <p>Superlative:</p>
+                <span class="input" contenteditable>best</span>
                 <button id="start-button" class="button">Start Comparison</button>
             </div>
 
             <div id="comparison-screen">
-                <h1 class="title">Which choice is the <span class="input" role="textbox" contenteditable>best</span></h1>
+                <h1 class="title">Which choice is the <span class="input" role="textbox" contenteditable>best</span>
+                </h1>
 
                 <div class="container">
                     <div id="choice-1" class="choice">
@@ -336,14 +364,69 @@
             }
         }
 
-        let choices = [];
-        let comparisons = [];
-        let scores = {};
+        // fit text on window resize
+        window.addEventListener('resize', () => document.querySelectorAll('.choice-text').forEach(fitText));
+
+        // function to combine arrays during merge sort
+        function merge(left, right, compare) {
+            let result = [];
+            let i = 0, j = 0;
+
+            while (i < left.length && j < right.length) {
+                // compare elements
+                if (compare(left[i], right[j]) <= 0) {
+                    result.push(left[i++]);
+                } else {
+                    result.push(right[j++]);
+                }
+            }
+
+            return result.concat(left.slice(i)).concat(right.slice(j));
+        }
+
+        // function to perform insertion sort
+        async function insertionSort(arr, compare) {
+            for (let i = 1; i < arr.length; i++) {
+                let key = arr[i];
+                let j = i - 1;
+
+                // compare and find position
+                while (j >= 0 && await compare(arr[j], key) !== arr[j]) {
+                    arr[j + 1] = arr[j];
+                    j--;
+                }
+                arr[j + 1] = key;
+            }
+
+            return arr;
+        }
+
+        // the main sorting function
+        async function mergeInsertionSort(arr, compare) {
+            if (arr.length <= 10) { // use insertion sort for small arrays
+                return await insertionSort(arr, compare);
+            }
+
+            const mid = Math.floor(arr.length / 2);
+            const left = await mergeInsertionSort(arr.slice(0, mid), compare);
+            const right = await mergeInsertionSort(arr.slice(mid), compare);
+
+            return merge(left, right, compare);
+        }
+
+        async function compare(a, b) {
+            // present the dilemma to the human sorter
+
+            return await presentChoice(a, b);
+        }
+
+        let superlative = 'best';
+        let sorted = [];
 
         // start button event listener
-        document.getElementById('start-button').addEventListener('click', function (e) {
+        document.getElementById('start-button').addEventListener('click', async function (e) {
             // get and process choices
-            choices = document.getElementById('choices-input').value
+            const choices = document.getElementById('choices-input').value
                 .split(/[\n,]+/)
                 .map(choice => choice.trim())
                 .filter((choice, index, self) => choice !== '' && self.indexOf(choice) === index);
@@ -359,96 +442,80 @@
                 return;
             }
 
+            superlative = document.querySelector('#input-screen>.input').textContent;
+            document.querySelector("#comparison-screen>.title>.input").textContent = superlative;
+
             // switch to comparison screen
             document.getElementById('input-screen').style.display = 'none';
             document.getElementById('comparison-screen').style.display = 'block';
 
-            initializeComparisons();
-            updateChoices();
+            sorted = await mergeInsertionSort(choices, compare);
+
+            buildResults(sorted);
         });
 
-        // initialize comparisons and scores
-        function initializeComparisons() {
-            comparisons = [];
-            for (let i = 0; i < choices.length; i++) {
-                for (let j = i + 1; j < choices.length; j++) {
-                    comparisons.push([choices[i], choices[j]]);
-                }
-            }
-            scores = Object.fromEntries(choices.map(choice => [choice, 0]));
-        }
-
-        // update displayed choices
-        function updateChoices() {
-            if (comparisons.length === 0) {
-                showResults();
-                return;
-            }
-            let [choice1, choice2] = comparisons[0];
-            document.querySelector('#choice-1 .choice-text').textContent = choice1;
-            document.querySelector('#choice-2 .choice-text').textContent = choice2;
-            document.querySelectorAll('.choice-text').forEach(fitText);
-            // trigger appear animation
-            const choiceElements = document.querySelectorAll('.choice');
-            choiceElements.forEach(choice => {
-                choice.classList.remove('win', 'lose');
-                void choice.offsetWidth; // trigger reflow
-                choice.classList.add('appear');
-            });
-            setTimeout(() => {
-                choiceElements.forEach(choice => choice.classList.remove('appear'));
-            }, 500);
-        }
-
-        // choice 1 click event
-        document.querySelector('#choice-1').addEventListener('click', function () {
-            this.classList.add('win');
-            document.querySelector('#choice-2').classList.add('lose');
-            recordPreference(comparisons[0][0], comparisons[0][1]);
-            setTimeout(nextComparison, 1000);
-        });
-
-        // choice 2 click event
-        document.querySelector('#choice-2').addEventListener('click', function () {
-            this.classList.add('win');
-            document.querySelector('#choice-1').classList.add('lose');
-            recordPreference(comparisons[0][1], comparisons[0][0]);
-            setTimeout(nextComparison, 1000);
-        });
-
-        // update score of winner
-        function recordPreference(winner, loser) {
-            scores[winner]++;
-        }
-
-        // show next comparison
-        function nextComparison() {
-            comparisons.shift();
-            updateChoices();
-        }
-
-        // display sorted results
-        function showResults() {
-            const sortedChoices = [...choices].sort((a, b) => scores[b] - scores[a]);
+        function buildResults(sorted) {
             const resultsList = document.getElementById('results-list');
             resultsList.innerHTML = '';
 
-            sortedChoices.forEach(choice => {
+            for (let item of sorted) {
                 const li = document.createElement('li');
-                li.textContent = choice;
-                const span = document.createElement('span');
-                span.className = 'score';
-                span.textContent = `Score: ${scores[choice]}`;
-                li.appendChild(span);
+                const rank = document.createElement('span');
+                rank.textContent = sorted.indexOf(item) + 1;
+                rank.classList.add('rank');
+                li.appendChild(rank);
+
+                if (item === sorted[0]) {
+                    const bestBadge = document.createElement('span');
+                    bestBadge.textContent = superlative;
+                    bestBadge.classList.add('best-badge');
+                    li.appendChild(bestBadge);
+                    li.classList.add('best');
+                }
+
+                li.appendChild(document.createTextNode(item));
                 resultsList.appendChild(li);
-            });
+            }
 
             document.getElementById('comparison-screen').style.display = 'none';
             document.getElementById('results-screen').style.display = 'block';
         }
 
+        function presentChoice(a, b) {
+            return new Promise((resolve) => {
+                // update displayed choices
+                document.querySelector('#choice-1 .choice-text').textContent = a;
+                document.querySelector('#choice-2 .choice-text').textContent = b;
+                document.querySelectorAll('.choice-text').forEach(fitText);
+                // trigger appear animation
+                const choiceElements = document.querySelectorAll('.choice');
+                choiceElements.forEach(choice => {
+                    choice.classList.remove('win', 'lose');
+                    void choice.offsetWidth; // trigger reflow
+                    choice.classList.add('appear');
+                });
+                setTimeout(() => {
+                    choiceElements.forEach(choice => choice.classList.remove('appear'));
+                }, 500);
+
+                // choice 1 click event
+                document.querySelector('#choice-1').addEventListener('click', function () {
+                    this.classList.add('win');
+                    document.querySelector('#choice-2').classList.add('lose');
+                    setTimeout(() => { resolve(a) }, 1000);
+                });
+
+                // choice 2 click event
+                document.querySelector('#choice-2').addEventListener('click', function () {
+                    this.classList.add('win');
+                    document.querySelector('#choice-1').classList.add('lose');
+                    setTimeout(() => { resolve(b) }, 1000);
+                });
+            });
+        }
+
         document.getElementById('copy-button').addEventListener('click', function () {
-            const sortedChoices = JSON.stringify([...choices].sort((a, b) => scores[b] - scores[a]));
+            const sortedChoices = JSON.stringify(sorted);
             navigator.clipboard.writeText(sortedChoices)
                 .then(() => {
                     this.textContent = 'Copied!';
@@ -460,9 +527,6 @@
             document.getElementById('results-screen').style.display = 'none';
             document.getElementById('input-screen').style.display = 'flex';
         });
-
-        // fit text on window resize
-        window.addEventListener('resize', () => document.querySelectorAll('.choice-text').forEach(fitText));
     </script>
 </body>
 
