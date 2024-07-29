@@ -24,7 +24,7 @@ async function merge(left, right, compare) {
 
     while (i < left.length && j < right.length) {
         // compare elements
-        if (await compare(left[i], right[j]) === left[i]) {
+        if ((await compare(left[i], right[j])) === left[i]) {
             result.push(left[i++]);
         } else {
             result.push(right[j++]);
@@ -41,7 +41,7 @@ async function insertionSort(arr, compare) {
         let j = i - 1;
 
         // compare and find position
-        while (j >= 0 && await compare(arr[j], key) === key) {
+        while (j >= 0 && (await compare(arr[j], key)) === key) {
             arr[j + 1] = arr[j];
             j--;
         }
@@ -137,6 +137,8 @@ function buildResults(sorted) {
         resultsList.appendChild(li);
     }
 
+    document.body.style.overflow = "auto";
+
     // switch to results screen
     document.getElementById("comparison-screen").style.display = "none";
     document.getElementById("results-screen").style.display = "block";
@@ -199,4 +201,5 @@ document
     .addEventListener("click", function () {
         document.getElementById("results-screen").style.display = "none";
         document.getElementById("input-screen").style.display = "flex";
+        document.body.style.overflow = "hidden";
     });
