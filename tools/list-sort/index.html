@@ -12,43 +12,37 @@
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="bg"></div>
-        <div class="vignette"></div>
+    <div id="input-screen">
+        <h1 class="title">Input List</h1>
+        <textarea id="choices-input" placeholder="Enter values separated by new lines and commas"></textarea>
+        <button id="start-button" class="button">Start Comparison</button>
+        <p>Superlative:</p>
+        <span class="input" contenteditable></span>
+    </div>
 
-        <div class="content">
-            <div id="input-screen">
-                <h1 class="title">Input List</h1>
-                <textarea id="choices-input" placeholder="Enter values separated by new lines and commas"></textarea>
-                <button id="start-button" class="button">Start Comparison</button>
-                <p>Superlative:</p>
-                <span class="input" contenteditable></span>
+    <div id="comparison-screen">
+        <h1 class="title">Which choice is the <span class="input" role="textbox" contenteditable></span>
+        </h1>
+
+        <div class="container">
+            <div id="choice-1" class="choice">
+                <span class="choice-text"></span>
             </div>
-
-            <div id="comparison-screen">
-                <h1 class="title">Which choice is the <span class="input" role="textbox" contenteditable></span>
-                </h1>
-
-                <div class="container">
-                    <div id="choice-1" class="choice">
-                        <span class="choice-text"></span>
-                    </div>
-                    <div id="choice-2" class="choice">
-                        <span class="choice-text"></span>
-                    </div>
-                </div>
+            <div id="choice-2" class="choice">
+                <span class="choice-text"></span>
             </div>
-
-            <div id="results-screen">
-                <h2>Sorted Results</h2>
-                <ol id="results-list"></ol>
-                <button id="copy-button" class="button">Copy JSON</button>
-                <button id="restart-button" class="button">Restart</button>
-            </div>
-
-            <a id="footer" href="../">BACK</a>
         </div>
     </div>
+
+    <div id="results-screen">
+        <h2>Sorted Results</h2>
+        <ol id="results-list"></ol>
+        <button id="copy-button" class="button">Copy JSON</button>
+        <button id="restart-button" class="button">Restart</button>
+    </div>
+
+    <a id="footer" href="../">BACK</a>
+
 
     <script src="list-sort.js"></script>
 </body>

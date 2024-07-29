@@ -1,3 +1,34 @@
+document.addEventListener("DOMContentLoaded", () => {
+    // get body element
+    const body = document.body;
+
+    // create wrapper and other div elements
+    const wrapper = document.createElement("div");
+    wrapper.className = "wrapper";
+
+    const bg = document.createElement("div");
+    bg.className = "bg";
+
+    const vignette = document.createElement("div");
+    vignette.className = "vignette";
+
+    const content = document.createElement("div");
+    content.className = "content";
+
+    // move existing elements into content and rearrange
+    while (body.firstChild) {
+        content.appendChild(body.firstChild);
+    }
+
+    // append new elements to wrapper
+    wrapper.appendChild(bg);
+    wrapper.appendChild(vignette);
+    wrapper.appendChild(content);
+
+    // append wrapper back to body
+    body.appendChild(wrapper);
+});
+
 // Cache the background element to avoid multiple DOM queries
 var bgElement;
 console.log(bgElement);

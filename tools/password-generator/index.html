@@ -33,7 +33,7 @@
             border-radius: 10px;
             transition: all 0.2s;
         }
-        
+
         /* .selection:hover {
             background-color: #202020;
         } */
@@ -101,46 +101,42 @@
 </head>
 
 <body>
-    <div class="wrapper">
-        <div class="bg"></div>
-        <div class="vignette"></div>
-        <div class="content">
-            <h1 class="title">PASSWORD GENERATOR</h1>
-            <p class="subtitle">Generates secure, easy to pronounce, and easy to remember passwords using a modular word
-                bank</p>
-            <div class="label">
-                <label for="inputBox">Word Bank</label>
-            </div>
-            <div id="banks">
-                <p style="font-size:large;" onclick="Wordbank.enableAll()">Default:</p>
-            </div>
-            <textarea id="inputBox" rows="20" cols="80"></textarea>
-            <br>
-            <div>
-                <label for="lengthBox">Minimum Length:</label>
-                <input type="number" id="lengthBox" value="12">
-                <input type="range" id="lengthSlider" max="24" min="6" class="slider" value="12">
-                <button class="button mainButton" id="generateButton" onclick="generate()">GENERATE</button>
-            </div>
-            <div class="label">
-                <label for="outbox">Generated Password</label>
-            </div>
-            <textarea id="outbox"></textarea>
-            <br>
-            <p id="outLength">Length: </p>
-            <button class="button mainButton" onclick="copy()" id="copyButton">COPY</button>
-            <a id="footer" href="../">BACK</a>
-        </div>
-        <div id="alert" hidden>
-            <div id="alertPopup">
-                <h2 id="alertTitle">ALERT</h2>
-                <p id="alertText">[alert text]</p>
-                <button class="button mainButton" onclick="" id="alertButton">YES</button>
-                <button class="button mainButton" onclick="alertMessage.hide()" id="alertHide">NO</button>
-            </div>
-        </div>
-        <script src="password-gen.js"></script>
+
+    <h1 class="title">PASSWORD GENERATOR</h1>
+    <p class="subtitle">Generates secure, easy to pronounce, and easy to remember passwords using a modular word
+        bank</p>
+    <div class="label">
+        <label for="inputBox">Word Bank</label>
     </div>
+    <div id="banks">
+        <p style="font-size:large;" onclick="Wordbank.enableAll()">Default:</p>
+    </div>
+    <textarea id="inputBox" rows="20" cols="80"></textarea>
+    <br>
+    <div>
+        <label for="lengthBox">Minimum Length:</label>
+        <input type="number" id="lengthBox" value="12">
+        <input type="range" id="lengthSlider" max="24" min="6" class="slider" value="12">
+        <button class="button mainButton" id="generateButton" onclick="generate()">GENERATE</button>
+    </div>
+    <div class="label">
+        <label for="outbox">Generated Password</label>
+    </div>
+    <textarea id="outbox"></textarea>
+    <br>
+    <p id="outLength">Length: </p>
+    <button class="button mainButton" onclick="copy()" id="copyButton">COPY</button>
+    <a id="footer" href="../">BACK</a>
+    <div id="alert" hidden>
+        <div id="alertPopup">
+            <h2 id="alertTitle">ALERT</h2>
+            <p id="alertText">[alert text]</p>
+            <button class="button mainButton" onclick="" id="alertButton">YES</button>
+            <button class="button mainButton" onclick="alertMessage.hide()" id="alertHide">NO</button>
+        </div>
+    </div>
+    <script src="password-gen.js"></script>
+
 </body>
 
 </html>
