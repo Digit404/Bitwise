@@ -8,6 +8,11 @@
     src: url(https://www.bitwise.live/res/FiraCode.ttf);
 }
 
+@font-face {
+    font-family: 'asbestos';
+    src: url(https://www.bitwise.live/res/Asbestos.ttf);
+}
+
 *::selection {
     background-color: #fff;
     color: #111;
@@ -17,6 +22,7 @@
 body {
     font-size: larger;
     color: white;
+    background-color: #101010;
     font-family: 'firacode', sans-serif;
     margin: 0;
 }
@@ -105,22 +111,24 @@ body {
 }
 
 .text {
-    width: 50%;
-    text-align: center;
+    max-width: 600px;
+    text-align: left;
     margin-left: auto;
     margin-right: auto;
     margin-top: 50px;
 }
 
 .button-container {
-    display: flex;
+    display: flex; 
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    gap: 10px;
+    margin: 20px;
 }
 
 .button.mainButton {
     font-family: 'bitwise';
-    font-size: x-large;
+    font-size: 1.5em;
 }
 
 .button.mainButton:hover {
@@ -226,6 +234,17 @@ input[type="number"] {
     background: transparent;
 }
 
-body {
-    background-color: #111;
+@media (max-width: 768px) {
+    .big-title {
+        font-size: 20vw;
+    }
+
+    .button.mainButton {
+        font-size: 1em;
+    }
+
+    .text {
+        font-size: 16px;
+        max-width: 90%;
+    }
 }

@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Minesweeper</title>
-    <link rel="shortcut icon" href="https://www.bitwise.live/res/favicon.png" type="image/png">
-    <link rel="stylesheet" href="../../style.css">
-    <script src="../../bg-scroll.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitwise</title>
+    <base href="/">
+    <link rel="shortcut icon" href="res/favicon.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <script src="bg-scroll.js" defer></script>
     <style>
         .title {
             font-size: 80pt;
@@ -15,6 +18,8 @@
             font-size: 50pt;
             background-color: #00000070;
             margin-bottom: 15px;
+            font-family: "asbestos";
+            font-weight: normal;
         }
 
         #field,
@@ -31,9 +36,9 @@
     <canvas id="field"></canvas>
     <br>
     <button class="button mainButton" id="newGame">NEW GAME</button>
-    <a id="footer" href="../">BACK</a>
+    <a id="footer" href="/games/">BACK</a>
 
-    <script src="minesweeper.js" defer></script>
+    <script src="/games/minesweeper/minesweeper.js" defer></script>
 
 </body>
 

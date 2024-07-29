@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bitwise</title>
-    <link rel="shortcut icon" href="https://www.bitwise.live/res/favicon.png" type="image/png">
-    <link rel="stylesheet" href="../../style.css">
+    <base href="/">
+    <link rel="shortcut icon" href="res/favicon.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <script src="bg-scroll.js" defer></script>
     <style>
         .title {
             margin-bottom: 1vh;
@@ -126,7 +130,7 @@
     <br>
     <p id="outLength">Length: </p>
     <button class="button mainButton" onclick="copy()" id="copyButton">COPY</button>
-    <a id="footer" href="../">BACK</a>
+    <a id="footer" href="/tools/">BACK</a>
     <div id="alert" hidden>
         <div id="alertPopup">
             <h2 id="alertTitle">ALERT</h2>
@@ -135,7 +139,7 @@
             <button class="button mainButton" onclick="alertMessage.hide()" id="alertHide">NO</button>
         </div>
     </div>
-    <script src="password-gen.js"></script>
+    <script src="/tools/password-generator/password-gen.js"></script>
 
 </body>
 

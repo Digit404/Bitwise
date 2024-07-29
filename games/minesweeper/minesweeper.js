@@ -17,7 +17,7 @@ const tileSheet = new Image();
 
 const newGameButton = document.querySelector("#newGame");
 
-tileSheet.src = "./res/minesweeper.png";
+tileSheet.src = "/games/minesweeper/res/minesweeper.png";
 
 let firstClick;
 let flaggedCount = 0;
