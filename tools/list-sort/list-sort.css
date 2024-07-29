@@ -1,0 +1,308 @@
+/* global styles */
+body {
+    font-family: "Fira Code", monospace;
+    background-color: #111;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* title styles */
+.title {
+    font-family: "Fira Code", monospace !important;
+    font-size: 4vw;
+    margin-bottom: 1vh;
+    text-align: center;
+    user-select: none;
+}
+
+/* input styles */
+.input {
+    font-weight: bold;
+    font-family: monospace;
+    padding: 0 1vw;
+    background-color: #00000000;
+    color: #55f;
+    border: none;
+    text-align: center;
+}
+
+.input:focus {
+    outline: none;
+}
+
+.title>.input {
+    font-size: 4vw;
+    width: 20vw;
+    border-bottom: 0.3vw solid #fff;
+}
+
+#input-screen .input {
+    font-size: 2vw;
+    border-bottom: 0.2vw solid #fff;
+    margin-bottom: 2vh;
+}
+
+/* container styles */
+.container {
+    margin-top: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+/* choice styles */
+.choice {
+    width: 40%;
+    height: 50vh;
+    margin: 50px;
+    border-radius: 50px;
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    animation: shakey-shake 1s cubic-bezier(.36, .07, .19, .97) infinite;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.4);
+}
+
+.choice.appear {
+    animation: pop-in 0.5s ease-in-out forwards;
+}
+
+.choice-text {
+    font-weight: bold;
+    font-size: 5vw;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* animations */
+@keyframes shakey-shake {
+    0%, 100% {
+        transform: rotate(1deg);
+    }
+    50% {
+        transform: rotate(-1deg);
+    }
+}
+
+@keyframes pop-in {
+    0% {
+        transform: scale(0);
+    }
+    80% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes spin-out {
+    0% {
+        transform: rotate(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(-500deg) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes tada {
+    from {
+        transform: scale3d(1, 1, 1);
+    }
+    10%, 20% {
+        transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+    }
+    30%, 50%, 70%, 90% {
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+    }
+    40%, 60%, 80% {
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+    }
+    to {
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+/* win and lose states */
+.win {
+    background-color: #3c4;
+    animation: tada 1s;
+    transition: background-color 300ms;
+    cursor: default;
+}
+
+.lose {
+    background-color: #f33;
+    transition: background-color 300ms;
+    animation: spin-out 0.6s ease-in both;
+    cursor: default;
+}
+
+/* input screen styles */
+#input-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+#choices-input {
+    width: 60%;
+    height: 200px;
+    margin: 20px 0;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    background-color: #111;
+    color: #fff;
+    border: 1px solid white;
+    resize: none;
+}
+
+#choices-input:focus {
+    outline: 1px solid #fff;
+}
+
+/* custom scrollbar for choices input */
+#choices-input::-webkit-scrollbar {
+    width: 10px;
+}
+
+#choices-input::-webkit-scrollbar-track {
+    background: var(--middle);
+}
+
+#choices-input::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 5px;
+}
+
+#choices-input::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}
+
+/* button styles */
+#start-button {
+    --color: rgb(22, 141, 36);
+}
+
+#start-button:hover {
+    color: white;
+}
+
+#start-button.error {
+    --color: #f33;
+}
+
+/* comparison screen styles */
+#comparison-screen {
+    display: none;
+}
+
+/* results screen styles */
+#results-screen {
+    display: none;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#results-screen h2 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+#results-screen ol {
+    list-style-position: inside;
+    padding: 0;
+}
+
+#results-screen .best-badge {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    background-color: #ffcc00;
+    color: #111;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    animation: tada 2s infinite;
+    transform: rotate(20deg);
+}
+
+#results-screen li {
+    position: relative; /* necessary for absolute positioning of the badge */
+    background-color: #111;
+    border: 1px solid #fff;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#results-screen .rank {
+    background-color: rgb(63, 98, 226);
+    color: #111;
+    padding: 5px 10px;
+    width: 25px;
+    border-radius: 25px;
+    font-weight: bold;
+}
+
+/* general button styles */
+.button {
+    margin: 20px;
+    font-weight: bold;
+}
+
+/* responsive design for small screens */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .choice {
+        width: 80%;
+        height: 30vh;
+        margin: 20px;
+    }
+
+    .title {
+        font-family: "Fira Code", monospace !important;
+        font-size: 8vw;
+        margin-bottom: 1vh;
+        text-align: center;
+        user-select: none;
+    }
+
+    .title>.input {
+        font-size: 1.2em;
+        width: 20vw;
+        border-bottom: 0.1em solid #fff;
+    }
+    
+    #input-screen .input {
+        font-size: 2em;
+        border-bottom: 0.1em solid #fff;
+        margin-bottom: 2vh;
+    }
+}
