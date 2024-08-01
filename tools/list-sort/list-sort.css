@@ -1,16 +1,6 @@
-/* global styles */
-body {
-    font-family: "Fira Code", monospace;
-    background-color: #111;
-    color: #fff;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
 /* title styles */
 .title {
-    font-family: "Fira Code", monospace !important;
+    font-family: var(--font-family-firacode);
     font-size: 4vw;
     margin-bottom: 1vh;
     text-align: center;
@@ -22,8 +12,8 @@ body {
     font-weight: bold;
     font-family: monospace;
     padding: 0 1vw;
-    background-color: #00000000;
-    color: #55f;
+    background-color: transparent;
+    color: var(--splash-color);
     border: none;
     text-align: center;
 }
@@ -35,12 +25,12 @@ body {
 .title>.input {
     font-size: 4vw;
     width: 20vw;
-    border-bottom: 0.3vw solid #fff;
+    border-bottom: 0.3vw solid var(--light);
 }
 
 #input-screen .input {
     font-size: 2vw;
-    border-bottom: 0.2vw solid #fff;
+    border-bottom: 0.2vw solid var(--light);
     margin-bottom: 2vh;
 }
 
@@ -59,7 +49,7 @@ body {
     height: 50vh;
     margin: 50px;
     border-radius: 50px;
-    background-color: white;
+    background-color: var(--light);
     color: black;
     display: flex;
     justify-content: center;
@@ -139,14 +129,14 @@ body {
 
 /* win and lose states */
 .win {
-    background-color: #3c4;
+    background-color: var(--success-color);
     animation: tada 1s;
     transition: background-color 300ms;
     cursor: default;
 }
 
 .lose {
-    background-color: #f33;
+    background-color: var(--error-color);
     transition: background-color 300ms;
     animation: spin-out 0.6s ease-in both;
     cursor: default;
@@ -167,19 +157,19 @@ body {
     margin: 20px 0;
     padding: 10px;
     font-size: 16px;
-    border-radius: 10px;
-    background-color: #111;
+    border-radius: var(--border-radius);
+    background-color: var(--dark);
     color: #fff;
-    border: 1px solid white;
+    border: 1px solid var(--light);
     resize: none;
 }
 
 #choices-input:focus {
-    outline: 1px solid #fff;
+    outline: 1px solid var(--primary-color);
 }
 
 #start-button.error {
-    --color: #f33;
+    --color: var(--error-color);
 }
 
 /* comparison screen styles */
@@ -210,8 +200,8 @@ body {
     position: absolute;
     top: -30px;
     right: -30px;
-    background-color: #fff;
-    color: #111;
+    background-color: var(--primary-color);
+    color: var(--dark);
     padding: 5px 10px;
     border-radius: 20px;
     font-weight: bold;
@@ -221,11 +211,11 @@ body {
 
 #results-screen li {
     position: relative; /* necessary for absolute positioning of the badge */
-    background-color: #111;
-    border: 1px solid #fff;
+    background-color: var(--dark);
+    border: 1px solid var(--light);
     margin-bottom: 10px;
     padding: 15px;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     font-size: 1.2em;
     display: flex;
     justify-content: space-between;
@@ -233,8 +223,8 @@ body {
 }
 
 #results-screen .rank {
-    background-color: #fff;
-    color: #111;
+    background-color: var(--primary-color);
+    color: var(--dark);
     padding: 5px 10px;
     width: 25px;
     border-radius: 25px;
@@ -260,7 +250,6 @@ body {
     }
 
     .title {
-        font-family: "Fira Code", monospace !important;
         font-size: 8vw;
         margin-bottom: 1vh;
         text-align: center;
@@ -270,12 +259,12 @@ body {
     .title>.input {
         font-size: 1.2em;
         width: 20vw;
-        border-bottom: 0.1em solid #fff;
+        border-bottom: 0.1em solid var(--light);
     }
     
     #input-screen .input {
         font-size: 2em;
-        border-bottom: 0.1em solid #fff;
+        border-bottom: 0.1em solid var(--light);
         margin-bottom: 2vh;
     }
 }

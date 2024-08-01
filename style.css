@@ -13,82 +13,58 @@
     src: url(https://www.bitwise.live/res/Asbestos.ttf);
 }
 
+:root {
+    --dark: #111;
+    --light: #fff;
+    --primary-color: #fff;
+    --hover-color: #000;
+    --splash-color: #57f;
+    --error-color: #f33;
+    --success-color: #3c4;
+    --font-size-body: larger;
+    --font-size-large: 5em;
+    --font-size-xlarge: 10em;
+    --font-size-button: 1.5em;
+    --font-size-input: 0.8em;
+    --font-family-firacode: 'firacode', monospace;
+    --font-family-bitwise: 'bitwise', sans-serif;
+    --font-family-asbestos: 'asbestos', sans-serif;
+    --border-radius: 15px;
+}
+
 *::selection {
-    background-color: #fff;
-    color: #111;
-    border-radius: 5px;
+    background-color: var(--light);
+    color: var(--dark);
 }
 
 body {
-    font-size: larger;
-    color: white;
-    background-color: #101010;
-    font-family: 'firacode', sans-serif;
+    font-size: var(--font-size-body);
+    color: var(--light);
+    background-color: var(--dark);
+    font-family: var(--font-family-firacode);
     margin: 0;
 }
 
-.wrapper {
-    background-color: #101010;
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    overflow: hidden;
-}
-
-.bg {
-    width: 300%;
-    background-image: url(https://www.bitwise.live/res/numbers.png);
-    opacity: 0.10;
-    zoom: 80%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    /* Firefox */
-    image-rendering: crisp-edges;
-    /* Chromium + Safari */
-    image-rendering: pixelated;
-    overflow: hidden;
-}
-
-.vignette {
-    background: url(https://www.bitwise.live/res/vignette.png) center center fixed;
-    opacity: 100;
-    background-size: 100% 100%;
-    background-position: center;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    pointer-events: none;
-}
-
-.content {
-    position: relative;
-    text-align: center;
+.title, .big-title, #footer, .button.mainButton {
+    font-family: var(--font-family-bitwise);
 }
 
 .title {
-    font-family: 'bitwise', sans-serif;
     text-align: center;
-    color: white;
-    font-size: 6vw;
+    color: var(--light);
+    font-size: var(--font-size-large);
 }
 
 .big-title {
-    font-family: 'bitwise', sans-serif;
     text-align: center;
-    color: white;
-    font-size: 11vw;
+    color: var(--light);
+    font-size: var(--font-size-xlarge);
 }
 
 #footer {
     background-color: rgba(0, 0, 0, 0.7);
-    color: white;
+    color: var(--light);
     text-align: center;
-    font-family: 'bitwise', sans-serif;
     position: fixed;
     bottom: 0;
     height: 20px;
@@ -97,25 +73,24 @@ body {
     margin-right: 10px;
     padding-top: 20px;
     padding-bottom: 20px;
-    border-radius: 10px 10px;
+    border-radius: var(--border-radius);
     right: 0;
     text-decoration: none;
-    font-size: larger;
+    font-size: var(--font-size-body);
     transition: 300ms;
 }
 
 #footer:hover {
-    background-color: #fff;
-    color: #101010;
+    background-color: var(--primary-color);
+    color: var(--dark);
     transition: 300ms;
 }
 
 .text {
     max-width: 600px;
     text-align: left;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50px;
+    margin: 50px auto 0 auto;
+    font-size: var(--font-size-input);
 }
 
 .button-container {
@@ -127,8 +102,8 @@ body {
 }
 
 .button.mainButton {
-    font-family: 'bitwise';
-    font-size: 1.5em;
+    font-family: var(--font-family-bitwise);
+    font-size: var(--font-size-button);
 }
 
 .button.mainButton:hover {
@@ -136,15 +111,15 @@ body {
 }
 
 .button {
-    font-family: "Fira Code", monospace;
-    padding: 15px 40px;
-    font-size: 16pt;
-    border-radius: 10px;
+    font-family: var(--font-family-firacode);
+    padding: 15px 40px;;
+    font-size: var(--font-size-input);
+    border-radius: var(--border-radius);
     cursor: pointer;
     backdrop-filter: blur(5px);
     box-shadow: 0px 10px 5px #101010a0;
     transition: 200ms;
-    --color: #fff;
+    --color: var(--primary-color);
     color: var(--color);
     border: 3px solid var(--color);
     background-color: transparent;
@@ -152,69 +127,61 @@ body {
 
 .button:hover {
     background-color: var(--color);
-    color: #000;
+    color: var(--hover-color);
 }
 
-textarea {
-    border-radius: 10px;
+textarea, input[type="number"] {
+    border-radius: var(--border-radius);
     padding: 1vw;
-    font-family: "firacode";
-    font-size: 16px;
-    background-color: #101010;
-    color: white;
-    outline: none;
-}
-
-input[type="number"] {
-    border-radius: 10px;
-    border-color: white;
-    font-family: "firacode";
-    font-size: 16px;
-    background-color: #101010;
-    color: white;
+    font-family: var(--font-family-firacode);
+    font-size: var(--font-size-input);
+    background-color: var(--dark);
+    color: var(--light);
     outline: none;
 }
 
 .slider {
     appearance: none;
     height: 15px;
-    border-radius: 5px;
-    background: #aaaaaa;
+    border-radius: var(--border-radius);
+    background: var(--light);
+    border: 3px solid var(--dark);
     outline: none;
-    opacity: 0.7;
-    transition: opacity .2s;
+    opacity: 1;
+    transition: .2s;
     margin-bottom: 100px;
 }
 
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    background: white;
+    border: 3px solid var(--light);
+    outline: 5px solid var(--dark);
+    background: var(--dark);
     cursor: pointer;
+    transition: .2s;
+}   
+
+.slider::-webkit-slider-thumb:hover {
+    border: 12px solid var(--light);
+    transition: .2s;
 }
 
-.slider::-moz-range-thumb {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    background: white;
-    cursor: pointer;
-}
 
-.slider:hover {
-    opacity: 1;
-}
-
+/* ---------------- */
 /* scrollbar styles */
+/* ---------------- */
+
+
 *::-webkit-scrollbar {
     width: 10px;
 }
 
 *::-webkit-scrollbar-track {
-    background: #1110;
+    background: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
@@ -227,11 +194,31 @@ input[type="number"] {
 }
 
 *::-webkit-resizer {
-    background-color: #1110;
+    background-color: transparent;
 }
 
 *::-webkit-scrollbar-corner {
     background: transparent;
+}
+
+
+/* ---------------- */
+/* media queries    */
+/* ---------------- */
+
+@media (max-width: 1024px) {
+    .big-title {
+        font-size: 15vw;
+    }
+
+    .button.mainButton {
+        font-size: var(--font-size-button);
+    }
+
+    .text {
+        font-size: var(--font-size-input);
+        max-width: 90%;
+    }
 }
 
 @media (max-width: 768px) {
@@ -244,7 +231,7 @@ input[type="number"] {
     }
 
     .text {
-        font-size: 16px;
+        font-size: var(--font-size-input);
         max-width: 90%;
     }
 }
