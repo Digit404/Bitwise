@@ -45,6 +45,10 @@ body {
     margin: 0;
 }
 
+#content {
+    text-align: center;
+}
+
 .title, .big-title, #footer, .button.mainButton {
     font-family: var(--font-family-bitwise);
 }
