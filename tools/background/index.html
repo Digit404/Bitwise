@@ -9,26 +9,67 @@
     <link rel="shortcut icon" href="res/favicon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
     <style>
-        .checkboxes {
+        #content {
             display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            color: white;
-            font-family: 'bitwise';
-            font-size: 200%;
-        }
-
-        .checkboxes label {
-            margin-right: 40px;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
 
         .slider {
-            width: 50%;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .settings-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #111a;
+            border: 1px solid var(--light);
+            padding: 50px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 40%;
+            margin-bottom: 2rem;
+        }
+
+        h2.title {
+            margin-top: 30px;
+            margin-bottom: 10px;
+            font-size: 3rem;
+        }
+
+        #BgImageSelect {
+            width: 20rem;
+            height: 3rem;
+            font-family: var(--font-family-firacode);
+            border: 1px solid var(--light);
+            text-align: center;
+            background-color: var(--dark);
+            font-size: large;
+            color: #fff;
+            margin-bottom: 1rem;
+            border-radius: var(--border-radius);
+        }
+
+        #BgColorInput {
+            width: 20rem;
+            height: 3rem;
+            font-family: var(--font-family-firacode);
+            border: 1px solid var(--light);
+            text-align: center;
+            background-color: var(--dark);
+            font-size: large;
+            color: #fff;
+            margin-bottom: 1rem;
+            border-radius: var(--border-radius);
+        }
+
+        @media (max-width: 768px) {
+            .settings-container {
+                width: 100%;
+            }
         }
     </style>
     <script src="/tools/background/background.js" defer></script>
@@ -36,17 +77,40 @@
 
 <body>
 
-    <h1 class="title" style="margin-bottom: 10px;">BACKGROUND</h1>
-    <div class="checkboxes">
-        <input type="checkbox" id="vignetteBox" style="outline: none;" checked>
-        <label for="vignetteBox">VIGNETTE</label>
-        <input type="checkbox" id="backgroundBox" style="outline: none;" checked>
-        <label for="backgroundBox">BACKGROUND</label>
+    <h1 class="title">BACKGROUND SETTINGS</h1>
+
+    <div class="settings-container">
+        <h2 class="title">PARALLAX</h2>
+        <input type="range" id="ParallaxSlider" min="0" max="125" value="50" class="slider">
+
+        <h2 class="title">SCROLL SPEED</h2>
+        <input type="range" id="ScrollSpeedSlider" min="0" max="1000" value="100" class="slider">
+
+        <h2 class="title">VIGNETTE OPACITY</h2>
+        <input type="range" id="VignetteOpacitySlider" min="0" max="1000" value="1000" class="slider">
+
+        <h2 class="title">BACKGROUND IMAGE</h2>
+        <select id="BgImageSelect">
+            <option value="numbers.png">Numbers</option>
+            <option value="locked.png">Locked</option>
+            <option value="beans.png">Beans</option>
+            <option value="404.png">404</option>
+        </select>
+
+        <h2 class="title">BACKGROUND COLOR</h2>
+        <input type="color" id="BgColorInput" value="#111">
+
+        <h2 class="title">BACKGROUND OPACITY</h2>
+        <input type="range" id="BgOpacitySlider" min="0" max="1000" value="100" class="slider">
+
+        <h2 class="title">BACKGROUND ZOOM</h2>
+        <input type="range" id="BgZoomSlider" min="100" max="2000" value="800" class="slider">
+
+        <!-- <div class="button-container">
+            <button id="SaveButton" class="button mainButton">SAVE</button>
+            <button id="ResetButton" class="button mainButton">RESET</button>
+        </div> -->
     </div>
-    <h2 style="font-size: 50px;" class="title">PARALLAX</h2>
-    <input type="range" id="parallax" min="0" max="100" value="50" class="slider">
-    <h2 style="font-size: 50px;" class="title">SCROLL SPEED</h2>
-    <input type="range" id="ScrollSpeed" min="0" max="1000" value="50" class="slider">
     <p class="text" style="padding-bottom: 100px;">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
         dolore magna aliqua. Ultrices mi tempus imperdiet nulla malesuada. Eu scelerisque felis imperdiet proin
@@ -143,32 +207,14 @@
     <a id="footer" href="/tools/">BACK</a>
 
     <script>
-        // Get a reference to the checkbox
-        const background = document.getElementById("backgroundBox");
-
-        // Add an event listener to the checkbox that listens for changes in the checked attribute
-        background.addEventListener("change", function () {
-            // If the checkbox is not checked, set the background opacity to 0
-            if (!this.checked) {
-                document.getElementById("bg").style.opacity = 0;
-            } else {
-                // If the checkbox is checked, set the background opacity to .1
-                document.getElementById("bg").style.opacity = 0.1;
-            }
+        document.getElementById('BgImageSelect').addEventListener('change', function () {
+            document.getElementById("bg").style.backgroundImage = `url('res/${this.value}')`;
         });
-        // Get a reference to the checkbox
-        const vignette = document.getElementById("vignetteBox");
 
-        // Add an event listener to the checkbox that listens for changes in the checked attribute
-        vignette.addEventListener("change", function () {
-            // If the checkbox is not checked, set the background opacity to 0
-            if (!this.checked) {
-                document.getElementById("vignette").style.opacity = 0;
-            } else {
-                // If the checkbox is checked, set the background opacity to .1
-                document.getElementById("vignette").style.opacity = 1;
-            }
+        document.getElementById('BgColorInput').addEventListener('change', function () {
+            document.getElementById("wrapper").style.backgroundColor = this.value;
         });
+
     </script>
 </body>
 
