@@ -99,19 +99,24 @@
 
     for (let row of rows) {
         row.content = row.textContent;
-        row.textContent = "";
 
         let padding = Math.floor((width - row.content.length) / 2);
-        let string = row.content.padStart(padding + row.content.length, ' ').padEnd(width, ' ');
+        let paddedString = row.content.padStart(padding + row.content.length, ' ').padEnd(width, ' ');
 
-        // for (let char of string) {
-        //     const span = document.createElement("span");
-        //     if (char === " ") {
-        //         span.classList.add("space");
-        //     }
-        //     span.textContent = char;
-        //     row.appendChild(span);
-        // }
+        updateRow(row, paddedString);
+    }
+
+    function updateRow (row, string) {
+        row.textContent = "";
+
+        for (let char of string) {
+            const span = document.createElement("span");
+            if (char === " ") {
+                span.classList.add("space");
+            }
+            span.textContent = char;
+            row.appendChild(span);
+        }
     }
 
     function animatePanel(container, interval = 500, pauseCycles = 5) {
@@ -121,24 +126,15 @@
 
         setInterval(() => {
             for (let row of rows) {
-                let padding = Math.floor((width - row.content.length) / 2);
-                let string = row.content.padStart(padding + row.content.length, ' ').padEnd(width, ' ');
-
                 if (index > width) {
                     break
                 }
+                
+                let padding = Math.floor((width - row.content.length) / 2);
+                let string = row.content.padStart(padding + row.content.length, ' ').padEnd(width, ' ');
 
                 let rotatedString = string.slice(index) + string.slice(0, index);
-                row.textContent = '';
-
-                for (let char of rotatedString) {
-                    const span = document.createElement("span");
-                    if (char === " ") {
-                        span.classList.add("space");
-                    }
-                    span.textContent = char;
-                    row.appendChild(span);
-                }
+                updateRow(row, rotatedString);
             }
 
             index = (index + 1) % (width + pauseCycles);
