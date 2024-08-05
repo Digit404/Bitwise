@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCD Test</title>
+    <base href="/">
+    <link rel="shortcut icon" href="res/favicon.png" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <script src="background.js" defer></script>
+    <style>
+        .container {
+            /* background-color: #fff; */
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .screenContainer {
+            --bg: radial-gradient(circle, #892 0%, #793 100%);
+            --lcd-shadow: #0000770a;
+            --text-color: #013a;
+            --scale: 110px;
+            --padding-factor: .5;
+            --border-factor: .2;
+            --spacing-factor: 0.05;
+            --border-width: calc(var(--scale) * var(--border-factor));
+            --width: 10;
+            --height: 2;
+            --font: "Pokemon GB";
+
+            font-family: var(--font);
+            background: var(--bg);
+            box-shadow: 0 0 50px 10px #0006 inset;
+            padding: calc(var(--scale) * var(--padding-factor));
+            font-size: calc(var(--scale) * 0.9);
+            position: relative;
+            display: inline-block;
+            border-style: solid;
+            border-width: var(--border-width);
+            border-image: linear-gradient(45deg, #222 0%, #444 45%, #555 50%, #444 55%, #222 100%) 1;
+            max-width: calc(var(--scale) * var(--width));
+            max-height: calc(var(--scale) * var(--height));
+        }
+
+        .screenContainer::after {
+            content: '';
+            position: absolute;
+            top: calc(var(--border-width) * -1);
+            left: calc(var(--border-width) * -1);
+            right: calc(var(--border-width) * -1);
+            bottom: calc(var(--border-width) * -1);
+            background-image: url("/res/noise.png");
+            mix-blend-mode: multiply;
+            opacity: .07;
+            pointer-events: none;
+        }
+
+        .row {
+            display: block;
+        }
+
+        .row span {
+            display: inline-block;
+            background-color: var(--lcd-shadow);
+            margin: calc(var(--scale) * 0.05);
+            color: var(--text-color);
+        }
+
+        .row .space {
+            color: transparent;
+            width: 1em;
+            height: 1em;
+            vertical-align: bottom;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <span class="screenContainer">
+            <span class="row">BASS+</span>
+            <span class="row">VOCALS</span>
+        </span>
+        <a id="footer" href="/">HOME</a>
+    </div>
+</body>
+
+<script defer>
+    const panel = document.querySelector(".screenContainer");
+    const rows = panel.querySelectorAll(".row");
+
+    const width = parseInt(getComputedStyle(panel).getPropertyValue('--width'));
+    const height = parseInt(getComputedStyle(panel).getPropertyValue('--height'));
+
+    for (let row of rows) {
+        row.content = row.textContent;
+        row.textContent = "";
+
+        let padding = Math.floor((width - row.content.length) / 2);
+        let string = row.content.padStart(padding + row.content.length, ' ').padEnd(width, ' ');
+
+        // for (let char of string) {
+        //     const span = document.createElement("span");
+        //     if (char === " ") {
+        //         span.classList.add("space");
+        //     }
+        //     span.textContent = char;
+        //     row.appendChild(span);
+        // }
+    }
+
+    function animatePanel(container, interval = 500, pauseCycles = 5) {
+        const rows = container.querySelectorAll(".row");
+
+        let index = 0;
+
+        setInterval(() => {
+            for (let row of rows) {
+                let padding = Math.floor((width - row.content.length) / 2);
+                let string = row.content.padStart(padding + row.content.length, ' ').padEnd(width, ' ');
+
+                if (index > width) {
+                    break
+                }
+
+                let rotatedString = string.slice(index) + string.slice(0, index);
+                row.textContent = '';
+
+                for (let char of rotatedString) {
+                    const span = document.createElement("span");
+                    if (char === " ") {
+                        span.classList.add("space");
+                    }
+                    span.textContent = char;
+                    row.appendChild(span);
+                }
+            }
+
+            index = (index + 1) % (width + pauseCycles);
+        }, interval);
+    }
+
+    animatePanel(panel, 300, 10);
+</script>
+
+</html>
