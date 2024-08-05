@@ -13,6 +13,11 @@
     src: url(https://www.bitwise.live/res/Asbestos.ttf);
 }
 
+@font-face {
+    font-family: 'Pokemon GB';
+    src: url(https://www.bitwise.live/res/PokemonGB.ttf);
+}
+
 :root {
     --dark: #111;
     --light: #fff;
