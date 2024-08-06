@@ -1,3 +1,11 @@
+/* 
+    Author: Digit (https://www.bitwise.live/)
+    License: This script is provided for free use and distribution. 
+            You are free to copy, modify, and distribute this file without any restrictions.
+*/
+
+// Initialize all LCD panels on the page
+
 const panels = document.querySelectorAll(".lcd-panel");
 
 for (let panel of panels) {
@@ -10,10 +18,16 @@ function initializePanel(panel) {
     panel.computedStyle = getComputedStyle(panel);
     panel.width = parseInt(panel.computedStyle.getPropertyValue("--width"));
     panel.height = parseInt(panel.computedStyle.getPropertyValue("--height"));
-    panel.centered = panel.computedStyle.getPropertyValue("--centered") === "true";
-    panel.scroll = panel.computedStyle.getPropertyValue("--scroll") === "true";
-    panel.scrollSpeed = parseInt(panel.computedStyle.getPropertyValue("--scroll-speed"));
-    panel.pauseFrames = parseInt(panel.computedStyle.getPropertyValue("--scroll-pause-frames"));
+    panel.centered =
+        panel.computedStyle.getPropertyValue("--centered") === "true";
+    panel.scroll =
+        panel.computedStyle.getPropertyValue("--scrolling") === "true";
+    panel.scrollSpeed = parseInt(
+        panel.computedStyle.getPropertyValue("--scroll-speed")
+    );
+    panel.pauseFrames = parseInt(
+        panel.computedStyle.getPropertyValue("--scroll-pause-frames")
+    );
 
     // adjust panel height if necessary
     if (panel.height < panel.rows.length) {
@@ -44,7 +58,9 @@ function initializePanel(panel) {
         row.initialContent = initialContent;
         if (panel.centered) {
             let padding = Math.floor((panel.width - initialContent.length) / 2);
-            row.paddedContent = initialContent.padStart(padding + initialContent.length, " ").padEnd(panel.width, " ");
+            row.paddedContent = initialContent
+                .padStart(padding + initialContent.length, " ")
+                .padEnd(panel.width, " ");
         } else {
             row.paddedContent = initialContent.padEnd(panel.width, " ");
         }
@@ -70,12 +86,17 @@ function scrollPanel(panel, interval = 300, pauseFrames = 10) {
     let index = panel.width; // start at the end of the movement
 
     setInterval(() => {
-        for (let row of panel.rows) {
-            if (index > panel.width) break;
-            let rotatedString =
-                row.paddedContent.slice(index) +
-                row.paddedContent.slice(0, index);
-            updateRow(row, rotatedString);
+        if (index <= panel.width) {
+            if (!panel.scroll) return;
+            for (let row of panel.rows) {
+                let rotatedString =
+                    row.paddedContent.slice(index) +
+                    row.paddedContent.slice(0, index);
+                updateRow(row, rotatedString);
+            }
+        } else {
+            panel.scroll =
+                panel.computedStyle.getPropertyValue("--scrolling") === "true";
         }
 
         index = (index + 1) % (panel.width + pauseFrames);

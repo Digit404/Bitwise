@@ -8,24 +8,24 @@
     <base href="/">
     <link rel="shortcut icon" href="res/favicon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="/lcd/lcd.css">
     <script src="background.js" defer></script>
+
+    <link rel="stylesheet" href="/lcd/lcd.css">
+    <script src="/lcd/lcd.js" defer></script>
     <style>
         .container {
-            /* background-color: #fff; */
-            margin: 0;
             height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
 
         .my-panel {
             --scale: 110px;
+            --width: 11;
             --font: "PokemonGB", monospace;
             --centered: true;
-            --scroll: true;
+            --scrolling: true;
         }
     </style>
 </head>
@@ -33,13 +33,11 @@
 <body>
     <div class="container">
         <ul class="lcd-panel my-panel">
-            <li>BASS+</li>
-            <li>VOCALS</li>
+            <li>BITWISE</li>
+            <li>LCD PANEL</li>
         </ul>
         <a id="footer" href="/">HOME</a>
     </div>
 </body>
-
-<script src="/lcd/lcd.js" defer></script>
 
 </html>

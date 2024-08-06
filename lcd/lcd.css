@@ -1,3 +1,9 @@
+/* 
+    Author: Digit (https://www.bitwise.live/)
+    License: This CSS is provided for free use and distribution. 
+            You are free to copy, modify, and distribute this file without any restrictions.
+*/
+
 .lcd-panel {
     --bg: radial-gradient(circle, #892 0%, #793 100%);
     --lcd-shadow: #0000770a;
@@ -10,11 +16,12 @@
     --margin-percent: 0.05;
     --padding: calc(var(--scale) * var(--padding-factor));
     --border-width: calc(var(--scale) * var(--border-factor));
-    --width: 10;
+    --width: 16;
     --height: 2;
+    /* Font should be defined, default monospace looks terrible  */
     --font: monospace;
     --centered: false;
-    --scroll: false;
+    --scrolling: false;
     --scroll-speed: 300ms;
     --scroll-pause-frames: 10;
 
@@ -28,7 +35,7 @@
     display: inline-block;
     border: solid var(--border-width);
     border-image: linear-gradient(90deg, #222 0%, #444 45%, #555 50%, #444 55%, #222 100%) 1;
-    width: calc((1ch + calc(var(--scale) * 0.05)) * var(--width) + 2 * var(--padding));
+    width: calc((1ch + calc(var(--scale) * var(--margin-percent) * 2)) * var(--width) + 2 * var(--padding));
     height: calc(var(--scale) * var(--height));
     list-style-type: none;
 }
@@ -40,7 +47,7 @@
     left: calc(var(--border-width) * -1);
     right: calc(var(--border-width) * -1);
     bottom: calc(var(--border-width) * -1);
-    background-image: url("/res/noise.png");
+    background-image: url("https://www.bitwise.live/res/noise.png");
     mix-blend-mode: multiply;
     opacity: .06;
     pointer-events: none;
@@ -51,7 +58,7 @@
     background-color: var(--lcd-shadow);
     margin: calc(var(--scale) * var(--margin-percent));
     color: var(--text-color);
-    vertical-align: bottom;
+    vertical-align: top;
     width: 1ch;
     height: 1em;
 }
