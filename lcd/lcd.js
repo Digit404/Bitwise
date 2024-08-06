@@ -18,16 +18,10 @@ function initializePanel(panel) {
     panel.computedStyle = getComputedStyle(panel);
     panel.width = parseInt(panel.computedStyle.getPropertyValue("--width"));
     panel.height = parseInt(panel.computedStyle.getPropertyValue("--height"));
-    panel.centered =
-        panel.computedStyle.getPropertyValue("--centered") === "true";
-    panel.scroll =
-        panel.computedStyle.getPropertyValue("--scrolling") === "true";
-    panel.scrollSpeed = parseInt(
-        panel.computedStyle.getPropertyValue("--scroll-speed")
-    );
-    panel.pauseFrames = parseInt(
-        panel.computedStyle.getPropertyValue("--scroll-pause-frames")
-    );
+    panel.centered = panel.computedStyle.getPropertyValue("--centered") === "true";
+    panel.scroll = panel.computedStyle.getPropertyValue("--scrolling") === "true";
+    panel.scrollSpeed = parseInt(panel.computedStyle.getPropertyValue("--scroll-speed"));
+    panel.pauseFrames = parseInt(panel.computedStyle.getPropertyValue("--scroll-pause-frames"));
 
     // adjust panel height if necessary
     if (panel.height < panel.rows.length) {
@@ -58,9 +52,7 @@ function initializePanel(panel) {
         row.initialContent = initialContent;
         if (panel.centered) {
             let padding = Math.floor((panel.width - initialContent.length) / 2);
-            row.paddedContent = initialContent
-                .padStart(padding + initialContent.length, " ")
-                .padEnd(panel.width, " ");
+            row.paddedContent = initialContent.padStart(padding + initialContent.length, " ").padEnd(panel.width, " ");
         } else {
             row.paddedContent = initialContent.padEnd(panel.width, " ");
         }
@@ -71,15 +63,20 @@ function initializePanel(panel) {
 }
 
 function updateRow(row, string) {
-    const fragment = document.createDocumentFragment();
-    for (let char of string) {
-        const span = document.createElement("span");
-        span.classList.add("lcd-panel-char");
-        span.textContent = char;
-        fragment.appendChild(span);
+    // reuse existing spans
+    if (row.children.length !== string.length) {
+        row.textContent = ""; // clear row if span count mismatch
+        for (let char of string) {
+            const span = document.createElement("span");
+            span.classList.add("lcd-panel-char");
+            span.textContent = char;
+            row.appendChild(span);
+        }
+    } else {
+        row.querySelectorAll("span").forEach((span, index) => {
+            span.textContent = string[index];
+        });
     }
-    row.innerHTML = "";
-    row.appendChild(fragment);
 }
 
 function scrollPanel(panel, interval = 300, pauseFrames = 10) {
@@ -89,14 +86,11 @@ function scrollPanel(panel, interval = 300, pauseFrames = 10) {
         if (index <= panel.width) {
             if (!panel.scroll) return;
             for (let row of panel.rows) {
-                let rotatedString =
-                    row.paddedContent.slice(index) +
-                    row.paddedContent.slice(0, index);
+                let rotatedString = row.paddedContent.slice(index) + row.paddedContent.slice(0, index);
                 updateRow(row, rotatedString);
             }
         } else {
-            panel.scroll =
-                panel.computedStyle.getPropertyValue("--scrolling") === "true";
+            panel.scroll = panel.computedStyle.getPropertyValue("--scrolling") === "true";
         }
 
         index = (index + 1) % (panel.width + pauseFrames);
