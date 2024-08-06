@@ -30,6 +30,7 @@
     border-image: linear-gradient(90deg, #222 0%, #444 45%, #555 50%, #444 55%, #222 100%) 1;
     width: calc((1ch + calc(var(--scale) * 0.05)) * var(--width) + 2 * var(--padding));
     height: calc(var(--scale) * var(--height));
+    list-style-type: none;
 }
 
 .lcd-panel::after {

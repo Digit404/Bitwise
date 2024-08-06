@@ -6,7 +6,7 @@ for (let panel of panels) {
 
 function initializePanel(panel) {
     // store panel properties in the panel object
-    panel.rows = Array.from(panel.querySelectorAll(".row"));
+    panel.rows = Array.from(panel.children);
     panel.computedStyle = getComputedStyle(panel);
     panel.width = parseInt(panel.computedStyle.getPropertyValue("--width"));
     panel.height = parseInt(panel.computedStyle.getPropertyValue("--height"));
@@ -23,13 +23,12 @@ function initializePanel(panel) {
         // create additional rows if necessary
         const fragment = document.createDocumentFragment();
         for (let i = panel.rows.length; i < panel.height; i++) {
-            const row = document.createElement("span");
-            row.classList.add("row");
+            const row = document.createElement("li");
             row.textContent = " ".repeat(panel.width);
             fragment.appendChild(row);
         }
         panel.appendChild(fragment);
-        panel.rows = Array.from(panel.querySelectorAll(".row"));
+        panel.rows = Array.from(panel.children);
     }
 
     panel.rows.forEach((row) => {
