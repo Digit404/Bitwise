@@ -121,7 +121,7 @@ body {
 
 .button {
     font-family: var(--font-family-firacode);
-    padding: 15px 40px;;
+    padding: 15px 40px;
     font-size: var(--font-size-input);
     border-radius: var(--border-radius);
     cursor: pointer;

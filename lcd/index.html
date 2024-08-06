@@ -16,6 +16,7 @@
         .container {
             height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
@@ -27,17 +28,67 @@
             --text-align: center;
             --animation: scroll;
         }
+
+        .toggle-button:hover {
+            background-color: #fff3;
+            color: #fff;
+        }
+
+        .toggle-button.active {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .toggle-button.active:hover {
+            background-color: #fffa;
+            color: #000;
+        }
+
+        #animation-select:hover,
+        #animation-select {
+            background-color: #000;
+            color: #fff;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <ul class="lcd-panel my-panel">
+            <li>BITWISE</li>
             <li>LCD PANEL</li>
-            <li>EXAMPLE</li>
         </ul>
+        <!-- buttons to change animation / styles -->
+        <div class="button-container">
+            <button onclick="toggleBacklight()" id="backlight-button" class="button toggle-button">
+                Toggle Backlight
+            </button>
+            <!-- <select id="animation-select" class="button">
+                <option value="scroll">Scroll</option>
+                <option value="blink">Blink</option>
+                <option value="static">Static</option>
+            </select> -->
+        </div>
+
         <a id="footer" href="/">HOME</a>
     </div>
+
+    <script defer>
+        function toggleBacklight() {
+            const panel = document.querySelector('.lcd-panel');
+            panel.classList.toggle('backlit-blue-panel');
+
+            const button = document.getElementById('backlight-button');
+            button.classList.toggle('active');
+        }
+
+        // document.getElementById('animation-select').addEventListener('change', function (e) {
+        //     const panel = document.querySelector('.lcd-panel');
+        //     panel.style.setProperty('--animation', e.target.value);
+        //     updatePanelProperties(panel);
+        //     animatePanel(panel);
+        // });
+    </script>
 </body>
 
 </html>

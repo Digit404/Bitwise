@@ -5,9 +5,12 @@
 */
 
 .lcd-panel {
-    --bg: radial-gradient(circle, #892 0%, #793 100%);
+    --bg-color-1: #892;
+    --bg-color-2: #793;
+    --bg: radial-gradient(circle, var(--bg-color-1) 0%, var(--bg-color-2) 100%);
     --lcd-shadow: #0000770a;
     --text-color: #013a;
+    --inset-shadow-color: #0006;
     /* The height of a char + the margin */
     --scale: 50px;
     --padding-factor: .5;
@@ -26,11 +29,12 @@
     --scroll-pause-frames: 16;
     --blink-duration: 800ms;
     --blink-on-time: 500ms;
+    --box-shadow: 0 0 50px 10px var(--inset-shadow-color) inset;
 
     font-family: var(--font);
     background: var(--bg);
     color: var(--text-color);
-    box-shadow: 0 0 50px 10px #0006 inset;
+    box-shadow: var(--box-shadow);
     padding: var(--padding);
     font-size: calc(var(--scale) * (1 - var(--margin-percent) * 2));
     position: relative;
@@ -40,6 +44,25 @@
     min-width: calc((1ch + calc(var(--scale) * var(--margin-percent) * 2)) * var(--width) + 2 * var(--padding));
     min-height: calc(var(--scale) * var(--height));
     list-style-type: none;
+}
+
+.backlit-blue-panel {
+    --bg-color-1: #25f;
+    --bg-color-2: #22d;
+    --text-color: #ccc;
+    --lcd-shadow: #00000015;
+    --inset-shadow-color: #27f;
+}
+
+.backlit-green-panel {
+    --bg-color-1: #bc2;
+    --bg-color-2: #ce2;
+    --text-color: #013a;
+    --lcd-shadow: #00000008;
+    --inset-shadow-color: #ae2;
+    box-shadow: 
+        var(--box-shadow),
+        0 0 100px #bc21;
 }
 
 .lcd-panel::after {
