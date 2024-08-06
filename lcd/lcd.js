@@ -12,21 +12,28 @@ for (let panel of panels) {
     initializePanel(panel);
 }
 
-function initializePanel(panel) {
-    // store panel properties in the panel object
-    panel.rows = Array.from(panel.children);
+function updatePanelProperties(panel) {
     panel.computedStyle = getComputedStyle(panel);
     panel.width = parseInt(panel.computedStyle.getPropertyValue("--width"));
     panel.height = parseInt(panel.computedStyle.getPropertyValue("--height"));
-    panel.centered = panel.computedStyle.getPropertyValue("--centered") === "true";
-    panel.scroll = panel.computedStyle.getPropertyValue("--scrolling") === "true";
-    panel.scrollSpeed = parseInt(panel.computedStyle.getPropertyValue("--scroll-speed"));
+    panel.textAlign = panel.computedStyle.getPropertyValue("--text-align");
+    panel.animation = panel.computedStyle.getPropertyValue("--animation");
+    panel.scrollInterval = parseInt(panel.computedStyle.getPropertyValue("--scroll-speed")) / panel.width;
     panel.pauseFrames = parseInt(panel.computedStyle.getPropertyValue("--scroll-pause-frames"));
+    panel.blinkDuration = parseInt(panel.computedStyle.getPropertyValue("--blink-duration"));
+    panel.blinkOnTime = parseInt(panel.computedStyle.getPropertyValue("--blink-on-time"));
+}
+
+function initializePanel(panel) {
+    // store panel properties in the panel object
+    panel.rows = Array.from(panel.children);
+
+    // get initial values of panel properties
+    updatePanelProperties(panel);
 
     // adjust panel height if necessary
     if (panel.height < panel.rows.length) {
         panel.style.setProperty("--height", panel.rows.length);
-        panel.height = panel.rows.length;
     } else if (panel.height > panel.rows.length) {
         // create additional rows if necessary
         const fragment = document.createDocumentFragment();
@@ -39,27 +46,52 @@ function initializePanel(panel) {
         panel.rows = Array.from(panel.children);
     }
 
-    panel.rows.forEach((row) => {
-        // store row properties in the row object, and update the row content
-        const initialContent = row.textContent;
+    // adjust panel width if necessary
+    for (let row of panel.rows) {
+        row.initialContent = row.textContent;
+        row.length = row.initialContent.length;
 
-        // adjust panel width if necessary
-        if (initialContent.length > panel.width) {
-            panel.style.setProperty("--width", initialContent.length);
-            panel.width = initialContent.length;
+        if (row.length > panel.width) {
+            panel.style.setProperty("--width", row.length);
+        }
+    }
+
+    // update panel properties after adjusting width and height
+    updatePanelProperties(panel);
+
+    for (let row of panel.rows) {
+        // update the row content and add padding
+        switch (panel.textAlign) {
+            case "center":
+                let padding = Math.floor((panel.width - row.length) / 2);
+                row.paddedContent = row.initialContent.padStart(padding + row.initialContent.length, " ").padEnd(panel.width, " ");
+                break;
+            case "right":
+                row.paddedContent = row.initialContent.padStart(panel.width, " ");
+                break;
+            case "left":
+            default:
+                row.paddedContent = row.initialContent.padEnd(panel.width, " ");
+                break;
         }
 
-        row.initialContent = initialContent;
-        if (panel.centered) {
-            let padding = Math.floor((panel.width - initialContent.length) / 2);
-            row.paddedContent = initialContent.padStart(padding + initialContent.length, " ").padEnd(panel.width, " ");
-        } else {
-            row.paddedContent = initialContent.padEnd(panel.width, " ");
-        }
         updateRow(row, row.paddedContent);
-    });
+    }
 
-    if (panel.scroll) scrollPanel(panel, panel.scrollSpeed, panel.pauseFrames);
+    animatePanel(panel);
+}
+
+function animatePanel(panel) {
+    switch (panel.animation) {
+        case "blink":
+            blinkPanel(panel);
+            break;
+        case "scroll":
+            scrollPanel(panel);
+            break;
+        default:
+            break;
+    }
 }
 
 function updateRow(row, string) {
@@ -79,20 +111,33 @@ function updateRow(row, string) {
     }
 }
 
-function scrollPanel(panel, interval = 300, pauseFrames = 10) {
+function scrollPanel(panel) {
     let index = panel.width; // start at the end of the movement
 
     setInterval(() => {
         if (index <= panel.width) {
-            if (!panel.scroll) return;
+            if (!(panel.animation === "scroll")) return;
             for (let row of panel.rows) {
                 let rotatedString = row.paddedContent.slice(index) + row.paddedContent.slice(0, index);
                 updateRow(row, rotatedString);
             }
         } else {
-            panel.scroll = panel.computedStyle.getPropertyValue("--scrolling") === "true";
+            // get updated panel properties only when animation is stopped and centered
+            updatePanelProperties(panel);
         }
 
-        index = (index + 1) % (panel.width + pauseFrames);
-    }, interval);
+        index = (index + 1) % (panel.width + panel.pauseFrames);
+    }, panel.scrollInterval);
+}
+
+function blinkPanel(panel) {
+    setInterval(() => {
+        for (let span of panel.querySelectorAll("* > span")) {
+            span.style.color = "";
+
+            setTimeout(() => {
+                span.style.color = "transparent";
+            }, panel.blinkOnTime);
+        }
+    }, panel.blinkDuration);
 }

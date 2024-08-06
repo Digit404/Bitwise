@@ -5,7 +5,7 @@
 */
 
 .lcd-panel {
-    --bg: radial-gradient(circle, #892 0%, #693 100%);
+    --bg: radial-gradient(circle, #892 0%, #793 100%);
     --lcd-shadow: #0000770a;
     --text-color: #013a;
     /* The height of a char + the margin */
@@ -20,10 +20,12 @@
     --height: 2;
     /* Font should be defined, default monospace looks terrible  */
     --font: monospace;
-    --centered: false;
-    --scrolling: false;
-    --scroll-speed: 300ms;
-    --scroll-pause-frames: 10;
+    --text-align: left; /* left, center, right */
+    --animation: none; /* none, scroll, blink */
+    --scroll-speed: 1600ms;
+    --scroll-pause-frames: 16;
+    --blink-duration: 800ms;
+    --blink-on-time: 500ms;
 
     font-family: var(--font);
     background: var(--bg);
