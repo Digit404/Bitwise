@@ -13,6 +13,10 @@
     --width: 10;
     --height: 2;
     --font: monospace;
+    --centered: false;
+    --scroll: false;
+    --scroll-speed: 300ms;
+    --scroll-pause-frames: 10;
 
     font-family: var(--font);
     background: var(--bg);
