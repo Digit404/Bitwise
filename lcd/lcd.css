@@ -5,7 +5,7 @@
 */
 
 .lcd-panel {
-    --bg: radial-gradient(circle, #892 0%, #793 100%);
+    --bg: radial-gradient(circle, #892 0%, #693 100%);
     --lcd-shadow: #0000770a;
     --text-color: #013a;
     /* The height of a char + the margin */
@@ -35,8 +35,8 @@
     display: inline-block;
     border: solid var(--border-width);
     border-image: linear-gradient(90deg, #222 0%, #444 45%, #555 50%, #444 55%, #222 100%) 1;
-    width: calc((1ch + calc(var(--scale) * var(--margin-percent) * 2)) * var(--width) + 2 * var(--padding));
-    height: calc(var(--scale) * var(--height));
+    min-width: calc((1ch + calc(var(--scale) * var(--margin-percent) * 2)) * var(--width) + 2 * var(--padding));
+    min-height: calc(var(--scale) * var(--height));
     list-style-type: none;
 }
 
