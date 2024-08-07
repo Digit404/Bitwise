@@ -28,6 +28,9 @@
             --font: "PokemonGB", monospace;
             --text-align: center;
             --animation: scroll;
+            /* in order to use a pixel mask, you have to know how many pixels tall your font is, or it's gonna look wrong */
+            --pixel-mask-opacity: 0.5;
+            --font-pixels-per-em: 8;
         }
 
         .toggle-button:hover {
@@ -55,6 +58,10 @@
             text-align: left;
             color: #000;
         }
+
+        #input {
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -69,6 +76,9 @@
             <button onclick="toggleBacklight()" id="backlight-button" class="button toggle-button">
                 Backlight
             </button>
+            <button onclick="togglePixelMask()" id="pixelmask-button" class="button toggle-button active">
+                Pixel Mask
+            </button>
             <select id="style-select" class="button">
                 <option value="">Classic</option>
                 <option value="lcd-calc">Calculator</option>
@@ -77,25 +87,48 @@
             </select>
         </div>
 
+        <!-- <textarea name="input" id="input" cols="30" rows="5"></textarea><br>
+        <button onclick="updateDisplay()" class="button toggle-button">Update</button> -->
+
         <a id="footer" href="/tools/">TOOLS</a>
     </div>
 
     <script defer>
+        const panel = document.querySelector('.lcd-panel');
         function toggleBacklight() {
-            const panel = document.querySelector('.lcd-panel');
             panel.classList.toggle('lcd-backlit');
 
             const button = document.getElementById('backlight-button');
             button.classList.toggle('active');
         }
 
+        function togglePixelMask() {
+            let opacity = panel.style.getPropertyValue('--pixel-mask-opacity');
+            opacity = opacity === '0' ? '0.5' : '0';
+            panel.style.setProperty('--pixel-mask-opacity', opacity);
+
+            const button = document.getElementById('pixelmask-button');
+            button.classList.toggle('active');
+        }
+
         function changeStyle() {
-            const panel = document.querySelector('.lcd-panel');
             const select = document.getElementById('style-select');
             const style = select.value;
 
             panel.classList.remove('lcd-calc', 'lcd-invert', 'lcd-cheap');
             panel.classList.add(style);
+        }
+
+        function updateDisplay() {
+            const input = document.getElementById('input').value;
+            panel.innerHTML = "";
+            input.split('\n').forEach(line => {
+                const li = document.createElement('li');
+                li.textContent = line;
+                panel.appendChild(li);
+            });
+
+            initializePanel(panel);
         }
 
         document.getElementById('style-select').addEventListener('change', changeStyle);

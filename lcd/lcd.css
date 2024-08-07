@@ -31,6 +31,25 @@
     --font: monospace;
     --text-align: left; /* left, center, right */
 
+    /* pixel mask (advanced usage) */
+    --font-pixels-per-em: 8; /* how many pixels tall the pixel font is, *including* any line-spacing */
+    --font-pixel-size: calc(1em / var(--font-pixels-per-em)); /* size of a single pixel, assuming square pixels */
+    --pixel-mask-thickness-factor: .01;
+    --pixel-mask-thickness: calc(1em * var(--pixel-mask-thickness-factor));
+    --pixel-mask-opacity: 0;
+
+    /* pixel mask is defined as a conic gradient to make a grid, width is defined as a fraction of the pixel size, calculated above */
+    /* the first two values are the thickness in x and y direction. User has to provide how many pixels tall the font is */
+    --pixel-mask: 
+        conic-gradient(
+            from 90deg at 
+                var(--pixel-mask-thickness) 
+                var(--pixel-mask-thickness), 
+                black 90deg, 
+                rgba(0, 0, 0, calc(1 - var(--pixel-mask-opacity))) 
+                0
+        );
+
     /* animation */
     --animation: none; /* none, scroll, blink */
     --scroll-speed: 1600ms;
@@ -42,8 +61,17 @@
     --box-shadow: var(--crisp-shadow);
     --shadow-length: 0.10;
     --soft-shadow: 0 0 1ch calc(1ch / 5) var(--inset-shadow-color) inset;
-    --crisp-shadow: calc(var(--scale) * var(--shadow-length)) calc(var(--scale) * var(--shadow-length)) calc(var(--scale) / 20) 0 var(--inset-shadow-color) inset;
-    --text-shadow: calc(var(--scale) * var(--shadow-length)) calc(var(--scale) * var(--shadow-length)) calc(var(--scale) / 30) var(--text-shadow-color);
+    --crisp-shadow: 
+        calc(var(--scale) * var(--shadow-length)) /* x offset */
+        calc(var(--scale) * var(--shadow-length)) /* y offset */
+        calc(var(--scale) / 20) /* blur radius */
+        var(--inset-shadow-color) /* color */
+        inset;
+    --text-shadow: 
+        calc(var(--scale) * var(--shadow-length)) /* x offset */
+        calc(var(--scale) * var(--shadow-length)) /* y offset */
+        calc(var(--scale) / 30) /* blur radius */
+        var(--text-shadow-color); /* color */
 
     font-family: var(--font);
     background: var(--bg);
@@ -82,6 +110,7 @@
     right: calc(var(--border-width) * -1);
     bottom: calc(var(--border-width) * -1);
     background-image: url("https://www.bitwise.live/res/noise.png");
+    background-size: 100%;
     mix-blend-mode: multiply;
     opacity: .06;
     pointer-events: none;
@@ -89,9 +118,16 @@
 
 .lcd-panel-char {
     display: inline-block;
-    background-color: var(--lcd-shadow);
+    position: relative;
     margin: calc(var(--scale) * var(--margin-percent));
     vertical-align: top;
+    background-color: var(--lcd-shadow);
+    mask-image: var(--pixel-mask);
+    mask-size: var(--font-pixel-size) var(--font-pixel-size);
+    /* ensure that the pixel mask falls between pixels */
+    mask-position: 
+        calc(var(--pixel-mask-thickness) / -2)
+        calc(var(--pixel-mask-thickness) / -2);
     width: 1ch;
     height: 1em;
 }
@@ -133,17 +169,14 @@
     --inset-shadow-color: #115a;
     --box-shadow: var(--soft-shadow);
     /* inverted panels have shadows on the inside of the text, but I'm limited by the technology of my time */
-    text-shadow: none;
+    --text-shadow-color: #0000
 }
 
 .lcd-invert.lcd-backlit {
     --bg-color-1: #25f;
     --bg-color-2: #22d;
-    --text-color: #ccc;
+    --text-color: #eee;
     --lcd-shadow: #00000015;
     --inset-shadow-color: #27f;
-    box-shadow:
-        var(--box-shadow),
-        0 0 100px #27f2;
-    text-shadow: none;
+    --glow-color: #27f2;
 }

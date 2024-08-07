@@ -84,10 +84,10 @@ function initializePanel(panel) {
 function animatePanel(panel) {
     switch (panel.animation) {
         case "blink":
-            blinkPanel(panel);
+            panel.animationProcess = blinkPanel(panel);
             break;
         case "scroll":
-            scrollPanel(panel);
+            panel.animationProcess = scrollPanel(panel);
             break;
         default:
             break;
@@ -114,9 +114,9 @@ function updateRow(row, string) {
 function scrollPanel(panel) {
     let index = panel.width; // start at the end of the movement
 
-    setInterval(() => {
+    const scrollProcess = setInterval(() => {
         if (index <= panel.width) {
-            if (!(panel.animation === "scroll")) return;
+            if (panel.animation !== "scroll") { clearInterval(scrollProcess) };
             for (let row of panel.rows) {
                 let rotatedString = row.paddedContent.slice(index) + row.paddedContent.slice(0, index);
                 updateRow(row, rotatedString);
@@ -128,10 +128,12 @@ function scrollPanel(panel) {
 
         index = (index + 1) % (panel.width + panel.pauseFrames);
     }, panel.scrollInterval);
+
+    return scrollProcess;
 }
 
 function blinkPanel(panel) {
-    setInterval(() => {
+    const blinkProcess = setInterval(() => {
         for (let span of panel.querySelectorAll("* > span")) {
             span.style.color = "";
 
@@ -140,4 +142,6 @@ function blinkPanel(panel) {
             }, panel.blinkOnTime);
         }
     }, panel.blinkDuration);
+
+    return blinkProcess;
 }
