@@ -5,64 +5,73 @@
 */
 
 .lcd-panel {
-    --bg-color-1: #892;
-    --bg-color-2: #793;
-    --bg: radial-gradient(circle, var(--bg-color-1) 0%, var(--bg-color-2) 100%);
-    --lcd-shadow: #0000770a;
-    --text-color: #013a;
+    /* colors */
+    --bg-color-1: #893;
+    --bg-color-2: #794;
+    --lcd-shadow: #0000770c;
+    --text-color: #123c;
     --inset-shadow-color: #0006;
-    /* The height of a char + the margin */
+    --text-shadow-color: #0002;
+    --glow-color: #0000;
+    --bg: radial-gradient(circle, var(--bg-color-1) 0%, var(--bg-color-2) 100%);
+
+    /* size and scale */
     --scale: 50px;
     --padding-factor: .5;
     --border-factor: .2;
     --spacing-factor: 0.05;
     --margin-percent: 0.05;
-    --padding: calc(var(--scale) * var(--padding-factor));
-    --border-width: calc(var(--scale) * var(--border-factor));
     --width: 16;
     --height: 2;
-    /* Font should be defined, default monospace looks terrible  */
+
+    --padding: calc(var(--scale) * var(--padding-factor));
+    --border-width: calc(var(--scale) * var(--border-factor));
+
+    /* text */
     --font: monospace;
     --text-align: left; /* left, center, right */
+
+    /* animation */
     --animation: none; /* none, scroll, blink */
     --scroll-speed: 1600ms;
     --scroll-pause-frames: 16;
     --blink-duration: 800ms;
     --blink-on-time: 500ms;
-    --box-shadow: 0 0 50px 10px var(--inset-shadow-color) inset;
+
+    /* shadow */
+    --box-shadow: var(--crisp-shadow);
+    --shadow-length: 0.10;
+    --soft-shadow: 0 0 1ch calc(1ch / 5) var(--inset-shadow-color) inset;
+    --crisp-shadow: calc(var(--scale) * var(--shadow-length)) calc(var(--scale) * var(--shadow-length)) calc(var(--scale) / 20) 0 var(--inset-shadow-color) inset;
+    --text-shadow: calc(var(--scale) * var(--shadow-length)) calc(var(--scale) * var(--shadow-length)) calc(var(--scale) / 30) var(--text-shadow-color);
 
     font-family: var(--font);
     background: var(--bg);
     color: var(--text-color);
-    box-shadow: var(--box-shadow);
+    box-shadow:
+        var(--box-shadow),
+        0 0 100px var(--glow-color);
     padding: var(--padding);
     font-size: calc(var(--scale) * (1 - var(--margin-percent) * 2));
     position: relative;
     display: inline-block;
     border: solid var(--border-width);
     border-image: linear-gradient(90deg, #222 0%, #444 45%, #555 50%, #444 55%, #222 100%) 1;
-    min-width: calc((1ch + calc(var(--scale) * var(--margin-percent) * 2)) * var(--width) + 2 * var(--padding));
+    min-width: calc((1ch + var(--margin-percent) * var(--scale)) * var(--width) + 2 * var(--padding));
     min-height: calc(var(--scale) * var(--height));
     list-style-type: none;
+    text-shadow: var(--text-shadow);
 }
 
-.backlit-blue-panel {
-    --bg-color-1: #25f;
-    --bg-color-2: #22d;
-    --text-color: #ccc;
-    --lcd-shadow: #00000015;
-    --inset-shadow-color: #27f;
-}
-
-.backlit-green-panel {
-    --bg-color-1: #bc2;
-    --bg-color-2: #ce2;
-    --text-color: #013a;
+.lcd-backlit {
+    --bg-color-1: #ab1;
+    --bg-color-2: #bd1;
+    --text-color: #123b;
     --lcd-shadow: #00000008;
     --inset-shadow-color: #ae2;
-    box-shadow: 
-        var(--box-shadow),
-        0 0 100px #bc21;
+    --glow-color: #aa72;
+    --text-shadow-color: #0000;
+    --box-shadow: var(--soft-shadow);
 }
 
 .lcd-panel::after {
@@ -82,8 +91,59 @@
     display: inline-block;
     background-color: var(--lcd-shadow);
     margin: calc(var(--scale) * var(--margin-percent));
-    color: var(--text-color);
     vertical-align: top;
     width: 1ch;
     height: 1em;
+}
+
+/* Style presets */
+
+.lcd-calc {
+    --bg-color-1: #ada;
+    --bg-color-2: #8a7;
+}
+
+.lcd-calc.lcd-backlit {
+    --bg-color-1: #9cb;
+    --bg-color-2: #698;
+    --inset-shadow-color: #9cb;
+    --glow-color: #7a92;
+}
+
+.lcd-cheap {
+    --bg-color-1: #675;
+    --bg-color-2: #675;
+    --text-color: #123c;
+    --text-shadow-color: #0003;
+    --lcd-shadow: #00007712;
+}
+
+.lcd-cheap.lcd-backlit {
+    --bg-color-1: #784;
+    --bg-color-2: #784;
+    --inset-shadow-color: #9a3;
+    --text-shadow-color: #0001;
+}
+
+.lcd-invert {
+    --bg-color-1: #14e;
+    --bg-color-2: #11c;
+    --text-color: #aaa;
+    --lcd-shadow: #00000015;
+    --inset-shadow-color: #115a;
+    --box-shadow: var(--soft-shadow);
+    /* inverted panels have shadows on the inside of the text, but I'm limited by the technology of my time */
+    text-shadow: none;
+}
+
+.lcd-invert.lcd-backlit {
+    --bg-color-1: #25f;
+    --bg-color-2: #22d;
+    --text-color: #ccc;
+    --lcd-shadow: #00000015;
+    --inset-shadow-color: #27f;
+    box-shadow:
+        var(--box-shadow),
+        0 0 100px #27f2;
+    text-shadow: none;
 }

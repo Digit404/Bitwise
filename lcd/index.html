@@ -21,6 +21,7 @@
             justify-content: center;
         }
 
+        /* Define custom settings by modifying class variables */
         .my-panel {
             --scale: 5vw;
             --width: 11;
@@ -44,10 +45,15 @@
             color: #000;
         }
 
-        #animation-select:hover,
-        #animation-select {
-            background-color: #000;
-            color: #fff;
+        #style-select:hover,
+        #style-select {
+            text-align: center;
+            outline: none;
+        }
+
+        #style-select option {
+            text-align: left;
+            color: #000;
         }
     </style>
 </head>
@@ -61,33 +67,38 @@
         <!-- buttons to change animation / styles -->
         <div class="button-container">
             <button onclick="toggleBacklight()" id="backlight-button" class="button toggle-button">
-                Toggle Backlight
+                Backlight
             </button>
-            <!-- <select id="animation-select" class="button">
-                <option value="scroll">Scroll</option>
-                <option value="blink">Blink</option>
-                <option value="static">Static</option>
-            </select> -->
+            <select id="style-select" class="button">
+                <option value="">Classic</option>
+                <option value="lcd-calc">Calculator</option>
+                <option value="lcd-invert">Inverted</option>
+                <option value="lcd-cheap">Cheap</option>
+            </select>
         </div>
 
-        <a id="footer" href="/">HOME</a>
+        <a id="footer" href="/tools/">TOOLS</a>
     </div>
 
     <script defer>
         function toggleBacklight() {
             const panel = document.querySelector('.lcd-panel');
-            panel.classList.toggle('backlit-blue-panel');
+            panel.classList.toggle('lcd-backlit');
 
             const button = document.getElementById('backlight-button');
             button.classList.toggle('active');
         }
 
-        // document.getElementById('animation-select').addEventListener('change', function (e) {
-        //     const panel = document.querySelector('.lcd-panel');
-        //     panel.style.setProperty('--animation', e.target.value);
-        //     updatePanelProperties(panel);
-        //     animatePanel(panel);
-        // });
+        function changeStyle() {
+            const panel = document.querySelector('.lcd-panel');
+            const select = document.getElementById('style-select');
+            const style = select.value;
+
+            panel.classList.remove('lcd-calc', 'lcd-invert', 'lcd-cheap');
+            panel.classList.add(style);
+        }
+
+        document.getElementById('style-select').addEventListener('change', changeStyle);
     </script>
 </body>
 
