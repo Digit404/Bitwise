@@ -8,7 +8,8 @@
 
 async function initializeAllPanels() {
     const panels = document.querySelectorAll(".lcd-panel");
-    await Promise.all(Array.from(panels).map(initializePanel));
+    Array.from(panels).map(initializePanel);
+    await Promise.all(Array.from(panels).map(animatePanel));
 }
 
 function delay(ms) {
@@ -24,12 +25,17 @@ function updatePanelProperties(panel) {
     panel.textAlign = panel.computedStyle.getPropertyValue("--text-align");
     panel.animation = panel.computedStyle.getPropertyValue("--animation");
     panel.scrollSpeed = parseInt(panel.computedStyle.getPropertyValue("--scroll-speed"));
-    panel.pauseTime = parseInt(panel.computedStyle.getPropertyValue("--scroll-pause-time"));
+    panel.pauseTime = parseInt(panel.computedStyle.getPropertyValue("--animation-pause-time"));
     panel.blinkDuration = parseInt(panel.computedStyle.getPropertyValue("--blink-duration"));
-    panel.blinkOnTime = parseInt(panel.computedStyle.getPropertyValue("--blink-on-time"));
+    panel.typewriterSpeed = parseInt(panel.computedStyle.getPropertyValue("--typewriter-speed"));
 }
 
-async function initializePanel(panel) {
+function setPanelProperty(panel, property, value) {
+    panel.style.setProperty(property, value);
+    updatePanelProperties(panel);
+}
+
+function initializePanel(panel) {
     // get initial values of panel properties
     updatePanelProperties(panel);
 
@@ -79,8 +85,6 @@ async function initializePanel(panel) {
 
         updateRow(row, row.paddedContent);
     }
-
-    animatePanel(panel);
 }
 
 function updateRow(row, string) {
@@ -111,6 +115,9 @@ async function animatePanel(panel) {
             case "scroll":
                 await scrollPanel(panel);
                 break;
+            case "typewriter":
+                await typewriterPanel(panel);
+                break;
             default:
                 await delay(1000);
                 break;
@@ -119,26 +126,35 @@ async function animatePanel(panel) {
 }
 
 async function scrollPanel(panel) {
-    await delay(panel.pauseTime);
     for (let i = 0; i <= panel.width; i++) {
         for (let row of panel.rows) {
-            console.log(i)
             let rotatedString = row.paddedContent.slice(i) + row.paddedContent.slice(0, i);
             updateRow(row, rotatedString);
         }
         await delay(panel.scrollSpeed);
     }
+    await delay(panel.pauseTime);
 }
 
 async function blinkPanel(panel) {
-    for (let span of panel.querySelectorAll("* > span")) {
-        span.style.color = "transparent";
+    setPanelProperty(panel, "--text-color", "#0000");
+    setPanelProperty(panel, "--text-shadow-color", "#0000");
+    await delay(panel.blinkDuration);
+
+    setPanelProperty(panel, "--text-color", "");
+    setPanelProperty(panel, "--text-shadow-color", "");
+    await delay(panel.pauseTime / 2);
+}
+
+async function typewriterPanel(panel) {
+    Array.from(panel.rows).map(row => updateRow(row, " ".repeat(panel.width)));
+    for (let row of panel.rows) {
+        for (let i = 0; i <= row.paddedContent.length; i++) {
+            updateRow(row, row.paddedContent.slice(0, i) + " ".repeat(panel.width - i));
+            await delay(panel.typewriterSpeed);
+        }
     }
-    await delay(panel.blinkOnTime);
-    for (let span of panel.querySelectorAll("* > span")) {
-        span.style.color = "";
-    }
-    await delay(panel.blinkDuration - panel.blinkOnTime);
+    await delay(panel.pauseTime);
 }
 
 initializeAllPanels();

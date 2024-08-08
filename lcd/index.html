@@ -14,7 +14,6 @@
     <script src="/lcd/lcd.js" defer></script>
     <style>
         .container {
-            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -85,21 +84,23 @@
                 <option value="lcd-invert">Inverted</option>
                 <option value="lcd-cheap">Cheap</option>
             </select>
-            <!-- <select id="animation-select" class="button select">
+            <select id="animation-select" class="button select">
                 <option value="scroll">Scroll</option>
                 <option value="blink">Blink</option>
-                <option value="static">Static</option>
-            </select> -->
+                <option value="typewriter">Typewriter</option>
+                <option value="none">Static</option>
+            </select>
         </div>
-
-        <!-- <textarea name="input" id="input" cols="30" rows="5"></textarea><br>
-        <button onclick="updateDisplay()" class="button">Update</button> -->
+        
+        <textarea name="input" id="input" cols="30" rows="5"></textarea><br>
+        <button onclick="updateDisplay()" class="button">Update</button>
 
         <a id="footer" href="/tools/">TOOLS</a>
     </div>
 
     <script defer>
         const panel = document.querySelector('.lcd-panel');
+
         function toggleBacklight() {
             panel.classList.toggle('lcd-backlit');
 
@@ -108,8 +109,8 @@
         }
 
         function togglePixelMask() {
-            let opacity = panel.style.getPropertyValue('--pixel-mask-opacity');
-            opacity = opacity === '0' ? '0.5' : '0';
+            let opacity = panel.computedStyle.getPropertyValue('--pixel-mask-opacity');
+            opacity = 0.5 - opacity;
             panel.style.setProperty('--pixel-mask-opacity', opacity);
 
             const button = document.getElementById('pixelmask-button');
@@ -133,12 +134,18 @@
 
         function updateDisplay() {
             const input = document.getElementById('input').value;
+            const lines = input.split('\n');
             panel.innerHTML = "";
-            input.split('\n').forEach(line => {
+            lines.forEach(line => {
                 const li = document.createElement('li');
                 li.textContent = line;
                 panel.appendChild(li);
             });
+
+            const maxLength = Math.max(...lines.map(line => line.length));
+
+            panel.style.setProperty("--height", 2);
+            panel.style.setProperty("--width", Math.max(maxLength + 2, 10));
 
             initializePanel(panel);
         }
