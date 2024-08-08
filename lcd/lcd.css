@@ -52,8 +52,8 @@
 
     /* animation */
     --animation: none; /* none, scroll, blink */
-    --scroll-speed: 1600ms;
-    --scroll-pause-frames: 16;
+    --scroll-speed: 150ms;
+    --scroll-pause-time: 2000ms;
     --blink-duration: 800ms;
     --blink-on-time: 500ms;
 

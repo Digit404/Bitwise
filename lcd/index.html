@@ -48,13 +48,13 @@
             color: #000;
         }
 
-        #style-select:hover,
-        #style-select {
+        .select:hover,
+        .select {
             text-align: center;
             outline: none;
         }
 
-        #style-select option {
+        .select option {
             text-align: left;
             color: #000;
         }
@@ -79,16 +79,21 @@
             <button onclick="togglePixelMask()" id="pixelmask-button" class="button toggle-button active">
                 Pixel Mask
             </button>
-            <select id="style-select" class="button">
+            <select id="style-select" class="button select">
                 <option value="">Classic</option>
                 <option value="lcd-calc">Calculator</option>
                 <option value="lcd-invert">Inverted</option>
                 <option value="lcd-cheap">Cheap</option>
             </select>
+            <!-- <select id="animation-select" class="button select">
+                <option value="scroll">Scroll</option>
+                <option value="blink">Blink</option>
+                <option value="static">Static</option>
+            </select> -->
         </div>
 
         <!-- <textarea name="input" id="input" cols="30" rows="5"></textarea><br>
-        <button onclick="updateDisplay()" class="button toggle-button">Update</button> -->
+        <button onclick="updateDisplay()" class="button">Update</button> -->
 
         <a id="footer" href="/tools/">TOOLS</a>
     </div>
@@ -119,6 +124,13 @@
             panel.classList.add(style);
         }
 
+        function changeAnimation() {
+            const select = document.getElementById('animation-select');
+            const animation = select.value;
+
+            panel.style.setProperty('--animation', animation);
+        }
+
         function updateDisplay() {
             const input = document.getElementById('input').value;
             panel.innerHTML = "";
@@ -132,6 +144,7 @@
         }
 
         document.getElementById('style-select').addEventListener('change', changeStyle);
+        document.getElementById('animation-select').addEventListener('change', changeAnimation);
     </script>
 </body>
 

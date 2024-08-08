@@ -6,28 +6,30 @@
 
 // Initialize all LCD panels on the page
 
-const panels = document.querySelectorAll(".lcd-panel");
+async function initializeAllPanels() {
+    const panels = document.querySelectorAll(".lcd-panel");
+    await Promise.all(Array.from(panels).map(initializePanel));
+}
 
-for (let panel of panels) {
-    initializePanel(panel);
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function updatePanelProperties(panel) {
+    // store panel properties in the panel object
+    panel.rows = Array.from(panel.children);
     panel.computedStyle = getComputedStyle(panel);
     panel.width = parseInt(panel.computedStyle.getPropertyValue("--width"));
     panel.height = parseInt(panel.computedStyle.getPropertyValue("--height"));
     panel.textAlign = panel.computedStyle.getPropertyValue("--text-align");
     panel.animation = panel.computedStyle.getPropertyValue("--animation");
-    panel.scrollInterval = parseInt(panel.computedStyle.getPropertyValue("--scroll-speed")) / panel.width;
-    panel.pauseFrames = parseInt(panel.computedStyle.getPropertyValue("--scroll-pause-frames"));
+    panel.scrollSpeed = parseInt(panel.computedStyle.getPropertyValue("--scroll-speed"));
+    panel.pauseTime = parseInt(panel.computedStyle.getPropertyValue("--scroll-pause-time"));
     panel.blinkDuration = parseInt(panel.computedStyle.getPropertyValue("--blink-duration"));
     panel.blinkOnTime = parseInt(panel.computedStyle.getPropertyValue("--blink-on-time"));
 }
 
-function initializePanel(panel) {
-    // store panel properties in the panel object
-    panel.rows = Array.from(panel.children);
-
+async function initializePanel(panel) {
     // get initial values of panel properties
     updatePanelProperties(panel);
 
@@ -81,19 +83,6 @@ function initializePanel(panel) {
     animatePanel(panel);
 }
 
-function animatePanel(panel) {
-    switch (panel.animation) {
-        case "blink":
-            panel.animationProcess = blinkPanel(panel);
-            break;
-        case "scroll":
-            panel.animationProcess = scrollPanel(panel);
-            break;
-        default:
-            break;
-    }
-}
-
 function updateRow(row, string) {
     // reuse existing spans
     if (row.children.length !== string.length) {
@@ -111,37 +100,45 @@ function updateRow(row, string) {
     }
 }
 
-function scrollPanel(panel) {
-    let index = panel.width; // start at the end of the movement
+async function animatePanel(panel) {
+    while (true) {
+        updatePanelProperties(panel);
 
-    const scrollProcess = setInterval(() => {
-        if (index <= panel.width) {
-            if (panel.animation !== "scroll") { clearInterval(scrollProcess) };
-            for (let row of panel.rows) {
-                let rotatedString = row.paddedContent.slice(index) + row.paddedContent.slice(0, index);
-                updateRow(row, rotatedString);
-            }
-        } else {
-            // get updated panel properties only when animation is stopped and centered
-            updatePanelProperties(panel);
+        switch (panel.animation) {
+            case "blink":
+                await blinkPanel(panel);
+                break;
+            case "scroll":
+                await scrollPanel(panel);
+                break;
+            default:
+                await delay(1000);
+                break;
         }
-
-        index = (index + 1) % (panel.width + panel.pauseFrames);
-    }, panel.scrollInterval);
-
-    return scrollProcess;
+    }
 }
 
-function blinkPanel(panel) {
-    const blinkProcess = setInterval(() => {
-        for (let span of panel.querySelectorAll("* > span")) {
-            span.style.color = "";
-
-            setTimeout(() => {
-                span.style.color = "transparent";
-            }, panel.blinkOnTime);
+async function scrollPanel(panel) {
+    await delay(panel.pauseTime);
+    for (let i = 0; i <= panel.width; i++) {
+        for (let row of panel.rows) {
+            console.log(i)
+            let rotatedString = row.paddedContent.slice(i) + row.paddedContent.slice(0, i);
+            updateRow(row, rotatedString);
         }
-    }, panel.blinkDuration);
-
-    return blinkProcess;
+        await delay(panel.scrollSpeed);
+    }
 }
+
+async function blinkPanel(panel) {
+    for (let span of panel.querySelectorAll("* > span")) {
+        span.style.color = "transparent";
+    }
+    await delay(panel.blinkOnTime);
+    for (let span of panel.querySelectorAll("* > span")) {
+        span.style.color = "";
+    }
+    await delay(panel.blinkDuration - panel.blinkOnTime);
+}
+
+initializeAllPanels();
