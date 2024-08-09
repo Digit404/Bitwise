@@ -59,18 +59,19 @@
 
     /* shadow */
     --box-shadow: var(--crisp-shadow);
-    --shadow-length: 0.10;
+    --shadow-length: 0.15;
+    --shadow-blur: 0.3; 
     --soft-shadow: 0 0 1ch calc(1ch / 5) var(--inset-shadow-color) inset;
     --crisp-shadow: 
-        calc(var(--scale) * var(--shadow-length)) /* x offset */
-        calc(var(--scale) * var(--shadow-length)) /* y offset */
-        calc(var(--scale) / 20) /* blur radius */
+        calc(1ch * var(--shadow-length)) /* x offset */
+        calc(1ch * var(--shadow-length)) /* y offset */
+        calc(1ch * var(--shadow-blur) / 10) /* blur radius */
         var(--inset-shadow-color) /* color */
         inset;
     --text-shadow: 
-        calc(var(--scale) * var(--shadow-length)) /* x offset */
-        calc(var(--scale) * var(--shadow-length)) /* y offset */
-        calc(var(--scale) / 30) /* blur radius */
+        calc(1ch * var(--shadow-length)) /* x offset */
+        calc(1ch * var(--shadow-length)) /* y offset */
+        calc(1ch * var(--shadow-blur) / 10) /* blur radius */
         var(--text-shadow-color); /* color */
 
     font-family: var(--font);
