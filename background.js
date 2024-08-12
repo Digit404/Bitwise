@@ -66,7 +66,7 @@ function setBgStyles(bg) {
 
 function setVignetteStyles(vignette) {
     vignette.style.background =
-        "url(https://www.bitwise.live/res/vignette.png) center center fixed";
+        "radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,.9) 100%)";
     vignette.style.opacity = `${vignetteOpacity}`;
     vignette.style.backgroundSize = "100% 100%";
     vignette.style.backgroundPosition = "center";
@@ -112,5 +112,7 @@ function moveBackground() {
     animate();
 }
 
-createBoilerplate();
-moveBackground();
+document.addEventListener("DOMContentLoaded", () => {
+    createBoilerplate();
+    moveBackground();
+});
