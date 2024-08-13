@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Apache NiFi Overview</title>
-    <link rel="shortcut icon" href="res/favicon.png" type="image/png">
+    <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
@@ -17,6 +17,8 @@
         }
 
         body {
+            display: block;
+            flex-direction: column;
             font-family: var(--font-main);
             line-height: 1.6;
             margin: 0;
@@ -27,8 +29,7 @@
         header {
             text-align: center;
             padding: 20px;
-            background: #07f1;
-
+            background: linear-gradient(45deg, #07f2, #3dd2);
         }
 
         header h1 {
@@ -38,15 +39,16 @@
         }
 
         header img {
-            width: 25%;
+            width: 30rem;
+            max-width: 100%;
         }
 
         main {
             max-width: 800px;
             background-color: #fff;
             margin: auto;
-            padding: 20px 100px 100px 100px;
-            margin-bottom: 100px;
+            padding: 100px;
+            padding-top: 20px;
         }
 
         code {
@@ -76,8 +78,8 @@
             color: #555;
         }
 
-        img {
-            max-width: 100%;
+        figure img {
+            width: 100%;
             display: block;
             margin: 20px auto;
             margin-bottom: 0;
@@ -121,6 +123,24 @@
             color: #555;
             text-align: center;
             margin-top: 5px;
+        }
+
+        @media screen and (max-width: 800px) {
+            main {
+                padding: 20px;
+            }
+
+            header img {
+                width: 50%;
+            }
+
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            figure {
+                margin: 0;
+            }
         }
     </style>
 </head>
@@ -182,7 +202,7 @@
                 processor, which is the workhorse of the flow.
             </p>
             <figure>
-                <img src="https://imgur.com/5119b3t.png" alt="Component Palette" style="max-width: 700px" />
+                <img src="https://imgur.com/5119b3t.png" alt="Component Palette" />
             </figure>
             <h3>Processors</h3>
             <p>
@@ -334,8 +354,8 @@
             </p>
             <blockquote class="tip fun-fact">
                 <p>
-                    I don't know why there's always at least nine services named DBCPConnectionPool or which one
-                    actually has the database connection.
+                    I can't read your mind, and I don't know why there's always at least nine services named
+                    DBCPConnectionPool or which one actually has the database connection.
                 </p>
             </blockquote>
             <h3>Parameters</h3>
