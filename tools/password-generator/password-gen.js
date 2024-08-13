@@ -361,7 +361,9 @@ window.copy = copy;
 // Intervals
 
 function resize() {
-    selectBanks.style.left = inputBox.offsetLeft - selectBanks.offsetWidth + 1 + "px";
+    if (window.innerWidth >= 768) {
+        selectBanks.style.left = (inputBox.offsetLeft - selectBanks.offsetWidth + 1) + "px";
+    }
 };
 
 setInterval(resize, 10);

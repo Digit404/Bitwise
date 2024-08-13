@@ -9,21 +9,71 @@
     <link rel="shortcut icon" href="res/favicon.png" type="image/png">
     <link rel="stylesheet" href="style.css">
     <script src="background.js" defer></script>
+    <style>
+        .card-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            text-align: left;
+            margin-bottom: 100px;
+        }
+
+        .tool-card {
+            background-color: #111;
+            border: 2px solid white;
+            width: 60%;
+            padding: 20px;
+            margin: 10px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+            color: white;
+            text-decoration: none;
+        }
+
+        .tool-card:hover {
+            transform: scale(1.05);
+            color: #111;
+            background-color: white;
+        }
+
+        .big-title {
+            margin: 100px;
+        }
+
+        @media (max-width: 800px) {
+            .tool-card {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
-
     <h1 class="big-title">TOOLS</h1>
-    <div class="button-container">
-        <a href="/tools/background/"><button class="button mainButton">BACKGROUND</button></a>
-        <a href="/tools/list-maker/"><button class="button mainButton">LIST MAKER</button></a>
-        <a href="/tools/password-generator/"><button class="button mainButton">PASSWORD GENERATOR</button></a>
-        <a href="/tools/list-sort/"><button class="button mainButton">LIST SORTER</button></a>
-        <a href="/lcd/"><button class="button mainButton">LCD CSS</button></a>
+    <div class="card-container">
+        <a class="tool-card" href="/tools/password-generator/">
+            <h1>PASSWORD GENERATOR</h1>
+            <p>Generates secure, easy to pronounce, and easy to remember passwords using a modular word bank</p>
+        </a>
+        <a class="tool-card" href="/tools/list-sort/">
+            <h1>LIST SORTER</h1>
+            <p>Sorts items by presenting individual pairs of items to the user to compare</p>
+        </a>
+        <a class="tool-card" href="/tools/list-formatter/">
+            <h1>LIST FORMATTER</h1>
+            <p>Format lists of strings using delimiters</p>
+        </a>
+        <a class="tool-card" href="/tools/background/">
+            <h1>BACKGROUND DEMO</h1>
+            <p>Test the scrolling numbers background</p>
+        </a>
+        <a class="tool-card" href="/lcd/">
+            <h1>LCD PANEL DEMO</h1>
+            <p>A simple LCD panel rendered using CSS and HTML</p>
+        </a>
     </div>
-
     <a id="footer" href="/">HOME</a>
-
 </body>
 
 </html>

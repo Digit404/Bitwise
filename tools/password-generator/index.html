@@ -18,10 +18,6 @@
             margin-bottom: 5%;
         }
 
-        #content {
-            min-height: 1500px;
-        }
-
         .label {
             margin-bottom: 1vh;
             margin-top: 2vh;
@@ -41,7 +37,6 @@
         /* .selection:hover {
             background-color: #202020;
         } */
-
         #banks {
             position: absolute;
             padding: 1vw;
@@ -64,6 +59,7 @@
         #inputBox {
             border: 1px solid;
             border-radius: 0px 10px 10px 10px;
+            max-width: 97%;
         }
 
         #outbox {
@@ -100,14 +96,38 @@
             transform: translate(-50%, -50%);
             text-align: center;
         }
+
+        #copyButton {
+            margin-bottom: 100px;
+        }
+
+        @media (max-width: 768px) {
+
+            /* Adjust breakpoint as needed */
+            #banks {
+                border-radius: 10px 10px 0 0;
+                position: relative;
+                width: 97%;
+            }
+
+            #inputBox {
+                border-radius: 0 0 10px 10px;
+                width: 97%;
+            }
+
+            .title {
+                font-size: 2em;
+            }
+
+            #lengthSlider {
+                width: 80%;
+            }
+        }
     </style>
 </head>
 
 <body>
-
     <h1 class="title">PASSWORD GENERATOR</h1>
-    <p class="subtitle">Generates secure, easy to pronounce, and easy to remember passwords using a modular word
-        bank</p>
     <div class="label">
         <label for="inputBox">Word Bank</label>
     </div>
@@ -139,7 +159,6 @@
         </div>
     </div>
     <script src="/tools/password-generator/password-gen.js"></script>
-
 </body>
 
 </html>
