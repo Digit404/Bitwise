@@ -86,7 +86,7 @@
     display: inline-block;
     border: solid var(--border-width);
     border-image: linear-gradient(90deg, #222 0%, #444 45%, #555 50%, #444 55%, #222 100%) 1;
-    min-width: calc((1ch + var(--margin-percent) * var(--scale)) * var(--width) + 2 * var(--padding));
+    min-width: calc((1ch + (var(--margin-percent) * 2) * var(--scale)) * var(--width) + var(--padding));
     min-height: calc(var(--scale) * var(--height));
     list-style-type: none;
     text-shadow: var(--text-shadow);
