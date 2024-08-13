@@ -65,8 +65,7 @@ function setBgStyles(bg) {
 }
 
 function setVignetteStyles(vignette) {
-    vignette.style.background =
-        "radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,.9) 100%)";
+    vignette.style.background = "radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,.9) 100%)";
     vignette.style.opacity = `${vignetteOpacity}`;
     vignette.style.backgroundSize = "100% 100%";
     vignette.style.backgroundPosition = "center";
@@ -102,9 +101,7 @@ function moveBackground() {
             bgPosition = 0;
         }
 
-        bgElement.style.transform = `translateX(${bgPosition}px) translateY(${
-            scrollTop * parallaxFactor
-        }px)`;
+        bgElement.style.transform = `translateX(${bgPosition}px) translateY(${scrollTop * parallaxFactor}px)`;
 
         requestAnimationFrame(animate);
     }
@@ -112,7 +109,5 @@ function moveBackground() {
     animate();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    createBoilerplate();
-    moveBackground();
-});
+createBoilerplate();
+moveBackground();
