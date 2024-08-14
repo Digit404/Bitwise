@@ -10,10 +10,15 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
         :root {
-            --primary-color: #07f;
-            --secondary-color: #3dd;
             --font-main: "Open Sans", "Roboto", sans-serif;
             --font-mono: "Cascadia Code", monospace;
+            --primary-color: #07f;
+            --secondary-color: #3dd;
+            --body-color: #f7f7f7;
+            --background-color: #fff;
+            --code-bg: #eee;
+            --text-color: #333;
+            --fig-color: #555;
         }
 
         body {
@@ -23,7 +28,17 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #f7f7f7;
+            background-color: var(--body-color);
+            color: var(--text-color);
+        }
+
+        body.dark {
+            --primary-color: #47f;
+            --body-color: #222;
+            --background-color: #222;
+            --text-color: #f7f7f7;
+            --code-bg: #333;
+            --fig-color: #ccc;
         }
 
         header {
@@ -45,24 +60,28 @@
 
         main {
             max-width: 800px;
-            background-color: #fff;
+            background-color: var(--background-color);
             margin: auto;
             padding: 100px;
             padding-top: 20px;
         }
 
         code {
-            background: #eee;
-            color: #333;
+            background: var(--code-bg);
+            color: var(--text-color);
             font-family: var(--font-mono);
             padding: 5px;
             border-radius: 5px;
         }
 
-        h1,
-        h2,
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.75rem;
+        }
+
         h3 {
-            color: #333;
+            color: var(--text-color);
+            font-size: 1.25rem;
         }
 
         blockquote {
@@ -75,7 +94,7 @@
         blockquote p {
             display: inline;
             font-size: 1rem;
-            color: #555;
+            color: var(--fig-color);
         }
 
         figure img {
@@ -120,9 +139,27 @@
 
         figcaption {
             font-size: 0.875rem;
-            color: #555;
+            color: var(--fig-color);
             text-align: center;
             margin-top: 5px;
+        }
+
+        .button {
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        #dark-mode-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            font-family: "Material Symbols Rounded";
+            font-size: 2rem;
         }
 
         @media screen and (max-width: 800px) {
@@ -145,9 +182,9 @@
     </style>
 </head>
 
-<body>
+<body class="">
     <header>
-        <img src="https://imgur.com/8BNX6dw.png" alt="NiFi logo" />
+        <img src="res/nifi-logo.png" alt="NiFi logo" />
         <h1>Overview</h1>
     </header>
     <main>
@@ -192,7 +229,7 @@
         <hr />
         <section>
             <figure>
-                <img src="https://imgur.com/OcXpXhi.png" alt="Reject modernity" />
+                <img src="res/reject-modernity.png" alt="Reject modernity" />
                 <figcaption>Why use a language when you could have colorful shapes</figcaption>
             </figure>
             <h2>Components</h2>
@@ -202,7 +239,7 @@
                 processor, which is the workhorse of the flow.
             </p>
             <figure>
-                <img src="https://imgur.com/5119b3t.png" alt="Component Palette" />
+                <img src="res/component-palette.png" alt="Component Palette" />
             </figure>
             <h3>Processors</h3>
             <p>
@@ -231,7 +268,7 @@
                 just click the JSON tag and see all the options applicable.
             </p>
             <figure>
-                <img src="https://imgur.com/PZzXvbh.png" alt="All processors" />
+                <img src="res/all-processors.png" alt="All processors" />
             </figure>
             <h3>Properties—Configuring Processors</h3>
             <p>
@@ -240,7 +277,7 @@
                 clicking it.
             </p>
             <figure>
-                <img src="https://imgur.com/hdWygYS.png" alt="InvokeHTTP" />
+                <img src="res/invokehttp.png" alt="InvokeHTTP" />
             </figure>
             <p>
                 As you can see, there are a lot of properties, most of which you can safely ignore. The necessary ones
@@ -275,7 +312,7 @@
                 </p>
             </blockquote>
             <figure>
-                <img src="https://imgur.com/VSSzO8B.png" alt="InvokeHTTP Relationships" />
+                <img src="res/invokehttp-relationships.png" alt="InvokeHTTP Relationships" />
             </figure>
             <p>
                 When you make a connection, the processor needs to know what output route to get the data from. For most
@@ -297,7 +334,7 @@
                 is very useful for debugging.
             </p>
             <figure>
-                <img src="https://imgur.com/qSf5Eyh.png" alt="InvokeHTTP Error" />
+                <img src="res/invokehttp-error.png" alt="InvokeHTTP Error" />
             </figure>
             <p>
                 If a processor has an error, it will display a little red icon in the corner for about five minutes
@@ -333,7 +370,7 @@
                 <p>You should backup your templates often, because, as mentioned above, there is no "undo" function.</p>
             </blockquote>
             <figure>
-                <img src="https://imgur.com/ccqXKFv.png" alt="Controller Services" />
+                <img src="res/controller-services.png" alt="Controller Services" />
             </figure>
             <h3>Controller Services</h3>
             <p>
@@ -370,7 +407,7 @@
         <hr />
         <section>
             <figure>
-                <img src="https://imgur.com/ZuH4UGE.png" alt="Tidy Up">
+                <img src="res/tidy-up.png" alt="Tidy Up">
             </figure>
             <h2>Tidying up</h2>
             <p>NiFi has plenty of features you can use to make your flow more readable:</p>
@@ -414,6 +451,24 @@
             </p>
         </section>
     </main>
+    <button class="button" id="dark-mode-button">light_mode</button>
 </body>
+
+<script>
+    const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const darkModeButton = document.getElementById('dark-mode-button');
+
+    if (darkMode) {
+        toggleDarkMode();
+    }
+
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark');
+        darkModeButton.textContent = document.body.classList.contains('dark') ? 'dark_mode' : 'light_mode';
+    }
+
+    darkModeButton.addEventListener('click', toggleDarkMode);
+    
+</script>
 
 </html>
