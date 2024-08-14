@@ -13,12 +13,23 @@
             --font-main: "Open Sans", "Roboto", sans-serif;
             --font-mono: "Cascadia Code", monospace;
             --primary-color: #07f;
-            --secondary-color: #3dd;
+            --secondary-color: #2cc;
             --body-color: #f7f7f7;
             --background-color: #fff;
             --code-bg: #eee;
             --text-color: #333;
-            --fig-color: #555;
+            --fig-color: #0009;
+            --reading-width: 800px;
+        }
+
+        body.dark {
+            --primary-color: #47f;
+            --secondary-color: #3dd;
+            --body-color: #222;
+            --background-color: #222;
+            --text-color: #eee;
+            --code-bg: #333;
+            --fig-color: #fffb;
         }
 
         body {
@@ -30,15 +41,7 @@
             padding: 0;
             background-color: var(--body-color);
             color: var(--text-color);
-        }
-
-        body.dark {
-            --primary-color: #47f;
-            --body-color: #222;
-            --background-color: #222;
-            --text-color: #f7f7f7;
-            --code-bg: #333;
-            --fig-color: #ccc;
+            transition: all 0.3s;
         }
 
         header {
@@ -59,11 +62,11 @@
         }
 
         main {
-            max-width: 800px;
+            max-width: var(--reading-width);
             background-color: var(--background-color);
             margin: auto;
-            padding: 100px;
-            padding-top: 20px;
+            padding: 20px 100px;
+            transition: inherit;
         }
 
         code {
@@ -85,16 +88,30 @@
         }
 
         blockquote {
-            background: #1111;
-            border-left: 10px solid #ccc;
-            margin: 1.5em 10px;
-            padding: 0.5em 10px;
+            --color: #999;
+            --splash-text: "";
+            border-left: 5px solid var(--color);
+            background: color-mix(in srgb, var(--color) 15%, transparent);
+            padding: 20px;
+            margin: 20px 0;
         }
 
         blockquote p {
             display: inline;
             font-size: 1rem;
             color: var(--fig-color);
+        }
+
+        /* header for block quote */
+        blockquote:before {
+            content: var(--splash-text);
+            white-space: pre;
+            font-family: var(--font-main), "Material Symbols Rounded";
+            color: var(--color);
+            font-size: 1.25rem;
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
 
         figure img {
@@ -104,39 +121,6 @@
             margin-bottom: 0;
         }
 
-        nobr {
-            white-space: nowrap;
-        }
-
-        .tip {
-            border-left: 5px solid var(--primary-color);
-            background: #07f2;
-            padding: 20px;
-            margin: 20px 0;
-            position: relative;
-        }
-
-        .fun-fact {
-            border-left: 5px solid var(--secondary-color);
-            background: #3dd2;
-        }
-
-        .tip:before {
-            content: "\e0f0  Tip";
-            white-space: pre;
-            font-family: var(--font-main), "Material Symbols Rounded";
-            color: var(--primary-color);
-            font-size: large;
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .fun-fact:before {
-            content: "\ea65  Fun Fact";
-            color: var(--secondary-color);
-        }
-
         figcaption {
             font-size: 0.875rem;
             color: var(--fig-color);
@@ -144,12 +128,37 @@
             margin-top: 5px;
         }
 
-        .button {
+        button {
             background-color: var(--primary-color);
             border: none;
             border-radius: 10px;
             cursor: pointer;
             color: #fff;
+        }
+
+        a {
+            color: var(--text-color);
+            font-weight: bolder;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            color: var(--primary-color);
+        }
+
+        .tip {
+            --color: var(--primary-color);
+            --splash-text: "\e0f0  Tip";
+        }
+
+        .fun-fact {
+            --color: var(--secondary-color);
+            --splash-text: "\ea65  Fun Fact";
+        }
+
+        nobr {
+            white-space: nowrap;
         }
 
         #dark-mode-button {
@@ -246,6 +255,8 @@
                 Processors are the nodes in the system that actually do the work. They are generally designed to do one
                 thing to a FlowFile. Think of each of these as one function call. You may be wondering, "Why create a
                 complicated flow when the same process would be much simpler to make in a real programming language?"
+            </p>
+            <p>
                 Anyway, processors extract, transform, and load the FlowFiles. Processor functions include pulling data
                 from APIs or databases, routing FlowFiles based on its attributes, running a JSON transformation
                 routine, and even running scripts.
@@ -257,8 +268,7 @@
             <blockquote class="tip">
                 <p>
                     Now's a good time to bring up that if you're stressing about being able to use a bunch of handy
-                    keyboard shortcuts—don't worry! NiFi has virtually <em>none</em>—not even undo! Be very careful with
-                    the flow!
+                    keyboard shortcuts—don't worry! NiFi has virtually <em>none</em>—not even undo!
                 </p>
             </blockquote>
             <p>
@@ -449,11 +459,16 @@
                 export your flows, and name your controller services. Just don't mess with my flow and I won't mess with
                 yours.
             </p>
+            <blockquote>
+                <p>
+                    Confused? That's the idea. Read the <a href="https://nifi.apache.org/documentation/v2/">official
+                    documentation</a> for further information.
+                </p>
+            </blockquote>
         </section>
     </main>
-    <button class="button" id="dark-mode-button">light_mode</button>
+    <button id="dark-mode-button">light_mode</button>
 </body>
-
 <script>
     const darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const darkModeButton = document.getElementById('dark-mode-button');
@@ -468,7 +483,7 @@
     }
 
     darkModeButton.addEventListener('click', toggleDarkMode);
-    
+
 </script>
 
 </html>
