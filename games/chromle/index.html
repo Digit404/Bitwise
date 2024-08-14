@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chromle</title>
+    <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Fira Code', monospace;
+            background-color: #000;
+            color: #fff;
+            justify-content: center;
+        }
+
+        #main-title {
+            position: absolute;
+            font-size: 10em;
+            top: 20%;
+            margin: 0;
+            padding: 20px 50px;
+            border-radius: 20px;
+            background: #1118;
+            backdrop-filter: invert(1);
+            font-family: "Permanent Marker";
+            transition: scale 3s ease-in-out, transform 3s ease-in-out;
+        }
+
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            display: none;
+        }
+
+        #bg-left {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background-color: #000;
+            z-index: -1;
+            transition: background-color 1s linear;
+        }
+
+        #bg-right {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background-color: #000;
+            z-index: -1;
+            transition: background-color 1s linear;
+        }
+
+        .countdown {
+            position: absolute;
+            font-size: 5em;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: "Permanent Marker";
+            opacity: 0;
+            animation: sophisticated-animation 1.2s forwards;
+            z-index: 2;
+        }
+
+        .button {
+            font-size: 2em;
+            padding: 20px 30px;
+            border: none;
+            border-radius: 20px;
+            background: #111a;
+            backdrop-filter: invert(1);
+            color: #fff;
+            cursor: pointer;
+            font-family: monospace;
+        }
+
+        #play-button {
+            position: absolute;
+            font-size: 2em;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 30px;
+            border: none;
+            border-radius: 20px;
+            background: #111a;
+            backdrop-filter: invert(1);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .guess-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 5rem;
+            padding: 20px 30px;
+            border: none;
+            border-radius: 20px;
+            background: #111a;
+            backdrop-filter: invert(1);
+            font-family: "monospace";
+            color: #fff;
+        }
+
+        #color-guess {
+            font-size: 5rem;
+            overflow: hidden;
+            border: none;
+            border-radius: 20px;
+            background: #0000;
+            font-family: "monospace";
+            align-items: baseline;
+            color: #fff;
+            cursor: pointer;
+            resize: none;
+        }
+
+        #color-guess:focus {
+            outline: none;
+        }
+
+        #submit-button {
+            font-size: 2em;
+            padding: 20px 30px;
+            border: none;
+            border-radius: 20px;
+            margin-top: 50px;
+            background: #111a;
+            backdrop-filter: invert(1);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        @keyframes sophisticated-animation {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(4);
+            }
+
+            10% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            90% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="bg-left"></div>
+    <div id="bg-right"></div>
+    <div class="screen" id="start-screen" style="display: flex;">
+        <h1 id="main-title">Chromle</h1>
+        <button id="play-button">Start</button>
+    </div>
+    <div class="screen" id="game-screen">
+        <span class="guess-box">#<textarea id="color-guess" rows="1" cols="6" maxlength="6"></textarea></span>
+        <button id="submit-button">Guess</button>
+    </div>
+    <script>
+        const title = document.querySelector('#main-title');
+        const bgLeft = document.querySelector('#bg-left');
+        const bgRight = document.querySelector('#bg-right');
+        const startScreen = document.querySelector('#start-screen');
+        const gameScreen = document.querySelector('#game-screen');
+
+        bgLeft.style.transition = 'background-color 3s linear';
+        bgRight.style.transition = 'background-color 3s linear';
+
+        function flashBackground() {
+            bgLeft.style.backgroundColor = getRandomColor();
+            bgRight.style.backgroundColor = getRandomColor();
+            title.style.scale = Math.random() * 0.5 + 1;
+            title.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+        }
+
+        const startScene = setInterval(flashBackground, 3000);
+
+        setTimeout(() => {
+            flashBackground();
+        }, 0);
+
+        function getRandomColor() {
+            const hex = Math.floor(Math.random() * 4096).toString(16);
+            return '#' + ('000' + hex).slice(-3);
+        }
+
+        document.querySelector('#play-button').addEventListener('click', () => {
+            bgLeft.style.transition = 'background-color 1s linear';
+            bgRight.style.transition = 'background-color 1s linear';
+            clearInterval(startScene);
+            bgLeft.style.backgroundColor = '#000';
+            bgRight.style.backgroundColor = '#000';
+            startScreen.style.display = 'none';
+            let i = 3;
+            const countdown = () => {
+                if (i > 0) {
+                    let number = document.createElement('div');
+                    number.textContent = i;
+                    number.classList.add('countdown');
+                    document.body.appendChild(number);
+                    setTimeout(() => {
+                        number.remove();
+                        i--;
+                        countdown();
+                    }, 1); // not actually a second
+                } else {
+                    let go = document.createElement('div');
+                    go.textContent = 'Go!';
+                    go.classList.add('countdown');
+                    document.body.appendChild(go);
+                    setTimeout(() => {
+                        go.remove();
+                    }, 500);
+                    startGame();
+                }
+            };
+            countdown();
+        });
+
+        function startGame() {
+            const color = getRandomColor();
+            bgRight.style.backgroundColor = color;
+
+            gameScreen.style.display = 'flex';
+        }
+    </script>
+</body>
+
+</html>
