@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chromle</title>
+    <title>Chrōmle</title>
     <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
+    <link href="https://unpkg.com/sanitize.css" rel="stylesheet" />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap&family=Matemasie');
 
         body {
             margin: 0;
@@ -27,7 +28,7 @@
             border-radius: 20px;
             background: #1118;
             backdrop-filter: invert(1);
-            font-family: "Permanent Marker";
+            font-family: "Matemasie";
             transition: scale 3s ease-in-out, transform 3s ease-in-out;
         }
 
@@ -75,12 +76,12 @@
             transform: translate(-50%, -50%);
             font-family: "Permanent Marker";
             opacity: 0;
-            animation: sophisticated-animation 1.2s forwards;
+            animation: slap-in 800ms forwards;
             z-index: 2;
         }
 
         .button {
-            font-size: 2em;
+            font-size: 3em;
             padding: 20px 30px;
             border: none;
             border-radius: 20px;
@@ -89,21 +90,28 @@
             color: #fff;
             cursor: pointer;
             font-family: monospace;
+            transition: 0.3s;
+        }
+
+        .button:hover {
+            background: #aaaa;
+        }
+
+        .button:active {
+            background: #fff;
+            color: #111;
         }
 
         #play-button {
             position: absolute;
-            font-size: 2em;
             top: 70%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 20px 30px;
-            border: none;
-            border-radius: 20px;
-            background: #111a;
             backdrop-filter: invert(1);
-            color: #fff;
-            cursor: pointer;
+        }
+
+        #guess-button {
+            margin-top: 50px;
         }
 
         .guess-box {
@@ -120,7 +128,7 @@
             color: #fff;
         }
 
-        #color-guess {
+        #guess-input {
             font-size: 5rem;
             overflow: hidden;
             border: none;
@@ -131,25 +139,81 @@
             color: #fff;
             cursor: pointer;
             resize: none;
+            text-transform: uppercase;
         }
 
-        #color-guess:focus {
+        #guess-input:focus {
             outline: none;
         }
 
-        #submit-button {
-            font-size: 2em;
-            padding: 20px 30px;
-            border: none;
-            border-radius: 20px;
-            margin-top: 50px;
-            background: #111a;
-            backdrop-filter: invert(1);
-            color: #fff;
-            cursor: pointer;
+        .invalid {
+            background: #f11a;
         }
 
-        @keyframes sophisticated-animation {
+        #diff-display {
+            font-size: 3rem;
+            position: absolute;
+            top: 20%;
+        }
+
+        label {
+            font-size: 2rem;
+            color: #fff;
+            backdrop-filter: invert(1);
+            background-color: #111a;
+            position: absolute;
+            top: 90%;
+            padding: 5px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Hide the default checkbox */
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        /* Custom checkbox design */
+        .custom-checkbox {
+            width: 24px;
+            height: 24px;
+            background-color: #444;
+            border: 2px solid #fff;
+            border-radius: 4px;
+            display: inline-block;
+            position: relative;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        input[type="checkbox"]:not(:checked) + .custom-checkbox::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 12px;
+            height: 12px;
+            background-color: transparent;
+            border: 2px solid transparent;
+            border-radius: 2px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        input[type="checkbox"]:checked + .custom-checkbox {
+            background-color: #ff9800;
+            border-color: #ff9800;
+        }
+
+        input[type="checkbox"]:checked + .custom-checkbox::before {
+            background-color: #fff;
+            border-color: #ff9800;
+        }
+
+
+        @keyframes slap-in {
             0% {
                 opacity: 0;
                 transform: translate(-50%, -50%) scale(4);
@@ -177,19 +241,29 @@
     <div id="bg-left"></div>
     <div id="bg-right"></div>
     <div class="screen" id="start-screen" style="display: flex;">
-        <h1 id="main-title">Chromle</h1>
-        <button id="play-button">Start</button>
+        <h1 id="main-title">Chrōmle</h1>
+        <button class="button" id="play-button">Start</button>
+        <label for="easy-mode">
+            <input type="checkbox" id="easy-mode">
+            <span class="custom-checkbox"></span>
+            Easy Mode
+        </label>
     </div>
     <div class="screen" id="game-screen">
-        <span class="guess-box">#<textarea id="color-guess" rows="1" cols="6" maxlength="6"></textarea></span>
-        <button id="submit-button">Guess</button>
+        <span class="guess-box">#<textarea id="guess-input" rows="1" cols="6" maxlength="6"></textarea></span>
+        <button class="button" id="guess-button">Guess</button>
+
+        <div id="diff-display" hidden>R: G: B: </div>
     </div>
     <script>
-        const title = document.querySelector('#main-title');
-        const bgLeft = document.querySelector('#bg-left');
-        const bgRight = document.querySelector('#bg-right');
-        const startScreen = document.querySelector('#start-screen');
-        const gameScreen = document.querySelector('#game-screen');
+        const title = document.getElementById('main-title');
+        const bgLeft = document.getElementById('bg-left');
+        const bgRight = document.getElementById('bg-right');
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const guessButton = document.getElementById('guess-button');
+        const diffDisplay = document.getElementById('diff-display');
+        const guessInput = document.getElementById('guess-input');
 
         bgLeft.style.transition = 'background-color 3s linear';
         bgRight.style.transition = 'background-color 3s linear';
@@ -208,8 +282,35 @@
         }, 0);
 
         function getRandomColor() {
-            const hex = Math.floor(Math.random() * 4096).toString(16);
-            return '#' + ('000' + hex).slice(-3);
+            const hex = Math.floor(Math.random() * 16777216).toString(16).padStart(6, '0');
+            return '#' + hex;
+        }
+
+        function getRandomHalfColor() {
+            const hex = Math.floor(Math.random() * 4096).toString(16).padStart(3, '0');
+            const doubledHex = hex.split('').map(char => char + char).join('');
+            return '#' + doubledHex;
+        }
+
+        function colorCodeToValue (color) {
+            const hex = color.replace('#', '');
+            if (hex.length === 3) {
+                return {
+                    r: parseInt(hex[0] + hex[0], 16),
+                    g: parseInt(hex[1] + hex[1], 16),
+                    b: parseInt(hex[2] + hex[2], 16)
+                };
+            } else {
+                return {
+                    r: parseInt(hex.slice(0, 2), 16),
+                    g: parseInt(hex.slice(2, 4), 16),
+                    b: parseInt(hex.slice(4, 6), 16)
+                };
+            }
+        }
+
+        function colorValueToCode (color) {
+            return `#${color.r.toString(16).padStart(2, '0')}${color.g.toString(16).padStart(2, '0')}${color.b.toString(16).padStart(2, '0')}`;
         }
 
         document.querySelector('#play-button').addEventListener('click', () => {
@@ -230,7 +331,7 @@
                         number.remove();
                         i--;
                         countdown();
-                    }, 1); // not actually a second
+                    }, 800); // not actually a second
                 } else {
                     let go = document.createElement('div');
                     go.textContent = 'Go!';
@@ -238,7 +339,7 @@
                     document.body.appendChild(go);
                     setTimeout(() => {
                         go.remove();
-                    }, 500);
+                    }, 800);
                     startGame();
                 }
             };
@@ -246,10 +347,58 @@
         });
 
         function startGame() {
-            const color = getRandomColor();
+            const easyMode = document.getElementById('easy-mode').checked;
+
+            let color = '';
+
+            if (easyMode) {
+                color = getRandomHalfColor();
+                guessInput.maxLength = 3;
+                guessInput.cols = 3;
+            } else {
+                color = getRandomColor();
+            }
+
+            const colorValue = colorCodeToValue(color);
+
             bgRight.style.backgroundColor = color;
 
             gameScreen.style.display = 'flex';
+
+            guessButton.addEventListener('click', () => {
+                const guess = guessInput.value;
+
+                // check if the guess is a valid hex color
+                if (!/^[0-9A-F]{3}([0-9A-F]{3})?$/i.test(guess)) {
+                    guessButton.textContent = 'Invalid';
+                    guessButton.classList.add('invalid');
+                    setTimeout(() => {
+                        guessButton.textContent = 'Guess';
+                        guessButton.classList.remove('invalid');
+                    }, 1000);
+                    return;
+                }
+
+                const guessValue = colorCodeToValue(`#${guess}`);
+
+                const diff = {
+                    r: colorValue.r - guessValue.r,
+                    g: colorValue.g - guessValue.g,
+                    b: colorValue.b - guessValue.b
+                };
+
+                const diffValue = {
+                    r: diff.r > 0 ? '⬆' : diff.r < 0 ? '⬇' : '🟩',
+                    g: diff.g > 0 ? '⬆' : diff.g < 0 ? '⬇' : '🟩',
+                    b: diff.b > 0 ? '⬆' : diff.b < 0 ? '⬇️' : '🟩'
+                }
+
+                diffDisplay.textContent = `${diffValue.r} ${diffValue.g} ${diffValue.b}`;
+
+                diffDisplay.hidden = false;
+                
+                bgLeft.style.backgroundColor = `#${guess}`;
+            });
         }
     </script>
 </body>
