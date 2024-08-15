@@ -1,5 +1,5 @@
 /* 
-    Author: Digit (https://www.bitwise.live/)
+    Author: Digit (https://www.rebitwise.com/)
     License: This script is provided for free use and distribution. 
             You are free to copy, modify, and distribute this file without any restrictions.
 */

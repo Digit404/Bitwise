@@ -1,5 +1,5 @@
 /* 
-    Author: Digit (https://www.bitwise.live/)
+    Author: Digit (https://www.rebitwise.com/)
     License: This CSS is provided for free use and distribution. 
             You are free to copy, modify, and distribute this file without any restrictions.
 */
@@ -111,7 +111,7 @@
     left: calc(var(--border-width) * -1);
     right: calc(var(--border-width) * -1);
     bottom: calc(var(--border-width) * -1);
-    background-image: url("https://www.bitwise.live/res/noise.png");
+    background-image: url("https://www.rebitwise.com/res/noise.png");
     background-size: 100%;
     mix-blend-mode: multiply;
     opacity: .06;
