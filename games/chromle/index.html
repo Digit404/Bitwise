@@ -8,28 +8,56 @@
     <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
     <link href="https://unpkg.com/sanitize.css" rel="stylesheet" />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap&family=Matemasie');
+        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap&family=Matemasie&family=Noto+Color+Emoji');
+
+        :root {
+            --fun-font: "Matemasie", fantasy;
+            --mono-font: "Fira Code", monospace;
+            --countdown-font: "Permanent Marker", cursive;
+            --emoji-font: "Segoe UI Emoji",
+                "Noto Color Emoji",
+                sans-serif;
+            --transition-duration: 3s;
+            --background-color: #000;
+            --foreground-color: #fff;
+            --container-bg: #1118;
+            --container-backdrop: invert(1);
+            --border-radius: 100vw;
+            --btn-bg: #111a;
+            --btn-hover-bg: #aa8;
+            --btn-active-bg: #fff;
+            --btn-active-color: #111;
+        }
 
         body {
             margin: 0;
             padding: 0;
-            font-family: 'Fira Code', monospace;
-            background-color: #000;
-            color: #fff;
+            width: 100%;
+            height: 100%;
+            font-family: var(--mono-font);
+            background-color: var(--background-color);
+            color: var(--foreground-color);
+            display: flex;
             justify-content: center;
+            align-items: center;
         }
 
-        #main-title {
-            position: absolute;
-            font-size: 10em;
-            top: 20%;
+        .title {
+            font-size: 8vw;
             margin: 0;
-            padding: 20px 50px;
-            border-radius: 20px;
-            background: #1118;
-            backdrop-filter: invert(1);
-            font-family: "Matemasie";
-            transition: scale 3s ease-in-out, transform 3s ease-in-out;
+            padding: 0.25ch 1ch .5ch 1ch;
+            border-radius: 100vw;
+            background: var(--container-bg);
+            backdrop-filter: var(--container-backdrop);
+            font-family: var(--fun-font);
+            transition: scale var(--transition-duration) ease-in-out, transform var(--transition-duration) ease-in-out;
+            user-select: none;
+        }
+
+        #main-title,
+        #win-title {
+            position: absolute;
+            top: 15%;
         }
 
         .screen {
@@ -42,30 +70,47 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1;
             display: none;
         }
 
-        #bg-left {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 50%;
-            height: 100%;
-            background-color: #000;
-            z-index: -1;
-            transition: background-color 1s linear;
-        }
-
+        #bg-left,
         #bg-right {
             position: fixed;
             top: 0;
-            right: 0;
             width: 50%;
             height: 100%;
-            background-color: #000;
+            background-color: var(--background-color);
             z-index: -1;
-            transition: background-color 1s linear;
+        }
+
+        #bg-left {
+            left: 0;
+        }
+
+        #bg-right {
+            right: 0;
+        }
+
+        @keyframes slap-in {
+
+            0%,
+            100% {
+                opacity: 0;
+            }
+
+            10%,
+            90% {
+                opacity: 1;
+            }
+
+            0% {
+                transform: translate(-50%, -50%) scale(4);
+            }
+
+            10%,
+            90% {
+                transform: translate(-50%, -50%) scale(1);
+            }
         }
 
         .countdown {
@@ -74,7 +119,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-family: "Permanent Marker";
+            font-family: var(--countdown-font);
             opacity: 0;
             animation: slap-in 800ms forwards;
             z-index: 2;
@@ -84,62 +129,56 @@
             font-size: 3em;
             padding: 20px 30px;
             border: none;
-            border-radius: 20px;
-            background: #111a;
-            backdrop-filter: invert(1);
-            color: #fff;
+            border-radius: var(--border-radius);
+            background: var(--btn-bg);
+            backdrop-filter: var(--container-backdrop);
+            color: var(--foreground-color);
             cursor: pointer;
-            font-family: monospace;
-            transition: 0.3s;
+            font-family: var(--mono-font);
+            transition: background 0.3s;
         }
 
         .button:hover {
-            background: #aaaa;
+            background: var(--btn-hover-bg);
         }
 
         .button:active {
-            background: #fff;
-            color: #111;
+            background: var(--btn-active-bg);
+            color: var(--btn-active-color);
         }
 
-        #play-button {
+        #play-button,
+        #play-again-button {
             position: absolute;
             top: 70%;
             left: 50%;
             transform: translate(-50%, -50%);
-            backdrop-filter: invert(1);
         }
 
         #guess-button {
             margin-top: 50px;
         }
 
-        .guess-box {
+        #guess-box {
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 5rem;
             padding: 20px 30px;
-            border: none;
-            border-radius: 20px;
-            background: #111a;
-            backdrop-filter: invert(1);
-            font-family: "monospace";
-            color: #fff;
+            background: var(--btn-bg);
+            backdrop-filter: var(--container-backdrop);
+            color: var(--foreground-color);
+            border-radius: 50px;
         }
 
         #guess-input {
-            font-size: 5rem;
-            overflow: hidden;
+            font-size: 1em;
             border: none;
-            border-radius: 20px;
-            background: #0000;
-            font-family: "monospace";
-            align-items: baseline;
-            color: #fff;
-            cursor: pointer;
-            resize: none;
+            background: transparent;
+            color: var(--foreground-color);
+            font-family: monospace;
             text-transform: uppercase;
+            resize: none;
         }
 
         #guess-input:focus {
@@ -153,30 +192,39 @@
         #diff-display {
             font-size: 3rem;
             position: absolute;
+            font-family: var(--emoji-font);
             top: 20%;
+        }
+
+        #score {
+            position: absolute;
+            font-size: 3rem;
+            bottom: 10%;
+            background-color: var(--btn-bg);
+            backdrop-filter: var(--container-backdrop);
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
         }
 
         label {
             font-size: 2rem;
-            color: #fff;
-            backdrop-filter: invert(1);
-            background-color: #111a;
+            color: var(--foreground-color);
+            backdrop-filter: var(--container-backdrop);
+            background-color: var(--container-bg);
             position: absolute;
             top: 90%;
-            padding: 5px 10px;
-            border-radius: 10px;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
             cursor: pointer;
             display: flex;
             align-items: center;
         }
 
-        /* Hide the default checkbox */
         input[type="checkbox"] {
             display: none;
         }
 
-        /* Custom checkbox design */
-        .custom-checkbox {
+        .checkbox {
             width: 24px;
             height: 24px;
             background-color: #444;
@@ -189,7 +237,7 @@
             transition: background-color 0.3s, border-color 0.3s;
         }
 
-        input[type="checkbox"]:not(:checked) + .custom-checkbox::before {
+        input[type="checkbox"]:not(:checked)+.checkbox::before {
             content: '';
             position: absolute;
             top: 6px;
@@ -202,36 +250,32 @@
             transition: background-color 0.3s, border-color 0.3s;
         }
 
-        input[type="checkbox"]:checked + .custom-checkbox {
-            background-color: #ff9800;
-            border-color: #ff9800;
+        input[type="checkbox"]:checked+.checkbox {
+            background-color: #f90;
+            border-color: #f90;
         }
 
-        input[type="checkbox"]:checked + .custom-checkbox::before {
+        input[type="checkbox"]:checked+.checkbox::before {
             background-color: #fff;
-            border-color: #ff9800;
+            border-color: #f90;
         }
 
-
-        @keyframes slap-in {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(4);
+        @media (max-width: 600px) {
+            .title {
+                font-size: 12vw;
             }
 
-            10% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
+            #guess-box {
+                font-size: 3rem;
             }
 
-            90% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
+            #diff-display {
+                font-size: 2rem;
             }
 
-            100% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(1);
+            .button {
+                font-size: 2em;
+                padding: 10px 20px;
             }
         }
     </style>
@@ -241,45 +285,43 @@
     <div id="bg-left"></div>
     <div id="bg-right"></div>
     <div class="screen" id="start-screen" style="display: flex;">
-        <h1 id="main-title">Chrōmle</h1>
+        <h1 class="title" id="main-title">Chrōmle</h1>
         <button class="button" id="play-button">Start</button>
-        <label for="easy-mode">
-            <input type="checkbox" id="easy-mode">
-            <span class="custom-checkbox"></span>
-            Easy Mode
+        <label for="hard-mode">
+            <input type="checkbox" id="hard-mode">
+            <span class="checkbox"></span>
+            Hard Mode
         </label>
     </div>
     <div class="screen" id="game-screen">
-        <span class="guess-box">#<textarea id="guess-input" rows="1" cols="6" maxlength="6"></textarea></span>
+        <span id="guess-box">#<textarea id="guess-input" rows="1" cols="6" maxlength="6"></textarea></span>
         <button class="button" id="guess-button">Guess</button>
-
-        <div id="diff-display" hidden>R: G: B: </div>
+        <div id="diff-display" hidden></div>
+    </div>
+    <div class="screen" id="end-screen">
+        <h1 class="title" id="win-title">You Win!</h1>
+        <div id="score"></div>
+        <button class="button" id="play-again-button">Start Again</button>
     </div>
     <script>
-        const title = document.getElementById('main-title');
-        const bgLeft = document.getElementById('bg-left');
-        const bgRight = document.getElementById('bg-right');
-        const startScreen = document.getElementById('start-screen');
-        const gameScreen = document.getElementById('game-screen');
-        const guessButton = document.getElementById('guess-button');
-        const diffDisplay = document.getElementById('diff-display');
-        const guessInput = document.getElementById('guess-input');
+        const elements = {
+            mainTitle: document.getElementById('main-title'),
+            bgLeft: document.getElementById('bg-left'),
+            bgRight: document.getElementById('bg-right'),
+            startScreen: document.getElementById('start-screen'),
+            gameScreen: document.getElementById('game-screen'),
+            guessButton: document.getElementById('guess-button'),
+            diffDisplay: document.getElementById('diff-display'),
+            guessInput: document.getElementById('guess-input'),
+            guessBox: document.getElementById('guess-box'),
+            endScreen: document.getElementById('end-screen'),
+            winTitle: document.getElementById('win-title'),
+            playAgainButton: document.getElementById('play-again-button'),
+            playButton: document.getElementById('play-button')
+        };
 
-        bgLeft.style.transition = 'background-color 3s linear';
-        bgRight.style.transition = 'background-color 3s linear';
-
-        function flashBackground() {
-            bgLeft.style.backgroundColor = getRandomColor();
-            bgRight.style.backgroundColor = getRandomColor();
-            title.style.scale = Math.random() * 0.5 + 1;
-            title.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
-        }
-
-        const startScene = setInterval(flashBackground, 3000);
-
-        setTimeout(() => {
-            flashBackground();
-        }, 0);
+        let guesses = [];
+        let flashingInterval;
 
         function getRandomColor() {
             const hex = Math.floor(Math.random() * 16777216).toString(16).padStart(6, '0');
@@ -292,7 +334,31 @@
             return '#' + doubledHex;
         }
 
-        function colorCodeToValue (color) {
+        function getRandomHue() {
+            const hue = Math.floor(Math.random() * 360);
+            return `hsl(${hue}, 100%, 50%)`;
+        }
+
+        function flashBackground(element) {
+            const { bgLeft, bgRight } = elements;
+            bgLeft.style.transition = 'background-color 3s linear';
+            bgRight.style.transition = 'background-color 3s linear';
+            bgLeft.style.backgroundColor = getRandomHue();
+            bgRight.style.backgroundColor = getRandomHue();
+            element.style.scale = Math.random() * 0.5 + 1;
+            element.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+        }
+
+        function startFlashingBackground(element) {
+            clearInterval(flashingInterval);
+            flashingInterval = setInterval(() => flashBackground(element), 3000);
+            setTimeout(() => flashBackground(element), 50);
+        }
+
+        // Initial call to start flashing at the beginning
+        startFlashingBackground(elements.mainTitle);
+
+        function colorCodeToValue(color) {
             const hex = color.replace('#', '');
             if (hex.length === 3) {
                 return {
@@ -300,105 +366,117 @@
                     g: parseInt(hex[1] + hex[1], 16),
                     b: parseInt(hex[2] + hex[2], 16)
                 };
-            } else {
-                return {
-                    r: parseInt(hex.slice(0, 2), 16),
-                    g: parseInt(hex.slice(2, 4), 16),
-                    b: parseInt(hex.slice(4, 6), 16)
-                };
             }
+            return {
+                r: parseInt(hex.slice(0, 2), 16),
+                g: parseInt(hex.slice(2, 4), 16),
+                b: parseInt(hex.slice(4, 6), 16)
+            };
         }
 
-        function colorValueToCode (color) {
-            return `#${color.r.toString(16).padStart(2, '0')}${color.g.toString(16).padStart(2, '0')}${color.b.toString(16).padStart(2, '0')}`;
+        function compareColors(color1, color2) {
+            return color1.r === color2.r && color1.g === color2.g && color1.b === color2.b;
         }
 
-        document.querySelector('#play-button').addEventListener('click', () => {
-            bgLeft.style.transition = 'background-color 1s linear';
-            bgRight.style.transition = 'background-color 1s linear';
-            clearInterval(startScene);
-            bgLeft.style.backgroundColor = '#000';
-            bgRight.style.backgroundColor = '#000';
-            startScreen.style.display = 'none';
-            let i = 3;
-            const countdown = () => {
+        function showCountdown(callback) {
+            const numberDisplay = (i) => {
                 if (i > 0) {
-                    let number = document.createElement('div');
+                    const number = document.createElement('div');
                     number.textContent = i;
                     number.classList.add('countdown');
                     document.body.appendChild(number);
                     setTimeout(() => {
                         number.remove();
-                        i--;
-                        countdown();
+                        numberDisplay(i - 1);
                     }, 800); // not actually a second
                 } else {
-                    let go = document.createElement('div');
+                    const go = document.createElement('div');
                     go.textContent = 'Go!';
                     go.classList.add('countdown');
                     document.body.appendChild(go);
-                    setTimeout(() => {
-                        go.remove();
-                    }, 800);
-                    startGame();
+                    setTimeout(() => go.remove(), 800);
+                    callback();
                 }
             };
-            countdown();
+            numberDisplay(3);
+        }
+
+        elements.playButton.addEventListener('click', () => {
+            const { bgLeft, bgRight, startScreen } = elements;
+            bgLeft.style.transition = 'background-color 1s linear';
+            bgRight.style.transition = 'background-color 1s linear';
+            clearInterval(flashingInterval);
+            bgLeft.style.backgroundColor = '#000';
+            bgRight.style.backgroundColor = '#000';
+            startScreen.style.display = 'none';
+            showCountdown(startGame);
         });
 
         function startGame() {
-            const easyMode = document.getElementById('easy-mode').checked;
+            const { diffDisplay, guessInput, bgRight, gameScreen } = elements;
+            const hardMode = document.getElementById('hard-mode').checked;
+            diffDisplay.textContent = '';
+            guessInput.value = '';
+            guessInput.maxLength = hardMode ? 6 : 3;
+            guessInput.cols = hardMode ? 6 : 3;
 
-            let color = '';
-
-            if (easyMode) {
-                color = getRandomHalfColor();
-                guessInput.maxLength = 3;
-                guessInput.cols = 3;
-            } else {
-                color = getRandomColor();
-            }
-
+            const color = hardMode ? getRandomColor() : getRandomHalfColor();
             const colorValue = colorCodeToValue(color);
 
             bgRight.style.backgroundColor = color;
-
             gameScreen.style.display = 'flex';
 
-            guessButton.addEventListener('click', () => {
-                const guess = guessInput.value;
+            elements.guessButton.onclick = () => makeGuess(colorValue, color);
+        }
 
-                // check if the guess is a valid hex color
-                if (!/^[0-9A-F]{3}([0-9A-F]{3})?$/i.test(guess)) {
-                    guessButton.textContent = 'Invalid';
-                    guessButton.classList.add('invalid');
-                    setTimeout(() => {
-                        guessButton.textContent = 'Guess';
-                        guessButton.classList.remove('invalid');
-                    }, 1000);
-                    return;
-                }
+        function makeGuess(colorValue, color) {
+            const { diffDisplay, guessButton, guessInput, bgLeft } = elements;
+            const guess = guessInput.value;
 
-                const guessValue = colorCodeToValue(`#${guess}`);
+            // Validation for hex color input
+            if (!/^[0-9A-F]{3}([0-9A-F]{3})?$/i.test(guess)) {
+                guessButton.textContent = 'Invalid';
+                guessButton.classList.add('invalid');
+                setTimeout(() => {
+                    guessButton.textContent = 'Guess';
+                    guessButton.classList.remove('invalid');
+                }, 1000);
+                return;
+            }
 
-                const diff = {
-                    r: colorValue.r - guessValue.r,
-                    g: colorValue.g - guessValue.g,
-                    b: colorValue.b - guessValue.b
-                };
+            bgLeft.style.backgroundColor = `#${guess}`;
+            const guessValue = colorCodeToValue(`#${guess}`);
+            guesses.push(guessValue);
 
-                const diffValue = {
-                    r: diff.r > 0 ? '⬆' : diff.r < 0 ? '⬇' : '🟩',
-                    g: diff.g > 0 ? '⬆' : diff.g < 0 ? '⬇' : '🟩',
-                    b: diff.b > 0 ? '⬆' : diff.b < 0 ? '⬇️' : '🟩'
-                }
+            if (compareColors(guessValue, colorValue)) {
+                win(color);
+                return;
+            }
 
-                diffDisplay.textContent = `${diffValue.r} ${diffValue.g} ${diffValue.b}`;
+            const diff = {
+                r: colorValue.r - guessValue.r,
+                g: colorValue.g - guessValue.g,
+                b: colorValue.b - guessValue.b
+            };
 
-                diffDisplay.hidden = false;
-                
-                bgLeft.style.backgroundColor = `#${guess}`;
-            });
+            diffDisplay.textContent = `${diff.r > 0 ? '⬆️' : diff.r < 0 ? '⬇️' : '🟩'} ${diff.g > 0 ? '⬆️' : diff.g < 0 ? '⬇️' : '🟩'} ${diff.b > 0 ? '⬆️' : diff.b < 0 ? '⬇️' : '🟩'}`;
+            diffDisplay.hidden = false;
+        }
+
+        function win(color) {
+            const { gameScreen, endScreen, winTitle } = elements;
+            gameScreen.style.display = 'none';
+            endScreen.style.display = 'flex';
+            document.getElementById('score').textContent = `Score: ${guesses.length}`;
+            startFlashingBackground(winTitle); // Use the same flashing function for the win screen
+
+            elements.playAgainButton.onclick = () => {
+                endScreen.style.display = 'none';
+                elements.startScreen.style.display = 'flex';
+                clearInterval(flashingInterval);
+                startFlashingBackground(elements.mainTitle);
+                guesses.length = 0; // Reset guesses for the new game
+            };
         }
     </script>
 </body>
