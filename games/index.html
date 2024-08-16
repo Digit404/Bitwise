@@ -9,33 +9,6 @@
     <link rel="stylesheet" href="/style.css">
     <script src="/background.js" defer></script>
     <style>
-        .card-container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            text-align: left;
-        }
-
-        .game-card {
-            background-color: #1119;
-            backdrop-filter: blur(5px);
-            border: 2px solid white;
-            width: 60%;
-            padding: 20px;
-            margin: 10px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            transition: 0.3s;
-            color: white;
-            text-decoration: none;
-        }
-
-        .game-card:hover {
-            transform: scale(1.05);
-            color: #111;
-            background-color: white;
-        }
-
         .big-title {
             margin: 50px;
             margin-top: 100px;
@@ -52,13 +25,14 @@
 <body>
     <h1 class="big-title">GAMES</h1>
     <div class="card-container">
-        <a class="game-card" href="minesweeper/">
+        <a class="tool-card" href="minesweeper/">
             <h1>MINESWEEPER</h1>
             <p>It's Minesweeper</p>
         </a>
-        <a class="game-card" href="chromle/">
+        <a class="tool-card" href="chromle/">
             <h1>CHROMLE</h1>
-            <p>Guess target color using hex codes. Get feedback arrows, adjust your guess, and aim for the lowest score. Play easy or hard mode. Fun way to test your color sense.</p>
+            <p>Guess target color using hex codes. Get feedback arrows, adjust your guess, and aim for the lowest score.
+                Play easy or hard mode. Fun way to test your color sense.</p>
         </a>
     </div>
     <a id="footer" href="../">HOME</a>

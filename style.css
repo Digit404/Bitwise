@@ -144,6 +144,33 @@ body {
     color: var(--hover-color);
 }
 
+.card-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    text-align: left;
+}
+
+.tool-card {
+    background-color: #1119;
+    backdrop-filter: blur(5px);
+    border: 2px solid white;
+    width: 60%;
+    padding: 20px;
+    margin: 10px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+    color: white;
+    text-decoration: none;
+}
+
+.tool-card:hover {
+    transform: scale(1.05);
+    color: #111;
+    background-color: white;
+}
+
 textarea, input[type="number"] {
     border-radius: var(--border-radius);
     padding: 1vw;
