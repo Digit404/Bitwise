@@ -1,26 +1,26 @@
 @font-face {
     font-family: 'bitwise';
-    src: url(https://www.rebitwise.com/res/bitwise.ttf);
+    src: url(https://www.rebitwise.com/res/fonts/bitwise.ttf);
 }
 
 @font-face {
     font-family: 'firacode';
-    src: url(https://www.rebitwise.com/res/FiraCode.ttf);
+    src: url(https://www.rebitwise.com/res/fonts/FiraCode.ttf);
 }
 
 @font-face {
     font-family: 'asbestos';
-    src: url(https://www.rebitwise.com/res/Asbestos.ttf);
+    src: url(https://www.rebitwise.com/res/fonts/Asbestos.ttf);
 }
 
 @font-face {
     font-family: "AsbestosMono";
-    src: url(https://www.rebitwise.com/res/AsbestosMono.ttf);
+    src: url(https://www.rebitwise.com/res/fonts/AsbestosMono.ttf);
 }
 
 @font-face {
     font-family: 'PokemonGB';
-    src: url(https://www.rebitwise.com/res/PokemonGB.ttf);
+    src: url(https://www.rebitwise.com/res/fonts/PokemonGB.ttf);
 }
 
 :root {

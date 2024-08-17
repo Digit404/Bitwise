@@ -1,4 +1,4 @@
-const bgImage = "https://www.rebitwise.com/res/numbers.png";
+const bgImage = "https://www.rebitwise.com/res/img/numbers.png";
 const backgroundColor = "#111";
 let bgWidth = 1307;
 let scrollSpeed = 0.5;
@@ -66,7 +66,7 @@ function setBgStyles(bg) {
 
 function setVignetteStyles(vignette) {
     vignette.style.background =
-        "url(https://www.rebitwise.com/res/vignette.png) center center fixed";
+        "url(https://www.rebitwise.com/res/img/vignette.png) center center fixed";
     vignette.style.opacity = `${vignetteOpacity}`;
     vignette.style.backgroundSize = "100% 100%";
     vignette.style.backgroundPosition = "center";
