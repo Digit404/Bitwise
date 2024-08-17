@@ -1,0 +1,165 @@
+* {
+    transition: background 0.3s;
+}
+
+:root {
+    --font-main: "Open Sans", "Roboto", sans-serif;
+    --font-mono: "Cascadia Code", monospace;
+    --primary-color: #07f;
+    --secondary-color: #2cc;
+    --body-color: #f7f7f7;
+    --background-color: #fff;
+    --code-bg: #eee;
+    --text-color: #333;
+    --fig-color: #0009;
+    --reading-width: 800px;
+}
+
+body.dark {
+    --primary-color: #47f;
+    --secondary-color: #3dd;
+    --body-color: #222227;
+    --background-color: #252529;
+    --text-color: #eee;
+    --code-bg: #333;
+    --fig-color: #fffb;
+}
+
+body {
+    display: block;
+    flex-direction: column;
+    font-family: var(--font-main);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: var(--body-color);
+    color: var(--text-color);
+}
+
+main {
+    max-width: var(--reading-width);
+    background-color: var(--background-color);
+    margin: auto;
+    padding: 20px 100px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+code {
+    background: var(--code-bg);
+    color: var(--text-color);
+    font-family: var(--font-mono);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+h2 {
+    color: var(--primary-color);
+    font-size: 1.75rem;
+}
+
+h3 {
+    color: var(--text-color);
+    font-size: 1.25rem;
+}
+
+figure img {
+    width: 100%;
+    display: block;
+    margin: 20px auto;
+    margin-bottom: 0;
+}
+
+figcaption {
+    font-size: 0.875rem;
+    color: var(--fig-color);
+    text-align: center;
+    margin-top: 5px;
+}
+
+button {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #fff;
+}
+
+a {
+    color: var(--text-color);
+    font-weight: bolder;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+a:hover {
+    color: var(--primary-color);
+}
+
+nobr {
+    white-space: nowrap;
+}
+
+blockquote {
+    --color: #999;
+    --splash-text: "";
+    border-left: 5px solid var(--color);
+    background: color-mix(in srgb, var(--color) 15%, transparent);
+    padding: 20px;
+    margin: 20px 0;
+}
+
+blockquote p {
+    display: inline;
+    font-size: 1rem;
+    color: var(--fig-color);
+}
+
+/* header for block quote */
+blockquote:before {
+    content: var(--splash-text);
+    white-space: pre;
+    font-family: var(--font-main), "Material Symbols Rounded";
+    color: var(--color);
+    font-size: 1.25rem;
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.tip {
+    --color: var(--primary-color);
+    --splash-text: "\e0f0  Tip";
+}
+
+.fun-fact {
+    --color: var(--secondary-color);
+    --splash-text: "\ea65  Fun Fact";
+}
+
+#dark-mode-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    font-family: "Material Symbols Rounded";
+    font-size: 2rem;
+}
+
+@media screen and (max-width: 800px) {
+    main {
+        padding: 20px;
+    }
+
+    header img {
+        width: 50%;
+    }
+
+    header h1 {
+        font-size: 2.5rem;
+    }
+
+    figure {
+        margin: 0;
+    }
+}
