@@ -37,8 +37,8 @@ body {
     margin: 0;
     padding: 0.25ch 1ch .5ch 1ch;
     border-radius: 100vw;
-    background: var(--container-bg);
     backdrop-filter: var(--container-backdrop);
+    mix-blend-mode: difference; 
     font-family: var(--fun-font);
     transition: scale var(--transition-duration) ease-in-out, transform var(--transition-duration) ease-in-out;
     user-select: none;

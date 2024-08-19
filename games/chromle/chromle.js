@@ -17,6 +17,8 @@ const elements = {
 let guesses = [];
 let flashingInterval;
 
+let state = 0;
+
 function getRandomColor() {
     const hex = Math.floor(Math.random() * 16777216)
         .toString(16)
@@ -40,20 +42,23 @@ function getRandomHue() {
     return `hsl(${hue}, 100%, 50%)`;
 }
 
-function flashBackground(element) {
+function getRandomHueDeg() {
+    return Math.floor(Math.random() * 360);
+}
+
+function flashBackground(title, interval) {
     const { bgLeft, bgRight } = elements;
     bgLeft.style.transition = "background-color 3s linear";
     bgRight.style.transition = "background-color 3s linear";
     bgLeft.style.backgroundColor = getRandomHue();
     bgRight.style.backgroundColor = getRandomHue();
-    element.style.scale = Math.random() * 0.5 + 1;
-    element.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
+    title.style.scale = Math.random() * 0.5 + 1;
+    title.style.transform = `rotate(${Math.random() * 10 - 5}deg)`;
 }
 
 function startFlashingBackground(element) {
     clearInterval(flashingInterval);
     flashingInterval = setInterval(() => flashBackground(element), 3000);
-    setTimeout(() => flashBackground(element), 50);
 }
 
 // Initial call to start flashing at the beginning
