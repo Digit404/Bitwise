@@ -5,8 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Apache NiFi Overview</title>
-    <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
-    <link rel="stylesheet" href="/blog/blog.css">
+    <link rel="shortcut icon" href="/res/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="/blog/blog.css" />
     <script src="/blog/dark-mode-button.js" defer></script>
     <style>
         header {
@@ -22,7 +22,7 @@
         #back-to-top {
             color: var(--middle);
         }
-        
+
         footer p {
             display: flex;
             justify-content: space-between;
@@ -47,16 +47,12 @@
         <article>
             <section id="introduction">
                 <h2>Introduction</h2>
-                <p>
-                    NiFi is a graphical flow-based tool by Apache, designed to automate data flow between systems,
-                    working
-                    in the ETL (extract, transform, load) model. Looking at a fully formed flow in NiFi might look
-                    intimidating with its nodes and paths going in every direction, but it's actually incredibly
-                    simple.
-                    If you are familiar with <strong>Flow Based Programming</strong>, working with NiFi should be
-                    effortless. A flow in NiFi has two main objects that make it up: <em>FlowFiles</em> and
-                    <em>Components</em>.
-                </p>
+                <p> NiFi is a graphical flow-based tool by Apache, designed to automate data flow between systems,
+                    working in the ETL (extract, transform, load) model. Looking at a fully formed flow in NiFi might
+                    look intimidating with its nodes and paths going in every direction, but it's actually incredibly
+                    simple. If you are familiar with <strong>Flow Based Programming</strong>, working with NiFi should
+                    be effortless. A flow in NiFi has two main objects that make it up: <em>FlowFiles</em> and
+                    <em>Components</em>. </p>
                 <blockquote class="fun-fact">
                     <p>NiFi was originally developed by the NSA.</p>
                 </blockquote>
@@ -66,22 +62,16 @@
                 <h2>FlowFiles</h2>
                 <p>
                     <em>FlowFiles</em> are individual objects that are the data in the system. Think of them as JSON
-                    objects
-                    that are being pushed around, sorted, and transformed by the Processors.Each FlowFile has a
+                    objects that are being pushed around, sorted, and transformed by the Processors.Each FlowFile has a
                     <code>content</code> attribute, which represents the actual body of data (which can be empty), as
-                    well
-                    as a collection of other attributes which usually act as metadata for information about where the
-                    file
-                    came from and where it should go. At any given moment, FlowFiles are blazing through the system at
-                    some
-                    immeasurable speed, and they can be hard to observe individually while it's running. The only place
-                    they
-                    really exist is in the Queues between processors waiting for their turn.
+                    well as a collection of other attributes which usually act as metadata for information about where
+                    the file came from and where it should go. At any given moment, FlowFiles are blazing through the
+                    system at some immeasurable speed, and they can be hard to observe individually while it's running.
+                    The only place they really exist is in the Queues between processors waiting for their turn.
                 </p>
                 <blockquote class="tip">
-                    <p>Tracking these FlowFiles through the system is an important skill necessary in figuring out what
-                        the
-                        hell went wrong. Can't find a FlowFile? Right click and click refresh.</p>
+                    <p> Tracking these FlowFiles through the system is an important skill necessary in figuring out what
+                        the hell went wrong. Can't find a FlowFile? Right click and click refresh. </p>
                 </blockquote>
                 <p>To view the details of a FlowFile, first you need to stop it in its tracks.</p>
                 <ol>
@@ -89,8 +79,7 @@
                     <li>Right click the queue and click <em>list queue</em>.</li>
                     <li>Click the info icon on the left to view the details.</li>
                     <li>Either click the view button to view the content or switch to the attributes tab to view the
-                        values.
-                    </li>
+                        values.</li>
                 </ol>
             </section>
             <hr />
@@ -100,168 +89,106 @@
                     <figcaption>Why use a language when you could have colorful shapes?</figcaption>
                 </figure>
                 <h2 id="components">Components</h2>
-                <p>
-                    Components are the actual nodes on the canvas. Your components are listed on the top bar in your
+                <p> Components are the actual nodes on the canvas. Your components are listed on the top bar in your
                     component palette. All of these are entirely unnecessary with the exception of the first option—the
-                    processor, which is the workhorse of the flow.
-                </p>
+                    processor, which is the workhorse of the flow. </p>
                 <figure>
                     <img src="res/component-palette.png" alt="Component Palette" />
+                    <figcaption>There are a lot of components, but you'll only ever use one.</figcaption>
                 </figure>
                 <h3 id="processors">Processors</h3>
-                <p>
-                    Processors are the nodes in the system that actually do the work. They are generally designed to do
-                    one
-                    thing to a FlowFile. Think of each of these as one function call. You may be wondering, "Why create
-                    a
-                    complicated flow when the same process would be much simpler to make in a real programming
-                    language?"
-                </p>
-                <p>
-                    Anyway, processors extract, transform, and load the FlowFiles. Processor functions include pulling
-                    data
-                    from APIs or databases, routing FlowFiles based on its attributes, running a JSON transformation
-                    routine, and even running scripts.
-                </p>
-                <p>
-                    To create a processor, you click and drag the processor icon from the palette onto the canvas where
-                    you
-                    want it, like a child playing with LEGO.
-                </p>
+                <p> Processors are the nodes in the system that actually do the work. They are generally designed to do
+                    one thing to a FlowFile. Think of each of these as one function call. You may be wondering, "Why
+                    create a complicated flow when the same process would be much simpler to make in a real programming
+                    language?" </p>
+                <p> Anyway, processors extract, transform, and load the FlowFiles. Processor functions include pulling
+                    data from APIs or databases, routing FlowFiles based on its attributes, running a JSON
+                    transformation routine, and even running scripts. </p>
+                <p>To create a processor, you click and drag the processor icon from the palette onto the canvas where
+                    you want it, like a child playing with LEGO.</p>
                 <blockquote class="tip">
-                    <p>
-                        Now's a good time to bring up that if you're stressing about being able to use a bunch of handy
-                        keyboard shortcuts—don't worry! NiFi has virtually <em>none</em>—not even undo!
-                    </p>
+                    <p> Now's a good time to bring up that if you're stressing about being able to use a bunch of handy
+                        keyboard shortcuts—don't worry! NiFi has virtually <em>none</em>—not even undo! </p>
                 </blockquote>
-                <p>
-                    After you place the processor, a window will appear showing hundreds of different processor options,
-                    at
-                    which point you might wonder why this couldn't have just been a button. The processors are helpfully
-                    tagged and sorted according to their functions, so if you know you need to interact with a JSON, you
-                    can
-                    just click the JSON tag and see all the options applicable.
-                </p>
+                <p> After you place the processor, a window will appear showing hundreds of different processor options,
+                    at which point you might wonder why this couldn't have just been a button. The processors are
+                    helpfully tagged and sorted according to their functions, so if you know you need to interact with a
+                    JSON, you can just click the JSON tag and see all the options applicable. </p>
                 <figure>
                     <img src="res/all-processors.png" alt="All processors" />
                 </figure>
                 <h3 id="properites">Properties—Configuring Processors</h3>
-                <p>
-                    The properties tab is where you can specify the key/value pairs that the processor uses to make its
+                <p> The properties tab is where you can specify the key/value pairs that the processor uses to make its
                     decisions. Let's have a look at the <strong>InvokeHTTP</strong> processor's properties by double
-                    clicking it.
-                </p>
+                    clicking it. </p>
                 <figure>
                     <img src="res/invokehttp.png" alt="InvokeHTTP" />
                 </figure>
-                <p>
-                    As you can see, there are a lot of properties, most of which you can safely ignore. The necessary
-                    ones
-                    are <strong>highlighted in bold</strong>, and the question mark icons can be hovered over to get
-                    further
-                    information about the property. Remember that you can't configure a processor while it's running.
-                </p>
-                <p>
-                    Once you've configured the processor correctly, you can click the checkbox in the upper right-hand
+                <p> As you can see, there are a lot of properties, most of which you can safely ignore. The necessary
+                    ones are <strong>highlighted in bold</strong>, and the question mark icons can be hovered over to
+                    get further information about the property. Remember that you can't configure a processor while it's
+                    running. </p>
+                <p> Once you've configured the processor correctly, you can click the checkbox in the upper right-hand
                     corner to see if NiFi agrees. Once everything is in order you can click <em>Apply</em>. It's
-                    important
-                    to keep in mind that if the processor isn't entirely happy with its configuration, it will refuse to
-                    start.
-                </p>
+                    important to keep in mind that if the processor isn't entirely happy with its configuration, it will
+                    refuse to start. </p>
                 <blockquote class="fun-fact">
                     <p>NiFi was made for little babies.</p>
                 </blockquote>
                 <h3 id="relationships">Relationships—Connecting Processors</h3>
-                <p>
-                    After a few processors are on the flow, you can connect them together by dragging a line from the
-                    former
-                    to the latter, depending on which direction you want data to flow. Next, it's gonna ask you for
-                    which
-                    relationship you're trying to create the connection.
-                </p>
-                <p>
-                    Processors have inputs and outputs where the data goes through. Processors can have many output
+                <p> After a few processors are on the flow, you can connect them together by dragging a line from the
+                    former to the latter, depending on which direction you want data to flow. Next, it's gonna ask you
+                    for which relationship you're trying to create the connection. </p>
+                <p> Processors have inputs and outputs where the data goes through. Processors can have many output
                     conditions, for example, if the process failed, the FlowFile would likely be redirected to the
-                    <code>failure</code> route, or if it succeeded, it would go to the <code>success</code> route.
-                </p>
+                    <code>failure</code> route, or if it succeeded, it would go to the <code>success</code> route. </p>
                 <blockquote class="tip">
-                    <p>
-                        There are also other routes for other purposes. For example, if you just transformed the data,
-                        but
-                        would like to still use the unchanged FlowFile, check if the processor has a relationship
-                        labelled
-                        <code>original</code>.
-                    </p>
+                    <p> There are also other routes for other purposes. For example, if you just transformed the data,
+                        but would like to still use the unchanged FlowFile, check if the processor has a relationship
+                        labelled <code>original</code>. </p>
                 </blockquote>
                 <figure>
                     <img src="res/invokehttp-relationships.png" alt="InvokeHTTP Relationships" />
                 </figure>
-                <p>
-                    When you make a connection, the processor needs to know what output route to get the data from. For
-                    most
-                    connections, you're probably looking for <code>success</code>. <code>Failure</code> is usually only
-                    used
-                    if you want to log it or if you want to retry. Relationships are very useful for routing data where
-                    it
-                    needs to go. The RouteOnAttribute processor has user defined routes with regex-like syntax so you
-                    can
-                    define how and where a particular FlowFile goes in the flow.
-                </p>
-                <p>
-                    If a route isn't being used (which is going to be most of them), NiFi will detect that the route
-                    doesn't
-                    go anywhere and automatically terminates the relationship. <strong>Just kidding</strong>, you need
-                    to
-                    set each individual relationship to terminate manually, or NiFi isn't even going to try to deal with
-                    it.
-                </p>
+                <p> When you make a connection, the processor needs to know what output route to get the data from. For
+                    most connections, you're probably looking for <code>success</code>. <code>Failure</code> is usually
+                    only used if you want to log it or if you want to retry. Relationships are very useful for routing
+                    data where it needs to go. The RouteOnAttribute processor has user defined routes with regex-like
+                    syntax so you can define how and where a particular FlowFile goes in the flow. </p>
+                <p> If a route isn't being used (which is going to be most of them), NiFi will detect that the route
+                    doesn't go anywhere and automatically terminates the relationship. <strong>Just kidding</strong>,
+                    you need to set each individual relationship to terminate manually, or NiFi isn't even going to try
+                    to deal with it. </p>
                 <h3 id="using-processors">Using Processors</h3>
-                <p>
-                    Now that you have your processor all linked up and configured, it's time to start it. To start a
+                <p> Now that you have your processor all linked up and configured, it's time to start it. To start a
                     processor, right click it and click "Start". Ensure you don't right click and start the background
                     because that will start <em>every</em> processor on the canvas. You can also choose to Run Once,
-                    which
-                    is very useful for debugging.
-                </p>
+                    which is very useful for debugging. </p>
                 <figure>
                     <img src="res/invokehttp-error.png" alt="InvokeHTTP Error" />
                 </figure>
-                <p>
-                    If a processor has an error, it will display a little red icon in the corner for about five minutes
+                <p> If a processor has an error, it will display a little red icon in the corner for about five minutes
                     which will tell you the details of the error when hovered over. The same details will also be
-                    visible in
-                    the bulletin board, which is available in the top right hamburger menu. The flow file will then be
-                    redirected to the failure relationship for further analyses.
-                </p>
+                    visible in the bulletin board, which is available in the top right hamburger menu. The flow file
+                    will then be redirected to the failure relationship for further analyses. </p>
             </section>
             <hr />
             <section>
                 <h2 id="other-features">Other Features</h2>
                 <h3 id="processor-groups">Processor Groups</h3>
-                <p>
-                    Processor groups are groups—get this—composed of processors. They can be used to abstract otherwise
+                <p> Processor groups are groups—get this—composed of processors. They can be used to abstract otherwise
                     convoluted functions into a single node, or just to make a section small enough to fit in your flow.
                     Unlike traditional nodes, Process Groups can have multiple ingresses going to different input nodes
                     within it. To create a group, highlight the processors you want to group and <del>press Ctrl +
-                        G</del>
-                    right click and click group. Inside a group, you can set input and output nodes and these will be
-                    used
-                    to connect with the outside world.
-                </p>
-                <p>
-                    Unlike you might expect, you can't use a group like a function and reference it in multiple places,
-                    but
-                    it does make it easier to copy if you need to.
-                </p>
+                        G</del> right click and click group. Inside a group, you can set input and output nodes and
+                    these will be used to connect with the outside world. </p>
+                <p>Unlike you might expect, you can't use a group like a function and reference it in multiple places,
+                    but it does make it easier to copy if you need to.</p>
                 <h3 id="templates">Templates</h3>
-                <p>
-                    Select part of your flow, right click and click "Create Template". Give it a name and click
-                    "Create".
-                    You now have a copy of your flow stored in the templates. These can be recreated at any time by
-                    dragging
-                    it from your palette onto the canvas. You can also import and export templates, making it the only
-                    tangible way to save backups of your flow.
-                </p>
+                <p> Select part of your flow, right click and click "Create Template". Give it a name and click
+                    "Create". You now have a copy of your flow stored in the templates. These can be recreated at any
+                    time by dragging it from your palette onto the canvas. You can also import and export templates,
+                    making it the only tangible way to save backups of your flow. </p>
                 <blockquote class="tip">
                     <p>You should backup your templates often, because, as mentioned above, there is no "undo" function.
                     </p>
@@ -270,105 +197,75 @@
                     <img src="res/controller-services.png" alt="Controller Services" />
                 </figure>
                 <h3 id="controller-services">Controller Services</h3>
-                <p>
-                    Sometimes, you need to share configuration or resources between multiple processors. Maybe you have
-                    ten
-                    processors all talking to the same database, and you don't want to configure the connection details
-                    ten
-                    times. That's where controller services come in. The idea is to avoid configuring the same thing
-                    over
-                    and over again for every Processor that needs it. You could, for example, have a database connection
-                    pool defined as a Controller Service, and then any Processor that needs to talk to that database can
-                    just reference the service.
-                </p>
-                <p>
-                    To create or manage controller services, you'll need to navigate to the highest scope you want the
+                <p> Sometimes, you need to share configuration or resources between multiple processors. Maybe you have
+                    ten processors all talking to the same database, and you don't want to configure the connection
+                    details ten times. That's where controller services come in. The idea is to avoid configuring the
+                    same thing over and over again for every Processor that needs it. You could, for example, have a
+                    database connection pool defined as a Controller Service, and then any Processor that needs to talk
+                    to that database can just reference the service. </p>
+                <p> To create or manage controller services, you'll need to navigate to the highest scope you want the
                     controller service to exist in. In most cases this will be the main canvas. Then right click the
                     background and click <em>configure</em>. Then you want to switch to the controller services tab if
-                    it
-                    isn't there already. Now that you're here, creating a controller service is just like creating a
+                    it isn't there already. Now that you're here, creating a controller service is just like creating a
                     processor. You can define properties, and name it, and validate properties, and name it; please name
-                    your controller services.
-                </p>
+                    your controller services. </p>
                 <blockquote class="fun-fact">
-                    <p>
-                        I can't read your mind, and I don't know why there's always at least nine services named
-                        DBCPConnectionPool or which one actually has the database connection.
-                    </p>
+                    <p>I can't read your mind, and I don't know why there's always at least nine services named
+                        DBCPConnectionPool or which one actually has the database connection.</p>
                 </blockquote>
                 <h3 id="parameters">Parameters</h3>
-                <p>
-                    Parameters are a lot like variables, but they couldn't be called that because they already had a
-                    very
-                    similar feature called "variables", which were awful and apparently they just couldn't be bothered
-                    to
-                    fix the existing feature. Every parameter has a context which groups parameters together. After you
-                    have
-                    defined a parameter, you can reference it in almost any text input property using the syntax:
-                    <nobr><code>#{context.property}</code>.</nobr>
+                <p> Parameters are a lot like variables, but they couldn't be called that because they already had a
+                    very similar feature called "variables", which were awful and apparently they just couldn't be
+                    bothered to fix the existing feature. Every parameter has a context which groups parameters
+                    together. After you have defined a parameter, you can reference it in almost any text input property
+                    using the syntax: <nobr><code>#{context.property}</code>.</nobr>
                 </p>
             </section>
             <hr />
             <section>
                 <figure>
-                    <img src="res/tidy-up.png" alt="Tidy Up">
+                    <img src="res/tidy-up.png" alt="Tidy Up" />
                 </figure>
                 <h2 id="tidying-up">Tidying up</h2>
                 <p>NiFi has plenty of features you can use to make your flow more readable:</p>
                 <ul>
                     <li>
                         <strong>Processors can be renamed</strong> to better describe their function when it's unclear,
-                        as
-                        is the case for those whose purpose is defined in the properties, such as
+                        as is the case for those whose purpose is defined in the properties, such as
                         <em>ExecuteScript</em>.
                     </li>
                     <li>
                         <strong>Double clicking a connection path</strong> creates a bend which can then be moved
-                        around.
-                        This should be used to move connection nodes and paths out of the way, so they're not blocking
-                        any
-                        information.
+                        around. This should be used to move connection nodes and paths out of the way, so they're not
+                        blocking any information.
                     </li>
                     <li>
                         <strong>Labels</strong> are exactly what they sound like; small components with no function
-                        other
-                        than as a container to hold some text. Like all nodes, they can be colored, and you can use this
-                        to
-                        make the purpose of sections of your flow more clear.
+                        other than as a container to hold some text. Like all nodes, they can be colored, and you can
+                        use this to make the purpose of sections of your flow more clear.
                     </li>
-                    <li>
-                        The <strong>align tool</strong> is located in the right click menu and simply aligns nodes
+                    <li>The <strong>align tool</strong> is located in the right click menu and simply aligns nodes
                         vertically or horizontally.</li>
                     <li>
                         <strong>Funnels</strong> can be used to streamline connection paths. They're like processors
-                        that do
-                        nothing except take all input FlowFiles and put them on the output path.
+                        that do nothing except take all input FlowFiles and put them on the output path.
                     </li>
                 </ul>
                 <blockquote class="tip">
-                    <p>
-                        Using these features you can create elaborate and beautiful flows that's as easy to read as it
-                        is
-                        functional—or you could just make incomprehensible spiderwebs like everyone else.
-                    </p>
+                    <p> Using these features you can create elaborate and beautiful flows that's as easy to read as it
+                        is functional—or you could just make incomprehensible spiderwebs like everyone else. </p>
                 </blockquote>
             </section>
             <hr />
             <section id="conculsion">
                 <h2>Conclusion</h2>
-                <p>
-                    Well, that's everything, I think. Keep it clean, bend your paths, group your processors, template
-                    and
-                    export your flows, and name your controller services. Just don't mess with my flow and I won't mess
-                    with
-                    yours.
-                </p>
+                <p> Well, that's everything, I think. Keep it clean, bend your paths, group your processors, template
+                    and export your flows, and name your controller services. Just don't mess with my flow and I won't
+                    mess with yours. </p>
                 <blockquote>
-                    <p>
-                        Confused? That's the idea. Read the <a class="text-link"
+                    <p>Confused? That's the idea. Read the <a class="text-link"
                             href="https://nifi.apache.org/documentation/v2/">official documentation</a> for further
-                        information.
-                    </p>
+                        information.</p>
                 </blockquote>
             </section>
         </article>
@@ -377,7 +274,8 @@
             <ul>
                 <li><a href="#introduction" class="text-link">Introduction</a></li>
                 <li><a href="#flowfiles" class="text-link">FlowFiles</a></li>
-                <li><a href="#components" class="text-link">Components</a>
+                <li>
+                    <a href="#components" class="text-link">Components</a>
                     <ul>
                         <li><a href="#processors" class="text-link">Processors</a></li>
                         <li><a href="#properites" class="text-link">Properties—Configuring Processors</a></li>
@@ -385,7 +283,8 @@
                         <li><a href="#using-processors" class="text-link">Using Processors</a></li>
                     </ul>
                 </li>
-                <li><a href="#other-features" class="text-link">Other Features</a>
+                <li>
+                    <a href="#other-features" class="text-link">Other Features</a>
                     <ul>
                         <li><a href="#processor-groups" class="text-link">Processor Groups</a></li>
                         <li><a href="#templates" class="text-link">Templates</a></li>
@@ -399,7 +298,8 @@
         </aside>
     </main>
     <footer>
-        <a class="icon" id="back-to-top" href="#">expand_circle_up</a> <p>rebitwise.com</p>
+        <a class="icon" id="back-to-top" href="#">expand_circle_up</a>
+        <p>rebitwise.com</p>
     </footer>
 </body>
 
