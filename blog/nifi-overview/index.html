@@ -18,10 +18,28 @@
             width: 30rem;
             max-width: 100%;
         }
+
+        #back-to-top {
+            color: var(--middle);
+        }
+        
+        footer p {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: auto;
+        }
     </style>
 </head>
 
 <body>
+    <nav>
+        <a href="/">Bitwise</a>
+        <ul>
+            <li><a href="/blog">Home</a></li>
+            <li><a href="/blog/nifi-overview" class="active-item">NiFi Overview</a></li>
+        </ul>
+    </nav>
     <header>
         <img src="res/nifi-logo.png" alt="NiFi logo" />
     </header>
@@ -380,6 +398,9 @@
             </ul>
         </aside>
     </main>
+    <footer>
+        <a class="icon" id="back-to-top" href="#">expand_circle_up</a> <p>rebitwise.com</p>
+    </footer>
 </body>
 
 </html>
