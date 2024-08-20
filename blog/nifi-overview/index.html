@@ -19,11 +19,15 @@
             max-width: 100%;
         }
 
-        #back-to-top {
+        footer a {
             color: var(--middle);
         }
 
-        footer p {
+        footer a:hover {
+            color: var(--primary-color);
+        }
+
+        footer a:last-of-type {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -116,7 +120,7 @@
                     JSON, you can just click the JSON tag and see all the options applicable. </p>
                 <figure>
                     <img src="res/all-processors.png" alt="All processors" />
-                    <figcaption>There are even more components and you wont use even more of them.</figcaption>
+                    <figcaption>There are even more components, and you wont use even more of them.</figcaption>
                 </figure>
                 <h3 id="properites">Properties—Configuring Processors</h3>
                 <p> The properties tab is where you can specify the key/value pairs that the processor uses to make its
@@ -308,7 +312,7 @@
     </main>
     <footer>
         <a class="icon" id="back-to-top" href="#">expand_circle_up</a>
-        <p>rebitwise.com</p>
+        <a href="/">rebitwise.com</a>
     </footer>
 </body>
 
