@@ -30,6 +30,7 @@
     --reading-width: 800px;
     --big-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     --shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    --small-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 
     /* because this doesn't work on body for some reason */
     scroll-padding-top: 10%;
@@ -114,6 +115,8 @@ aside a {
     font-weight: normal;
 }
 
+/* Restyled default tags */
+
 code {
     background: var(--code-bg);
     color: var(--text-color);
@@ -127,6 +130,49 @@ hr {
     border: none;
     border-top: 2px solid var(--code-bg);
     margin: 20px 0;
+}
+
+kbd {
+    background: var(--code-bg);
+    border: 1px solid var(--middle);
+    border-radius: 0.5rem;
+    padding: 0.1rem 0.3rem;
+    box-shadow: var(--small-shadow);
+}
+
+del {
+    position: relative;
+    text-decoration: none;
+}
+
+del::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    border-top: 3px solid var(--red);
+    transform: rotate(2deg);
+    box-shadow: var(--small-shadow);
+}
+
+mark {
+    position: relative;
+    background-color: transparent;
+    color: inherit;
+    z-index: 1; /* Add this line to ensure mark element stays above */
+}
+
+mark::before {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: #fe06;
+    content: '';
+    transform: skew(-10deg, 0);
+    z-index: 0; /* Add this line to keep ::before below the text */
 }
 
 h1,
@@ -194,7 +240,10 @@ a {
     position: relative;
 }
 
-nobr {
+code,
+del,
+nobr,
+kbd {
     white-space: nowrap;
 }
 
