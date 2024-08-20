@@ -44,7 +44,7 @@ body.dark {
     --body-color: #222227;
     --background-color: #252529;
     --text-color: #eee;
-    --fig-color: #fffb;
+    --fig-color: #fff9;
 }
 
 body {
@@ -74,6 +74,12 @@ code {
     font-family: var(--font-mono);
     padding: 5px;
     border-radius: 5px;
+}
+
+hr {
+    border: none;
+    border-top: 2px solid var(--code-bg);
+    margin: 20px 0;
 }
 
 h2 {
