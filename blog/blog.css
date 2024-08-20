@@ -392,7 +392,7 @@ blockquote.note {
     }
 
     main {
-        padding: 5px;
+        padding: 0;
     }
 
     header img {
@@ -409,6 +409,10 @@ blockquote.note {
 
     aside {
         display: none;
+    }
+
+    nav {
+        padding: 10px 20px;
     }
 
     /* nav menu for mobile */
