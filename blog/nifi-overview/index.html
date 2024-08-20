@@ -94,7 +94,7 @@
                     processor, which is the workhorse of the flow. </p>
                 <figure>
                     <img src="res/component-palette.png" alt="Component Palette" />
-                    <figcaption>There are a lot of components, but you'll only ever use one.</figcaption>
+                    <figcaption>There are a lot of components, but you'll only ever need one.</figcaption>
                 </figure>
                 <h3 id="processors">Processors</h3>
                 <p> Processors are the nodes in the system that actually do the work. They are generally designed to do
@@ -116,6 +116,7 @@
                     JSON, you can just click the JSON tag and see all the options applicable. </p>
                 <figure>
                     <img src="res/all-processors.png" alt="All processors" />
+                    <figcaption>There are even more components and you wont use even more of them.</figcaption>
                 </figure>
                 <h3 id="properites">Properties—Configuring Processors</h3>
                 <p> The properties tab is where you can specify the key/value pairs that the processor uses to make its
@@ -123,6 +124,7 @@
                     clicking it. </p>
                 <figure>
                     <img src="res/invokehttp.png" alt="InvokeHTTP" />
+                    <figcaption>Makes you wonder what was wrong with <code>fetch()</code>.</figcaption>
                 </figure>
                 <p> As you can see, there are a lot of properties, most of which you can safely ignore. The necessary
                     ones are <strong>highlighted in bold</strong>, and the question mark icons can be hovered over to
@@ -149,6 +151,7 @@
                 </blockquote>
                 <figure>
                     <img src="res/invokehttp-relationships.png" alt="InvokeHTTP Relationships" />
+                    <figcaption>It's like a choose your own adventure book, but with more HTTP.</figcaption>
                 </figure>
                 <p> When you make a connection, the processor needs to know what output route to get the data from. For
                     most connections, you're probably looking for <code>success</code>. <code>Failure</code> is usually
@@ -166,6 +169,8 @@
                     which is very useful for debugging. </p>
                 <figure>
                     <img src="res/invokehttp-error.png" alt="InvokeHTTP Error" />
+                    <figcaption>You're gonna see these little guys a lot. Fortunately, they won't halt your flow.
+                    </figcaption>
                 </figure>
                 <p> If a processor has an error, it will display a little red icon in the corner for about five minutes
                     which will tell you the details of the error when hovered over. The same details will also be
@@ -195,6 +200,8 @@
                 </blockquote>
                 <figure>
                     <img src="res/controller-services.png" alt="Controller Services" />
+                    <figcaption>Database connection not working? Just create a new DBCPConnectionPool. I'm sure no one
+                        will care.</figcaption>
                 </figure>
                 <h3 id="controller-services">Controller Services</h3>
                 <p> Sometimes, you need to share configuration or resources between multiple processors. Maybe you have
@@ -225,6 +232,8 @@
             <section>
                 <figure>
                     <img src="res/tidy-up.png" alt="Tidy Up" />
+                    <figcaption>Look at that subtle right-angle pathing. The tasteful colored labels. My God, it's even
+                        got a failure column.</figcaption>
                 </figure>
                 <h2 id="tidying-up">Tidying up</h2>
                 <p>NiFi has plenty of features you can use to make your flow more readable:</p>
@@ -263,7 +272,7 @@
                     and export your flows, and name your controller services. Just don't mess with my flow and I won't
                     mess with yours. </p>
                 <blockquote>
-                    <p>Confused? That's the idea. Read the <a class="text-link"
+                    <p>Confused? That's kinda the idea. Read the <a class="text-link"
                             href="https://nifi.apache.org/documentation/v2/">official documentation</a> for further
                         information.</p>
                 </blockquote>
