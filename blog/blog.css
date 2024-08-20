@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+@import url('https://fonts.googleapis.com/css2?family=Nunito&family=Montserrat&display=swap');
 
 * {
     transition: background 0.3s;
@@ -15,7 +16,8 @@
 
     --middle: #888;
 
-    --font-main: "Open Sans", "Roboto", sans-serif;
+    --font-main: "Nunito", "Roboto", sans-serif;
+    --font-title: "Montserrat", "Roboto", sans-serif;
     --font-mono: "Cascadia Code", monospace;
     --primary-color: var(--blue);
     --secondary-color: var(--cyan);
@@ -98,6 +100,7 @@ aside h3 {
 
 aside ul {
     list-style: none;
+    padding-bottom: 0.5rem;
 }
 
 aside > ul {
@@ -114,12 +117,18 @@ code {
     font-family: var(--font-mono);
     padding: 5px;
     border-radius: 5px;
+    font-size: .9rem;
 }
 
 hr {
     border: none;
     border-top: 2px solid var(--code-bg);
     margin: 20px 0;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: var(--font-title);
+    font-weight: bold;
 }
 
 h2 {
@@ -139,6 +148,7 @@ figure img {
     margin-bottom: 0;
     border-radius: 10px;
     box-shadow: var(--shadow);
+    transition: all 0.2s;
 }
 
 header {
@@ -210,7 +220,7 @@ a {
     color: var(--text-color);
     font-weight: bolder;
     text-decoration: none;
-    transition: 0.3s;
+    transition: color 0.3s;
     position: relative;
 }
 
@@ -307,7 +317,6 @@ blockquote.note {
     a:hover {
         color: var(--primary-color);
     }
-
     
     button:hover {
         transform: translateY(-5%) scale(1.05);
@@ -320,7 +329,7 @@ blockquote.note {
         content: '';
         position: absolute;
         width: 100%;
-        height: 2px;
+        height: 1.5px;
         bottom: 0;
         left: 0;
         background-color: var(--primary-color);
