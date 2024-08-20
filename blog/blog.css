@@ -44,7 +44,7 @@ body.dark {
     --body-color: #222227;
     --background-color: #252529;
     --text-color: #eee;
-    --fig-color: #fff9;
+    --fig-color: #fffb;
 }
 
 body {
@@ -58,14 +58,54 @@ body {
     color: var(--text-color);
 }
 
-main {
-    max-width: var(--reading-width);
+article {
     background-color: var(--background-color);
-    margin: auto;
     padding: 20px 100px;
     box-shadow: var(--big-shadow);
     border-radius: 10px;
-    margin: 50px auto;
+    max-width: var(--reading-width);
+    margin: auto;
+}
+
+main {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin: auto; 
+    padding: 20px;
+    width: fit-content;
+}
+
+aside {
+    position: sticky;
+    align-self: start;
+    top: 10%;
+    width: 20rem;
+    min-width: 15rem;
+    margin-left: 2rem;
+}
+
+aside h3 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    font-size: 1.25rem;
+    margin: 0;
+    margin-top: 2rem;
+    padding: 0;
+}
+
+aside ul {
+    list-style: none;
+}
+
+aside > ul {
+    padding: 0;
+}
+
+aside a {
+    font-weight: normal;
 }
 
 code {
@@ -294,9 +334,13 @@ blockquote.note {
 }
 
 /* responsive design */
-@media screen and (max-width: 800px) {
-    main {
+@media screen and (max-width: 1200px) {
+    article {
         padding: 20px;
+    }
+
+    main {
+        padding: 5px;
     }
 
     header img {
@@ -309,5 +353,9 @@ blockquote.note {
 
     figure {
         margin: 0;
+    }
+
+    aside {
+        display: none;
     }
 }
