@@ -1,3 +1,4 @@
+// Dark mode button
 const darkModeButton = document.createElement("button");
 darkModeButton.id = "dark-mode-button";
 darkModeButton.textContent = "light_mode";
@@ -15,6 +16,8 @@ function toggleDarkMode() {
 }
 
 darkModeButton.addEventListener("click", toggleDarkMode);
+
+// Hamburger button
 
 if (document.querySelector("nav")) {
     const hamburgerButton = document.createElement("div");

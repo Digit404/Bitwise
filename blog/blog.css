@@ -6,6 +6,7 @@
 }
 
 :root {
+    /* Base colors */
     --red: #f22;
     --orange: #f72;
     --yellow: #eb2;
@@ -14,20 +15,29 @@
     --blue: #07f;
     --magenta: #c2e;
 
+    /* Shades of grey */
     --middle: #aaa;
 
+    /* Fonts */
     --font-main: "Nunito", "Roboto", sans-serif;
     --font-title: "Montserrat", "Roboto", sans-serif;
     --font-mono: "Cascadia Code", monospace;
+    --font-icons: "Material Symbols Rounded";
+
+    /* Colors */
     --primary-color: var(--blue);
     --secondary-color: var(--cyan);
     --warning-color: var(--orange);
-    --body-color: #f8f8f8;
+    --body-color: #f8f8fd;
     --background-color: #fff;
     --code-bg: #9994;
     --text-color: #333;
     --fig-color: #0009;
+
+    /* Layout */
     --reading-width: 800px;
+
+    /* Shadows */
     --big-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     --shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     --small-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
@@ -47,7 +57,7 @@ body.dark {
 
     --middle: #999;
 
-    --body-color: #202025;
+    --body-color: #202023;
     --background-color: #252529;
     --text-color: #eee;
     --fig-color: #fffb;
@@ -55,11 +65,9 @@ body.dark {
 
 body {
     display: block;
-    flex-direction: column;
     font-family: var(--font-main);
     line-height: 1.6;
     margin: 0;
-    padding: 0;
     background-color: var(--body-color);
     color: var(--text-color);
 }
@@ -160,7 +168,8 @@ mark {
     position: relative;
     background-color: transparent;
     color: inherit;
-    z-index: 1; /* Add this line to ensure mark element stays above */
+    z-index: 1;
+    /* Add this line to ensure mark element stays above */
 }
 
 mark::before {
@@ -172,7 +181,8 @@ mark::before {
     background: #fe06;
     content: '';
     transform: skew(-10deg, 0);
-    z-index: 0; /* Add this line to keep ::before below the text */
+    z-index: 0;
+    /* Add this line to keep ::before below the text */
 }
 
 h1,
@@ -240,6 +250,13 @@ a {
     position: relative;
 }
 
+a.text-link::after {
+    content: "link";
+    color: var(--primary-color);
+    padding-left: 0.1em;
+    font-family: var(--font-icons)
+}
+
 code,
 del,
 nobr,
@@ -297,7 +314,7 @@ nav .active-item {
     display: none;
     font-size: 1.5rem;
     cursor: pointer;
-    font-family: "Material Symbols Rounded";
+    font-family: var(--font-icons);
 }
 
 footer {
@@ -353,7 +370,7 @@ blockquote p {
 blockquote:before {
     content: var(--splash-text);
     white-space: pre;
-    font-family: var(--font-main), "Material Symbols Rounded";
+    font-family: var(--font-main), var(--font-icons);
     font-variation-settings:
         "FILL" 1,
         "GRAD" 1;
@@ -384,7 +401,7 @@ blockquote.note {
 }
 
 .icon {
-    font-family: "Material Symbols Rounded";
+    font-family: var(--font-icons);
     font-size: 2rem;
     vertical-align: middle;
     font-variation-settings:
@@ -399,7 +416,7 @@ blockquote.note {
     right: 20px;
     width: 50px;
     height: 50px;
-    font-family: "Material Symbols Rounded";
+    font-family: var(--font-icons);
     font-size: 2rem;
     z-index: 1000;
 }
@@ -417,19 +434,19 @@ blockquote.note {
     }
 
     /* underline animation on hover */
-    a.text-link::after {
+    a.text-link::before {
         content: '';
         position: absolute;
         width: 100%;
-        height: 0.1em;
+        height: 2px;
         bottom: 0;
         left: 0;
         background-color: var(--primary-color);
         transform: scaleX(0);
-        transition: transform 0.3s ease-out;
+        transition: transform 0.2s ease-out;
     }
 
-    a.text-link:hover::after {
+    a.text-link:hover::before {
         transform: scaleX(1);
     }
 }
