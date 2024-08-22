@@ -48,8 +48,8 @@
     </header>
     <main>
         <article>
-            <section id="introduction">
-                <h2>Introduction</h2>
+            <section>
+                <h2 id="introduction">Introduction</h2>
                 <p> NiFi is a graphical flow-based tool by Apache, designed to automate data flow between systems,
                     working in the ETL (extract, transform, load) model. Looking at a fully formed flow in NiFi might
                     look intimidating with its nodes and paths going in every direction, but it's actually incredibly
@@ -61,8 +61,8 @@
                 </blockquote>
             </section>
             <hr />
-            <section id="flowfiles">
-                <h2>FlowFiles</h2>
+            <section>
+                <h2 id="flowfiles">FlowFiles</h2>
                 <p>
                     <em>FlowFiles</em> are individual objects that are the data in the system. Think of them as JSON
                     objects that are being pushed around, sorted, and transformed by the Processors.Each FlowFile has a
@@ -271,10 +271,10 @@
                 </blockquote>
             </section>
             <hr />
-            <section id="conculsion">
-                <h2>Conclusion</h2>
+            <section>
+                <h2 id="conculsion">Conclusion</h2>
                 <p> Well, that's everything, I think. Keep it clean, bend your paths, group your processors, template
-                    and export your flows, and name your controller services. Just don't mess with my flow and I won't
+                    and export your flows, <mark>and name your controller services</mark>. Just don't mess with my flow and I won't
                     mess with yours. </p>
                 <blockquote>
                     <p>Confused? That's kinda the idea. Read the <a class="text-link"

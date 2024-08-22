@@ -18,7 +18,6 @@ function toggleDarkMode() {
 darkModeButton.addEventListener("click", toggleDarkMode);
 
 // Hamburger button
-
 if (document.querySelector("nav")) {
     const hamburgerButton = document.createElement("div");
     hamburgerButton.id = "hamburger-button";
@@ -33,3 +32,15 @@ if (document.querySelector("nav")) {
         });
     });
 }
+
+// add section links
+document.querySelectorAll('article h2, article h3').forEach((heading) => {
+    const id = heading.id;
+
+    const link = document.createElement('a');
+    link.href = `#${id}`;
+    link.textContent = "§";
+
+    heading.prepend(link);
+    
+});

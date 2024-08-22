@@ -3,6 +3,7 @@
 
 * {
     transition: background 0.3s;
+    position: relative;
 }
 
 :root {
@@ -28,9 +29,9 @@
     --primary-color: var(--blue);
     --secondary-color: var(--cyan);
     --warning-color: var(--orange);
-    --body-color: #f8f8fd;
+    --body-color: #f8f8fa;
     --background-color: #fff;
-    --code-bg: #9994;
+    --half-trans: #9994;
     --text-color: #333;
     --fig-color: #0009;
 
@@ -43,7 +44,7 @@
     --small-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 
     /* because this doesn't work on body for some reason */
-    scroll-padding-top: 10%;
+    scroll-padding-top: 100px;
 }
 
 body.dark {
@@ -58,7 +59,7 @@ body.dark {
     --middle: #999;
 
     --body-color: #202023;
-    --background-color: #252529;
+    --background-color: #252528;
     --text-color: #eee;
     --fig-color: #fffb;
 }
@@ -126,7 +127,7 @@ aside a {
 /* Restyled default tags */
 
 code {
-    background: var(--code-bg);
+    background: var(--half-trans);
     color: var(--text-color);
     font-family: var(--font-mono);
     padding: 5px;
@@ -136,20 +137,21 @@ code {
 
 hr {
     border: none;
-    border-top: 2px solid var(--code-bg);
+    border-top: 2px solid var(--half-trans);
     margin: 20px 0;
 }
 
 kbd {
-    background: var(--code-bg);
+    background: #eee;
+    color: #333;
     border: 1px solid var(--middle);
-    border-radius: 0.5rem;
+    border-radius: 0.2rem;
     padding: 0.1rem 0.3rem;
-    box-shadow: var(--small-shadow);
+    box-shadow: var(--small-shadow),
+        inset 0 -5px 10px rgba(0, 0, 0, 0.1);
 }
 
 del {
-    position: relative;
     text-decoration: none;
 }
 
@@ -162,14 +164,13 @@ del::before {
     border-top: 3px solid var(--red);
     transform: rotate(2deg);
     box-shadow: var(--small-shadow);
+    z-index: 1;
 }
 
 mark {
-    position: relative;
     background-color: transparent;
     color: inherit;
     z-index: 1;
-    /* Add this line to ensure mark element stays above */
 }
 
 mark::before {
@@ -181,9 +182,17 @@ mark::before {
     background: #fe06;
     content: '';
     transform: skew(-10deg, 0);
-    z-index: 0;
-    /* Add this line to keep ::before below the text */
+    z-index: -1;
 }
+
+code,
+del,
+nobr,
+kbd {
+    white-space: nowrap;
+}
+
+/* Header stuff */
 
 h1,
 h2,
@@ -203,6 +212,15 @@ h2 {
 h3 {
     color: var(--text-color);
     font-size: 1.25rem;
+}
+
+/* Section tags for headers (created by js) */
+h2>a,
+h3>a {
+    position: absolute;
+    color: var(--half-trans);
+    left: -1em;
+    font-size: 0.9em;
 }
 
 figure img {
@@ -247,7 +265,6 @@ a {
     font-weight: bolder;
     text-decoration: none;
     transition: color 0.3s;
-    position: relative;
 }
 
 a.text-link::after {
@@ -255,13 +272,6 @@ a.text-link::after {
     color: var(--primary-color);
     padding-left: 0.1em;
     font-family: var(--font-icons)
-}
-
-code,
-del,
-nobr,
-kbd {
-    white-space: nowrap;
 }
 
 /*            */
@@ -449,6 +459,11 @@ blockquote.note {
     a.text-link:hover::before {
         transform: scaleX(1);
     }
+
+    figure img:hover {
+        transform: scale(1.01);
+        box-shadow: var(--big-shadow);
+    }
 }
 
 /* responsive design */
@@ -504,5 +519,12 @@ blockquote.note {
 
     nav li {
         margin: 20px 20px;
+    }
+
+    /* No section tags on mobile */
+
+    h2>a,
+    h3>a {
+        display: none;
     }
 }
