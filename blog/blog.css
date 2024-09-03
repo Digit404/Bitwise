@@ -128,7 +128,7 @@ aside a {
 
 code {
     background: var(--half-trans);
-    color: var(--text-color);
+    color: var(--red);
     font-family: var(--font-mono);
     padding: 5px;
     border-radius: 5px;
@@ -179,7 +179,7 @@ mark::before {
     left: -2px;
     right: -2px;
     bottom: -2px;
-    background: #fe06;
+    background: #fe04;
     content: '';
     transform: skew(-10deg, 0);
     z-index: -1;
@@ -262,7 +262,7 @@ button {
 
 a {
     color: var(--text-color);
-    font-weight: bolder;
+    font-weight: bold;
     text-decoration: none;
     transition: color 0.3s;
 }
