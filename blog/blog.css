@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
-@import url('https://fonts.googleapis.com/css2?family=Nunito&family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito&family=Lexend&family=Fira+Code&display=swap');
 
 * {
     transition: background 0.3s;
@@ -21,14 +21,10 @@
 
     /* Fonts */
     --font-main: "Nunito", "Roboto", sans-serif;
-    --font-title: "Montserrat", "Roboto", sans-serif;
-    --font-mono: "Cascadia Code", monospace;
+    --font-title: "Lexend", "Roboto", sans-serif;
+    --font-mono: "Cascadia Code", "Fira Code", monospace;
     --font-icons: "Material Symbols Rounded";
 
-    /* Colors */
-    --primary-color: var(--blue);
-    --secondary-color: var(--cyan);
-    --warning-color: var(--orange);
     --body-color: #f8f8fa;
     --background-color: #fff;
     --half-trans: #9994;
@@ -52,8 +48,8 @@ body.dark {
     --orange: #f73;
     --yellow: #fb3;
     --green: #3e5;
-    --cyan: #3dd;
-    --blue: #47f;
+    --cyan: #4dd;
+    --blue: #37f;
     --magenta: #e3f;
 
     --middle: #999;
@@ -71,6 +67,10 @@ body {
     margin: 0;
     background-color: var(--body-color);
     color: var(--text-color);
+
+    --primary-color: var(--blue);
+    --secondary-color: var(--cyan);
+    --warning-color: var(--orange);
 }
 
 article {
@@ -353,8 +353,13 @@ footer {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
+    background: #fff3;
     border-radius: 5px;
+    transition: all 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #fff8;
 }
 
 /*              */
@@ -526,5 +531,13 @@ blockquote.note {
     h2>a,
     h3>a {
         display: none;
+    }
+
+    ::-webkit-scrollbar {
+        width: 2.5px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #fffa;
     }
 }
