@@ -12,7 +12,7 @@ const dfjkContainer = document.getElementById("dfjk-container");
 
 const clickFile = "/res/sound/click.wav";
 const errorFile = "/res/sound/error.mp3";
-const failFile = "/res/sound/fail-2.wav";
+const failFile = "/res/sound/fail.wav";
 const ultimateFile = "/res/sound/ultimate.wav";
 
 let chart;
