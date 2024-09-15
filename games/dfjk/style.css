@@ -116,6 +116,11 @@ body.fail {
     background-color: var(--magenta);
 }
 
+.s {
+    background-color: black;
+    color: white;
+}
+
 #mistakes {
     font-size: 3rem;
     background-color: var(--fg);

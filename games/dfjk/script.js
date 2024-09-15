@@ -15,8 +15,10 @@ const chordFile = "/res/sound/chord.wav";
 let mistakeCount = 0;
 let gameOver = false;
 let lightMode = false;
+let gameStart = false;
 let chart;
 let startTime;
+let secretTicker = 0;
 
 let dfjkContainer
 
@@ -25,6 +27,7 @@ const settingsDialog = document.getElementById('settings-dialog');
 const lightModeCheckbox = document.getElementById('light-mode');
 const closeButton = document.getElementById('close-button');
 const hardModeCheckbox = document.getElementById('hard-mode');
+const hardModeLabel = document.querySelector('label[for="hard-mode"]');
 const scaleInput = document.getElementById('scale');
 const lengthInput = document.getElementById('length');
 
@@ -48,11 +51,27 @@ lightModeCheckbox.onchange = () => {
 };
 
 hardModeCheckbox.onchange = () => {
+    if (secretTicker === 5) {
+        hardModeLabel.textContent = "NIGHTMARE MODE";
+        hardModeLabel.style.color = "var(--fail-color)";
+        hardModeLabel.classList.add("fail")
+        keys = ["s", "d", "f", "j", "k", "l"];
+        lengthInput.value = 75;
+        length = 75;
+        lengthInput.disabled = true;
+        HP = 5;
+        updateMistakes();
+
+        initializeGame();
+        return;
+    }
+
     if (hardModeCheckbox.checked) {
         keys = ["d", "f", "j", "k", "l"];
     } else {
         keys = ["d", "f", "j", "k"];
     }
+    secretTicker++;
     initializeGame();
 }
 
@@ -112,13 +131,18 @@ function newChart(length) {
 
     drawChart(chart);
     mistakeCount = 0;
-    updateMistakes("❤️".repeat(HP));
+    gameStart = false;
+    updateMistakes();
 
+    clearStyles();
+    gameOver = false;
+}
+
+function clearStyles() {
     dfjkContainer.classList = [];
     document.body.classList = [];
     mistakes.classList = [];
     document.body.classList.toggle("light", lightMode);
-    gameOver = false;
 }
 
 function newSeed() {
@@ -162,7 +186,8 @@ function keydown(event) {
     if (gameOver) return;
 
     if (key === chart[0]) {
-        if (chart.length === length) {
+        if (!gameStart) {
+            gameStart = true;
             startTime = performance.now();
             mistakes.classList.add("play");
         }
@@ -193,13 +218,15 @@ function keydown(event) {
 
 function win() {
     const time = (performance.now() - startTime) / 1000;
+
+    clearStyles();
     if (mistakeCount === 0) {
         playAudio(ultimateFile);
-        updateMistakes("PERFECT! Time: " + time.toFixed(2) + "s");
+        mistakes.textContent = "PERFECT! Time: " + time.toFixed(2) + "s";
         mistakes.classList.add("perfect");
     } else {
         playAudio(chordFile);
-        updateMistakes("Mistakes: " + mistakeCount + " | Time: " + time.toFixed(2) + "s");
+        mistakes.textContent = "Mistakes: " + mistakeCount + " | Time: " + time.toFixed(2) + "s";
         mistakes.classList.add("win");
     }
 
@@ -224,13 +251,13 @@ function mistake() {
     if (mistakeCount === HP) {
         fail();
     } else {
-        updateMistakes("❤️".repeat(HP - mistakeCount));
+        updateMistakes();
     }
 }
 
 function fail() {
     playAudio(failFile);
-    updateMistakes("Fail!");
+    mistakes.textContent = "Fail!";
     document.body.classList.add("fail");
     mistakes.classList.add("fail");
     dfjkContainer.classList.add("fail");
@@ -244,8 +271,8 @@ function playAudio(src) {
     audio.play();
 }
 
-function updateMistakes(text) {
-    mistakes.textContent = text;
+function updateMistakes() {
+    mistakes.textContent = "❤️".repeat(HP - mistakeCount);
 }
 
 function mulberry32(a) {
