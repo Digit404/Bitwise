@@ -71,18 +71,18 @@ hardModeCheckbox.onchange = () => {
     initializeGame();
 };
 
-scaleInput.onchange = () => {
+scaleInput.addEventListener("input", () => {
     document.documentElement.style.setProperty("--key-height", scaleInput.value + "rem");
-};
+});
 
-lengthInput.onchange = () => {
+lengthInput.addEventListener("input", () => {
     if (lengthInput.value === "666") {
         activateNightmareMode();
         return;
     }
     length = lengthInput.value;
     initializeGame();
-};
+});
 
 function activateNightmareMode() {
     hardModeLabel.textContent = "NIGHTMARE MODE";
