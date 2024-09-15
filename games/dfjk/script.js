@@ -12,7 +12,8 @@ const dfjkContainer = document.getElementById("dfjk-container");
 
 const clickFile = "/res/sound/click.wav";
 const errorFile = "/res/sound/error.mp3";
-const failFile = "/res/sound/fail.wav";
+const failFile = "/res/sound/fail-2.wav";
+const ultimateFile = "/res/sound/ultimate.wav";
 
 let chart;
 let randomSeed;
@@ -102,9 +103,15 @@ function keydown(event) {
 }
 
 function win() {
-    chord.play();
     const time = (performance.now() - startTime) / 1000;
-    updateMistakes("Time: " + time.toFixed(2) + "s");
+    if (mistakeCount === 0) {
+        playAudio(ultimateFile);
+        updateMistakes("PERFECT! Time: " + time.toFixed(2) + "s");
+    } else {
+        chord.play();
+        updateMistakes("Time: " + time.toFixed(2) + "s");
+    }
+
     dfjkContainer.classList.add("win");
     mistakes.classList.add("win");
     gameOver = true;
