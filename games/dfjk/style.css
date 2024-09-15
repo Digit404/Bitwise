@@ -72,11 +72,12 @@ body.fail {
     padding: 0.5rem;
     border-radius: 0.5rem;
     background-color: transparent;
-    border: 2px solid #fff5;
-    width: 10rem;
+    border: 2px solid transparent;
+    width: 8rem;
     text-align: center;
     color: inherit;
     font-family: inherit;
+    transition: border-color 0.5s ease;
 }
 
 #seed::-webkit-inner-spin-button {
