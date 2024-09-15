@@ -36,12 +36,17 @@ settingsButton.onclick = () => {
 };
 
 closeButton.onclick = () => {
-    settingsDialog.close();
+    closeDialog();
 };
+
+function closeDialog () {
+    secretTicker = 0;
+    settingsDialog.close();
+}
 
 window.addEventListener('click', (event) => {
     if (event.target === settingsDialog) {
-        settingsDialog.close();
+        closeDialog();
     }
 });
 
@@ -186,6 +191,9 @@ function keydown(event) {
     if (gameOver) return;
 
     if (key === chart[0]) {
+
+        closeDialog();
+
         if (!gameStart) {
             gameStart = true;
             startTime = performance.now();
