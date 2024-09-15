@@ -3,10 +3,15 @@
     --green: #2d6;
     --blue: #27f;
     --yellow: #fc4;
+    --fail-color: #c33;
+    --default-key-color: #fff;
     --bg: #222;
+    --fg: #fff;
     --letters: 5;
     --key-gap: 3rem;
     --key-width: 5rem;
+    --grid-width: 2px;
+    --grid-color: #444; 
 }
 
 body {
@@ -24,8 +29,14 @@ body {
     overflow: hidden;
 }
 
+body.light {
+    --bg: #fff;
+    --fg: #222;
+    --grid-color: #ddd;
+}
+
 body.fail {
-    background-color: #c33;
+    background-color: var(--fail-color);
 }
 
 #field {
@@ -37,12 +48,12 @@ body.fail {
     text-align: center;
     overflow-y: hidden;
     flex-grow: 1;
-    width: calc((var(--column-size) * var(--letters)) - 2px);
+    width: calc((var(--column-size) * var(--letters)) - var(--grid-width));
     background: repeating-linear-gradient(to right,
             transparent 0%,
-            transparent calc(var(--column-size) - 2px),
-            #fff2 var(--column-size),
-            #fff2 var(--column-size));
+            transparent calc(var(--column-size) - var(--grid-width)),
+            var(--grid-color) calc(var(--column-size) - var(--grid-width)),
+            var(--grid-color) var(--column-size));
 }
 
 #dfjk-container {
@@ -51,16 +62,17 @@ body.fail {
     gap: var(--key-gap);
     margin: auto;
     padding: 1rem 0;
-    width: calc((var(--column-size) * var(--letters)) - 2px);
+    border-top: var(--grid-width) solid var(--grid-color);
+    width: calc((var(--column-size) * var(--letters)) - var(--grid-width));
     background: repeating-linear-gradient(to right,
             transparent 0%,
-            transparent calc(var(--column-size) - 2px),
-            #fff2 var(--column-size),
-            #fff2 var(--column-size));
+            transparent calc(var(--column-size) - var(--grid-width)),
+            var(--grid-color) calc(var(--column-size) - var(--grid-width)),
+            var(--grid-color) var(--column-size));
 }
 
 .key {
-    background-color: #fff;
+    background-color: var(--default-key-color);
     width: var(--key-width);
     height: var(--key-width);
     min-height: var(--key-width);
@@ -86,7 +98,7 @@ body.fail {
     justify-content: center;
     margin-left: 2rem;
     margin-top: 1rem;
-    color: white;
+    color: var(--fg);
     font-size: 2rem;
     user-select: none;
     align-items: center;
@@ -133,7 +145,7 @@ body.fail {
 
 #mistakes {
     font-size: 3rem;
-    background-color: #ccc;
+    background-color: var(--fg);
     height: 100px;
     color: var(--bg);
     text-align: center;
@@ -150,7 +162,7 @@ body.fail {
 
 #mistakes.fail {
     background: var(--bg);
-    color: #c33;
+    color: var(--fail-color);
 }
 
 #mistakes.win {
@@ -234,7 +246,7 @@ body.fail {
     padding: 0.5rem;
     background-color: transparent;
     border-radius: 0.5rem;
-    color: white;
+    color: var(--fg);
     font-size: 1rem;
     user-select: none;
     text-decoration: none;
