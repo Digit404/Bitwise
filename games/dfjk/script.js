@@ -23,7 +23,10 @@ newChart(length);
 
 document.addEventListener("keydown", keydown);
 
-mistakes.onclick = () => newChart(length);
+mistakes.onclick = () => {
+    seedInput.value = Math.floor(Math.random() * 100000)
+    newChart(length);
+}
 
 function newChart(length) {
     if (!seedInput.value) seedInput.value = Math.floor(Math.random() * 100000);
@@ -40,11 +43,9 @@ function newChart(length) {
     mistakeCount = 0;
     updateMistakes(HP);
 
-    dfjkContainer.classList.remove("win");
-    dfjkContainer.classList.remove("fail");
-    document.body.classList.remove("fail");
-    mistakes.classList.remove("win");
-    mistakes.classList.remove("fail");
+    dfjkContainer.classList = [];
+    document.body.classList = [];
+    mistakes.classList = [];
     gameOver = false;
 }
 
@@ -72,6 +73,11 @@ function keydown(event) {
     const { key } = event;
 
     if (key === "r") {
+        newChart(length);
+    }
+
+    if (key === " ") {
+        seedInput.value = Math.floor(Math.random() * 100000)
         newChart(length);
     }
 
@@ -107,13 +113,14 @@ function win() {
     if (mistakeCount === 0) {
         playAudio(ultimateFile);
         updateMistakes("PERFECT! Time: " + time.toFixed(2) + "s");
+        mistakes.classList.add("perfect")
     } else {
         chord.play();
         updateMistakes("Time: " + time.toFixed(2) + "s");
+        mistakes.classList.add("win");
     }
 
     dfjkContainer.classList.add("win");
-    mistakes.classList.add("win");
     gameOver = true;
 }
 

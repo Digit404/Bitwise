@@ -161,6 +161,10 @@ body.fail {
     background: var(--green);
 }
 
+#mistakes.perfect {
+    background: var(--yellow);
+}
+
 .fail {
     animation: shake 0.25s ease;
 }
