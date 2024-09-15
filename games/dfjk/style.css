@@ -80,7 +80,6 @@ body.fail {
     background-color: var(--default-key-color);
     width: var(--key-width);
     height: var(--key-width);
-    min-height: var(--key-height);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -91,7 +90,8 @@ body.fail {
 
 #field .key {
     height: var(--key-height);
-    margin: calc(var(--key-height) / 10);
+    min-height: var(--key-height);
+    margin: calc(var(--key-height) / 20);
     border-radius: 0.5rem;
     transition: all 1s ease;
 }
