@@ -1,8 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+
 :root {
     --red: #f44;
     --green: #2d6;
     --blue: #27f;
     --yellow: #fc4;
+    --cyan: #5dd;
+    --magenta: #a5d;
     --fail-color: #c33;
     --default-key-color: #fff;
     --bg: #222;
@@ -10,8 +14,9 @@
     --letters: 5;
     --key-gap: 3rem;
     --key-width: 5rem;
+    --key-height: 5rem;
     --grid-width: 2px;
-    --grid-color: #444; 
+    --grid-color: #444;
 }
 
 body {
@@ -75,7 +80,7 @@ body.fail {
     background-color: var(--default-key-color);
     width: var(--key-width);
     height: var(--key-width);
-    min-height: var(--key-width);
+    min-height: var(--key-height);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -85,46 +90,10 @@ body.fail {
 }
 
 #field .key {
-    width: var(--key-width);
-    height: var(--key-width);
-    margin: 0.5rem;
+    height: var(--key-height);
+    margin: calc(var(--key-height) / 10);
     border-radius: 0.5rem;
     transition: all 1s ease;
-}
-
-.level-select {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    margin-left: 2rem;
-    margin-top: 1rem;
-    color: var(--fg);
-    font-size: 2rem;
-    user-select: none;
-    align-items: center;
-}
-
-#seed {
-    font-size: inherit;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    background-color: transparent;
-    border: 2px solid transparent;
-    width: 8rem;
-    text-align: center;
-    color: inherit;
-    font-family: inherit;
-    transition: border-color 0.5s ease;
-}
-
-#seed::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-#seed:focus {
-    outline: none;
-    border-color: var(--blue);
 }
 
 .d {
@@ -132,15 +101,19 @@ body.fail {
 }
 
 .f {
-    background-color: var(--green);
+    background-color: var(--yellow);
 }
 
 .j {
-    background-color: var(--blue);
+    background-color: var(--green);
 }
 
 .k {
-    background-color: var(--yellow);
+    background-color: var(--blue);
+}
+
+.l {
+    background-color: var(--magenta);
 }
 
 #mistakes {
@@ -189,21 +162,18 @@ body.fail {
 
 @keyframes bounceAway {
     20% {
-        -webkit-transform: translate3d(0, -10px, 0) scaleY(0.9);
         transform: translate3d(0, -10px, 0) scaleY(0.9);
     }
 
     40%,
     45% {
         opacity: 1;
-        -webkit-transform: translate3d(0, 20px, 0) scaleY(0.9);
         transform: translate3d(0, 20px, 0) scaleY(0.9);
     }
 
     to {
         opacity: 0;
-        -webkit-transform: translate3d(0, -100vh, 0) scaleY(3);
-        transform: translate3d(0, -100v, 0) scaleY(3);
+        transform: translate3d(0, -200vh, 0) scaleY(3);
     }
 }
 
@@ -256,4 +226,134 @@ body.fail {
 
 #back-button:hover {
     background-color: var(--blue);
+}
+
+#settings-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 20px;
+    background-color: transparent;
+    color: var(--bg);
+    font-size: 2rem;
+    border: none;
+    cursor: pointer;
+    font-family: "Material Symbols Rounded";
+}
+
+.level-select {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    margin-left: 2rem;
+    margin-top: 1rem;
+    color: var(--fg);
+    font-size: 2rem;
+    user-select: none;
+    align-items: center;
+}
+
+#seed {
+    font-size: inherit;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: transparent;
+    border: 2px solid transparent;
+    width: 8rem;
+    text-align: center;
+    color: inherit;
+    font-family: inherit;
+    transition: border-color 0.5s ease;
+}
+
+#seed::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#seed:focus {
+    outline: none;
+    border-color: var(--blue);
+}
+
+dialog#settings-dialog {
+    background-color: var(--bg);
+    color: var(--fg);
+    border: 2px solid var(--fg);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    font-family: monospace;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+dialog#settings-dialog p {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+dialog#settings-dialog p label {
+    font-size: 1.5rem;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+dialog#settings-dialog p input[type="checkbox"] {
+    appearance: none;
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid var(--fg);
+    border-radius: 0.25rem;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+dialog#settings-dialog p input[type="checkbox"]:checked::before {
+    font-size: 1.5rem;
+    color: var(--bg);
+    position: absolute;
+    left: 0.2rem;
+    top: 0;
+}
+
+dialog#settings-dialog p input[type="checkbox"]:checked {
+    background-color: var(--blue);
+}
+
+dialog#settings-dialog p input[type="number"] {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    border: 2px solid var(--fg);
+    border-radius: 0.25rem;
+    width: 4rem;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+dialog#settings-dialog menu {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin-top: 2rem;
+}
+
+dialog#settings-dialog button {
+    background-color: var(--blue);
+    color: var(--fg);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+dialog#settings-dialog button:hover {
+    background-color: var(--fg);
+    color: var(--bg);
 }

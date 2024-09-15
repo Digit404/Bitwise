@@ -17,6 +17,19 @@
     <div id="field"></div>
     <span id="mistakes"></span>
     <a id="back-button" href="../">BACK</a>
+    <button id="settings-button" tabindex="-1">Settings</button>
+    
+    <dialog id="settings-dialog">
+        <form method="dialog">
+            <p><label for="light-mode"><input type="checkbox" id="light-mode"> Light Mode</label></p>
+            <p><label for="hard-mode"><input type="checkbox" id="hard-mode"> Hard Mode</label></p>
+            <p><label for="scale">Scale <input type="range" id="scale" name="scale" min="2" max="5" step="0.1" value="5"></label></p>
+            <p><label for="length">Length <input type="number" id="length" value="50"></label></p>
+            <menu>
+                <button id="close-button" type="button">Close</button>
+            </menu>
+        </form>
+    </dialog>
 </body>
 
 </html>

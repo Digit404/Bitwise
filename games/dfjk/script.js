@@ -1,6 +1,6 @@
-const keys = ["d", "f", "j", "k"];
-const HP = 10;
-const length = 50;
+let keys = ["d", "f", "j", "k"];
+let HP = 10;
+let length = 50;
 
 const mistakes = document.getElementById("mistakes");
 const field = document.getElementById("field");
@@ -14,14 +14,69 @@ const chordFile = "/res/sound/chord.wav";
 
 let mistakeCount = 0;
 let gameOver = false;
+let lightMode = false;
 let chart;
 let startTime;
 
-const dfjkContainer = document.createElement("div");
-dfjkContainer.id = "dfjk-container";
-field.insertAdjacentElement("afterend", dfjkContainer);
+let dfjkContainer
+
+const settingsButton = document.getElementById('settings-button');
+const settingsDialog = document.getElementById('settings-dialog');
+const lightModeCheckbox = document.getElementById('light-mode');
+const closeButton = document.getElementById('close-button');
+const hardModeCheckbox = document.getElementById('hard-mode');
+const scaleInput = document.getElementById('scale');
+const lengthInput = document.getElementById('length');
+
+settingsButton.onclick = () => {
+    settingsDialog.showModal();
+};
+
+closeButton.onclick = () => {
+    settingsDialog.close();
+};
+
+window.addEventListener('click', (event) => {
+    if (event.target === settingsDialog) {
+        settingsDialog.close();
+    }
+});
+
+lightModeCheckbox.onchange = () => {
+    document.body.classList.toggle('light', lightModeCheckbox.checked);
+    lightMode = lightModeCheckbox.checked;
+};
+
+hardModeCheckbox.onchange = () => {
+    if (hardModeCheckbox.checked) {
+        keys = ["d", "f", "j", "k", "l"];
+    } else {
+        keys = ["d", "f", "j", "k"];
+    }
+    initializeGame();
+}
+
+scaleInput.onchange = () => {
+    document.documentElement.style.setProperty('--key-height', scaleInput.value + 'rem');
+}
+
+lengthInput.onchange = () => {
+    length = lengthInput.value;
+    initializeGame();
+}
 
 function initializeGame() {
+
+    const existingContainer = document.getElementById("dfjk-container");
+
+    if (existingContainer) {
+        existingContainer.remove();
+    }
+
+    dfjkContainer = document.createElement("div");
+    dfjkContainer.id = "dfjk-container";
+    field.insertAdjacentElement("afterend", dfjkContainer);
+
     document.documentElement.style.setProperty("--letters", keys.length);
 
     for (let i = 0; i < keys.length; i++) {
@@ -62,6 +117,7 @@ function newChart(length) {
     dfjkContainer.classList = [];
     document.body.classList = [];
     mistakes.classList = [];
+    document.body.classList.toggle("light", lightMode);
     gameOver = false;
 }
 
