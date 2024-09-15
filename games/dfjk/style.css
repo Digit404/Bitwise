@@ -40,6 +40,12 @@ body.light {
     --grid-color: #ddd;
 }
 
+body.nightmare {
+    --bg: #500;
+    --grid-color: #ddd;
+    --blue: #33a;
+}
+
 body.fail {
     background-color: var(--fail-color);
 }
@@ -114,11 +120,6 @@ body.fail {
 
 .l {
     background-color: var(--magenta);
-}
-
-.s {
-    background-color: black;
-    color: white;
 }
 
 #mistakes {

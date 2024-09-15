@@ -88,10 +88,14 @@ function activateNightmareMode() {
     hardModeLabel.textContent = "NIGHTMARE MODE";
     hardModeLabel.style.color = "var(--fail-color)";
     hardModeLabel.classList.add("fail");
+    document.body.classList.add("nightmare");
+
     keys = ["s", "d", "f", "j", "k", "l"];
     lengthInput.value = 75;
     length = 75;
     lengthInput.disabled = true;
+    lightModeCheckbox.checked = false;
+    lightModeCheckbox.disabled = true;
     HP = 5;
 
     playAudio(riff, 1);
@@ -155,9 +159,9 @@ function newChart(length) {
 
 function clearStyles() {
     dfjkContainer.classList = [];
-    document.body.classList = [];
+    document.body.classList.remove("fail");
+    document.body.classList.remove("win");
     mistakes.classList = [];
-    document.body.classList.toggle("light", lightMode);
 }
 
 function newSeed() {
