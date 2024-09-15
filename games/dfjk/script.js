@@ -1,41 +1,58 @@
-const chord = new Audio("/res/sound/chord.wav");
 const keys = ["d", "f", "j", "k"];
 const HP = 10;
 const length = 50;
-let mistakeCount = 0;
-let gameOver = false;
 
 const mistakes = document.getElementById("mistakes");
 const field = document.getElementById("field");
 const seedInput = document.getElementById("seed");
-const dfjkContainer = document.getElementById("dfjk-container");
 
 const clickFile = "/res/sound/click.wav";
 const errorFile = "/res/sound/error.mp3";
 const failFile = "/res/sound/fail.wav";
 const ultimateFile = "/res/sound/ultimate.wav";
+const chordFile = "/res/sound/chord.wav";
 
+let mistakeCount = 0;
+let gameOver = false;
 let chart;
-let randomSeed;
 let startTime;
 
-newSeed();
+const dfjkContainer = document.createElement("div");
+dfjkContainer.id = "dfjk-container";
+field.insertAdjacentElement("afterend", dfjkContainer);
 
-document.addEventListener("keydown", keydown);
+function initializeGame() {
+    document.documentElement.style.setProperty("--letters", keys.length);
 
-mistakes.onclick = () => {
+    for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const span = document.createElement("span");
+        span.textContent = key.toUpperCase();
+        span.classList.add(key, "key");
+        dfjkContainer.appendChild(span);
+    }
+
     newSeed();
+
+    document.addEventListener("keydown", keydown);
+
+    seedInput.onchange = () => {
+        newChart(length);
+    };
+
+    mistakes.onclick = () => {
+        newSeed();
+    };
 }
 
 function newChart(length) {
     if (!seedInput.value) seedInput.value = Math.floor(Math.random() * 100000);
-    randomSeed = parseInt(seedInput.value);
+    let seed = parseInt(seedInput.value);
     clearChart();
-    let currentSeed = randomSeed;
 
     chart = Array.from({ length }, () => {
-        currentSeed = hashCode(currentSeed.toString());
-        return selectRandomKey(currentSeed);
+        seed = hashCode(seed.toString());
+        return selectRandomKey(seed);
     });
 
     drawChart(chart);
@@ -63,6 +80,8 @@ function drawChart(chart) {
         const span = document.createElement("span");
         span.textContent = key.toUpperCase();
         span.classList.add(key, "key");
+        let offset = keys.indexOf(key) - keys.length / 2;
+        span.style.translate = "calc((var(--key-width) + var(--key-gap)) * " + offset + " + (var(--key-width) + var(--key-gap)) / 2)";
         field.appendChild(span);
     });
 }
@@ -89,17 +108,21 @@ function keydown(event) {
     if (key === chart[0]) {
         if (chart.length === length) {
             startTime = performance.now();
-            mistakes.classList.add("play")
+            mistakes.classList.add("play");
         }
 
         chart.shift();
 
         Array.from(field.children).forEach((el, index) => {
             if (index > 0) {
-                el.classList.add('falling');
-                el.addEventListener('animationend', () => {
-                    el.classList.remove('falling');
-                }, { once: true });
+                el.classList.add("falling");
+                el.addEventListener(
+                    "animationend",
+                    () => {
+                        el.classList.remove("falling");
+                    },
+                    { once: true }
+                );
             }
         });
 
@@ -117,10 +140,10 @@ function win() {
     if (mistakeCount === 0) {
         playAudio(ultimateFile);
         updateMistakes("PERFECT! Time: " + time.toFixed(2) + "s");
-        mistakes.classList.add("perfect")
+        mistakes.classList.add("perfect");
     } else {
-        chord.play();
-        updateMistakes("Mistakes: " + mistakeCount + " Time: " + time.toFixed(2) + "s");
+        playAudio(chordFile);
+        updateMistakes("Mistakes: " + mistakeCount + " | Time: " + time.toFixed(2) + "s");
         mistakes.classList.add("win");
     }
 
@@ -190,3 +213,5 @@ function hashCode(str) {
     }
     return hash;
 }
+
+initializeGame();

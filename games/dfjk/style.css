@@ -4,9 +4,13 @@
     --blue: #27f;
     --yellow: #fc4;
     --bg: #222;
+    --letters: 5;
+    --key-gap: 3rem;
+    --key-width: 5rem;
 }
 
 body {
+    --column-size: calc(var(--key-width) + var(--key-gap));
     background-color: var(--bg);
     margin: 0;
     padding: 0;
@@ -33,23 +37,45 @@ body.fail {
     text-align: center;
     overflow-y: hidden;
     flex-grow: 1;
-    width: 32rem;
+    width: calc((var(--column-size) * var(--letters)) - 2px);
     background: repeating-linear-gradient(to right,
             transparent 0%,
-            transparent 8rem,
-            #fff2 calc(8rem + 2px),
-            #fff2 calc(8rem + 2px));
+            transparent calc(var(--column-size) - 2px),
+            #fff2 var(--column-size),
+            #fff2 var(--column-size));
 }
 
 #dfjk-container {
     display: flex;
     justify-content: center;
-    gap: 1rem;
-    margin-top: 1rem;
+    gap: var(--key-gap);
+    margin: auto;
+    padding: 1rem 0;
+    width: calc((var(--column-size) * var(--letters)) - 2px);
+    background: repeating-linear-gradient(to right,
+            transparent 0%,
+            transparent calc(var(--column-size) - 2px),
+            #fff2 var(--column-size),
+            #fff2 var(--column-size));
+}
+
+.key {
+    background-color: #fff;
+    width: var(--key-width);
+    height: var(--key-width);
+    min-height: var(--key-width);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 2rem;
+    user-select: none;
 }
 
 #field .key {
-    padding: 0.5rem;
+    width: var(--key-width);
+    height: var(--key-width);
+    margin: 0.5rem;
     border-radius: 0.5rem;
     transition: all 1s ease;
 }
@@ -59,7 +85,6 @@ body.fail {
     display: flex;
     justify-content: center;
     margin-left: 2rem;
-    gap: 1rem;
     margin-top: 1rem;
     color: white;
     font-size: 2rem;
@@ -90,19 +115,6 @@ body.fail {
     border-color: var(--blue);
 }
 
-.key {
-    width: 5rem;
-    height: 5rem;
-    min-height: 5rem;
-    margin: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    font-size: 2rem;
-    user-select: none;
-}
-
 .d {
     background-color: var(--red);
 }
@@ -119,22 +131,6 @@ body.fail {
     background-color: var(--yellow);
 }
 
-#field .d {
-    translate: -12rem;
-}
-
-#field .f {
-    translate: -4rem;
-}
-
-#field .j {
-    translate: 4rem;
-}
-
-#field .k {
-    translate: 12rem;
-}
-
 #mistakes {
     font-size: 3rem;
     background-color: #ccc;
@@ -143,7 +139,6 @@ body.fail {
     text-align: center;
     line-height: 100px;
     font-weight: bold;
-    margin-top: 1.5rem;
     user-select: none;
     cursor: pointer;
     transition: background-color 0.5s ease;
@@ -222,7 +217,7 @@ body.fail {
     }
 }
 
-#dfjk-container.win {
+#dfjk-container.win .key {
     animation: bounceAway 1s ease forwards;
 }
 
@@ -230,15 +225,15 @@ body.fail {
     animation: fall 0.05s ease;
 }
 
-#footer {
-    position:fixed;
-    top:2rem;
-    right:2rem;
-    width:5rem;
-    text-align:center;
-    padding:0.5rem;
+#back-button {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    width: 5rem;
+    text-align: center;
+    padding: 0.5rem;
     background-color: transparent;
-    border-radius:0.5rem;
+    border-radius: 0.5rem;
     color: white;
     font-size: 1rem;
     user-select: none;
@@ -247,6 +242,6 @@ body.fail {
     transition: background-color 0.2s ease;
 }
 
-#footer:hover {
+#back-button:hover {
     background-color: var(--blue);
 }
