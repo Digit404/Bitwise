@@ -19,13 +19,12 @@ let chart;
 let randomSeed;
 let startTime;
 
-newChart(length);
+newSeed();
 
 document.addEventListener("keydown", keydown);
 
 mistakes.onclick = () => {
-    seedInput.value = Math.floor(Math.random() * 100000)
-    newChart(length);
+    newSeed();
 }
 
 function newChart(length) {
@@ -41,12 +40,17 @@ function newChart(length) {
 
     drawChart(chart);
     mistakeCount = 0;
-    updateMistakes(HP);
+    updateMistakes("❤️".repeat(HP));
 
     dfjkContainer.classList = [];
     document.body.classList = [];
     mistakes.classList = [];
     gameOver = false;
+}
+
+function newSeed() {
+    seedInput.value = Math.floor(Math.random() * 100000);
+    newChart(length);
 }
 
 function selectRandomKey(seed) {
@@ -77,8 +81,7 @@ function keydown(event) {
     }
 
     if (key === " ") {
-        seedInput.value = Math.floor(Math.random() * 100000)
-        newChart(length);
+        newSeed();
     }
 
     if (gameOver) return;
@@ -86,6 +89,7 @@ function keydown(event) {
     if (key === chart[0]) {
         if (chart.length === length) {
             startTime = performance.now();
+            mistakes.classList.add("play")
         }
 
         chart.shift();
@@ -103,7 +107,7 @@ function keydown(event) {
         playAudio(clickFile);
 
         if (chart.length === 0) win();
-    } else if (keys.includes(key)) {
+    } else if (keys.includes(key) && chart.length !== length) {
         mistake();
     }
 }
@@ -116,7 +120,7 @@ function win() {
         mistakes.classList.add("perfect")
     } else {
         chord.play();
-        updateMistakes("Time: " + time.toFixed(2) + "s");
+        updateMistakes("Mistakes: " + mistakeCount + " Time: " + time.toFixed(2) + "s");
         mistakes.classList.add("win");
     }
 
@@ -128,10 +132,20 @@ function mistake() {
     playAudio(errorFile);
     mistakeCount++;
 
+    mistakes.classList.add("fail");
+    document.body.classList.add("fail");
+
+    setTimeout(() => {
+        if (!gameOver) {
+            mistakes.classList.remove("fail");
+            document.body.classList.remove("fail");
+        }
+    }, 100);
+
     if (mistakeCount === HP) {
         fail();
     } else {
-        updateMistakes(HP - mistakeCount);
+        updateMistakes("❤️".repeat(HP - mistakeCount));
     }
 }
 
