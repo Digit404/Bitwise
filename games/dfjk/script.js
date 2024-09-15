@@ -7,10 +7,11 @@ const field = document.getElementById("field");
 const seedInput = document.getElementById("seed");
 
 const clickFile = "/res/sound/click.wav";
-const errorFile = "/res/sound/error.mp3";
+const errorFile = "/res/sound/error.wav";
 const failFile = "/res/sound/fail.wav";
 const ultimateFile = "/res/sound/ultimate.wav";
 const chordFile = "/res/sound/chord.wav";
+const riff = "/res/sound/riff.wav";
 
 let mistakeCount = 0;
 let gameOver = false;
@@ -20,16 +21,16 @@ let chart;
 let startTime;
 let secretTicker = 0;
 
-let dfjkContainer
+let dfjkContainer;
 
-const settingsButton = document.getElementById('settings-button');
-const settingsDialog = document.getElementById('settings-dialog');
-const lightModeCheckbox = document.getElementById('light-mode');
-const closeButton = document.getElementById('close-button');
-const hardModeCheckbox = document.getElementById('hard-mode');
+const settingsButton = document.getElementById("settings-button");
+const settingsDialog = document.getElementById("settings-dialog");
+const lightModeCheckbox = document.getElementById("light-mode");
+const closeButton = document.getElementById("close-button");
+const hardModeCheckbox = document.getElementById("hard-mode");
 const hardModeLabel = document.querySelector('label[for="hard-mode"]');
-const scaleInput = document.getElementById('scale');
-const lengthInput = document.getElementById('length');
+const scaleInput = document.getElementById("scale");
+const lengthInput = document.getElementById("length");
 
 settingsButton.onclick = () => {
     settingsDialog.showModal();
@@ -39,35 +40,25 @@ closeButton.onclick = () => {
     closeDialog();
 };
 
-function closeDialog () {
+function closeDialog() {
     secretTicker = 0;
     settingsDialog.close();
 }
 
-window.addEventListener('click', (event) => {
+window.addEventListener("click", (event) => {
     if (event.target === settingsDialog) {
         closeDialog();
     }
 });
 
 lightModeCheckbox.onchange = () => {
-    document.body.classList.toggle('light', lightModeCheckbox.checked);
+    document.body.classList.toggle("light", lightModeCheckbox.checked);
     lightMode = lightModeCheckbox.checked;
 };
 
 hardModeCheckbox.onchange = () => {
     if (secretTicker === 5) {
-        hardModeLabel.textContent = "NIGHTMARE MODE";
-        hardModeLabel.style.color = "var(--fail-color)";
-        hardModeLabel.classList.add("fail")
-        keys = ["s", "d", "f", "j", "k", "l"];
-        lengthInput.value = 75;
-        length = 75;
-        lengthInput.disabled = true;
-        HP = 5;
-        updateMistakes();
-
-        initializeGame();
+        activateNightmareMode();
         return;
     }
 
@@ -78,19 +69,38 @@ hardModeCheckbox.onchange = () => {
     }
     secretTicker++;
     initializeGame();
-}
+};
 
 scaleInput.onchange = () => {
-    document.documentElement.style.setProperty('--key-height', scaleInput.value + 'rem');
-}
+    document.documentElement.style.setProperty("--key-height", scaleInput.value + "rem");
+};
 
 lengthInput.onchange = () => {
+    if (lengthInput.value === "666") {
+        activateNightmareMode();
+        return;
+    }
     length = lengthInput.value;
+    initializeGame();
+};
+
+function activateNightmareMode() {
+    hardModeLabel.textContent = "NIGHTMARE MODE";
+    hardModeLabel.style.color = "var(--fail-color)";
+    hardModeLabel.classList.add("fail");
+    keys = ["s", "d", "f", "j", "k", "l"];
+    lengthInput.value = 75;
+    length = 75;
+    lengthInput.disabled = true;
+    HP = 5;
+
+    playAudio(riff, 1);
+    updateMistakes();
+
     initializeGame();
 }
 
 function initializeGame() {
-
     const existingContainer = document.getElementById("dfjk-container");
 
     if (existingContainer) {
@@ -191,7 +201,6 @@ function keydown(event) {
     if (gameOver) return;
 
     if (key === chart[0]) {
-
         closeDialog();
 
         if (!gameStart) {
@@ -272,10 +281,10 @@ function fail() {
     gameOver = true;
 }
 
-function playAudio(src) {
+function playAudio(src, volume = 0.5) {
     const audio = new Audio(src);
     audio.mozPreservesPitch = false;
-    audio.volume = 0.5;
+    audio.volume = volume;
     audio.play();
 }
 
