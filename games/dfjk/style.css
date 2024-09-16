@@ -392,3 +392,8 @@ dialog#settings-dialog {
     background-color: var(--fg);
     color: var(--bg);
 }
+
+#hp-indicator {
+    width: 2ch;
+    color: var(--blue);
+}

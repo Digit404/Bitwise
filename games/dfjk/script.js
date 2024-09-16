@@ -16,6 +16,8 @@ const hardModeCheckbox = document.getElementById("hard-mode");
 const hardModeLabel = document.querySelector('label[for="hard-mode"]');
 const scaleInput = document.getElementById("scale");
 const lengthInput = document.getElementById("length");
+const hpInput = document.getElementById("hp");
+const hpIndicator = document.getElementById("hp-indicator");
 
 let dfjkContainer;
 
@@ -83,6 +85,12 @@ lengthInput.addEventListener("input", () => {
     newChart(length);
 });
 
+hpInput.addEventListener("input", () => {
+    HP = hpInput.value;
+    hpIndicator.textContent = HP;
+    updateMistakes();
+});
+
 function closeDialog() {
     // reset secret ticker when dialog is closed
     secretTicker = 0;
@@ -105,6 +113,9 @@ function activateNightmareMode() {
     lightModeCheckbox.checked = false;
     lightModeCheckbox.disabled = true;
     HP = HP / 2;
+    hpInput.value = HP;
+    hpIndicator.textContent = HP;
+    hpInput.disabled = true;
 
     // play nightmare mode sound
     playAudio(riff, 1);
@@ -317,7 +328,7 @@ function mistake() {
     }, 100);
 
     // fail condition
-    if (mistakeCount === HP) {
+    if (mistakeCount >= HP) {
         fail();
     } else {
         updateMistakes();
@@ -327,8 +338,10 @@ function mistake() {
 function fail() {
     playAudio(failFile);
 
+    let percentComplete = (1 - (chart.length / length)) * 100;
+
     // fail effects
-    mistakes.textContent = "Fail!";
+    mistakes.textContent = "Fail! " + percentComplete.toFixed(2) + "%";
     document.body.classList.add("fail");
     mistakes.classList.add("fail");
     dfjkContainer.classList.add("fail");
