@@ -1,11 +1,25 @@
+// initial game parameters
 let keys = ["d", "f", "j", "k"];
 let HP = 10;
 let length = 50;
 
+// DOM elements
 const mistakes = document.getElementById("mistakes");
 const field = document.getElementById("field");
 const seedInput = document.getElementById("seed");
 
+// DOM elements for settings
+const settingsButton = document.getElementById("settings-button");
+const settingsDialog = document.getElementById("settings-dialog");
+const lightModeCheckbox = document.getElementById("light-mode");
+const hardModeCheckbox = document.getElementById("hard-mode");
+const hardModeLabel = document.querySelector('label[for="hard-mode"]');
+const scaleInput = document.getElementById("scale");
+const lengthInput = document.getElementById("length");
+
+let dfjkContainer;
+
+// audio files
 const clickFile = "/res/sound/click.wav";
 const errorFile = "/res/sound/error.wav";
 const failFile = "/res/sound/fail.wav";
@@ -13,6 +27,7 @@ const ultimateFile = "/res/sound/ultimate.wav";
 const chordFile = "/res/sound/chord.wav";
 const riff = "/res/sound/riff.wav";
 
+// game variables
 let mistakeCount = 0;
 let gameOver = false;
 let lightMode = false;
@@ -21,29 +36,10 @@ let chart;
 let startTime;
 let secretTicker = 0;
 
-let dfjkContainer;
-
-const settingsButton = document.getElementById("settings-button");
-const settingsDialog = document.getElementById("settings-dialog");
-const lightModeCheckbox = document.getElementById("light-mode");
-const closeButton = document.getElementById("close-button");
-const hardModeCheckbox = document.getElementById("hard-mode");
-const hardModeLabel = document.querySelector('label[for="hard-mode"]');
-const scaleInput = document.getElementById("scale");
-const lengthInput = document.getElementById("length");
-
+// settings dialog event listeners
 settingsButton.onclick = () => {
     settingsDialog.showModal();
 };
-
-closeButton.onclick = () => {
-    closeDialog();
-};
-
-function closeDialog() {
-    secretTicker = 0;
-    settingsDialog.close();
-}
 
 window.addEventListener("click", (event) => {
     if (event.target === settingsDialog) {
@@ -53,21 +49,23 @@ window.addEventListener("click", (event) => {
 
 lightModeCheckbox.onchange = () => {
     document.body.classList.toggle("light", lightModeCheckbox.checked);
-    lightMode = lightModeCheckbox.checked;
 };
 
 hardModeCheckbox.onchange = () => {
+    // click 5 times to activate nightmare mode
     if (secretTicker === 5) {
         activateNightmareMode();
         return;
     }
+
+    secretTicker++;
 
     if (hardModeCheckbox.checked) {
         keys = ["d", "f", "j", "k", "l"];
     } else {
         keys = ["d", "f", "j", "k"];
     }
-    secretTicker++;
+
     initializeGame();
 };
 
@@ -76,35 +74,47 @@ scaleInput.addEventListener("input", () => {
 });
 
 lengthInput.addEventListener("input", () => {
+    // secret code to activate nightmare mode
     if (lengthInput.value === "666") {
         activateNightmareMode();
         return;
     }
     length = lengthInput.value;
-    initializeGame();
+    newChart(length);
 });
 
+function closeDialog() {
+    // reset secret ticker when dialog is closed
+    secretTicker = 0;
+    settingsDialog.close();
+}
+
 function activateNightmareMode() {
+    // nightmare mode styles
     hardModeLabel.textContent = "NIGHTMARE MODE";
     hardModeLabel.style.color = "var(--fail-color)";
     hardModeLabel.classList.add("fail");
     document.body.classList.add("nightmare");
+    document.body.classList.remove("light");
 
+    // nightmare mode adds 2 extra keys to standard mode, makes length 75 and halves health
     keys = ["s", "d", "f", "j", "k", "l"];
     lengthInput.value = 75;
     length = 75;
     lengthInput.disabled = true;
     lightModeCheckbox.checked = false;
     lightModeCheckbox.disabled = true;
-    HP = 5;
+    HP = HP / 2;
 
+    // play nightmare mode sound
     playAudio(riff, 1);
-    updateMistakes();
 
+    updateMistakes();
     initializeGame();
 }
 
 function initializeGame() {
+    // remove existing key container and create a new one
     const existingContainer = document.getElementById("dfjk-container");
 
     if (existingContainer) {
@@ -113,10 +123,12 @@ function initializeGame() {
 
     dfjkContainer = document.createElement("div");
     dfjkContainer.id = "dfjk-container";
-    field.insertAdjacentElement("afterend", dfjkContainer);
+    field.insertAdjacentElement("afterend", dfjkContainer); // place right after the field
 
+    // update css vars based on key count
     document.documentElement.style.setProperty("--letters", keys.length);
 
+    // create key elements
     for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
         const span = document.createElement("span");
@@ -125,8 +137,11 @@ function initializeGame() {
         dfjkContainer.appendChild(span);
     }
 
+    // initialize chart with random seed
     newSeed();
+    newChart(length);
 
+    // add game event listeners
     document.addEventListener("keydown", keydown);
 
     seedInput.onchange = () => {
@@ -135,12 +150,17 @@ function initializeGame() {
 
     mistakes.onclick = () => {
         newSeed();
+        newChart(length);
     };
 }
 
+// newChart generates a new chart based on the seed in the input field
 function newChart(length) {
-    if (!seedInput.value) seedInput.value = Math.floor(Math.random() * 100000);
+    // if seed is empty, generate a random seed; this will only happen if user deletes the seed
+    if (!seedInput.value) newSeed();
     let seed = parseInt(seedInput.value);
+
+    // clear and generate the chart
     clearChart();
 
     chart = Array.from({ length }, () => {
@@ -148,15 +168,30 @@ function newChart(length) {
         return selectRandomKey(seed);
     });
 
-    drawChart(chart);
+    // populate the field with the chart
+    chart.forEach((key) => {
+        const span = document.createElement("span");
+        span.textContent = key.toUpperCase();
+        span.classList.add(key, "key");
+
+        // calculate the offset based on the key
+        let offset = keys.indexOf(key) - keys.length / 2;
+        span.style.translate = "calc((var(--key-width) + var(--key-gap)) * " + offset + " + (var(--key-width) + var(--key-gap)) / 2)";
+
+        field.appendChild(span);
+    });
+
+    // reset mistakes
     mistakeCount = 0;
-    gameStart = false;
     updateMistakes();
 
     clearStyles();
+
+    gameStart = false;
     gameOver = false;
 }
 
+// clears the mistakes and body of the `win` and `fail` classes specifically, and does not touch light or nightmare
 function clearStyles() {
     dfjkContainer.classList = [];
     document.body.classList.remove("fail");
@@ -164,57 +199,59 @@ function clearStyles() {
     mistakes.classList = [];
 }
 
+// newSeed generates a seed
 function newSeed() {
     seedInput.value = Math.floor(Math.random() * 100000);
-    newChart(length);
 }
 
+// psuedo-random key selection based on a seed
 function selectRandomKey(seed) {
     const seededRandom = mulberry32(seed)();
     return keys[Math.floor(seededRandom * keys.length)];
 }
 
-function drawChart(chart) {
-    chart.forEach((key) => {
-        const span = document.createElement("span");
-        span.textContent = key.toUpperCase();
-        span.classList.add(key, "key");
-        let offset = keys.indexOf(key) - keys.length / 2;
-        span.style.translate = "calc((var(--key-width) + var(--key-gap)) * " + offset + " + (var(--key-width) + var(--key-gap)) / 2)";
-        field.appendChild(span);
-    });
-}
-
+// remove all children from the field
 function clearChart() {
     while (field.firstChild) {
         field.removeChild(field.firstChild);
     }
 }
 
+// most of the game logic is in this function
 function keydown(event) {
     const { key } = event;
 
+    // restart the game with the same seed
     if (key === "r") {
         newChart(length);
     }
 
+    // generate a new chart with a new seed
     if (key === " ") {
+        event.preventDefault(); // prevent space from pressing random buttons
         newSeed();
+        newChart(length);
     }
 
+    // can't play if the game is over
     if (gameOver) return;
 
+    // check if the key pressed is the correct next key in the chart
     if (key === chart[0]) {
+        // close the dialog if it's open
         closeDialog();
 
+        // start the timer if it's the first key
         if (!gameStart) {
             gameStart = true;
             startTime = performance.now();
             mistakes.classList.add("play");
         }
 
+        // remove the pressed key from the internal chart
         chart.shift();
 
+        // animate the key falling; not sure how this works so convincingly
         Array.from(field.children).forEach((el, index) => {
             if (index > 0) {
                 el.classList.add("falling");
@@ -228,19 +265,25 @@ function keydown(event) {
             }
         });
 
+        // remove the key from the field
         field.removeChild(field.children[0]);
         playAudio(clickFile);
 
+        // if there's no more keys, win
         if (chart.length === 0) win();
-    } else if (keys.includes(key) && chart.length !== length) {
+        // if it's wrong, mistake, unless the game hasn't started yet
+    } else if (keys.includes(key) && gameStart) {
         mistake();
     }
 }
 
 function win() {
+    // record time
     const time = (performance.now() - startTime) / 1000;
 
     clearStyles();
+
+    // determine the correct win sound based on mistakes
     if (mistakeCount === 0) {
         playAudio(ultimateFile);
         mistakes.textContent = "PERFECT! Time: " + time.toFixed(2) + "s";
@@ -251,7 +294,9 @@ function win() {
         mistakes.classList.add("win");
     }
 
+    // win styles
     dfjkContainer.classList.add("win");
+
     gameOver = true;
 }
 
@@ -259,9 +304,11 @@ function mistake() {
     playAudio(errorFile);
     mistakeCount++;
 
+    // mistake styles
     mistakes.classList.add("fail");
     document.body.classList.add("fail");
 
+    // remove the styles after a short delay, but only if the game isn't over
     setTimeout(() => {
         if (!gameOver) {
             mistakes.classList.remove("fail");
@@ -269,6 +316,7 @@ function mistake() {
         }
     }, 100);
 
+    // fail condition
     if (mistakeCount === HP) {
         fail();
     } else {
@@ -278,24 +326,29 @@ function mistake() {
 
 function fail() {
     playAudio(failFile);
+
+    // fail effects
     mistakes.textContent = "Fail!";
     document.body.classList.add("fail");
     mistakes.classList.add("fail");
     dfjkContainer.classList.add("fail");
+
     gameOver = true;
 }
 
+// create and play audio
 function playAudio(src, volume = 0.5) {
     const audio = new Audio(src);
-    audio.mozPreservesPitch = false;
     audio.volume = volume;
     audio.play();
 }
 
+// update the mistakes display
 function updateMistakes() {
     mistakes.textContent = "❤️".repeat(HP - mistakeCount);
 }
 
+// PRNG from https://stackoverflow.com/a/47593316
 function mulberry32(a) {
     return function () {
         var t = (a += 0x6d2b79f5);
@@ -305,6 +358,7 @@ function mulberry32(a) {
     };
 }
 
+// hash function from https://stackoverflow.com/a/7616484
 function hashCode(str) {
     var hash = 0,
         i,
@@ -318,4 +372,5 @@ function hashCode(str) {
     return hash;
 }
 
+// initialize the game
 initializeGame();

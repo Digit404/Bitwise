@@ -17,10 +17,11 @@
     --key-height: 5rem;
     --grid-width: 2px;
     --grid-color: #444;
+    --column-size: calc(var(--key-width) + var(--key-gap));
+    --field-width: calc((var(--column-size) * var(--letters)) - var(--grid-width));
 }
 
 body {
-    --column-size: calc(var(--key-width) + var(--key-gap));
     background-color: var(--bg);
     margin: 0;
     padding: 0;
@@ -32,8 +33,16 @@ body {
     transition: background-color 0.5s ease;
     width: 100vw;
     overflow: hidden;
+    
+    /* grid has to be defined here because colors are changed on the body */
+    --field-grid: repeating-linear-gradient(to right,
+        transparent 0%,
+        transparent calc(var(--column-size) - var(--grid-width)),
+        var(--grid-color) calc(var(--column-size) - var(--grid-width)),
+        var(--grid-color) var(--column-size));
 }
 
+/* light mode colors */
 body.light {
     --bg: #fff;
     --fg: #222;
@@ -46,10 +55,12 @@ body.nightmare {
     --blue: #33a;
 }
 
+/* shows when you lose or make a mistake */
 body.fail {
     background-color: var(--fail-color);
 }
 
+/* field of numbers */
 #field {
     display: flex;
     flex-direction: column-reverse;
@@ -59,14 +70,11 @@ body.fail {
     text-align: center;
     overflow-y: hidden;
     flex-grow: 1;
-    width: calc((var(--column-size) * var(--letters)) - var(--grid-width));
-    background: repeating-linear-gradient(to right,
-            transparent 0%,
-            transparent calc(var(--column-size) - var(--grid-width)),
-            var(--grid-color) calc(var(--column-size) - var(--grid-width)),
-            var(--grid-color) var(--column-size));
+    width: var(--field-width);
+    background: var(--field-grid);
 }
 
+/* container for the keys */
 #dfjk-container {
     display: flex;
     justify-content: center;
@@ -74,12 +82,8 @@ body.fail {
     margin: auto;
     padding: 1rem 0;
     border-top: var(--grid-width) solid var(--grid-color);
-    width: calc((var(--column-size) * var(--letters)) - var(--grid-width));
-    background: repeating-linear-gradient(to right,
-            transparent 0%,
-            transparent calc(var(--column-size) - var(--grid-width)),
-            var(--grid-color) calc(var(--column-size) - var(--grid-width)),
-            var(--grid-color) var(--column-size));
+    width: var(--field-width);
+    background: var(--field-grid);
 }
 
 .key {
@@ -215,15 +219,15 @@ body.fail {
 
 #back-button {
     position: fixed;
-    top: 2rem;
+    top: 1rem;
     right: 2rem;
-    width: 5rem;
+    width: 6rem;
     text-align: center;
     padding: 0.5rem;
     background-color: transparent;
     border-radius: 0.5rem;
     color: var(--fg);
-    font-size: 1rem;
+    font-size: 2rem;
     user-select: none;
     text-decoration: none;
     cursor: pointer;
@@ -239,12 +243,19 @@ body.fail {
     bottom: 10px;
     right: 10px;
     padding: 20px;
+    border-radius: 15px;
     background-color: transparent;
     color: var(--bg);
     font-size: 2rem;
     border: none;
     cursor: pointer;
     font-family: "Material Symbols Rounded";
+    transition: background-color 0.2s ease;
+}
+
+#settings-button:hover {
+    background-color: var(--blue);
+    color: var(--fg);
 }
 
 .level-select {
@@ -291,16 +302,28 @@ dialog#settings-dialog {
     font-family: monospace;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     text-align: center;
+    transition: inherit;
 }
 
-dialog#settings-dialog p {
+#settings-dialog::backdrop {
+    backdrop-filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+#settings-dialog h1 {
+    font-size: 2rem;
+    margin: 0;
+    user-select: none;
+}
+
+#settings-dialog p {
     margin: 1rem 0;
     display: flex;
     align-items: center;
     justify-content: left;
 }
 
-dialog#settings-dialog p label {
+#settings-dialog p label {
     font-size: 1.5rem;
     user-select: none;
     display: flex;
@@ -308,7 +331,7 @@ dialog#settings-dialog p label {
     gap: 1rem;
 }
 
-dialog#settings-dialog p input[type="checkbox"] {
+#settings-dialog p input[type="checkbox"] {
     appearance: none;
     width: 2rem;
     height: 2rem;
@@ -319,7 +342,7 @@ dialog#settings-dialog p input[type="checkbox"] {
     transition: background-color 0.3s ease;
 }
 
-dialog#settings-dialog p input[type="checkbox"]:checked::before {
+#settings-dialog p input[type="checkbox"]:checked::before {
     font-size: 1.5rem;
     color: var(--bg);
     position: absolute;
@@ -327,28 +350,34 @@ dialog#settings-dialog p input[type="checkbox"]:checked::before {
     top: 0;
 }
 
-dialog#settings-dialog p input[type="checkbox"]:checked {
+#settings-dialog p input[type="checkbox"]:checked {
     background-color: var(--blue);
 }
 
-dialog#settings-dialog p input[type="number"] {
+#settings-dialog input[type="number"] {
     font-size: 1.5rem;
     padding: 0.5rem;
     border: 2px solid var(--fg);
+    background-color: transparent;
+    color: var(--fg);
+    font-family: inherit;
     border-radius: 0.25rem;
     width: 4rem;
     text-align: center;
-    transition: background-color 0.3s ease;
 }
 
-dialog#settings-dialog menu {
+#settings-dialog input[type="number"]:focus {
+    outline: none;
+}
+
+#settings-dialog menu {
     display: flex;
     justify-content: center;
     padding: 0;
     margin-top: 2rem;
 }
 
-dialog#settings-dialog button {
+#settings-dialog button {
     background-color: var(--blue);
     color: var(--fg);
     border: none;
@@ -359,7 +388,7 @@ dialog#settings-dialog button {
     transition: background-color 0.3s ease;
 }
 
-dialog#settings-dialog button:hover {
+#settings-dialog button:hover {
     background-color: var(--fg);
     color: var(--bg);
 }
