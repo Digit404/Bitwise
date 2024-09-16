@@ -130,6 +130,7 @@ body.fail {
     font-size: 3rem;
     background-color: var(--fg);
     height: 100px;
+    min-height: 100px;
     color: var(--bg);
     text-align: center;
     line-height: 100px;

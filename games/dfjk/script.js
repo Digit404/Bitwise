@@ -112,7 +112,7 @@ function activateNightmareMode() {
     lengthInput.disabled = true;
     lightModeCheckbox.checked = false;
     lightModeCheckbox.disabled = true;
-    HP = HP / 2;
+    HP = 5;
     hpInput.value = HP;
     hpIndicator.textContent = HP;
     hpInput.disabled = true;
@@ -338,7 +338,7 @@ function mistake() {
 function fail() {
     playAudio(failFile);
 
-    let percentComplete = (1 - (chart.length / length)) * 100;
+    let percentComplete = (1 - chart.length / length) * 100;
 
     // fail effects
     mistakes.textContent = "Fail! " + percentComplete.toFixed(2) + "%";
@@ -358,6 +358,10 @@ function playAudio(src, volume = 0.5) {
 
 // update the mistakes display
 function updateMistakes() {
+    if (HP <= 1) {
+        mistakes.textContent = "";
+        return;
+    }
     mistakes.textContent = "❤️".repeat(HP - mistakeCount);
 }
 
