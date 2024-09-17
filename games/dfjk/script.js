@@ -19,6 +19,13 @@ const lengthInput = document.getElementById("length");
 const hpInput = document.getElementById("hp");
 const hpIndicator = document.getElementById("hp-indicator");
 
+const results = document.getElementById("results");
+const starField = document.getElementById("star-field");
+const resultTime = document.getElementById("result-time");
+const resultAccuracy = document.getElementById("result-accuracy");
+const stars = document.querySelectorAll(".star");
+const resultsTitle = document.getElementById("results-title");
+
 let dfjkContainer;
 
 // audio files
@@ -27,7 +34,9 @@ const errorFile = "/res/sound/error.wav";
 const failFile = "/res/sound/fail.wav";
 const ultimateFile = "/res/sound/ultimate.wav";
 const chordFile = "/res/sound/chord.wav";
-const riff = "/res/sound/riff.wav";
+const riffFile = "/res/sound/riff.wav";
+const bellFile = "/res/sound/bell.wav";
+const inaccuracyFile = "/res/sound/inaccuracy.wav";
 
 // game variables
 let mistakeCount = 0;
@@ -47,6 +56,10 @@ settingsButton.onclick = () => {
 window.addEventListener("click", (event) => {
     if (event.target === settingsDialog) {
         closeDialog();
+    }
+
+    if (!results.contains(event.target)) {
+        results.hidden = true;
     }
 });
 
@@ -84,7 +97,7 @@ lengthInput.addEventListener("input", () => {
         activateNightmareMode();
         return;
     }
-    length = lengthInput.value;
+    length = parseInt(lengthInput.value);
     newChart(length);
 });
 
@@ -121,7 +134,7 @@ function activateNightmareMode() {
     hpInput.disabled = true;
 
     // play nightmare mode sound
-    playAudio(riff, 1);
+    playAudio(riffFile, 1);
 
     updateMistakes();
     initializeGame();
@@ -214,10 +227,22 @@ function newChart(length) {
 
 // clears the mistakes and body of the `win`, `fail`, and `perfect` classes specifically, and does not touch light or nightmare
 function clearStyles() {
+    // hide the results dialog
+    results.hidden = true;
+
     dfjkContainer.classList = [];
     document.body.classList.remove("fail");
     document.body.classList.remove("win");
     mistakes.classList = [];
+
+    stars.forEach((star) => {
+        star.classList.remove("fill");
+        star.classList.remove("perfect");
+        star.removeEventListener("animationstart", playStarSound);
+    });
+
+    resultsTitle.classList = [];
+    resultsTitle.textContent = "Chart Passed!";
 }
 
 // newSeed generates a seed
@@ -304,14 +329,58 @@ function win() {
 
     clearStyles();
 
+    results.hidden = false;
+
+    // determine score
+    let accuracy = (1 - (mistakeCount / (length + mistakeCount))) * 100;
+
+    console.log(mistakeCount, length, (length + mistakeCount), mistakeCount / (length + mistakeCount), accuracy);
+
+    // calculate stars based on accuracy
+    let starCount = 0;
+
+    if (accuracy >= 95) {
+        starCount = 3;
+    } else if (accuracy >= 90) {
+        starCount = 2;
+    } else if (accuracy >= 80) {
+        starCount = 1;
+    }
+
+    resultTime.textContent = "Time: " + time.toFixed(2) + "s";
+    resultAccuracy.textContent = "Accuracy: " + accuracy.toFixed(2) + "%";
+
+    // add .fill to each of the stars up to the number of stars
+    stars.forEach((star, index) => {
+        if (index < starCount) {
+            star.classList.add("fill");
+            star.addEventListener(
+                "animationstart",
+                playStarSound,
+                { once: true }
+            );
+        }
+    });
+
     // determine the correct win sound based on mistakes
-    if (mistakeCount === 0) {
+    if (accuracy === 100) {
         playAudio(ultimateFile);
-        mistakes.textContent = "PERFECT! Time: " + time.toFixed(2) + "s";
         mistakes.classList.add("perfect");
-    } else {
+        mistakes.textContent = "PERFECT!";
+
+        for (let star of stars) {
+            star.classList.add("perfect");
+        }
+        
+        resultsTitle.textContent = "PERFECT!";
+        resultsTitle.classList.add("perfect");
+    } else if (accuracy >= 80) {
         playAudio(chordFile);
-        mistakes.textContent = "Mistakes: " + mistakeCount + " | Time: " + time.toFixed(2) + "s";
+        mistakes.textContent = "Mistakes: " + mistakeCount;
+        mistakes.classList.add("win");
+    } else {
+        playAudio(inaccuracyFile);
+        mistakes.textContent = "Mistakes: " + mistakeCount;
         mistakes.classList.add("win");
     }
 
@@ -319,6 +388,12 @@ function win() {
     dfjkContainer.classList.add("win");
 
     gameOver = true;
+}
+
+function playStarSound() {
+    setTimeout(() => {
+        playAudio(bellFile);
+    }, 750);
 }
 
 function mistake() {
