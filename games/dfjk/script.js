@@ -151,16 +151,25 @@ function initializeGame() {
         dfjkContainer.appendChild(span);
     }
 
-    // initialize chart with random seed
-    newSeed();
+    // initialize chart with seed
+    const currentURL = new URL(window.location.href);
+    const seed = currentURL.searchParams.get("s");
+
+    if (seed) {
+        seedInput.innerText = seed;
+    } else {
+        newSeed();
+    }
+
     newChart(length);
 
     // add game event listeners
     document.addEventListener("keydown", keydown);
 
-    seedInput.onchange = () => {
+    seedInput.addEventListener("input", () => {
+        console.log(hashCode(seedInput.innerText));
         newChart(length);
-    };
+    });
 
     mistakes.onclick = () => {
         newSeed();
@@ -170,9 +179,7 @@ function initializeGame() {
 
 // newChart generates a new chart based on the seed in the input field
 function newChart(length) {
-    // if seed is empty, generate a random seed; this will only happen if user deletes the seed
-    if (!seedInput.value) newSeed();
-    let seed = parseInt(seedInput.value);
+    let seed = seedInput.innerText;
 
     // clear and generate the chart
     clearChart();
@@ -205,7 +212,7 @@ function newChart(length) {
     gameOver = false;
 }
 
-// clears the mistakes and body of the `win` and `fail` classes specifically, and does not touch light or nightmare
+// clears the mistakes and body of the `win`, `fail`, and `perfect` classes specifically, and does not touch light or nightmare
 function clearStyles() {
     dfjkContainer.classList = [];
     document.body.classList.remove("fail");
@@ -215,7 +222,7 @@ function clearStyles() {
 
 // newSeed generates a seed
 function newSeed() {
-    seedInput.value = Math.floor(Math.random() * 100000);
+    seedInput.innerText = Math.floor(Math.random() * 100000);
 }
 
 // psuedo-random key selection based on a seed
@@ -241,7 +248,7 @@ function keydown(event) {
     }
 
     // generate a new chart with a new seed
-    if (key === " ") {
+    if (key === " " && !(event.target === seedInput)) {
         event.preventDefault(); // prevent space from pressing random buttons
         newSeed();
         newChart(length);

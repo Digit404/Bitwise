@@ -277,7 +277,8 @@ body.fail {
     border-radius: 0.5rem;
     background-color: transparent;
     border: 2px solid transparent;
-    width: 8rem;
+    max-width: 20rem;
+    overflow-y: hidden;
     text-align: center;
     color: inherit;
     font-family: inherit;
