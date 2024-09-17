@@ -9,6 +9,7 @@
     --magenta: #a5d;
     --fail-color: #c33;
     --default-key-color: #fff;
+    --star-shadow-color: #111;
     --bg: #222;
     --fg: #fff;
     --letters: 5;
@@ -47,6 +48,7 @@ body.light {
     --bg: #fff;
     --fg: #222;
     --grid-color: #ddd;
+    --star-shadow-color: #ccc;
 }
 
 body.nightmare {
@@ -432,6 +434,13 @@ dialog#settings-dialog {
     transition: inherit;
 }
 
+#result-chart-no {
+    position: absolute;
+    top: -0.5rem;
+    right: 1rem;
+    color: #999;
+}
+
 #results-title {
     font-size: 2.5rem;
     font-family: inherit;
@@ -452,7 +461,7 @@ dialog#settings-dialog {
 }
 
 .star {
-    fill: #111;
+    fill: var(--star-shadow-color);
     width: 10rem;
     height: 10rem;
     opacity: 0;

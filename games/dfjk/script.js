@@ -24,7 +24,8 @@ const starField = document.getElementById("star-field");
 const resultTime = document.getElementById("result-time");
 const resultAccuracy = document.getElementById("result-accuracy");
 const stars = document.querySelectorAll(".star");
-const resultsTitle = document.getElementById("results-title");
+const resultTitle = document.getElementById("result-title");
+const resultChartNo = document.getElementById("result-chart-no");
 
 let dfjkContainer;
 
@@ -241,8 +242,8 @@ function clearStyles() {
         star.removeEventListener("animationstart", playStarSound);
     });
 
-    resultsTitle.classList = [];
-    resultsTitle.textContent = "Chart Passed!";
+    resultTitle.classList = [];
+    resultTitle.textContent = "Chart Passed!";
 }
 
 // newSeed generates a seed
@@ -347,8 +348,11 @@ function win() {
         starCount = 1;
     }
 
-    resultTime.textContent = "Time: " + time.toFixed(2) + "s";
+    let timeString = time.toFixed(2) + "s";
+
+    resultTime.textContent = "Time: " + timeString;
     resultAccuracy.textContent = "Accuracy: " + accuracy.toFixed(2) + "%";
+    resultChartNo.textContent = "#" + seedInput.innerText + " (" + length + ")";
 
     // add .fill to each of the stars up to the number of stars
     stars.forEach((star, index) => {
@@ -372,8 +376,8 @@ function win() {
             star.classList.add("perfect");
         }
         
-        resultsTitle.textContent = "PERFECT!";
-        resultsTitle.classList.add("perfect");
+        resultTitle.textContent = "PERFECT!";
+        resultTitle.classList.add("perfect");
     } else if (accuracy >= 80) {
         playAudio(chordFile);
         mistakes.textContent = "Mistakes: " + mistakeCount;
