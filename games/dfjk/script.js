@@ -40,6 +40,7 @@ let secretTicker = 0;
 
 // settings dialog event listeners
 settingsButton.onclick = () => {
+    playAudio(clickFile);
     settingsDialog.showModal();
 };
 
@@ -50,10 +51,12 @@ window.addEventListener("click", (event) => {
 });
 
 lightModeCheckbox.onchange = () => {
+    playAudio(clickFile);
     document.body.classList.toggle("light", lightModeCheckbox.checked);
 };
 
 hardModeCheckbox.onchange = () => {
+    playAudio(clickFile);
     // click 5 times to activate nightmare mode
     if (secretTicker === 5) {
         activateNightmareMode();
