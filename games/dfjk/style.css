@@ -243,7 +243,6 @@ body.fail::before {
     }
 }
 
-
 #dfjk-container.win .key {
     animation: bounceAway 1s ease forwards;
 }
@@ -280,7 +279,7 @@ body.fail::before {
     right: 10px;
     padding: 20px;
     border-radius: 15px;
-    background-color: transparent;
+    background-color: var(--fg);
     color: var(--bg);
     font-size: 2rem;
     border: none;

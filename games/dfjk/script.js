@@ -10,6 +10,7 @@ let chart;
 let startTime;
 let secretTicker = 0;
 let safePeriod = false;
+let immortal = false;
 
 // DOM elements
 const mistakes = document.getElementById("mistakes");
@@ -58,6 +59,15 @@ let buffers = {};
 // settings dialog event listeners
 settingsButton.onclick = () => {
     playAudio(clickFile);
+
+    if (gameStart) {
+        hpInput.disabled = true;
+        lengthInput.disabled = true;
+    } else {
+        hpInput.disabled = false;
+        lengthInput.disabled = false;
+    }
+    
     settingsDialog.showModal();
 };
 
@@ -119,8 +129,18 @@ lengthInput.addEventListener("input", () => {
 });
 
 hpInput.addEventListener("input", () => {
-    HP = hpInput.value;
-    hpIndicator.textContent = HP;
+    const hpValue = parseInt(hpInput.value);
+
+    if (hpValue === 16) {
+        immortal = true;
+        HP = 16;
+        hpIndicator.textContent = "∞";
+    } else {
+        HP = hpValue;
+        immortal = false;
+        hpIndicator.textContent = HP;
+    }
+
     updateMistakes();
 });
 
@@ -484,7 +504,7 @@ function mistake() {
     }, 100);
 
     // fail condition
-    if (mistakeCount >= HP) {
+    if (mistakeCount >= HP && !immortal) {
         fail();
     } else {
         updateMistakes();
@@ -517,7 +537,7 @@ function playAudio(file, volume = 0.5) {
 
 // update the mistakes display
 function updateMistakes() {
-    if (HP <= 1) {
+    if (HP <= 1 || (immortal && HP === 16)) {
         mistakes.textContent = "";
         return;
     }
