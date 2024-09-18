@@ -2,13 +2,21 @@
 let keys = ["d", "f", "j", "k"];
 let HP = 10;
 let length = 50;
+let mistakeCount = 0;
+let gameOver = false;
+let lightMode = false;
+let gameStart = false;
+let chart;
+let startTime;
+let secretTicker = 0;
+let safePeriod = false;
 
 // DOM elements
 const mistakes = document.getElementById("mistakes");
 const field = document.getElementById("field");
 const seedInput = document.getElementById("seed");
 
-// DOM elements for settings
+// settings elements
 const settingsButton = document.getElementById("settings-button");
 const settingsDialog = document.getElementById("settings-dialog");
 const lightModeCheckbox = document.getElementById("light-mode");
@@ -19,6 +27,7 @@ const lengthInput = document.getElementById("length");
 const hpInput = document.getElementById("hp");
 const hpIndicator = document.getElementById("hp-indicator");
 
+// results elements
 const results = document.getElementById("results");
 const starField = document.getElementById("star-field");
 const resultTime = document.getElementById("result-time");
@@ -40,15 +49,11 @@ const riffFile = "/res/sound/riff.wav";
 const bellFile = "/res/sound/bell.wav";
 const inaccuracyFile = "/res/sound/inaccuracy.wav";
 
-// game variables
-let mistakeCount = 0;
-let gameOver = false;
-let lightMode = false;
-let gameStart = false;
-let chart;
-let startTime;
-let secretTicker = 0;
-let safePeriod = false;
+// create an AudioContext
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+// audio buffers
+let buffers = {};
 
 // settings dialog event listeners
 settingsButton.onclick = () => {
@@ -112,12 +117,27 @@ hpInput.addEventListener("input", () => {
     updateMistakes();
 });
 
+// load audio file and buffer it
+async function loadAudio(file) {
+    const response = await fetch(file);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    buffers[file] = audioBuffer;
+}
+
+// initialize all audio files
+function initializeAudio() {
+    const audioFiles = [clickFile, errorFile, failFile, ultimateFile, chordFile, riffFile, bellFile, inaccuracyFile];
+    audioFiles.forEach(file => loadAudio(file));
+}
+
 function closeSettingsModal() {
     // reset secret ticker when dialog is closed
     secretTicker = 0;
     settingsDialog.close();
 }
 
+// check for light mode and apply it
 function lightModeCheck() {
     const light = window.matchMedia("(prefers-color-scheme: light)").matches;
 
@@ -269,7 +289,7 @@ function newSeed() {
     seedInput.innerText = Math.floor(Math.random() * 100000);
 }
 
-// psuedo-random key selection based on a seed
+// pseudo-random key selection based on a seed
 function selectRandomKey(seed) {
     const seededRandom = mulberry32(seed)();
     return keys[Math.floor(seededRandom * keys.length)];
@@ -472,11 +492,14 @@ function fail() {
     gameOver = true;
 }
 
-// create and play audio
-function playAudio(src, volume = 0.5) {
-    const audio = new Audio(src);
-    audio.volume = volume;
-    audio.play();
+// play buffered audio
+function playAudio(file, volume = 0.5) {
+    const source = audioContext.createBufferSource();
+    source.buffer = buffers[file];
+    const gainNode = audioContext.createGain();
+    gainNode.gain.value = volume;
+    source.connect(gainNode).connect(audioContext.destination);
+    source.start(0);
 }
 
 // update the mistakes display
@@ -511,6 +534,9 @@ function hashCode(str) {
     }
     return hash;
 }
+
+// load audio files
+initializeAudio();
 
 // check for light mode
 lightModeCheck();
