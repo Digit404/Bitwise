@@ -107,7 +107,16 @@ lengthInput.addEventListener("input", () => {
         activateNightmareMode();
         return;
     }
-    length = parseInt(lengthInput.value);
+    length = lengthInput.value;
+
+    if (length > 500) {
+        length = 500;
+        lengthInput.value = 500;
+    } else if (length < 10) {
+        length = 10;
+        lengthInput.value = 10;
+    }
+
     newChart(length);
 });
 
@@ -128,7 +137,7 @@ async function loadAudio(file) {
 // initialize all audio files
 function initializeAudio() {
     const audioFiles = [clickFile, errorFile, failFile, ultimateFile, chordFile, riffFile, bellFile, inaccuracyFile];
-    audioFiles.forEach(file => loadAudio(file));
+    audioFiles.forEach((file) => loadAudio(file));
 }
 
 function closeSettingsModal() {
@@ -386,9 +395,9 @@ function win() {
     // calculate stars based on accuracy
     let starCount = 0;
 
-    if (accuracy >= 95) {
+    if (accuracy >= 93.3) {
         starCount = 3;
-    } else if (accuracy >= 90) {
+    } else if (accuracy >= 86.6) {
         starCount = 2;
     } else if (accuracy >= 80) {
         starCount = 1;
