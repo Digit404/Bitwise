@@ -111,10 +111,8 @@ lengthInput.addEventListener("input", () => {
 
     if (length > 500) {
         length = 500;
-        lengthInput.value = 500;
     } else if (length < 10) {
         length = 10;
-        lengthInput.value = 10;
     }
 
     newChart(length);
@@ -291,6 +289,8 @@ function clearStyles() {
 
     resultTitle.classList = [];
     resultTitle.textContent = "Chart Passed!";
+
+    resultChartNo.classList = [];
 }
 
 // newSeed generates a seed
@@ -408,6 +408,10 @@ function win() {
     resultTime.textContent = timeString;
     resultAccuracy.textContent = "Accuracy: " + accuracy.toFixed(2) + "%";
     resultChartNo.textContent = "#" + seedInput.innerText + " (" + length + ")";
+
+    if (keys.length === 5) {
+        resultChartNo.classList.add("hard");
+    }
 
     shareButton.onclick = () => {
         const url = new URL("https://www.rebitwise.com/games/dfjk/");
