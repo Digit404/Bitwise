@@ -9,7 +9,7 @@
     --magenta: #a5d;
     --fail-color: #c33;
     --default-key-color: #fff;
-    --star-shadow-color: #111;
+    --shadow: #111;
     --bg: #222;
     --fg: #fff;
     --letters: 5;
@@ -19,12 +19,14 @@
     --grid-width: 2px;
     --grid-color: #444;
     --column-size: calc(var(--key-width) + var(--key-gap));
-    --field-width: calc((var(--column-size) * var(--letters)) - var(--grid-width));
+    /* an extra pixel is needed to make the grid end invisible on odd widths */
+    --field-width: calc((var(--column-size) * var(--letters)) - var(--grid-width) - 1px);
     --font: "Roboto Slab", sans-serif;
+    --icon-font: "Material Symbols Rounded";
 }
 
 body {
-    background: radial-gradient(circle, var(--bg) 0%, var(--star-shadow-color) 110%);
+    background: radial-gradient(circle, var(--bg) 0%, var(--shadow) 130%);
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -34,6 +36,7 @@ body {
     height: 100vh;
     width: 100vw;
     overflow: hidden;
+    line-height: 1;
 
     /* grid has to be defined here because colors are changed on the body */
     --field-grid: repeating-linear-gradient(to right,
@@ -63,12 +66,12 @@ body.light {
     --bg: #fff;
     --fg: #222;
     --grid-color: #ddd;
-    --star-shadow-color: #ccc;
+    --shadow: #ddd;
 }
 
 body.nightmare {
     --bg: #500;
-    --star-shadow-color: #200;
+    --shadow: #200;
     --grid-color: #ddd;
     --blue: #33a;
 }
@@ -87,6 +90,7 @@ body.fail::before {
     font-size: 2rem;
     text-align: center;
     overflow-y: hidden;
+    overflow-x: hidden;
     flex-grow: 1;
     width: var(--field-width);
     background: var(--field-grid);
@@ -114,6 +118,7 @@ body.fail::before {
     border-radius: 50%;
     font-size: 2rem;
     user-select: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 #field .key {
@@ -145,10 +150,8 @@ body.fail::before {
 }
 
 #mistakes {
-    font-size: 3rem;
+    font-size: clamp(1rem, 2vw + 1rem, 3rem);
     background-color: var(--fg);
-    height: 100px;
-    min-height: 100px;
     color: var(--bg);
     text-align: center;
     line-height: 100px;
@@ -264,6 +267,7 @@ body.fail::before {
     text-decoration: none;
     cursor: pointer;
     transition: background-color 0.2s ease;
+    z-index: 1;
 }
 
 #back-button:hover {
@@ -281,12 +285,13 @@ body.fail::before {
     font-size: 2rem;
     border: none;
     cursor: pointer;
-    font-family: "Material Symbols Rounded";
+    user-select: none;
+    font-family: var(--icon-font);
     transition: background-color 0.2s ease;
 }
 
 #settings-button:hover {
-    background-color: var(--blue);
+    background-color: var(--bg);
     color: var(--fg);
 }
 
@@ -300,6 +305,7 @@ body.fail::before {
     font-size: 2rem;
     user-select: none;
     align-items: center;
+    z-index: 1;
 }
 
 #seed {
@@ -321,7 +327,7 @@ body.fail::before {
     margin-right: 0.5rem;
 }
 
-#seed::-webkit-inner-spin-button {
+input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
@@ -348,20 +354,21 @@ dialog#settings-dialog {
 }
 
 #settings-dialog h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin: 0;
     user-select: none;
 }
 
 #settings-dialog p {
-    margin: 1rem 0;
+    width: 100%;
     display: flex;
-    align-items: center;
-    justify-content: left;
+    justify-content: space-between;
 }
 
 #settings-dialog p label {
     font-size: 1.5rem;
+    padding: 0 0.5rem;
+    flex: 1;
     user-select: none;
     display: flex;
     align-items: center;
@@ -370,8 +377,8 @@ dialog#settings-dialog {
 
 input[type="checkbox"] {
     appearance: none;
-    width: 2rem;
-    height: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
     border: 2px solid var(--fg);
     border-radius: 0.25rem;
     position: relative;
@@ -391,7 +398,15 @@ input[type="checkbox"]:checked {
     background-color: var(--blue);
 }
 
-#settings-dialog input[type="number"] {
+input[type="checkbox"]:disabled {
+    background-color: var(--shadow);
+}
+
+input[type="checkbox"]:disabled:active {
+    background-color: var(--shadow);
+}
+
+input[type="number"] {
     font-size: 1.5rem;
     padding: 0.5rem;
     border: 2px solid var(--fg);
@@ -403,8 +418,17 @@ input[type="checkbox"]:checked {
     text-align: center;
 }
 
-#settings-dialog input[type="number"]:focus {
+input[type="number"]:focus {
     outline: none;
+}
+
+input[type="number"]:disabled {
+    background-color: var(--shadow);
+}
+
+#settings-dialog input[type="range"] {
+    width: 10rem;
+    margin-left: 2rem;
 }
 
 #settings-dialog menu {
@@ -481,7 +505,7 @@ input[type="checkbox"]:checked {
 }
 
 .star {
-    fill: var(--star-shadow-color);
+    fill: var(--shadow);
     width: 10rem;
     height: 10rem;
     opacity: 0;
@@ -528,6 +552,69 @@ input[type="checkbox"]:checked {
     font-size: 2rem;
     border: none;
     cursor: pointer;
-    font-family: var(--font), "Material Symbols Rounded";
+    font-family: var(--icon-font);
     transition: background-color 0.2s ease;
+}
+
+@media (max-width: 600px) {
+    :root {
+        --key-gap: calc(100vw / 20); /* Adjust as needed */
+        --key-width: calc((100vw - (var(--key-gap) * (var(--letters) + 1))) / var(--letters));
+        --key-height: var(--key-width);
+    }
+
+    #mistakes {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        height: 4rem;
+        line-height: 4rem;
+    }
+
+    .level-select {
+        top: 5rem;
+        left: 50%;
+        margin: 0;
+        transform: translateX(-50%);
+        background-color: color-mix(in srgb, var(--bg) 100%, transparent 25%);
+        padding: 0 1rem;
+        border-radius: 0.5rem;
+
+    }
+
+    #back-button {
+        display: none;
+    }
+
+    #settings-button {
+        top: 5rem;
+        padding: .5rem 1.5rem;
+        right: 0;
+        bottom: auto;
+        color: var(--fg);
+        z-index: 1;
+    }
+    
+    #settings-button:hover {
+        background-color: transparent;
+    }
+
+    #dfjk-container .key {
+        height: 8rem;
+        border-radius: 8rem;
+    }
+
+    #results {
+        z-index: 1;
+        width: 80vw;
+    }
+
+    #star-field {
+        margin-top: 0;
+    }
+
+    .star {
+        width: 6rem;
+        height: 6rem;
+    }
 }

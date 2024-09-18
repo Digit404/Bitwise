@@ -15,19 +15,32 @@
         <label for="seed">Chart </label><span id="seed" contenteditable="true"></span>
     </div>
     <div id="field"></div>
-    <span id="mistakes"></span>
+    <div id="mistakes"></div>
     <a id="back-button" href="../">BACK</a>
     <button id="settings-button" tabindex="-1">Settings</button>
     <dialog id="settings-dialog">
         <form method="dialog">
             <h1>Settings</h1>
-            <p><label for="light-mode"><input type="checkbox" id="light-mode"> Light Mode</label></p>
-            <p><label for="hard-mode"><input type="checkbox" id="hard-mode"> Hard Mode</label></p>
-            <p><label for="length">Length <input type="number" id="length" value="50" min="10"></label></p>
-            <p><label for="scale">Scale <input type="range" id="scale" name="scale" min="2" max="7" step="0.1"
-                        value="5"></label></p>
-            <p><label for="hp">HP <span id="hp-indicator">10</span> <input type="range" id="hp" name="scale" min="1"
-                        max="15" value="10"></label></p>
+            <p>
+                <input type="checkbox" id="light-mode">
+                <label for="light-mode">Light Mode</label>
+            </p>
+            <p>
+                <input type="checkbox" id="hard-mode">
+                <label for="hard-mode">Hard Mode</label>
+            </p>
+            <p>
+                <label for="length">Length</label>
+                <input type="number" id="length" value="50" min="10">
+            </p>
+            <p>
+                <label for="scale">Height</label>
+                <input type="range" id="scale" name="scale" min="2" max="7" step="0.1" value="5">
+            </p>
+            <p>
+                <label for="hp">HP <span id="hp-indicator">10</span> </label>
+                <input type="range" id="hp" name="scale" min="1" max="15" value="10">
+            </p>
         </form>
     </dialog>
     <div id="results" hidden>
@@ -35,18 +48,21 @@
         <h1 id="result-title">CHART PASSED!</h1>
         <div id="star-field">
             <svg class="star" viewBox="0 0 473.486 473.486" xml:space="preserve">
-                <polygon points="473.486,182.079 310.615,157.952 235.904,11.23 162.628,158.675 0,184.389 117.584,299.641 91.786,462.257 237.732,386.042 384.416,460.829 357.032,298.473" />
+                <polygon
+                    points="473.486,182.079 310.615,157.952 235.904,11.23 162.628,158.675 0,184.389 117.584,299.641 91.786,462.257 237.732,386.042 384.416,460.829 357.032,298.473" />
             </svg>
             <svg class="star" viewBox="0 0 473.486 473.486" xml:space="preserve">
-                <polygon points="473.486,182.079 310.615,157.952 235.904,11.23 162.628,158.675 0,184.389 117.584,299.641 91.786,462.257 237.732,386.042 384.416,460.829 357.032,298.473" />
+                <polygon
+                    points="473.486,182.079 310.615,157.952 235.904,11.23 162.628,158.675 0,184.389 117.584,299.641 91.786,462.257 237.732,386.042 384.416,460.829 357.032,298.473" />
             </svg>
             <svg class="star" viewBox="0 0 473.486 473.486" xml:space="preserve">
-                <polygon points="473.486,182.079 310.615,157.952 235.904,11.23 162.628,158.675 0,184.389 117.584,299.641 91.786,462.257 237.732,386.042 384.416,460.829 357.032,298.473" />
+                <polygon
+                    points="473.486,182.079 310.615,157.952 235.904,11.23 162.628,158.675 0,184.389 117.584,299.641 91.786,462.257 237.732,386.042 384.416,460.829 357.032,298.473" />
             </svg>
         </div>
         <p id="result-time">0.00s</p>
         <p id="result-accuracy">Accuracy: 100%</p>
-        <button id="share-button">&#xE80D;</button>
+        <button id="share-button">share</button>
     </div>
 </body>
 

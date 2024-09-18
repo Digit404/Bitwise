@@ -48,6 +48,7 @@ let gameStart = false;
 let chart;
 let startTime;
 let secretTicker = 0;
+let safePeriod = false;
 
 // settings dialog event listeners
 settingsButton.onclick = () => {
@@ -57,10 +58,10 @@ settingsButton.onclick = () => {
 
 window.addEventListener("click", (event) => {
     if (event.target === settingsDialog) {
-        closeDialog();
+        closeSettingsModal();
     }
 
-    if (results.hidden === false && !results.contains(event.target)) {
+    if (!results.hidden && !results.contains(event.target) && !safePeriod) {
         results.hidden = true;
         newSeed();
         newChart(length);
@@ -111,10 +112,19 @@ hpInput.addEventListener("input", () => {
     updateMistakes();
 });
 
-function closeDialog() {
+function closeSettingsModal() {
     // reset secret ticker when dialog is closed
     secretTicker = 0;
     settingsDialog.close();
+}
+
+function lightModeCheck() {
+    const light = window.matchMedia("(prefers-color-scheme: light)").matches;
+
+    if (light) {
+        document.body.classList.add("light");
+        lightModeCheckbox.checked = true;
+    }
 }
 
 function activateNightmareMode() {
@@ -132,6 +142,8 @@ function activateNightmareMode() {
     lengthInput.disabled = true;
     lightModeCheckbox.checked = false;
     lightModeCheckbox.disabled = true;
+    hardModeCheckbox.checked = true;
+    hardModeCheckbox.disabled = true;
     HP = 5;
     hpInput.value = HP;
     hpIndicator.textContent = HP;
@@ -165,6 +177,9 @@ function initializeGame() {
         const span = document.createElement("span");
         span.textContent = key.toUpperCase();
         span.classList.add(key, "key");
+        span.addEventListener("click", () => {
+            hitKey(key);
+        });
         dfjkContainer.appendChild(span);
     }
 
@@ -185,7 +200,6 @@ function initializeGame() {
     document.addEventListener("keydown", keydown);
 
     seedInput.addEventListener("input", () => {
-        console.log(hashCode(seedInput.innerText));
         newChart(length);
     });
 
@@ -284,13 +298,17 @@ function keydown(event) {
         newChart(length);
     }
 
+    hitKey(key);
+}
+
+function hitKey(key) {
     // can't play if the game is over
     if (gameOver) return;
 
     // check if the key pressed is the correct next key in the chart
     if (key === chart[0]) {
         // close the dialog if it's open
-        closeDialog();
+        closeSettingsModal();
 
         // start the timer if it's the first key
         if (!gameStart) {
@@ -334,12 +352,16 @@ function win() {
 
     clearStyles();
 
+    // safe period to prevent results from being hidden immediately
+    safePeriod = true;
+    setTimeout(() => {
+        safePeriod = false;
+    }, 250);
+
     results.hidden = false;
 
     // determine score
     let accuracy = (1 - mistakeCount / (length + mistakeCount)) * 100;
-
-    console.log(mistakeCount, length, length + mistakeCount, mistakeCount / (length + mistakeCount), accuracy);
 
     // calculate stars based on accuracy
     let starCount = 0;
@@ -363,12 +385,12 @@ function win() {
         url.searchParams.set("s", seedInput.innerText);
         url.searchParams.set("l", length);
         navigator.clipboard.writeText(url.href);
-        shareButton.textContent = "Copied!";
+        shareButton.textContent = "check";
 
         setTimeout(() => {
-            shareButton.innerHTML = "&#xE80D;";
-        }, 1000);
-    }
+            shareButton.innerHTML = "share";
+        }, 2000);
+    };
 
     // add .fill to each of the stars up to the number of stars
     stars.forEach((star, index) => {
@@ -463,7 +485,7 @@ function updateMistakes() {
         mistakes.textContent = "";
         return;
     }
-    mistakes.textContent = "❤️".repeat(HP - mistakeCount);
+    mistakes.textContent = "❤️".repeat(HP - mistakeCount) + "🖤".repeat(mistakeCount);
 }
 
 // PRNG from https://stackoverflow.com/a/47593316
@@ -489,6 +511,9 @@ function hashCode(str) {
     }
     return hash;
 }
+
+// check for light mode
+lightModeCheck();
 
 // initialize the game
 initializeGame();
