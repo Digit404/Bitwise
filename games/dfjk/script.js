@@ -26,6 +26,7 @@ const resultAccuracy = document.getElementById("result-accuracy");
 const stars = document.querySelectorAll(".star");
 const resultTitle = document.getElementById("result-title");
 const resultChartNo = document.getElementById("result-chart-no");
+const shareButton = document.getElementById("share-button");
 
 let dfjkContainer;
 
@@ -59,8 +60,10 @@ window.addEventListener("click", (event) => {
         closeDialog();
     }
 
-    if (!results.contains(event.target)) {
+    if (results.hidden === false && !results.contains(event.target)) {
         results.hidden = true;
+        newSeed();
+        newChart(length);
     }
 });
 
@@ -168,6 +171,7 @@ function initializeGame() {
     // initialize chart with seed
     const currentURL = new URL(window.location.href);
     const seed = currentURL.searchParams.get("s");
+    length = parseInt(currentURL.searchParams.get("l")) || length;
 
     if (seed) {
         seedInput.innerText = seed;
@@ -333,9 +337,9 @@ function win() {
     results.hidden = false;
 
     // determine score
-    let accuracy = (1 - (mistakeCount / (length + mistakeCount))) * 100;
+    let accuracy = (1 - mistakeCount / (length + mistakeCount)) * 100;
 
-    console.log(mistakeCount, length, (length + mistakeCount), mistakeCount / (length + mistakeCount), accuracy);
+    console.log(mistakeCount, length, length + mistakeCount, mistakeCount / (length + mistakeCount), accuracy);
 
     // calculate stars based on accuracy
     let starCount = 0;
@@ -350,19 +354,27 @@ function win() {
 
     let timeString = time.toFixed(2) + "s";
 
-    resultTime.textContent = "Time: " + timeString;
+    resultTime.textContent = timeString;
     resultAccuracy.textContent = "Accuracy: " + accuracy.toFixed(2) + "%";
     resultChartNo.textContent = "#" + seedInput.innerText + " (" + length + ")";
+
+    shareButton.onclick = () => {
+        const url = new URL("https://www.rebitwise.com/games/dfjk/");
+        url.searchParams.set("s", seedInput.innerText);
+        url.searchParams.set("l", length);
+        navigator.clipboard.writeText(url.href);
+        shareButton.textContent = "Copied!";
+
+        setTimeout(() => {
+            shareButton.innerHTML = "&#xE80D;";
+        }, 1000);
+    }
 
     // add .fill to each of the stars up to the number of stars
     stars.forEach((star, index) => {
         if (index < starCount) {
             star.classList.add("fill");
-            star.addEventListener(
-                "animationstart",
-                playStarSound,
-                { once: true }
-            );
+            star.addEventListener("animationstart", playStarSound, { once: true });
         }
     });
 
@@ -375,7 +387,7 @@ function win() {
         for (let star of stars) {
             star.classList.add("perfect");
         }
-        
+
         resultTitle.textContent = "PERFECT!";
         resultTitle.classList.add("perfect");
     } else if (accuracy >= 80) {
