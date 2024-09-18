@@ -24,7 +24,7 @@
 }
 
 body {
-    background-color: var(--bg);
+    background: radial-gradient(circle, var(--bg) 0%, var(--star-shadow-color) 110%);
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -32,7 +32,6 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    transition: background-color 0.5s ease;
     width: 100vw;
     overflow: hidden;
 
@@ -42,6 +41,21 @@ body {
             transparent calc(var(--column-size) - var(--grid-width)),
             var(--grid-color) calc(var(--column-size) - var(--grid-width)),
             var(--grid-color) var(--column-size));
+}
+
+/* hack to get fail to work with a gradient */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle, var(--fail-color) 0%, #911 100%);
+    z-index: -1;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
 }
 
 /* light mode colors */
@@ -54,13 +68,14 @@ body.light {
 
 body.nightmare {
     --bg: #500;
+    --star-shadow-color: #200;
     --grid-color: #ddd;
     --blue: #33a;
 }
 
 /* shows when you lose or make a mistake */
-body.fail {
-    background-color: var(--fail-color);
+body.fail::before {
+    opacity: 1;
 }
 
 /* field of numbers */
