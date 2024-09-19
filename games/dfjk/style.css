@@ -108,6 +108,7 @@ body.fail::before {
     background: var(--field-grid);
 }
 
+/* all keys */
 .key {
     background-color: var(--default-key-color);
     width: var(--key-width);
@@ -121,6 +122,7 @@ body.fail::before {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
+/* keys on field */
 #field .key {
     height: var(--key-height);
     min-height: var(--key-height);
@@ -129,6 +131,7 @@ body.fail::before {
     transition: all 1s ease;
 }
 
+/* specific key colors */
 .d {
     background-color: var(--red);
 }
@@ -149,7 +152,7 @@ body.fail::before {
     background-color: var(--magenta);
 }
 
-#mistakes {
+#status-bar {
     font-size: clamp(1rem, 2vw + 1rem, 3rem);
     background-color: var(--fg);
     color: var(--bg);
@@ -160,21 +163,28 @@ body.fail::before {
     cursor: pointer;
     transition: background-color 0.5s ease;
 }
+/* doesn't actually hide the status bar, but does make it not affect the layout */
+.hidden #status-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
 
-#mistakes.play {
+.play #status-bar {
     background: var(--blue);
 }
 
-#mistakes.fail {
+.fail #status-bar {
     background: var(--bg);
     color: var(--fail-color);
 }
 
-#mistakes.win {
+.win #status-bar {
     background: var(--green);
 }
 
-#mistakes.perfect {
+.perfect #status-bar {
     background: var(--yellow);
 }
 
@@ -182,6 +192,7 @@ body.fail::before {
     animation: shake 0.25s ease;
 }
 
+/* played for every keypress */
 @keyframes fall {
     from {
         transform: translateY(-100%);
@@ -192,6 +203,7 @@ body.fail::before {
     }
 }
 
+/* played on win */
 @keyframes bounceAway {
     20% {
         transform: translate3d(0, -10px, 0) scaleY(0.9);
@@ -209,6 +221,7 @@ body.fail::before {
     }
 }
 
+/* played on mistake */
 @keyframes shake {
     0% {
         transform: translateY(0);
@@ -231,6 +244,7 @@ body.fail::before {
     }
 }
 
+/* played on stars */
 @keyframes swirl-in {
     0% {
         transform: translateY(var(--translate)) rotate(-540deg) scale(0);
@@ -243,7 +257,7 @@ body.fail::before {
     }
 }
 
-#dfjk-container.win .key {
+.win #dfjk-container .key {
     animation: bounceAway 1s ease forwards;
 }
 
@@ -275,11 +289,11 @@ body.fail::before {
 
 #settings-button {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 0.5rem;
+    right: 0.5rem;
     padding: 20px;
     border-radius: 15px;
-    background-color: var(--fg);
+    background-color: transparent;
     color: var(--bg);
     font-size: 2rem;
     border: none;
@@ -289,9 +303,12 @@ body.fail::before {
     transition: background-color 0.2s ease;
 }
 
-#settings-button:hover {
-    background-color: var(--bg);
+.play #settings-button, .fail #settings-button, .hidden #settings-button {
     color: var(--fg);
+}
+
+#settings-button:hover {
+    background-color: #0003;
 }
 
 .level-select {
@@ -336,7 +353,11 @@ input[type="number"]::-webkit-inner-spin-button {
     border-color: var(--blue);
 }
 
-dialog#settings-dialog {
+#settings-dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: var(--bg);
     color: var(--fg);
     border: 2px solid var(--fg);
@@ -345,11 +366,6 @@ dialog#settings-dialog {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     text-align: center;
     transition: inherit;
-}
-
-#settings-dialog::backdrop {
-    backdrop-filter: blur(5px);
-    background-color: rgba(0, 0, 0, 0.1);
 }
 
 #settings-dialog h1 {
@@ -494,7 +510,7 @@ input[type="number"]:disabled {
     user-select: none;
 }
 
-#result-title.perfect {
+.perfect #result-title {
     color: var(--yellow);
 }
 
@@ -523,7 +539,7 @@ input[type="number"]:disabled {
     fill: var(--yellow);
 }
 
-.star.perfect {
+.perfect .star {
     fill: var(--red);
 }
 
@@ -570,7 +586,7 @@ input[type="number"]:disabled {
         --key-height: var(--key-width);
     }
 
-    #mistakes {
+    #status-bar {
         position: fixed;
         top: 0;
         width: 100%;
@@ -599,6 +615,7 @@ input[type="number"]:disabled {
         right: 0;
         bottom: auto;
         color: var(--fg);
+        background-color: transparent;
         z-index: 1;
     }
 

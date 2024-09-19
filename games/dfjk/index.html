@@ -15,34 +15,32 @@
         <label for="seed">Chart </label><span id="seed" contenteditable="true"></span>
     </div>
     <div id="field"></div>
-    <div id="mistakes"></div>
+    <div id="status-bar"></div>
     <a id="back-button" href="../">BACK</a>
     <button id="settings-button" tabindex="-1">Settings</button>
-    <dialog id="settings-dialog">
-        <form method="dialog">
-            <h1>Settings</h1>
-            <p>
-                <input type="checkbox" id="light-mode">
-                <label for="light-mode">Light Mode</label>
-            </p>
-            <p>
-                <input type="checkbox" id="hard-mode">
-                <label for="hard-mode">Hard Mode</label>
-            </p>
-            <p>
-                <label for="length">Length</label>
-                <input type="number" id="length" value="50" min="10">
-            </p>
-            <p>
-                <label for="scale">Height</label>
-                <input type="range" id="scale" name="scale" min="2" max="7" step="0.1" value="5">
-            </p>
-            <p>
-                <label for="hp">HP <span id="hp-indicator">10</span> </label>
-                <input type="range" id="hp" name="hp" min="1" max="16" value="10">
-            </p>
-        </form>
-    </dialog>
+    <div id="settings-dialog" hidden>
+        <h1>Settings</h1>
+        <p>
+            <input type="checkbox" id="light-mode">
+            <label for="light-mode">Light Mode</label>
+        </p>
+        <p>
+            <input type="checkbox" id="hard-mode">
+            <label for="hard-mode">Hard Mode</label>
+        </p>
+        <p>
+            <label for="length">Length</label>
+            <input type="number" id="length" value="50" min="10">
+        </p>
+        <p>
+            <label for="scale">Height</label>
+            <input type="range" id="scale" name="scale" min="2" max="7" step="0.1" value="5">
+        </p>
+        <p>
+            <label for="hp">HP <span id="hp-indicator">10</span> </label>
+            <input type="range" id="hp" name="hp" min="1" max="16" value="10">
+        </p>
+    </div>
     <div id="results" hidden>
         <p id="result-chart-no">#</p>
         <h1 id="result-title">CHART PASSED!</h1>

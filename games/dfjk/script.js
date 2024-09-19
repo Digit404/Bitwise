@@ -13,7 +13,7 @@ let safePeriod = false;
 let immortal = false;
 
 // DOM elements
-const mistakes = document.getElementById("mistakes");
+const statusBar = document.getElementById("status-bar");
 const field = document.getElementById("field");
 const seedInput = document.getElementById("seed");
 
@@ -67,16 +67,23 @@ settingsButton.onclick = () => {
         hpInput.disabled = false;
         lengthInput.disabled = false;
     }
-    
-    settingsDialog.showModal();
+
+    settingsDialog.hidden = !settingsDialog.hidden;
+    safePeriod = true;
 };
 
 window.addEventListener("click", (event) => {
-    if (event.target === settingsDialog) {
+    // because the click event fires before anything else, we need to prevent the dialogs from closing immediately
+    if (safePeriod) {
+        safePeriod = false;
+        return;
+    }
+
+    if (!settingsDialog.hidden && !settingsDialog.contains(event.target)) {
         closeSettingsModal();
     }
 
-    if (!results.hidden && !results.contains(event.target) && !safePeriod) {
+    if (!results.hidden && !results.contains(event.target)) {
         results.hidden = true;
         newSeed();
         newChart(length);
@@ -161,7 +168,7 @@ function initializeAudio() {
 function closeSettingsModal() {
     // reset secret ticker when dialog is closed
     secretTicker = 0;
-    settingsDialog.close();
+    settingsDialog.hidden = true;
 }
 
 // check for light mode and apply it
@@ -225,6 +232,8 @@ function initializeGame() {
         span.textContent = key.toUpperCase();
         span.classList.add(key, "key");
         span.addEventListener("click", () => {
+            // safe period to prevent results from being hidden immediately
+            safePeriod = true;
             hitKey(key);
         });
         dfjkContainer.appendChild(span);
@@ -250,7 +259,7 @@ function initializeGame() {
         newChart(length);
     });
 
-    mistakes.onclick = () => {
+    statusBar.onclick = () => {
         newSeed();
         newChart(length);
     };
@@ -291,26 +300,21 @@ function newChart(length) {
     gameOver = false;
 }
 
-// clears the mistakes and body of the `win`, `fail`, and `perfect` classes specifically, and does not touch light or nightmare
 function clearStyles() {
     // hide the results dialog
     results.hidden = true;
 
-    dfjkContainer.classList = [];
-    document.body.classList.remove("fail");
-    document.body.classList.remove("win");
-    mistakes.classList = [];
+    // remove the win, fail, perfect, and play classes
+    let classesToRemove = ["win", "fail", "perfect", "play"];
 
+    for (let className of classesToRemove) {
+        document.body.classList.remove(className);
+    }
+
+    // stop the star sound from playing next time it appears
     stars.forEach((star) => {
-        star.classList.remove("fill");
-        star.classList.remove("perfect");
         star.removeEventListener("animationstart", playStarSound);
     });
-
-    resultTitle.classList = [];
-    resultTitle.textContent = "Chart Passed!";
-
-    resultChartNo.classList = [];
 }
 
 // newSeed generates a seed
@@ -363,7 +367,7 @@ function hitKey(key) {
         if (!gameStart) {
             gameStart = true;
             startTime = performance.now();
-            mistakes.classList.add("play");
+            document.body.classList.add("play");
         }
 
         // remove the pressed key from the internal chart
@@ -401,13 +405,9 @@ function win() {
 
     clearStyles();
 
-    // safe period to prevent results from being hidden immediately
-    safePeriod = true;
-    setTimeout(() => {
-        safePeriod = false;
-    }, 250);
-
     results.hidden = false;
+
+    console.log(length)
 
     // determine score
     let accuracy = (1 - mistakeCount / (length + mistakeCount)) * 100;
@@ -431,6 +431,8 @@ function win() {
 
     if (keys.length === 5) {
         resultChartNo.classList.add("hard");
+    } else {
+        resultChartNo.classList.remove("hard");
     }
 
     shareButton.onclick = () => {
@@ -450,33 +452,29 @@ function win() {
         if (index < starCount) {
             star.classList.add("fill");
             star.addEventListener("animationstart", playStarSound, { once: true });
+        } else {
+            star.classList.remove("fill");
         }
     });
+
+    resultTitle.textContent = "Chart Passed!";
 
     // determine the correct win sound based on mistakes
     if (accuracy === 100) {
         playAudio(ultimateFile);
-        mistakes.classList.add("perfect");
-        mistakes.textContent = "PERFECT!";
-
-        for (let star of stars) {
-            star.classList.add("perfect");
-        }
-
+        document.body.classList.add("perfect");
+        statusBar.textContent = "PERFECT!";
         resultTitle.textContent = "PERFECT!";
-        resultTitle.classList.add("perfect");
     } else if (accuracy >= 80) {
         playAudio(chordFile);
-        mistakes.textContent = "Mistakes: " + mistakeCount;
-        mistakes.classList.add("win");
+        statusBar.textContent = "Mistakes: " + mistakeCount;
     } else {
         playAudio(inaccuracyFile);
-        mistakes.textContent = "Mistakes: " + mistakeCount;
-        mistakes.classList.add("win");
+        statusBar.textContent = "Mistakes: " + mistakeCount;
     }
 
     // win styles
-    dfjkContainer.classList.add("win");
+    document.body.classList.add("win");
 
     gameOver = true;
 }
@@ -492,13 +490,11 @@ function mistake() {
     mistakeCount++;
 
     // mistake styles
-    mistakes.classList.add("fail");
     document.body.classList.add("fail");
 
     // remove the styles after a short delay, but only if the game isn't over
     setTimeout(() => {
         if (!gameOver) {
-            mistakes.classList.remove("fail");
             document.body.classList.remove("fail");
         }
     }, 100);
@@ -517,10 +513,8 @@ function fail() {
     let percentComplete = (1 - chart.length / length) * 100;
 
     // fail effects
-    mistakes.textContent = "Fail! " + percentComplete.toFixed(2) + "%";
+    statusBar.textContent = "Fail! " + percentComplete.toFixed(2) + "%";
     document.body.classList.add("fail");
-    mistakes.classList.add("fail");
-    dfjkContainer.classList.add("fail");
 
     gameOver = true;
 }
@@ -538,10 +532,12 @@ function playAudio(file, volume = 0.5) {
 // update the mistakes display
 function updateMistakes() {
     if (HP <= 1 || (immortal && HP === 16)) {
-        mistakes.textContent = "";
+        statusBar.textContent = "";
+        document.body.classList.add("hidden");
         return;
     }
-    mistakes.textContent = "❤️".repeat(HP - mistakeCount) + "🖤".repeat(mistakeCount);
+    document.body.classList.remove("hidden");
+    statusBar.textContent = "❤️".repeat(HP - mistakeCount) + "🖤".repeat(mistakeCount);
 }
 
 // PRNG from https://stackoverflow.com/a/47593316
