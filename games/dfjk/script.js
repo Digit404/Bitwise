@@ -300,8 +300,8 @@ function newChart(length) {
         beat.push(rng.choice(keys));
 
         // 10% chance of a chord on advanced mod
-        if (rng.chance(0.10) && advancedModeCheckbox.checked || nightmare && rng.chance(0.2)) {
-            extraKeys = rng.randInt(1, keys.length - 1);
+        if ((rng.chance(0.1) && advancedModeCheckbox.checked) || (nightmare && rng.chance(0.2))) {
+            extraKeys = rng.randInt(1, keys.length);
             for (let j = 0; j < extraKeys; j++) {
                 let remainingKeys = keys.filter((key) => !beat.includes(key));
                 beat.push(rng.choice(remainingKeys));
@@ -317,8 +317,12 @@ function newChart(length) {
 
         if (beat.length > 1) {
             beatElement.classList.add("chord");
+            
+            if (beat.length === keys.length) {
+                beatElement.classList.add("full");
+            }
         }
-
+        
         beat.forEach((key) => {
             const span = document.createElement("span");
             span.textContent = key.toUpperCase();
@@ -389,13 +393,13 @@ function keydown(event) {
     }
 
     // generate a new chart with a new seed
-    if (key === " ") {
+    if (key === " " && gameOver) {
         event.preventDefault(); // prevent space from pressing random buttons
         newSeed();
         newChart(length);
     }
-    
-    if(pressedKeys.has(key)) return;
+
+    if (pressedKeys.has(key)) return;
 
     hitKey(key);
 }
@@ -429,10 +433,8 @@ function hitKey(key) {
     const beat = chart[0];
     const beatElement = field.children[0];
 
-    const isChord = beat.length > 1;
-
     // check if the key pressed is in the beat
-    if (beat.includes(key)) {
+    if (beat.includes(key) || (key === " " && beat.length === keys.length)) {
         // close the dialog if it's open
         closeSettingsModal();
 
@@ -445,7 +447,7 @@ function hitKey(key) {
 
         playAudio(clickFile);
 
-        if (isChord) {
+        if (beat.length > 1 && key !== " ") {
             // mark the key as pressed
             const keyElement = beatElement.querySelector(`.${key}`);
             keyElement.classList.add("pressed");
@@ -459,9 +461,11 @@ function hitKey(key) {
                 return;
             }
 
-            playAudio(pingFile, .25, 2)
+            playAudio(pingFile, 0.25, 2);
 
             inChord = false;
+        } else if (key === " ") {
+            playAudio(pingFile, 0.25, 2);
         }
 
         // remove the beat from the internal chart
@@ -476,7 +480,7 @@ function hitKey(key) {
         if (chart.length === 0) {
             win();
         }
-    } else if (keys.includes(key) && gameStart) {
+    } else if ((keys.includes(key) || key === " ") && gameStart) {
         mistake();
     }
 }

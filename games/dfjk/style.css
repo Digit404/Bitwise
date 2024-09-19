@@ -5,7 +5,7 @@
     --green: #2d6;
     --blue: #27f;
     --yellow: #fc4;
-    --cyan: #8dd;
+    --cyan: #5fd;
     --magenta: #a5d;
     --fail-color: #c33;
     --shadow: #111;
@@ -112,6 +112,15 @@ body.fail::before {
         transparent calc(50% + var(--grid-width)));
 }
 
+.beat.full {
+    background: linear-gradient(
+        to bottom, 
+        transparent calc(50% - var(--grid-width) * 2), 
+        var(--fg) calc(50% - var(--grid-width) * 2), 
+        var(--fg) calc(50% + var(--grid-width) * 2), 
+        transparent calc(50% + var(--grid-width) * 2));
+}
+
 /* container for the keys */
 #dfjk-container {
     display: flex;
@@ -159,6 +168,10 @@ body.fail::before {
 #field .chord .key {
     background: radial-gradient(circle, var(--fg) 50%, var(--color) 52%);
     color: var(--bg);
+}
+
+#field .full .key {
+    display: none;
 }
 
 /* specific key colors */
