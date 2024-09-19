@@ -6,11 +6,14 @@ let mistakeCount = 0;
 let gameOver = false;
 let lightMode = false;
 let gameStart = false;
+let nightmare = false;
 let chart;
 let startTime;
 let secretTicker = 0;
 let safePeriod = false;
 let immortal = false;
+let pressedKeys = new Set();
+let inChord = false;
 
 // DOM elements
 const statusBar = document.getElementById("status-bar");
@@ -21,12 +24,13 @@ const seedInput = document.getElementById("seed");
 const settingsButton = document.getElementById("settings-button");
 const settingsDialog = document.getElementById("settings-dialog");
 const lightModeCheckbox = document.getElementById("light-mode");
-const hardModeCheckbox = document.getElementById("hard-mode");
-const hardModeLabel = document.querySelector('label[for="hard-mode"]');
+const extraKeyCheckbox = document.getElementById("extra-key");
+const advancedModeLabel = document.querySelector('label[for="advanced-mode"]');
 const scaleInput = document.getElementById("scale");
 const lengthInput = document.getElementById("length");
 const hpInput = document.getElementById("hp");
 const hpIndicator = document.getElementById("hp-indicator");
+const advancedModeCheckbox = document.getElementById("advanced-mode");
 
 // results elements
 const results = document.getElementById("results");
@@ -37,6 +41,7 @@ const stars = document.querySelectorAll(".star");
 const resultTitle = document.getElementById("result-title");
 const resultChartNo = document.getElementById("result-chart-no");
 const shareButton = document.getElementById("share-button");
+const resultCPS = document.getElementById("result-cps");
 
 let dfjkContainer;
 
@@ -45,10 +50,11 @@ const clickFile = "/res/sound/click.wav";
 const errorFile = "/res/sound/error.wav";
 const failFile = "/res/sound/fail.wav";
 const ultimateFile = "/res/sound/ultimate.wav";
-const chordFile = "/res/sound/chord.wav";
+const winFile = "/res/sound/win.wav";
 const riffFile = "/res/sound/riff.wav";
 const bellFile = "/res/sound/bell.wav";
 const inaccuracyFile = "/res/sound/inaccuracy.wav";
+const pingFile = "/res/sound/ping.wav";
 
 // create an AudioContext
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -95,8 +101,21 @@ lightModeCheckbox.onchange = () => {
     document.body.classList.toggle("light", lightModeCheckbox.checked);
 };
 
-hardModeCheckbox.onchange = () => {
+extraKeyCheckbox.onchange = () => {
     playAudio(clickFile);
+
+    if (extraKeyCheckbox.checked) {
+        keys = ["d", "f", "j", "k", "l"];
+    } else {
+        keys = ["d", "f", "j", "k"];
+    }
+
+    initializeGame();
+};
+
+advancedModeCheckbox.onchange = () => {
+    playAudio(clickFile);
+
     // click 5 times to activate nightmare mode
     if (secretTicker === 5) {
         activateNightmareMode();
@@ -104,12 +123,6 @@ hardModeCheckbox.onchange = () => {
     }
 
     secretTicker++;
-
-    if (hardModeCheckbox.checked) {
-        keys = ["d", "f", "j", "k", "l"];
-    } else {
-        keys = ["d", "f", "j", "k"];
-    }
 
     initializeGame();
 };
@@ -161,7 +174,7 @@ async function loadAudio(file) {
 
 // initialize all audio files
 function initializeAudio() {
-    const audioFiles = [clickFile, errorFile, failFile, ultimateFile, chordFile, riffFile, bellFile, inaccuracyFile];
+    const audioFiles = [clickFile, errorFile, failFile, ultimateFile, winFile, riffFile, bellFile, inaccuracyFile, pingFile];
     audioFiles.forEach((file) => loadAudio(file));
 }
 
@@ -183,9 +196,9 @@ function lightModeCheck() {
 
 function activateNightmareMode() {
     // nightmare mode styles
-    hardModeLabel.textContent = "NIGHTMARE MODE";
-    hardModeLabel.style.color = "var(--fail-color)";
-    hardModeLabel.classList.add("fail");
+    advancedModeLabel.textContent = "NIGHTMARE MODE";
+    advancedModeLabel.style.color = "var(--fail-color)";
+    advancedModeLabel.classList.add("fail");
     document.body.classList.add("nightmare");
     document.body.classList.remove("light");
 
@@ -196,12 +209,16 @@ function activateNightmareMode() {
     lengthInput.disabled = true;
     lightModeCheckbox.checked = false;
     lightModeCheckbox.disabled = true;
-    hardModeCheckbox.checked = true;
-    hardModeCheckbox.disabled = true;
+    extraKeyCheckbox.checked = true;
+    extraKeyCheckbox.disabled = true;
+    advancedModeCheckbox.checked = true;
+    advancedModeCheckbox.disabled = true;
     HP = 5;
     hpInput.value = HP;
     hpIndicator.textContent = HP;
     hpInput.disabled = true;
+
+    nightmare = true;
 
     // play nightmare mode sound
     playAudio(riffFile, 1);
@@ -254,6 +271,7 @@ function initializeGame() {
 
     // add game event listeners
     document.addEventListener("keydown", keydown);
+    document.addEventListener("keyup", keyup);
 
     seedInput.addEventListener("input", () => {
         newChart(length);
@@ -269,25 +287,51 @@ function initializeGame() {
 function newChart(length) {
     let seed = seedInput.innerText;
 
+    const rng = new SeedRandom(seed);
+
     // clear and generate the chart
     clearChart();
 
-    chart = Array.from({ length }, () => {
-        seed = hashCode(seed.toString());
-        return selectRandomKey(seed);
-    });
+    chart = [];
 
-    // populate the field with the chart
-    chart.forEach((key) => {
-        const span = document.createElement("span");
-        span.textContent = key.toUpperCase();
-        span.classList.add(key, "key");
+    for (let i = 0; i < length; i++) {
+        beat = [];
 
-        // calculate the offset based on the key
-        let offset = keys.indexOf(key) - keys.length / 2;
-        span.style.translate = "calc((var(--key-width) + var(--key-gap)) * " + offset + " + (var(--key-width) + var(--key-gap)) / 2)";
+        beat.push(rng.choice(keys));
 
-        field.appendChild(span);
+        // 10% chance of a chord on advanced mod
+        if (rng.chance(0.10) && advancedModeCheckbox.checked || nightmare && rng.chance(0.2)) {
+            extraKeys = rng.randInt(1, keys.length - 1);
+            for (let j = 0; j < extraKeys; j++) {
+                let remainingKeys = keys.filter((key) => !beat.includes(key));
+                beat.push(rng.choice(remainingKeys));
+            }
+        }
+
+        chart.push(beat);
+    }
+
+    chart.forEach((beat) => {
+        const beatElement = document.createElement("div");
+        beatElement.classList.add("beat");
+
+        if (beat.length > 1) {
+            beatElement.classList.add("chord");
+        }
+
+        beat.forEach((key) => {
+            const span = document.createElement("span");
+            span.textContent = key.toUpperCase();
+            span.classList.add(key, "key");
+
+            // calculate the offset based on the key
+            let xOffset = keys.indexOf(key) - keys.length / 2;
+            span.style.setProperty("--x-offset", xOffset);
+
+            beatElement.appendChild(span);
+        });
+
+        field.appendChild(beatElement);
     });
 
     // reset mistakes
@@ -322,12 +366,6 @@ function newSeed() {
     seedInput.innerText = Math.floor(Math.random() * 100000);
 }
 
-// pseudo-random key selection based on a seed
-function selectRandomKey(seed) {
-    const seededRandom = mulberry32(seed)();
-    return keys[Math.floor(seededRandom * keys.length)];
-}
-
 // remove all children from the field
 function clearChart() {
     while (field.firstChild) {
@@ -337,7 +375,13 @@ function clearChart() {
 
 // most of the game logic is in this function
 function keydown(event) {
-    const { key } = event;
+    let { key } = event;
+
+    key = key.toLowerCase();
+
+    if (event.target === seedInput) {
+        return;
+    }
 
     // restart the game with the same seed
     if (key === "r") {
@@ -345,21 +389,50 @@ function keydown(event) {
     }
 
     // generate a new chart with a new seed
-    if (key === " " && !(event.target === seedInput)) {
+    if (key === " ") {
         event.preventDefault(); // prevent space from pressing random buttons
         newSeed();
         newChart(length);
     }
+    
+    if(pressedKeys.has(key)) return;
 
     hitKey(key);
+}
+
+function keyup(event) {
+    const { key } = event;
+
+    pressedKeys.delete(key);
+
+    if (inChord) {
+        const beat = chart[0];
+        const beatElement = field.children[0];
+
+        const keyElement = beatElement.querySelector(`.${key}`);
+        if (keyElement) {
+            keyElement.classList.remove("pressed");
+        }
+
+        if (beat.includes(key) && nightmare) {
+            mistake();
+        }
+    }
 }
 
 function hitKey(key) {
     // can't play if the game is over
     if (gameOver) return;
 
-    // check if the key pressed is the correct next key in the chart
-    if (key === chart[0]) {
+    pressedKeys.add(key);
+
+    const beat = chart[0];
+    const beatElement = field.children[0];
+
+    const isChord = beat.length > 1;
+
+    // check if the key pressed is in the beat
+    if (beat.includes(key)) {
         // close the dialog if it's open
         closeSettingsModal();
 
@@ -370,33 +443,57 @@ function hitKey(key) {
             document.body.classList.add("play");
         }
 
-        // remove the pressed key from the internal chart
-        chart.shift();
-
-        // animate the key falling; not sure how this works so convincingly
-        Array.from(field.children).forEach((el, index) => {
-            if (index > 0) {
-                el.classList.add("falling");
-                el.addEventListener(
-                    "animationend",
-                    () => {
-                        el.classList.remove("falling");
-                    },
-                    { once: true }
-                );
-            }
-        });
-
-        // remove the key from the field
-        field.removeChild(field.children[0]);
         playAudio(clickFile);
 
-        // if there's no more keys, win
-        if (chart.length === 0) win();
-        // if it's wrong, mistake, unless the game hasn't started yet
+        if (isChord) {
+            // mark the key as pressed
+            const keyElement = beatElement.querySelector(`.${key}`);
+            keyElement.classList.add("pressed");
+
+            inChord = true;
+
+            // check if all keys in the chord have been pressed
+            const allPressed = beat.every((key) => pressedKeys.has(key));
+
+            if (!allPressed) {
+                return;
+            }
+
+            playAudio(pingFile, .25, 2)
+
+            inChord = false;
+        }
+
+        // remove the beat from the internal chart
+        chart.shift();
+
+        animateKeysFalling();
+
+        // remove the beat from the field
+        field.removeChild(beatElement);
+
+        // check if the game is won
+        if (chart.length === 0) {
+            win();
+        }
     } else if (keys.includes(key) && gameStart) {
         mistake();
     }
+}
+
+function animateKeysFalling() {
+    Array.from(field.children).forEach((el, index) => {
+        if (index > 0) {
+            el.classList.add("falling");
+            el.addEventListener(
+                "animationend",
+                () => {
+                    el.classList.remove("falling");
+                },
+                { once: true }
+            );
+        }
+    });
 }
 
 function win() {
@@ -406,8 +503,6 @@ function win() {
     clearStyles();
 
     results.hidden = false;
-
-    console.log(length)
 
     // determine score
     let accuracy = (1 - mistakeCount / (length + mistakeCount)) * 100;
@@ -423,11 +518,15 @@ function win() {
         starCount = 1;
     }
 
-    let timeString = time.toFixed(2) + "s";
+    const timeString = time.toFixed(2) + "s";
+    const mode = nightmare ? "N" : advancedModeCheckbox.checked ? "A" : "";
 
     resultTime.textContent = timeString;
     resultAccuracy.textContent = "Accuracy: " + accuracy.toFixed(2) + "%";
-    resultChartNo.textContent = "#" + seedInput.innerText + " (" + length + ")";
+    resultChartNo.textContent = `${mode}#${seedInput.innerText} (${length})`;
+
+    const cps = length / time;
+    resultCPS.textContent = cps.toFixed(2) + " CPS";
 
     if (keys.length === 5) {
         resultChartNo.classList.add("hard");
@@ -466,7 +565,7 @@ function win() {
         statusBar.textContent = "PERFECT!";
         resultTitle.textContent = "PERFECT!";
     } else if (accuracy >= 80) {
-        playAudio(chordFile);
+        playAudio(winFile);
         statusBar.textContent = "Mistakes: " + mistakeCount;
     } else {
         playAudio(inaccuracyFile);
@@ -520,11 +619,12 @@ function fail() {
 }
 
 // play buffered audio
-function playAudio(file, volume = 0.5) {
+function playAudio(file, volume = 0.5, pitch = 1) {
     const source = audioContext.createBufferSource();
     source.buffer = buffers[file];
     const gainNode = audioContext.createGain();
     gainNode.gain.value = volume;
+    source.playbackRate.value = pitch;
     source.connect(gainNode).connect(audioContext.destination);
     source.start(0);
 }
@@ -540,28 +640,67 @@ function updateMistakes() {
     statusBar.textContent = "❤️".repeat(HP - mistakeCount) + "🖤".repeat(mistakeCount);
 }
 
-// PRNG from https://stackoverflow.com/a/47593316
-function mulberry32(a) {
-    return function () {
-        var t = (a += 0x6d2b79f5);
-        t = Math.imul(t ^ (t >>> 15), t | 1);
-        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    };
-}
-
-// hash function from https://stackoverflow.com/a/7616484
-function hashCode(str) {
-    var hash = 0,
-        i,
-        chr;
-    if (str.length === 0) return hash;
-    for (i = 0; i < str.length; i++) {
-        chr = str.charCodeAt(i);
-        hash = (hash << 5) - hash + chr;
-        hash |= 0;
+class SeedRandom {
+    constructor(seed) {
+        this.seed = this.hashCode(seed.toString());
+        this.generator = this.mulberry32(this.seed);
     }
-    return hash;
+
+    // hash function from https://stackoverflow.com/a/7616484
+    hashCode(str) {
+        var hash = 0,
+            i,
+            chr;
+        if (str.length === 0) return hash;
+        for (i = 0; i < str.length; i++) {
+            chr = str.charCodeAt(i);
+            hash = (hash << 5) - hash + chr;
+            hash |= 0;
+        }
+        return hash;
+    }
+
+    // PRNG from https://stackoverflow.com/a/47593316
+    mulberry32(a) {
+        return function () {
+            var t = (a += 0x6d2b79f5);
+            t = Math.imul(t ^ (t >>> 15), t | 1);
+            t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+    }
+
+    next() {
+        return this.generator();
+    }
+
+    // generator function to be used as an iterator
+    *sRandom() {
+        while (true) {
+            yield this.next();
+        }
+    }
+
+    reset(seed) {
+        this.seed = this.hashCode(seed.toString());
+        this.generator = this.mulberry32(this.seed);
+    }
+
+    randFloat(min = 0, max = 1) {
+        return this.next() * (max - min) + min;
+    }
+
+    randInt(min, max) {
+        return Math.floor(this.randFloat(min, max));
+    }
+
+    chance(weight = 0.5) {
+        return this.next() <= weight;
+    }
+
+    choice(arr) {
+        return arr[this.randInt(0, arr.length)];
+    }
 }
 
 // load audio files

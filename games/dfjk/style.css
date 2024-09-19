@@ -5,10 +5,9 @@
     --green: #2d6;
     --blue: #27f;
     --yellow: #fc4;
-    --cyan: #5dd;
+    --cyan: #8dd;
     --magenta: #a5d;
     --fail-color: #c33;
-    --default-key-color: #fff;
     --shadow: #111;
     --bg: #222;
     --fg: #fff;
@@ -96,6 +95,23 @@ body.fail::before {
     background: var(--field-grid);
 }
 
+.beat {
+    height: var(--key-height);
+    min-height: var(--key-height);
+    margin: calc(var(--key-height) / 20);
+    width: var(--field-width);
+    position: relative;
+}
+
+.beat.chord {
+    background: linear-gradient(
+        to bottom, 
+        transparent calc(50% - var(--grid-width)), 
+        var(--fg) calc(50% - var(--grid-width)), 
+        var(--fg) calc(50% + var(--grid-width)), 
+        transparent calc(50% + var(--grid-width)));
+}
+
 /* container for the keys */
 #dfjk-container {
     display: flex;
@@ -110,7 +126,8 @@ body.fail::before {
 
 /* all keys */
 .key {
-    background-color: var(--default-key-color);
+    --color: #fff;;
+    background-color: var(--color);
     width: var(--key-width);
     height: var(--key-width);
     display: flex;
@@ -124,32 +141,50 @@ body.fail::before {
 
 /* keys on field */
 #field .key {
+    position: absolute;
     height: var(--key-height);
     min-height: var(--key-height);
-    margin: calc(var(--key-height) / 20);
+    left: calc(var(--key-width) / -2 + var(--field-width) / 2);
+    translate: calc((var(--key-width) + var(--key-gap)) * var(--x-offset) + (var(--key-width) + var(--key-gap)) / 2);
     border-radius: 0.5rem;
     transition: all 1s ease;
 }
 
+#field .key.pressed {
+    opacity: 0.5;
+    animation: quiver 0.25s linear;
+    animation-iteration-count: infinite;
+}
+
+#field .chord .key {
+    background: radial-gradient(circle, var(--fg) 50%, var(--color) 52%);
+    color: var(--bg);
+}
+
 /* specific key colors */
 .d {
-    background-color: var(--red);
+    --color: var(--red);
 }
 
 .f {
-    background-color: var(--yellow);
+    --color: var(--yellow);
 }
 
 .j {
-    background-color: var(--green);
+    --color: var(--green);
 }
 
 .k {
-    background-color: var(--blue);
+    --color: var(--blue);
 }
 
 .l {
-    background-color: var(--magenta);
+    --color: var(--magenta);
+}
+
+.s {
+    --color: #000;
+    color: #fff;
 }
 
 #status-bar {
@@ -244,6 +279,28 @@ body.fail::before {
     }
 }
 
+@keyframes quiver {
+    0% {
+        transform: rotate(0);
+    }
+
+    25% {
+        transform: rotate(-5deg);
+    }
+
+    50% {
+        transform: rotate(5deg);
+    }
+
+    75% {
+        transform: rotate(-5deg);
+    }
+
+    to {
+        transform: rotate(0);
+    }
+}
+
 /* played on stars */
 @keyframes swirl-in {
     0% {
@@ -261,7 +318,7 @@ body.fail::before {
     animation: bounceAway 1s ease forwards;
 }
 
-.key.falling {
+.beat.falling {
     animation: fall 0.05s ease;
 }
 
