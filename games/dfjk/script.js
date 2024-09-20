@@ -124,7 +124,7 @@ advancedModeCheckbox.onchange = () => {
 
     secretTicker++;
 
-    initializeGame();
+    newChart(length); 
 };
 
 scaleInput.addEventListener("input", () => {
@@ -393,7 +393,7 @@ function keydown(event) {
     }
 
     // generate a new chart with a new seed
-    if (key === " " && gameOver) {
+    if (key === " " && (gameOver || !advancedModeCheckbox.checked)) {
         event.preventDefault(); // prevent space from pressing random buttons
         newSeed();
         newChart(length);
