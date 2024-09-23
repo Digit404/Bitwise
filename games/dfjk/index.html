@@ -17,33 +17,50 @@
     <div id="field"></div>
     <div id="status-bar"></div>
     <a id="back-button" href="../">BACK</a>
-    <button id="settings-button" tabindex="-1">Settings</button>
+    <button id="settings-button" tabindex="-1" class="status-bar-button">Settings</button>
+    <div id="help-icon" class="status-bar-button">HELP</div>
+    <div id="help-dialog">
+        <h1>Welcome to DFJK</h1>
+        <p>
+            DFJK is a typing game where you have to type the letters on the screen as fast as possible without making
+            mistakes. The game is designed to be played with the titular keys: <kbd>D</kbd>, <kbd>F</kbd>, <kbd>J</kbd>,
+            and <kbd>K</kbd>. The game will start when you press the first key.
+        </p>
+        <p>
+            Press <kbd>Space</kbd> or <kbd>Enter</kbd> to generate a new chart, and press <kbd>r</kbd> to restart.
+        </p>
+        <p>
+            In advanced mode, chords appear which have multiple keys you have to press at the same time to advance. Press
+            <kbd>Space</kbd> to press all the keys at once.
+        </p>
+    </div>
     <div id="settings-dialog" hidden>
         <h1>Settings</h1>
-        <p>
+        <div>
             <input type="checkbox" id="light-mode">
             <label for="light-mode">Light Mode</label>
-        </p>
-        <p>
+        </div>
+        <div>
             <input type="checkbox" id="extra-key">
             <label for="extra-key">Extra Key</label>
-        </p>
-        <p>
+        </div>
+        <div>
             <input type="checkbox" id="advanced-mode">
             <label for="advanced-mode">Advanced Mode</label>
-        </p>
-        <p>
+        </div>
+        <div>
             <label for="length">Length</label>
             <input type="number" id="length" value="50" min="10">
-        </p>
-        <p>
+        </div>
+        <div>
             <label for="scale">Height</label>
             <input type="range" id="scale" name="scale" min="2" max="7" step="0.1" value="5">
-        </p>
-        <p>
+        </div>
+        <div>
             <label for="hp">HP <span id="hp-indicator">10</span> </label>
             <input type="range" id="hp" name="hp" min="1" max="16" value="10">
-        </p>
+        </div>
+        <p id="key-input" contenteditable="true">DFJK</p>
     </div>
     <div id="results" hidden>
         <p id="result-chart-no">#</p>

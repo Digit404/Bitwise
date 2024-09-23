@@ -1,5 +1,4 @@
 // initial game parameters
-let keys = ["d", "f", "j", "k"];
 let HP = 10;
 let length = 50;
 let mistakeCount = 0;
@@ -12,13 +11,14 @@ let startTime;
 let secretTicker = 0;
 let safePeriod = false;
 let immortal = false;
-let pressedKeys = new Set();
 let inChord = false;
 
 // DOM elements
 const statusBar = document.getElementById("status-bar");
 const field = document.getElementById("field");
 const seedInput = document.getElementById("seed");
+const helpIcon = document.getElementById("help-icon");
+const helpDialog = document.getElementById("help-dialog");
 
 // settings elements
 const settingsButton = document.getElementById("settings-button");
@@ -31,6 +31,7 @@ const lengthInput = document.getElementById("length");
 const hpInput = document.getElementById("hp");
 const hpIndicator = document.getElementById("hp-indicator");
 const advancedModeCheckbox = document.getElementById("advanced-mode");
+const keyInput = document.getElementById("key-input");
 
 // results elements
 const results = document.getElementById("results");
@@ -44,6 +45,9 @@ const shareButton = document.getElementById("share-button");
 const resultCPS = document.getElementById("result-cps");
 
 let dfjkContainer;
+
+const inputFields = [seedInput, keyInput];
+const originalKeys = ["d", "f", "j", "k"];
 
 // audio files
 const clickFile = "/res/sound/click.wav";
@@ -61,6 +65,170 @@ const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
 // audio buffers
 let buffers = {};
+
+class Key {
+    static container;
+    static keys = [];
+
+    constructor(key) {
+        this.key = key;
+        this.pressed = false;
+
+        Key.keys.push(this);
+    }
+
+    build() {
+        this.button = document.createElement("span");
+        this.button.textContent = this.key.toUpperCase();
+        this.button.classList.add(this.key, "key");
+        this.button.addEventListener("click", () => {
+            safePeriod = true;
+            this.hit();
+        });
+
+        // needs to append first so it's "real" and styles can be computed
+        Key.container.appendChild(this.button);
+
+        // if uncolored, color the key
+        if (this.button.computedStyleMap().get("background-color").toString() === "rgb(255, 255, 255)") {
+            this.color = randomHue(this.key);
+            this.button.style.backgroundColor = this.color;
+        }
+
+        return this.button;
+    }
+
+    hit() {
+        // can't play if the game is over
+        if (gameOver) return;
+
+        this.pressed = true;
+
+        const beat = chart[0];
+        const beatElement = field.children[0];
+
+        // check for mistakes
+        if (!beat.includes(this.key) && gameStart) {
+            mistake();
+            return;
+        }
+
+        // close the dialog if it's open
+        closeSettingsModal();
+
+        // start the timer if it's the first key
+        if (!gameStart) {
+            gameStart = true;
+            startTime = performance.now();
+            document.body.classList.add("play");
+        }
+
+        playAudio(clickFile);
+
+        if (beat.length > 1) {
+            // mark the key as pressed
+            const keyElement = beatElement.querySelector(`.${this.key}`);
+            keyElement.classList.add("pressed");
+
+            inChord = true;
+
+            // check if all keys in the chord have been pressed
+            const allPressed = beat.every((key) => Key.getKey(key).pressed);
+
+            if (!allPressed) {
+                return;
+            }
+
+            playAudio(pingFile, 0.25, 2);
+
+            inChord = false;
+        }
+
+        // remove the beat from the internal chart
+        chart.shift();
+
+        animateKeysFalling();
+
+        // remove the beat from the field
+        field.removeChild(beatElement);
+
+        // check if the game is won
+        if (chart.length === 0) {
+            win();
+        }
+    }
+
+    static hit(key) {
+        let keyObject = Key.getKey(key);
+
+        if (keyObject) {
+            keyObject.hit();
+        }
+    }
+
+    static hitAll() {
+        const beat = chart[0];
+
+        if (beat.length === Key.keys.length) {
+            for (let key of Key.keys) {
+                key.hit();
+            }
+            for (let key of Key.keys) {
+                key.pressed = false;
+            }
+        } else if (gameOver) {
+            initializeGame();
+        } else {
+            mistake();
+        }
+    }
+
+    static press(key) {
+        let keyObject = Key.getKey(key);
+
+        if (keyObject) {
+            keyObject.pressed = true;
+        }
+    }
+
+    static release(key) {
+        let keyObject = Key.getKey(key);
+
+        if (keyObject) {
+            keyObject.pressed = false;
+        }
+    }
+
+    static buildContainer() {
+        if (Key.container) {
+            Key.container.remove();
+        }
+
+        Key.container = document.createElement("div");
+        Key.container.id = "dfjk-container";
+        field.insertAdjacentElement("afterend", Key.container); // place right after the field
+
+        // update css vars based on key count
+        document.documentElement.style.setProperty("--letters", Key.keys.length);
+
+        for (let key of Key.keys) {
+            key.build();
+        }
+    }
+
+    static setKeys(keys) {
+        Key.keys = keys.map((key) => new Key(key));
+        Key.buildContainer();
+    }
+
+    static getKeys() {
+        return Key.keys.map((key) => key.key);
+    }
+
+    static getKey(key) {
+        return Key.keys.find((k) => k.key === key);
+    }
+}
 
 // settings dialog event listeners
 settingsButton.onclick = () => {
@@ -105,12 +273,13 @@ extraKeyCheckbox.onchange = () => {
     playAudio(clickFile);
 
     if (extraKeyCheckbox.checked) {
-        keys = ["d", "f", "j", "k", "l"];
+        Key.setKeys(["d", "f", "j", "k", "l"]);
     } else {
-        keys = ["d", "f", "j", "k"];
+        Key.setKeys(["d", "f", "j", "k"]);
     }
 
-    initializeGame();
+    newChart(length);
+    updateKeyInput();
 };
 
 advancedModeCheckbox.onchange = () => {
@@ -124,7 +293,7 @@ advancedModeCheckbox.onchange = () => {
 
     secretTicker++;
 
-    newChart(length); 
+    newChart(length);
 };
 
 scaleInput.addEventListener("input", () => {
@@ -163,6 +332,50 @@ hpInput.addEventListener("input", () => {
 
     updateMistakes();
 });
+
+keyInput.addEventListener("input", () => {
+    if (nightmare) {
+        keyInput.innerText = "sdfjkl";
+        return;
+    }
+
+    let selectedKeys = keyInput.innerText
+        .toLowerCase()
+        .split("")
+        .filter((key) => key !== " ");
+
+    if (selectedKeys.length < 2) {
+        selectedKeys = ["d", "f", "j", "k"];
+    }
+
+    Key.setKeys([...new Set(selectedKeys)]);
+
+    Key.buildContainer();
+    newChart(length);
+});
+
+keyInput.addEventListener("blur", () => {
+    updateKeyInput();
+    if (Key.keys.length === 5) {
+        extraKeyCheckbox.checked = true;
+    } else {
+        extraKeyCheckbox.checked = false;
+    }
+});
+
+helpIcon.addEventListener("mouseover", () => {
+    helpDialog.style.opacity = 1;
+    helpDialog.style.pointerEvents = "all";
+});
+
+helpIcon.addEventListener("mouseout", () => {
+    helpDialog.style.opacity = 0;
+    helpDialog.style.pointerEvents = "none";
+});
+
+function updateKeyInput() {
+    keyInput.innerText = Key.getKeys().join("").toUpperCase();
+}
 
 // load audio file and buffer it
 async function loadAudio(file) {
@@ -203,7 +416,7 @@ function activateNightmareMode() {
     document.body.classList.remove("light");
 
     // nightmare mode adds 2 extra keys to standard mode, makes length 75 and halves health
-    keys = ["s", "d", "f", "j", "k", "l"];
+    let keys = ["s", "d", "f", "j", "k", "l"];
     lengthInput.value = 75;
     length = 75;
     lengthInput.disabled = true;
@@ -224,37 +437,13 @@ function activateNightmareMode() {
     playAudio(riffFile, 1);
 
     updateMistakes();
-    initializeGame();
+    Key.setKeys(keys);
+    newChart(length);
+    updateKeyInput();
 }
 
 function initializeGame() {
-    // remove existing key container and create a new one
-    const existingContainer = document.getElementById("dfjk-container");
-
-    if (existingContainer) {
-        existingContainer.remove();
-    }
-
-    dfjkContainer = document.createElement("div");
-    dfjkContainer.id = "dfjk-container";
-    field.insertAdjacentElement("afterend", dfjkContainer); // place right after the field
-
-    // update css vars based on key count
-    document.documentElement.style.setProperty("--letters", keys.length);
-
-    // create key elements
-    for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
-        const span = document.createElement("span");
-        span.textContent = key.toUpperCase();
-        span.classList.add(key, "key");
-        span.addEventListener("click", () => {
-            // safe period to prevent results from being hidden immediately
-            safePeriod = true;
-            hitKey(key);
-        });
-        dfjkContainer.appendChild(span);
-    }
+    Key.setKeys(originalKeys);
 
     // initialize chart with seed
     const currentURL = new URL(window.location.href);
@@ -297,13 +486,13 @@ function newChart(length) {
     for (let i = 0; i < length; i++) {
         beat = [];
 
-        beat.push(rng.choice(keys));
+        beat.push(rng.choice(Key.keys).key);
 
         // 10% chance of a chord on advanced mod
         if ((rng.chance(0.1) && advancedModeCheckbox.checked) || (nightmare && rng.chance(0.2))) {
-            extraKeys = rng.randInt(1, keys.length);
+            extraKeys = rng.randInt(1, Key.keys.length);
             for (let j = 0; j < extraKeys; j++) {
-                let remainingKeys = keys.filter((key) => !beat.includes(key));
+                let remainingKeys = Key.keys.filter((key) => !beat.includes(key.key)).map((key) => key.key);
                 beat.push(rng.choice(remainingKeys));
             }
         }
@@ -317,28 +506,34 @@ function newChart(length) {
 
         if (beat.length > 1) {
             beatElement.classList.add("chord");
-            
-            if (beat.length === keys.length) {
+
+            if (beat.length === Key.keys.length) {
                 beatElement.classList.add("full");
             }
         }
-        
+
+        field.appendChild(beatElement);
+
         beat.forEach((key) => {
             const span = document.createElement("span");
             span.textContent = key.toUpperCase();
             span.classList.add(key, "key");
 
             // calculate the offset based on the key
-            let xOffset = keys.indexOf(key) - keys.length / 2;
+            let xOffset = Key.keys.indexOf(Key.getKey(key)) - Key.keys.length / 2;
             span.style.setProperty("--x-offset", xOffset);
 
             beatElement.appendChild(span);
-        });
 
-        field.appendChild(beatElement);
+            // if uncolored, color the key
+            if (span.computedStyleMap().get("background-color").toString() === "rgb(255, 255, 255)") {
+                span.style.setProperty("--color", randomHue(key));
+                span.style.backgroundColor = randomHue(key);
+            }
+        });
     });
 
-    // reset mistakes
+    // reset game
     mistakeCount = 0;
     updateMistakes();
 
@@ -379,35 +574,47 @@ function clearChart() {
 
 // most of the game logic is in this function
 function keydown(event) {
-    let { key } = event;
+    const { key, code } = event;
 
-    key = key.toLowerCase();
-
-    if (event.target === seedInput) {
+    // if currently typing, return
+    if (inputFields.includes(event.target)) {
         return;
     }
 
+    const keyObject = Key.getKey(key.toLowerCase());
+
+    if (keyObject) {
+        // prevent bounce
+        if (keyObject.pressed) return;
+
+        keyObject.hit();
+        return;
+    } else if (key === " " && advancedModeCheckbox.checked) {
+        Key.hitAll();
+        return;
+    }
+
+    if (code === "Escape") {
+        closeSettingsModal();
+    }
+
     // restart the game with the same seed
-    if (key === "r") {
+    if (code === "KeyR") {
         newChart(length);
     }
 
-    // generate a new chart with a new seed
-    if (key === " " && (gameOver || !advancedModeCheckbox.checked)) {
+    // generate a new chart with a new seed (space only when game is over on advanced mode, enter whenever)
+    if ((code === "Space" && (gameOver || !advancedModeCheckbox.checked)) || code === "Enter") {
         event.preventDefault(); // prevent space from pressing random buttons
         newSeed();
         newChart(length);
     }
-
-    if (pressedKeys.has(key)) return;
-
-    hitKey(key);
 }
 
 function keyup(event) {
     const { key } = event;
 
-    pressedKeys.delete(key);
+    Key.release(key);
 
     if (inChord) {
         const beat = chart[0];
@@ -421,67 +628,6 @@ function keyup(event) {
         if (beat.includes(key) && nightmare) {
             mistake();
         }
-    }
-}
-
-function hitKey(key) {
-    // can't play if the game is over
-    if (gameOver) return;
-
-    pressedKeys.add(key);
-
-    const beat = chart[0];
-    const beatElement = field.children[0];
-
-    // check if the key pressed is in the beat
-    if (beat.includes(key) || (key === " " && beat.length === keys.length)) {
-        // close the dialog if it's open
-        closeSettingsModal();
-
-        // start the timer if it's the first key
-        if (!gameStart) {
-            gameStart = true;
-            startTime = performance.now();
-            document.body.classList.add("play");
-        }
-
-        playAudio(clickFile);
-
-        if (beat.length > 1 && key !== " ") {
-            // mark the key as pressed
-            const keyElement = beatElement.querySelector(`.${key}`);
-            keyElement.classList.add("pressed");
-
-            inChord = true;
-
-            // check if all keys in the chord have been pressed
-            const allPressed = beat.every((key) => pressedKeys.has(key));
-
-            if (!allPressed) {
-                return;
-            }
-
-            playAudio(pingFile, 0.25, 2);
-
-            inChord = false;
-        } else if (key === " ") {
-            playAudio(pingFile, 0.25, 2);
-        }
-
-        // remove the beat from the internal chart
-        chart.shift();
-
-        animateKeysFalling();
-
-        // remove the beat from the field
-        field.removeChild(beatElement);
-
-        // check if the game is won
-        if (chart.length === 0) {
-            win();
-        }
-    } else if ((keys.includes(key) || key === " ") && gameStart) {
-        mistake();
     }
 }
 
@@ -525,18 +671,15 @@ function win() {
     const timeString = time.toFixed(2) + "s";
     const mode = nightmare ? "N" : advancedModeCheckbox.checked ? "A" : "";
 
+    // keystring is the keys active in the current chart
+    const keyString = Key.getKeys().join("").toUpperCase();
+
     resultTime.textContent = timeString;
     resultAccuracy.textContent = "Accuracy: " + accuracy.toFixed(2) + "%";
-    resultChartNo.textContent = `${mode}#${seedInput.innerText} (${length})`;
+    resultChartNo.textContent = `${keyString} #${seedInput.innerText} (${length}${mode})`;
 
     const cps = length / time;
     resultCPS.textContent = cps.toFixed(2) + " CPS";
-
-    if (keys.length === 5) {
-        resultChartNo.classList.add("hard");
-    } else {
-        resultChartNo.classList.remove("hard");
-    }
 
     shareButton.onclick = () => {
         const url = new URL("https://www.rebitwise.com/games/dfjk/");
@@ -644,14 +787,23 @@ function updateMistakes() {
     statusBar.textContent = "❤️".repeat(HP - mistakeCount) + "🖤".repeat(mistakeCount);
 }
 
+function randomHue(seed = Math.random(), blanchFactor = 13) {
+    const seededRandom = new SeedRandom(seed).next();
+    const randomHue = Math.floor(seededRandom * 360);
+
+    const lightness = 50 + blanchFactor;
+
+    return `hsl(${randomHue}, 100%, ${lightness}%)`;
+}
+
 class SeedRandom {
     constructor(seed) {
-        this.seed = this.hashCode(seed.toString());
+        this.seed = this.hash(seed.toString());
         this.generator = this.mulberry32(this.seed);
     }
 
     // hash function from https://stackoverflow.com/a/7616484
-    hashCode(str) {
+    hash(str) {
         var hash = 0,
             i,
             chr;
@@ -686,7 +838,7 @@ class SeedRandom {
     }
 
     reset(seed) {
-        this.seed = this.hashCode(seed.toString());
+        this.seed = this.hash(seed.toString());
         this.generator = this.mulberry32(this.seed);
     }
 
