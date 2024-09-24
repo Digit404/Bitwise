@@ -98,7 +98,7 @@ class Key {
         return this.button;
     }
 
-    hit() {
+    hit(silent = false) {
         // can't play if the game is over
         if (gameOver) return;
 
@@ -123,7 +123,7 @@ class Key {
             document.body.classList.add("play");
         }
 
-        playAudio(clickFile);
+        if (!silent) playAudio(clickFile);
 
         if (beat.length > 1) {
             // mark the key as pressed
@@ -139,7 +139,7 @@ class Key {
                 return;
             }
 
-            playAudio(pingFile, 0.25, 2);
+            if (!silent) playAudio(pingFile, 0.25, 2);
 
             inChord = false;
         }
@@ -169,16 +169,18 @@ class Key {
     static hitAll() {
         const beat = chart[0];
 
-        if (beat.length === Key.keys.length) {
+        if (beat && beat.length === Key.keys.length) {
             for (let key of Key.keys) {
-                key.hit();
+                key.hit(true);
             }
             for (let key of Key.keys) {
                 key.pressed = false;
             }
+            playAudio(pingFile, 0.25, 2);
+            playAudio(clickFile);
         } else if (gameOver) {
             initializeGame();
-        } else {
+        } else if (gameStart) {
             mistake();
         }
     }
