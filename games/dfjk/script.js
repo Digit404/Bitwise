@@ -44,27 +44,12 @@ const resultChartNo = document.getElementById("result-chart-no");
 const shareButton = document.getElementById("share-button");
 const resultCPS = document.getElementById("result-cps");
 
+// globals
 let dfjkContainer;
+let sounds;
 
 const inputFields = [seedInput, keyInput];
 const originalKeys = ["d", "f", "j", "k"];
-
-// audio files
-const clickFile = "/res/sound/click.wav";
-const errorFile = "/res/sound/error.wav";
-const failFile = "/res/sound/fail.wav";
-const ultimateFile = "/res/sound/ultimate.wav";
-const winFile = "/res/sound/win.wav";
-const riffFile = "/res/sound/riff.wav";
-const bellFile = "/res/sound/bell.wav";
-const inaccuracyFile = "/res/sound/inaccuracy.wav";
-const pingFile = "/res/sound/ping.wav";
-
-// create an AudioContext
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-// audio buffers
-let buffers = {};
 
 class Key {
     static container;
@@ -108,8 +93,8 @@ class Key {
         const beatElement = field.children[0];
 
         // check for mistakes
-        if (!beat.includes(this.key) && gameStart) {
-            mistake();
+        if (!beat.includes(this.key)) {
+            if (gameStart) mistake();
             return;
         }
 
@@ -123,7 +108,7 @@ class Key {
             document.body.classList.add("play");
         }
 
-        if (!silent) playAudio(clickFile);
+        if (!silent) sounds.click.play();
 
         if (beat.length > 1) {
             // mark the key as pressed
@@ -139,7 +124,7 @@ class Key {
                 return;
             }
 
-            if (!silent) playAudio(pingFile, 0.25, 2);
+            if (!silent) sounds.ping.play(0.25);
 
             inChord = false;
         }
@@ -176,8 +161,8 @@ class Key {
             for (let key of Key.keys) {
                 key.pressed = false;
             }
-            playAudio(pingFile, 0.25, 2);
-            playAudio(clickFile);
+            sounds.ping.play(0.25);
+            sounds.click.play();
         } else if (gameOver) {
             initializeGame();
         } else if (gameStart) {
@@ -218,12 +203,12 @@ class Key {
         }
     }
 
-    static setKeys(keys) {
+    static set Keys(keys) {
         Key.keys = keys.map((key) => new Key(key));
         Key.buildContainer();
     }
 
-    static getKeys() {
+    static get Keys() {
         return Key.keys.map((key) => key.key);
     }
 
@@ -232,9 +217,54 @@ class Key {
     }
 }
 
+class Sound {
+    static context = new (window.AudioContext || window.webkitAudioContext)();
+
+    constructor(source, pitch) {
+        this.source = source;
+        this.pitch = pitch;
+        this.buffer = null;
+    }
+
+    static async init(source, pitch = 1) {
+        const sound = new Sound(source, pitch);
+        await sound.loadAudio();
+        return sound;
+    }
+
+    async loadAudio() {
+        const response = await fetch(this.source);
+        const arrayBuffer = await response.arrayBuffer();
+        this.buffer = await Sound.context.decodeAudioData(arrayBuffer);
+    }
+
+    play(volume = 0.5, pitch = this.pitch) {
+        const source = Sound.context.createBufferSource();
+        source.buffer = this.buffer;
+        const gainNode = Sound.context.createGain();
+        gainNode.gain.value = volume;
+        source.playbackRate.value = pitch;
+        source.connect(gainNode).connect(Sound.context.destination);
+        source.start(0);
+    }
+}
+async function initializeAudio() {
+    sounds = {
+        click: await Sound.init("/res/sound/click.wav"),
+        error: await Sound.init("/res/sound/error.wav"),
+        fail: await Sound.init("/res/sound/fail.wav"),
+        ultimate: await Sound.init("/res/sound/ultimate.wav"),
+        win: await Sound.init("/res/sound/win.wav"),
+        riff: await Sound.init("/res/sound/riff.wav"),
+        bell: await Sound.init("/res/sound/bell.wav"),
+        inaccuracy: await Sound.init("/res/sound/inaccuracy.wav"),
+        ping: await Sound.init("/res/sound/ping.wav", 2),
+    };
+}
+
 // settings dialog event listeners
 settingsButton.onclick = () => {
-    playAudio(clickFile);
+    sounds.click.play();
 
     if (gameStart) {
         hpInput.disabled = true;
@@ -267,17 +297,17 @@ window.addEventListener("click", (event) => {
 });
 
 lightModeCheckbox.onchange = () => {
-    playAudio(clickFile);
+    sounds.click.play();
     document.body.classList.toggle("light", lightModeCheckbox.checked);
 };
 
 extraKeyCheckbox.onchange = () => {
-    playAudio(clickFile);
+    sounds.click.play();
 
     if (extraKeyCheckbox.checked) {
-        Key.setKeys(["d", "f", "j", "k", "l"]);
+        Key.Keys = ["d", "f", "j", "k", "l"];
     } else {
-        Key.setKeys(["d", "f", "j", "k"]);
+        Key.Keys = ["d", "f", "j", "k"];
     }
 
     newChart(length);
@@ -285,7 +315,7 @@ extraKeyCheckbox.onchange = () => {
 };
 
 advancedModeCheckbox.onchange = () => {
-    playAudio(clickFile);
+    sounds.click.play();
 
     // click 5 times to activate nightmare mode
     if (secretTicker === 5) {
@@ -350,7 +380,7 @@ keyInput.addEventListener("input", () => {
         selectedKeys = ["d", "f", "j", "k"];
     }
 
-    Key.setKeys([...new Set(selectedKeys)]);
+    Key.Keys = [...new Set(selectedKeys)];
 
     Key.buildContainer();
     newChart(length);
@@ -376,21 +406,7 @@ helpIcon.addEventListener("mouseout", () => {
 });
 
 function updateKeyInput() {
-    keyInput.innerText = Key.getKeys().join("").toUpperCase();
-}
-
-// load audio file and buffer it
-async function loadAudio(file) {
-    const response = await fetch(file);
-    const arrayBuffer = await response.arrayBuffer();
-    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-    buffers[file] = audioBuffer;
-}
-
-// initialize all audio files
-function initializeAudio() {
-    const audioFiles = [clickFile, errorFile, failFile, ultimateFile, winFile, riffFile, bellFile, inaccuracyFile, pingFile];
-    audioFiles.forEach((file) => loadAudio(file));
+    keyInput.innerText = Key.Keys.join("").toUpperCase();
 }
 
 function closeSettingsModal() {
@@ -418,7 +434,6 @@ function activateNightmareMode() {
     document.body.classList.remove("light");
 
     // nightmare mode adds 2 extra keys to standard mode, makes length 75 and halves health
-    let keys = ["s", "d", "f", "j", "k", "l"];
     lengthInput.value = 75;
     length = 75;
     lengthInput.disabled = true;
@@ -436,16 +451,16 @@ function activateNightmareMode() {
     nightmare = true;
 
     // play nightmare mode sound
-    playAudio(riffFile, 1);
+    sounds.riff.play(1);
 
     updateMistakes();
-    Key.setKeys(keys);
+    Key.Keys = ["s", "d", "f", "j", "k", "l"];
     newChart(length);
     updateKeyInput();
 }
 
 function initializeGame() {
-    Key.setKeys(originalKeys);
+    Key.Keys = originalKeys;
 
     // initialize chart with seed
     const currentURL = new URL(window.location.href);
@@ -674,7 +689,7 @@ function win() {
     const mode = nightmare ? "N" : advancedModeCheckbox.checked ? "A" : "";
 
     // keystring is the keys active in the current chart
-    const keyString = Key.getKeys().join("").toUpperCase();
+    const keyString = Key.Keys.join("").toUpperCase();
 
     resultTime.textContent = timeString;
     resultAccuracy.textContent = "Accuracy: " + accuracy.toFixed(2) + "%";
@@ -709,15 +724,15 @@ function win() {
 
     // determine the correct win sound based on mistakes
     if (accuracy === 100) {
-        playAudio(ultimateFile);
+        sounds.ultimate.play();
         document.body.classList.add("perfect");
         statusBar.textContent = "PERFECT!";
         resultTitle.textContent = "PERFECT!";
     } else if (accuracy >= 80) {
-        playAudio(winFile);
+        sounds.win.play();
         statusBar.textContent = "Mistakes: " + mistakeCount;
     } else {
-        playAudio(inaccuracyFile);
+        sounds.inaccuracy.play();
         statusBar.textContent = "Mistakes: " + mistakeCount;
     }
 
@@ -729,12 +744,12 @@ function win() {
 
 function playStarSound() {
     setTimeout(() => {
-        playAudio(bellFile);
+        sounds.bell.play();
     }, 750);
 }
 
 function mistake() {
-    playAudio(errorFile);
+    sounds.error.play();
     mistakeCount++;
 
     // mistake styles
@@ -756,7 +771,7 @@ function mistake() {
 }
 
 function fail() {
-    playAudio(failFile);
+    sounds.fail.play();
 
     let percentComplete = (1 - chart.length / length) * 100;
 
@@ -765,17 +780,6 @@ function fail() {
     document.body.classList.add("fail");
 
     gameOver = true;
-}
-
-// play buffered audio
-function playAudio(file, volume = 0.5, pitch = 1) {
-    const source = audioContext.createBufferSource();
-    source.buffer = buffers[file];
-    const gainNode = audioContext.createGain();
-    gainNode.gain.value = volume;
-    source.playbackRate.value = pitch;
-    source.connect(gainNode).connect(audioContext.destination);
-    source.start(0);
 }
 
 // update the mistakes display
@@ -861,7 +865,7 @@ class SeedRandom {
     }
 }
 
-// load audio files
+// initialize audio
 initializeAudio();
 
 // check for light mode
