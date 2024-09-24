@@ -135,6 +135,15 @@ code {
     font-size: .9rem;
 }
 
+code.block {
+    background-color: var(--body-color);
+    display: block;
+    white-space: pre;
+    color: var(--text-color);
+    padding: 10px; 
+    overflow-x: auto;
+}
+
 hr {
     border: none;
     border-top: 2px solid var(--half-trans);
