@@ -106,21 +106,19 @@ body.fail::before {
 }
 
 .beat.chord {
-    background: linear-gradient(
-        to bottom, 
-        transparent calc(50% - var(--grid-width)), 
-        var(--fg) calc(50% - var(--grid-width)), 
-        var(--fg) calc(50% + var(--grid-width)), 
-        transparent calc(50% + var(--grid-width)));
+    background: linear-gradient(to bottom,
+            transparent calc(50% - var(--grid-width)),
+            var(--fg) calc(50% - var(--grid-width)),
+            var(--fg) calc(50% + var(--grid-width)),
+            transparent calc(50% + var(--grid-width)));
 }
 
 .beat.full {
-    background: linear-gradient(
-        to bottom, 
-        transparent calc(50% - var(--grid-width) * 2), 
-        var(--fg) calc(50% - var(--grid-width) * 2), 
-        var(--fg) calc(50% + var(--grid-width) * 2), 
-        transparent calc(50% + var(--grid-width) * 2));
+    background: linear-gradient(to bottom,
+            transparent calc(50% - var(--grid-width) * 2),
+            var(--fg) calc(50% - var(--grid-width) * 2),
+            var(--fg) calc(50% + var(--grid-width) * 2),
+            transparent calc(50% + var(--grid-width) * 2));
 }
 
 /* container for the keys */
@@ -213,6 +211,11 @@ body.fail::before {
     cursor: pointer;
     transition: background-color 0.5s ease;
 }
+
+.nightmare #back-button {
+    animation: quiver 0.25s infinite;
+}
+
 /* doesn't actually hide the status bar, but does make it not affect the layout */
 .hidden #status-bar {
     position: absolute;
@@ -381,7 +384,9 @@ body.fail::before {
     right: 0;
 }
 
-.play .status-bar-button, .fail .status-bar-button, .hidden .status-bar-button {
+.play .status-bar-button,
+.fail .status-bar-button,
+.hidden .status-bar-button {
     color: var(--fg);
 }
 
@@ -761,7 +766,8 @@ input[type="number"]:disabled {
         display: none;
     }
 
-    #settings-button, #help-icon {
+    #settings-button,
+    #help-icon {
         top: 4rem;
         padding: .5rem 1.5rem;
         right: 0;
@@ -778,10 +784,6 @@ input[type="number"]:disabled {
     #help-icon {
         left: 0;
         right: auto;
-    }
-
-    #settings-dialog > div:has(> #advanced-mode) {
-        display: none;
     }
 
     #dfjk-container .key {

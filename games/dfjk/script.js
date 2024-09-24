@@ -13,6 +13,8 @@ let safePeriod = false;
 let immortal = false;
 let inChord = false;
 let mode = "normal";
+let hits = 0;
+let endless = false
 
 // DOM elements
 const statusBar = document.getElementById("status-bar");
@@ -32,6 +34,7 @@ const hpInput = document.getElementById("hp");
 const hpIndicator = document.getElementById("hp-indicator");
 const keyInput = document.getElementById("key-input");
 const modeSelect = document.getElementById("mode-select");
+const endlessCheckbox = document.getElementById("endless");
 
 // results elements
 const results = document.getElementById("results");
@@ -44,9 +47,10 @@ const resultChartNo = document.getElementById("result-chart-no");
 const shareButton = document.getElementById("share-button");
 const resultCPS = document.getElementById("result-cps");
 
-// globals
+// global objects
 let dfjkContainer;
 let sounds;
+let rng;
 
 const inputFields = [seedInput, keyInput];
 const originalKeys = ["d", "f", "j", "k"];
@@ -133,6 +137,8 @@ class Key {
         // remove the beat from the internal chart
         chart.shift();
 
+        hits++;
+
         animateKeysFalling();
 
         // remove the beat from the field
@@ -141,6 +147,8 @@ class Key {
         // check if the game is won
         if (chart.length === 0) {
             win();
+        } else if (endless && chart.length < 40) {
+            extendChart(100);
         }
     }
 
@@ -165,7 +173,7 @@ class Key {
             sounds.ping.play(0.25);
             sounds.click.play();
         } else if (gameOver) {
-            initializeGame();
+            newChart(length);
         } else if (gameStart) {
             mistake();
         }
@@ -250,21 +258,7 @@ class Sound {
     }
 }
 
-async function initializeAudio() {
-    sounds = {
-        click: await Sound.init("/res/sound/click.wav"),
-        error: await Sound.init("/res/sound/error.wav"),
-        fail: await Sound.init("/res/sound/fail.wav"),
-        ultimate: await Sound.init("/res/sound/ultimate.wav"),
-        win: await Sound.init("/res/sound/win.wav"),
-        riff: await Sound.init("/res/sound/riff.wav"),
-        bell: await Sound.init("/res/sound/bell.wav"),
-        inaccuracy: await Sound.init("/res/sound/inaccuracy.wav"),
-        ping: await Sound.init("/res/sound/ping.wav", 2),
-    };
-}
-
-// settings dialog event listeners
+// event listeners
 settingsButton.onclick = () => {
     sounds.click.play();
 
@@ -301,6 +295,8 @@ window.addEventListener("click", (event) => {
 lightModeCheckbox.onchange = () => {
     sounds.click.play();
     document.body.classList.toggle("light", lightModeCheckbox.checked);
+
+    localStorage.setItem("lightMode", lightModeCheckbox.checked);
 };
 
 extraKeyCheckbox.onchange = () => {
@@ -327,18 +323,6 @@ modeSelect.onchange = () => {
     }
 
     secretTicker++;
-
-    switch (mode) {
-        case "normal":
-            modeSelect.style.color = "var(--fg)";
-            break;
-        case "advanced":
-            modeSelect.style.color = "var(--yellow)";
-            break;
-        case "no-jacks":
-            modeSelect.style.color = "var(--green)";
-            break;
-    }
 
     newChart(length);
 };
@@ -420,6 +404,27 @@ helpIcon.addEventListener("mouseout", () => {
     helpDialog.style.pointerEvents = "none";
 });
 
+endlessCheckbox.onchange = () => {
+    sounds.click.play();
+    endless = endlessCheckbox.checked;
+    length = 50;
+    lengthInput.disabled = endlessCheckbox.checked;
+};
+
+async function initializeAudio() {
+    sounds = {
+        click: await Sound.init("/res/sound/click.wav"),
+        error: await Sound.init("/res/sound/error.wav"),
+        fail: await Sound.init("/res/sound/fail.wav"),
+        ultimate: await Sound.init("/res/sound/ultimate.wav"),
+        win: await Sound.init("/res/sound/win.wav"),
+        riff: await Sound.init("/res/sound/riff.wav"),
+        bell: await Sound.init("/res/sound/bell.wav"),
+        inaccuracy: await Sound.init("/res/sound/inaccuracy.wav"),
+        ping: await Sound.init("/res/sound/ping.wav", 2),
+    };
+}
+
 function updateKeyInput() {
     keyInput.innerText = Key.Keys.join("").toUpperCase();
 }
@@ -432,7 +437,7 @@ function closeSettingsModal() {
 
 // check for light mode and apply it
 function lightModeCheck() {
-    const light = window.matchMedia("(prefers-color-scheme: light)").matches;
+    const light = localStorage.getItem("lightMode") || window.matchMedia("(prefers-color-scheme: light)").matches;
 
     if (light) {
         document.body.classList.add("light");
@@ -508,10 +513,6 @@ function initializeGame() {
 
 // newChart generates a new chart based on the seed in the input field
 function newChart(length) {
-    let seed = seedInput.innerText;
-
-    const rng = new SeedRandom(seed);
-
     // clear and generate the chart
     while (field.firstChild) {
         field.removeChild(field.firstChild);
@@ -519,14 +520,32 @@ function newChart(length) {
 
     chart = [];
 
+    rng = new SeedRandom(seedInput.innerText);
+
+    extendChart(length);
+
+    // reset game
+    mistakeCount = 0;
+    hits = 0;
+    updateMistakes();
+
+    clearStyles();
+
+    gameStart = false;
+    gameOver = false;
+}
+
+function extendChart(length) {
+    const newBeats = [];
+
     for (let i = 0; i < length; i++) {
-        beat = [];
+        const beat = [];
 
         let newKey = rng.choice(Key.keys).key;
 
         if (mode === "no-jacks") {
             // don't allow the same key twice in a row
-            while (chart.length > 0 && chart[chart.length - 1].includes(newKey)) {
+            while (newBeats.length > 0 && chart[chart.length - 1].includes(newKey)) {
                 newKey = rng.choice(Key.keys).key;
             }
         }
@@ -542,10 +561,11 @@ function newChart(length) {
             }
         }
 
+        newBeats.push(beat);
         chart.push(beat);
     }
 
-    chart.forEach((beat) => {
+    newBeats.forEach((beat) => {
         const beatElement = document.createElement("div");
         beatElement.classList.add("beat");
 
@@ -578,15 +598,6 @@ function newChart(length) {
             }
         });
     });
-
-    // reset game
-    mistakeCount = 0;
-    updateMistakes();
-
-    clearStyles();
-
-    gameStart = false;
-    gameOver = false;
 }
 
 function clearStyles() {
@@ -795,11 +806,18 @@ function mistake() {
 
 function fail() {
     sounds.fail.play();
+    if (endless) {
+        const time = (performance.now() - startTime) / 1000;
+        const cps = hits / time;
+        const modeString = nightmare ? "Nightmare" : mode === "advanced" ? "Advanced" : mode === "no-jacks" ? "Easy" : "Normal";
+        
+        statusBar.textContent = `You hit ${hits} keys at ${cps.toFixed(2)} CPS on ${modeString}`;
+    } else {
+        let percentComplete = (1 - chart.length / length) * 100;
 
-    let percentComplete = (1 - chart.length / length) * 100;
+        statusBar.textContent = "Fail! " + percentComplete.toFixed(2) + "%";
+    }
 
-    // fail effects
-    statusBar.textContent = "Fail! " + percentComplete.toFixed(2) + "%";
     document.body.classList.add("fail");
 
     gameOver = true;
