@@ -32,6 +32,7 @@ const hpInput = document.getElementById("hp");
 const hpIndicator = document.getElementById("hp-indicator");
 const advancedModeCheckbox = document.getElementById("advanced-mode");
 const keyInput = document.getElementById("key-input");
+const noJacks = document.getElementById("no-jacks");
 
 // results elements
 const results = document.getElementById("results");
@@ -249,6 +250,7 @@ class Sound {
         source.start(0);
     }
 }
+
 async function initializeAudio() {
     sounds = {
         click: await Sound.init("/res/sound/click.wav"),
@@ -325,6 +327,9 @@ advancedModeCheckbox.onchange = () => {
     }
 
     secretTicker++;
+
+    noJacks.disabled = advancedModeCheckbox.checked;
+    noJacks.checked = false;
 
     newChart(length);
 };
@@ -404,6 +409,11 @@ helpIcon.addEventListener("mouseover", () => {
 helpIcon.addEventListener("mouseout", () => {
     helpDialog.style.opacity = 0;
     helpDialog.style.pointerEvents = "none";
+});
+
+noJacks.addEventListener("click", () => {
+    sounds.click.play();
+    newChart(length);
 });
 
 function updateKeyInput() {
@@ -504,7 +514,16 @@ function newChart(length) {
     for (let i = 0; i < length; i++) {
         beat = [];
 
-        beat.push(rng.choice(Key.keys).key);
+        let newKey = rng.choice(Key.keys).key;
+
+        if (noJacks.checked && !advancedModeCheckbox.checked) {
+            // don't allow the same key twice in a row
+            while (chart.length > 0 && chart[chart.length - 1].includes(newKey)) {
+                newKey = rng.choice(Key.keys).key;
+            }
+        }
+
+        beat.push(newKey);
 
         // 10% chance of a chord on advanced mod
         if ((rng.chance(0.1) && advancedModeCheckbox.checked) || (nightmare && rng.chance(0.2))) {

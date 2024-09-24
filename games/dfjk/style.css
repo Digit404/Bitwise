@@ -546,11 +546,11 @@ input[type="checkbox"]:checked {
 }
 
 input[type="checkbox"]:disabled {
-    background-color: var(--shadow);
+    background-color: var(--mid);
 }
 
 input[type="checkbox"]:disabled:active {
-    background-color: var(--shadow);
+    background-color: var(--fg);
 }
 
 input[type="number"] {
