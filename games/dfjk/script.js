@@ -12,6 +12,7 @@ let secretTicker = 0;
 let safePeriod = false;
 let immortal = false;
 let inChord = false;
+let mode = "normal";
 
 // DOM elements
 const statusBar = document.getElementById("status-bar");
@@ -25,14 +26,12 @@ const settingsButton = document.getElementById("settings-button");
 const settingsDialog = document.getElementById("settings-dialog");
 const lightModeCheckbox = document.getElementById("light-mode");
 const extraKeyCheckbox = document.getElementById("extra-key");
-const advancedModeLabel = document.querySelector('label[for="advanced-mode"]');
 const scaleInput = document.getElementById("scale");
 const lengthInput = document.getElementById("length");
 const hpInput = document.getElementById("hp");
 const hpIndicator = document.getElementById("hp-indicator");
-const advancedModeCheckbox = document.getElementById("advanced-mode");
 const keyInput = document.getElementById("key-input");
-const noJacks = document.getElementById("no-jacks");
+const modeSelect = document.getElementById("mode-select");
 
 // results elements
 const results = document.getElementById("results");
@@ -317,8 +316,9 @@ extraKeyCheckbox.onchange = () => {
     updateKeyInput();
 };
 
-advancedModeCheckbox.onchange = () => {
+modeSelect.onchange = () => {
     sounds.click.play();
+    mode = modeSelect.value;
 
     // click 5 times to activate nightmare mode
     if (secretTicker === 5) {
@@ -328,8 +328,17 @@ advancedModeCheckbox.onchange = () => {
 
     secretTicker++;
 
-    noJacks.disabled = advancedModeCheckbox.checked;
-    noJacks.checked = false;
+    switch (mode) {
+        case "normal":
+            modeSelect.style.color = "var(--fg)";
+            break;
+        case "advanced":
+            modeSelect.style.color = "var(--yellow)";
+            break;
+        case "no-jacks":
+            modeSelect.style.color = "var(--green)";
+            break;
+    }
 
     newChart(length);
 };
@@ -411,11 +420,6 @@ helpIcon.addEventListener("mouseout", () => {
     helpDialog.style.pointerEvents = "none";
 });
 
-noJacks.addEventListener("click", () => {
-    sounds.click.play();
-    newChart(length);
-});
-
 function updateKeyInput() {
     keyInput.innerText = Key.Keys.join("").toUpperCase();
 }
@@ -438,9 +442,8 @@ function lightModeCheck() {
 
 function activateNightmareMode() {
     // nightmare mode styles
-    advancedModeLabel.textContent = "NIGHTMARE MODE";
-    advancedModeLabel.style.color = "var(--fail-color)";
-    advancedModeLabel.classList.add("fail");
+    modeSelect.classList.add("fail");
+    modeSelect.style.color = "var(--red)";
     document.body.classList.add("nightmare");
     document.body.classList.remove("light");
 
@@ -452,8 +455,10 @@ function activateNightmareMode() {
     lightModeCheckbox.disabled = true;
     extraKeyCheckbox.checked = true;
     extraKeyCheckbox.disabled = true;
-    advancedModeCheckbox.checked = true;
-    advancedModeCheckbox.disabled = true;
+    modeSelect.value = "advanced";
+    modeSelect.querySelector("option[value='advanced']").innerHTML = "NIGHTMARE";
+    modeSelect.disabled = true;
+    mode = "advanced";
     HP = 5;
     hpInput.value = HP;
     hpIndicator.textContent = HP;
@@ -477,6 +482,7 @@ function initializeGame() {
     const currentURL = new URL(window.location.href);
     const seed = currentURL.searchParams.get("s");
     length = parseInt(currentURL.searchParams.get("l")) || length;
+    mode = currentURL.searchParams.get("m") || mode;
 
     if (seed) {
         seedInput.innerText = seed;
@@ -507,7 +513,9 @@ function newChart(length) {
     const rng = new SeedRandom(seed);
 
     // clear and generate the chart
-    clearChart();
+    while (field.firstChild) {
+        field.removeChild(field.firstChild);
+    }
 
     chart = [];
 
@@ -516,7 +524,7 @@ function newChart(length) {
 
         let newKey = rng.choice(Key.keys).key;
 
-        if (noJacks.checked && !advancedModeCheckbox.checked) {
+        if (mode === "no-jacks") {
             // don't allow the same key twice in a row
             while (chart.length > 0 && chart[chart.length - 1].includes(newKey)) {
                 newKey = rng.choice(Key.keys).key;
@@ -526,7 +534,7 @@ function newChart(length) {
         beat.push(newKey);
 
         // 10% chance of a chord on advanced mod
-        if ((rng.chance(0.1) && advancedModeCheckbox.checked) || (nightmare && rng.chance(0.2))) {
+        if ((rng.chance(0.1) && mode === "advanced") || (nightmare && rng.chance(0.2))) {
             extraKeys = rng.randInt(1, Key.keys.length);
             for (let j = 0; j < extraKeys; j++) {
                 let remainingKeys = Key.keys.filter((key) => !beat.includes(key.key)).map((key) => key.key);
@@ -603,13 +611,6 @@ function newSeed() {
     seedInput.innerText = Math.floor(Math.random() * 100000);
 }
 
-// remove all children from the field
-function clearChart() {
-    while (field.firstChild) {
-        field.removeChild(field.firstChild);
-    }
-}
-
 // most of the game logic is in this function
 function keydown(event) {
     const { key, code } = event;
@@ -627,7 +628,7 @@ function keydown(event) {
 
         keyObject.hit();
         return;
-    } else if (key === " " && advancedModeCheckbox.checked) {
+    } else if (key === " " && mode === "advanced") {
         Key.hitAll();
         return;
     }
@@ -642,7 +643,7 @@ function keydown(event) {
     }
 
     // generate a new chart with a new seed (space only when game is over on advanced mode, enter whenever)
-    if ((code === "Space" && (gameOver || !advancedModeCheckbox.checked)) || code === "Enter") {
+    if ((code === "Space" && (gameOver || mode !== "advanced")) || code === "Enter") {
         event.preventDefault(); // prevent space from pressing random buttons
         newSeed();
         newChart(length);
@@ -707,14 +708,14 @@ function win() {
     }
 
     const timeString = time.toFixed(2) + "s";
-    const mode = nightmare ? "N" : advancedModeCheckbox.checked ? "A" : "";
+    const modeString = nightmare ? "N" : mode === "advanced" ? "A" : mode === "no-jacks" ? "E" : "";
 
     // keystring is the keys active in the current chart
     const keyString = Key.Keys.join("").toUpperCase();
 
     resultTime.textContent = timeString;
     resultAccuracy.textContent = "Accuracy: " + accuracy.toFixed(2) + "%";
-    resultChartNo.textContent = `${keyString} #${seedInput.innerText} (${length}${mode})`;
+    resultChartNo.textContent = `${keyString} #${seedInput.innerText} ${modeString}(${length})`;
 
     const cps = length / time;
     resultCPS.textContent = cps.toFixed(2) + " CPS";
@@ -723,6 +724,7 @@ function win() {
         const url = new URL("https://www.rebitwise.com/games/dfjk/");
         url.searchParams.set("s", seedInput.innerText);
         url.searchParams.set("l", length);
+        url.searchParams.set("m", mode);
         navigator.clipboard.writeText(url.href);
         shareButton.textContent = "check";
 

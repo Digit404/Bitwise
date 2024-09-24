@@ -553,6 +553,26 @@ input[type="checkbox"]:disabled:active {
     background-color: var(--fg);
 }
 
+select {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    border: 2px solid var(--fg);
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: inherit;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+select:focus {
+    outline: none;
+}
+
+select:disabled {
+    background-color: var(--shadow);
+}
+
 input[type="number"] {
     font-size: 1.5rem;
     padding: 0.5rem;
