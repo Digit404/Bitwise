@@ -48,7 +48,6 @@ const shareButton = document.getElementById("share-button");
 const resultCPS = document.getElementById("result-cps");
 
 // global objects
-let dfjkContainer;
 let sounds;
 let rng;
 
@@ -437,7 +436,8 @@ function closeSettingsModal() {
 
 // check for light mode and apply it
 function lightModeCheck() {
-    const light = localStorage.getItem("lightMode") || window.matchMedia("(prefers-color-scheme: light)").matches;
+    // check for light mode in local storage then for prefers-color-scheme
+    const light = localStorage.getItem("lightMode") === "true" || window.matchMedia("(prefers-color-scheme: light)").matches;
 
     if (light) {
         document.body.classList.add("light");
