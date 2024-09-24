@@ -741,7 +741,7 @@ input[type="number"]:disabled {
         display: none;
     }
 
-    #settings-button {
+    #settings-button, #help-icon {
         top: 4rem;
         padding: .5rem 1.5rem;
         right: 0;
@@ -753,6 +753,11 @@ input[type="number"]:disabled {
 
     #settings-button:hover {
         background-color: transparent;
+    }
+
+    #help-icon {
+        left: 0;
+        right: auto;
     }
 
     #settings-dialog > div:has(> #advanced-mode) {
@@ -777,14 +782,6 @@ input[type="number"]:disabled {
     .star {
         width: 6rem;
         height: 6rem;
-    }
-
-    #help-icon {
-        top: 0;
-        right: 0;
-        width: 4rem;
-        height: 4rem;
-        margin: 0;
     }
 
     #help-dialog {
