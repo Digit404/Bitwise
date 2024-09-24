@@ -75,7 +75,8 @@ class Key {
         Key.container.appendChild(this.button);
 
         // if uncolored, color the key
-        if (this.button.computedStyleMap().get("background-color").toString() === "rgb(255, 255, 255)") {
+        const computedStyle = window.getComputedStyle(this.button);
+        if (computedStyle.backgroundColor === "rgb(255, 255, 255)") {
             this.color = randomHue(this.key);
             this.button.style.backgroundColor = this.color;
         }
@@ -542,10 +543,11 @@ function newChart(length) {
 
             beatElement.appendChild(span);
 
-            // if uncolored, color the key
-            if (span.computedStyleMap().get("background-color").toString() === "rgb(255, 255, 255)") {
-                span.style.setProperty("--color", randomHue(key));
-                span.style.backgroundColor = randomHue(key);
+            const computedStyle = window.getComputedStyle(span);
+            if (computedStyle.backgroundColor === "rgb(255, 255, 255)") {
+                const color = randomHue(key);
+                span.style.setProperty("--color", color);
+                span.style.backgroundColor = color;
             }
         });
     });
