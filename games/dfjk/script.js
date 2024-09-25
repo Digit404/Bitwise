@@ -11,10 +11,9 @@ let startTime;
 let secretTicker = 0;
 let safePeriod = false;
 let immortal = false;
-let inChord = false;
 let mode = "normal";
 let hits = 0;
-let endless = false
+let endless = false;
 
 // DOM elements
 const statusBar = document.getElementById("status-bar");
@@ -48,11 +47,10 @@ const shareButton = document.getElementById("share-button");
 const resultCPS = document.getElementById("result-cps");
 
 // global objects
-let sounds;
 let rng;
 
 const inputFields = [seedInput, keyInput];
-const originalKeys = ["d", "f", "j", "k"];
+const defaultKeys = ["d", "f", "j", "k"];
 
 class Key {
     static container;
@@ -112,25 +110,21 @@ class Key {
             document.body.classList.add("play");
         }
 
-        if (!silent) sounds.click.play();
+        if (!silent) Sound.play("click");
 
-        if (beat.length > 1) {
-            // mark the key as pressed
-            const keyElement = beatElement.querySelector(`.${this.key}`);
-            keyElement.classList.add("pressed");
+        // mark the key as pressed
+        const keyElement = beatElement.querySelector(`.${this.key}`);
+        keyElement.classList.add("pressed");
 
-            inChord = true;
+        // check if all keys in the chord have been pressed
+        const allPressed = beat.every((key) => Key.getKey(key).pressed);
 
-            // check if all keys in the chord have been pressed
-            const allPressed = beat.every((key) => Key.getKey(key).pressed);
+        if (!allPressed) {
+            return;
+        }
 
-            if (!allPressed) {
-                return;
-            }
-
-            if (!silent) sounds.ping.play(0.25);
-
-            inChord = false;
+        if (beat.length > 1 && !silent) {
+            Sound.play("ping", 0.25);
         }
 
         // remove the beat from the internal chart
@@ -169,8 +163,8 @@ class Key {
             for (let key of Key.keys) {
                 key.pressed = false;
             }
-            sounds.ping.play(0.25);
-            sounds.click.play();
+            Sound.play("ping", 0.25);
+            Sound.play("click");
         } else if (gameOver) {
             newChart(length);
         } else if (gameStart) {
@@ -227,15 +221,20 @@ class Key {
 
 class Sound {
     static context = new (window.AudioContext || window.webkitAudioContext)();
+    static sounds = {};
 
-    constructor(source, pitch) {
+    constructor(source, name, pitch) {
         this.source = source;
+        this.name = name;
         this.pitch = pitch;
         this.buffer = null;
+
+        Sound.sounds[name] = this;
     }
 
-    static async init(source, pitch = 1) {
-        const sound = new Sound(source, pitch);
+    static async init(name, pitch = 1) {
+        const source = `/res/sound/${name}.wav`;
+        const sound = new Sound(source, name, pitch);
         await sound.loadAudio();
         return sound;
     }
@@ -247,6 +246,7 @@ class Sound {
     }
 
     play(volume = 0.5, pitch = this.pitch) {
+        console.log(pitch)
         const source = Sound.context.createBufferSource();
         source.buffer = this.buffer;
         const gainNode = Sound.context.createGain();
@@ -255,11 +255,17 @@ class Sound {
         source.connect(gainNode).connect(Sound.context.destination);
         source.start(0);
     }
+
+    static play(soundName, volume = 0.5) {
+        if (Sound.sounds[soundName]) {
+            Sound.sounds[soundName].play(volume);
+        }
+    }
 }
 
 // event listeners
 settingsButton.onclick = () => {
-    sounds.click.play();
+    Sound.play("click");
 
     if (gameStart) {
         hpInput.disabled = true;
@@ -292,14 +298,14 @@ window.addEventListener("click", (event) => {
 });
 
 lightModeCheckbox.onchange = () => {
-    sounds.click.play();
+    Sound.play("click");
     document.body.classList.toggle("light", lightModeCheckbox.checked);
 
     localStorage.setItem("lightMode", lightModeCheckbox.checked);
 };
 
 extraKeyCheckbox.onchange = () => {
-    sounds.click.play();
+    Sound.play("click");
 
     if (extraKeyCheckbox.checked) {
         Key.Keys = ["d", "f", "j", "k", "l"];
@@ -312,7 +318,7 @@ extraKeyCheckbox.onchange = () => {
 };
 
 modeSelect.onchange = () => {
-    sounds.click.play();
+    Sound.play("click");
     mode = modeSelect.value;
 
     // click 5 times to activate nightmare mode
@@ -404,24 +410,22 @@ helpIcon.addEventListener("mouseout", () => {
 });
 
 endlessCheckbox.onchange = () => {
-    sounds.click.play();
+    Sound.play("click");
     endless = endlessCheckbox.checked;
     length = 50;
     lengthInput.disabled = endlessCheckbox.checked;
 };
 
 async function initializeAudio() {
-    sounds = {
-        click: await Sound.init("/res/sound/click.wav"),
-        error: await Sound.init("/res/sound/error.wav"),
-        fail: await Sound.init("/res/sound/fail.wav"),
-        ultimate: await Sound.init("/res/sound/ultimate.wav"),
-        win: await Sound.init("/res/sound/win.wav"),
-        riff: await Sound.init("/res/sound/riff.wav"),
-        bell: await Sound.init("/res/sound/bell.wav"),
-        inaccuracy: await Sound.init("/res/sound/inaccuracy.wav"),
-        ping: await Sound.init("/res/sound/ping.wav", 2),
-    };
+    await Sound.init("click");
+    await Sound.init("error");
+    await Sound.init("fail");
+    await Sound.init("ultimate");
+    await Sound.init("win");
+    await Sound.init("riff");
+    await Sound.init("bell");
+    await Sound.init("inaccuracy");
+    await Sound.init("ping", 2);
 }
 
 function updateKeyInput() {
@@ -468,11 +472,14 @@ function activateNightmareMode() {
     hpInput.value = HP;
     hpIndicator.textContent = HP;
     hpInput.disabled = true;
+    
+    // create a new lower pitched sound for nightmare mode
+    Sound.init("ping");
 
     nightmare = true;
 
     // play nightmare mode sound
-    sounds.riff.play(1);
+    Sound.play("riff");
 
     updateMistakes();
     Key.Keys = ["s", "d", "f", "j", "k", "l"];
@@ -481,7 +488,7 @@ function activateNightmareMode() {
 }
 
 function initializeGame() {
-    Key.Keys = originalKeys;
+    Key.Keys = defaultKeys;
 
     // initialize chart with seed
     const currentURL = new URL(window.location.href);
@@ -666,18 +673,12 @@ function keyup(event) {
 
     Key.release(key);
 
-    if (inChord) {
-        const beat = chart[0];
-        const beatElement = field.children[0];
+    const beat = chart[0];
+    const beatElement = field.children[0];
 
-        const keyElement = beatElement.querySelector(`.${key}`);
-        if (keyElement) {
-            keyElement.classList.remove("pressed");
-        }
-
-        if (beat.includes(key) && nightmare) {
-            mistake();
-        }
+    const keyElement = beatElement.querySelector(`.${key}`);
+    if (keyElement) {
+        keyElement.classList.remove("pressed");
     }
 }
 
@@ -758,15 +759,15 @@ function win() {
 
     // determine the correct win sound based on mistakes
     if (accuracy === 100) {
-        sounds.ultimate.play();
+        Sound.play("ultimate");
         document.body.classList.add("perfect");
         statusBar.textContent = "PERFECT!";
         resultTitle.textContent = "PERFECT!";
     } else if (accuracy >= 80) {
-        sounds.win.play();
+        Sound.play("win");
         statusBar.textContent = "Mistakes: " + mistakeCount;
     } else {
-        sounds.inaccuracy.play();
+        Sound.play("inaccuracy");
         statusBar.textContent = "Mistakes: " + mistakeCount;
     }
 
@@ -778,12 +779,12 @@ function win() {
 
 function playStarSound() {
     setTimeout(() => {
-        sounds.bell.play();
+        Sound.play("bell");
     }, 750);
 }
 
 function mistake() {
-    sounds.error.play();
+    Sound.play("error");
     mistakeCount++;
 
     // mistake styles
@@ -805,12 +806,12 @@ function mistake() {
 }
 
 function fail() {
-    sounds.fail.play();
+    Sound.play("fail");
     if (endless) {
         const time = (performance.now() - startTime) / 1000;
         const cps = hits / time;
         const modeString = nightmare ? "Nightmare" : mode === "advanced" ? "Advanced" : mode === "no-jacks" ? "Easy" : "Normal";
-        
+
         statusBar.textContent = `You hit ${hits} keys at ${cps.toFixed(2)} CPS on ${modeString}`;
     } else {
         let percentComplete = (1 - chart.length / length) * 100;
