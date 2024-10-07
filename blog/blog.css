@@ -11,10 +11,13 @@
     --red: #f22;
     --orange: #f72;
     --yellow: #eb2;
-    --green: #1c4;
+    --green: #1b4;
     --cyan: #2cc;
     --blue: #07f;
-    --magenta: #c2e;
+    --magenta: #a5f;
+    
+    /* other colors */
+    --pink: #f79;
 
     /* Shades of grey */
     --middle: #aaa;
@@ -28,6 +31,7 @@
     --body-color: #f8f8fa;
     --background-color: #fff;
     --half-trans: #9994;
+    --code-back: #9994;
     --text-color: #333;
     --fig-color: #0009;
 
@@ -43,14 +47,14 @@
     scroll-padding-top: 100px;
 }
 
-body.dark {
+.dark {
     --red: #f44;
     --orange: #f73;
     --yellow: #fb3;
-    --green: #3e5;
+    --green: #3d5;
     --cyan: #4dd;
     --blue: #37f;
-    --magenta: #e3f;
+    --magenta: #a5f;
 
     --middle: #999;
 
@@ -58,6 +62,8 @@ body.dark {
     --background-color: #252528;
     --text-color: #eee;
     --fig-color: #fffb;
+
+    --code-back: #4446;
 }
 
 body {
@@ -127,7 +133,7 @@ aside a {
 /* Restyled default tags */
 
 code {
-    background: var(--half-trans);
+    background: var(--code-back);
     color: var(--red);
     font-family: var(--font-mono);
     padding: 5px;
@@ -140,7 +146,8 @@ code.block {
     display: block;
     white-space: pre;
     color: var(--text-color);
-    padding: 10px; 
+    padding: 10px 20px;
+    border-left: 5px solid var(--primary-color); 
     overflow-x: auto;
 }
 
@@ -188,7 +195,7 @@ mark::before {
     left: -2px;
     right: -2px;
     bottom: -2px;
-    background: #fe04;
+    background: #fc04;
     content: '';
     transform: skew(-10deg, 0);
     z-index: -1;
@@ -227,7 +234,7 @@ h3 {
 h2>a,
 h3>a {
     position: absolute;
-    color: var(--half-trans);
+    color: #9993;
     left: -1em;
     font-size: 0.9em;
 }
@@ -420,8 +427,23 @@ blockquote.warning {
     --splash-text: "\e002  Warning";
 }
 
+blockquote.attention {
+    --color: var(--yellow);
+    --splash-text: "\e001  Attention";
+}
+
 blockquote.note {
     --splash-text: "\f604  Note";
+}
+
+blockquote.tangent {
+    --color: var(--yellow);
+    --splash-text: "\f184  Tangent";
+}
+
+blockquote.experiment {
+    --color: var(--magenta);
+    --splash-text: "\e686  Experiment";
 }
 
 .icon {
@@ -433,8 +455,25 @@ blockquote.note {
         "GRAD" 1;
 }
 
+.copy-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--background-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 0 0 0 10px;
+    padding: 5px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
 #dark-mode-button {
     background-color: var(--primary-color);
+    color: var(--background-color);
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -452,9 +491,7 @@ blockquote.note {
     }
 
     button:hover {
-        transform: translateY(-5%) scale(1.05);
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
-        background-color: var(--secondary-color);
+        background-color: var(--primary-color);
     }
 
     /* underline animation on hover */

@@ -1,5 +1,25 @@
-// Query main element
 const main = document.querySelector("main");
+
+function loadCSS(url) {
+    return new Promise((resolve, reject) => {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = url;
+        link.onload = () => resolve();
+        link.onerror = () => reject(new Error(`Failed to load CSS: ${url}`));
+        document.head.appendChild(link);
+    });
+}
+
+function loadJS(url) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = url;
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error(`Failed to load script: ${url}`));
+        document.head.appendChild(script);
+    });
+}
 
 // Initialize dark mode
 function initDarkMode() {
@@ -132,8 +152,40 @@ function initFooter() {
     document.body.appendChild(footer);
 }
 
+async function initCodeBlocks() {
+    const codeBlocks = document.querySelectorAll("code.block");
+
+    if (codeBlocks.length === 0) {
+        return;
+    }
+
+    await loadCSS("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css")
+    await loadJS("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js");
+
+    document.querySelectorAll("code.block").forEach((block) => {
+        hljs.highlightElement(block);
+
+        // add copy button
+        const copyButton = document.createElement("button");
+        copyButton.textContent = "content_copy";
+        copyButton.classList.add("icon");
+        copyButton.classList.add("copy-button");
+        block.appendChild(copyButton);
+
+        copyButton.addEventListener("click", () => {
+            navigator.clipboard.writeText(block.textContent).then(() => {
+                copyButton.textContent = "check";
+                setTimeout(() => {
+                    copyButton.textContent = "content_copy";
+                }, 1000);
+            });
+        });
+    });
+}
+
 initNav();
 initDarkMode();
 initHamburger();
 initSections();
 initFooter();
+initCodeBlocks();
