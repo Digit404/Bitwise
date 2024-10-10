@@ -1,0 +1,97 @@
+/* 
+Theme: Default Dark Modern
+Description: Dark theme used by VS Code for highlight.js
+Author: Microsoft
+ */
+pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em;
+}
+
+code.hljs {
+    padding: 3px 5px;
+}
+
+.hljs {
+    color: #CCCCCC;
+    /* General text color */
+    background: #1F1F1F;
+    /* Editor background */
+}
+
+.hljs-keyword,
+.hljs-meta .hljs-keyword,
+.hljs-template-tag,
+.hljs-type {
+    color: #C586C0;
+    /* Keywords and related elements */
+}
+
+.hljs-title,
+.hljs-title.function_,
+.hljs-name,
+.hljs-attribute {
+    color: #DCDCAA;
+    /* Function names and similar elements */
+}
+
+.hljs-string,
+.hljs-meta-string {
+    color: #CE9178;
+    /* String literals */
+}
+
+.hljs-deletion,
+.hljs-tag {
+    color: #569CD6;
+    /* Tags and deletions */
+}
+
+.hljs-title.class_,
+.hljs-type {
+    color: #4EC9B0;
+    /* Class/type declarations */
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-symbol,
+.hljs-bullet {
+    color: #B5CEA8;
+    /* Numbers and literals */
+}
+
+.hljs-variable,
+.hljs-template-variable {
+    color: #9CDCFE;
+    /* Variables */
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-doctag {
+    color: #6A9955;
+    /* Comments and documentation */
+}
+
+.hljs-meta,
+.hljs-emphasis {
+    font-style: italic;
+}
+
+.hljs-strong {
+    font-weight: bold;
+}
+
+.hljs-addition {
+    color: #B5CEA8;
+    background-color: #033a16;
+    /* Additions */
+}
+
+.hljs-deletion {
+    color: #CE9178;
+    background-color: #67060c;
+    /* Deletions */
+}

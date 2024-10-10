@@ -184,12 +184,12 @@ del::before {
 }
 
 mark {
-    background-color: transparent;
+    background-color: #fc04;
     color: inherit;
     z-index: 1;
 }
 
-mark::before {
+/* mark::before {
     position: absolute;
     top: -2px;
     left: -2px;
@@ -199,7 +199,7 @@ mark::before {
     content: '';
     transform: skew(-10deg, 0);
     z-index: -1;
-}
+} */
 
 code,
 del,
@@ -235,8 +235,8 @@ h2>a,
 h3>a {
     position: absolute;
     color: #9993;
-    left: -1em;
-    font-size: 0.9em;
+    left: -1.5em;
+    font-size: 1em;
 }
 
 figure img {
@@ -362,6 +362,7 @@ footer {
 
 ::-webkit-scrollbar {
     width: 10px;
+    height: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -369,13 +370,13 @@ footer {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: color-mix(in srgb, var(--text-color) 40%, transparent);
+    background: color-mix(in srgb, var(--text-color) 20%, transparent);
     border-radius: 5px;
     transition: all 0.3s;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: color-mix(in srgb, var(--text-color) 75%, transparent);
+    background: color-mix(in srgb, var(--text-color) 40%, transparent);
 }
 
 /*              */
@@ -446,9 +447,13 @@ blockquote.experiment {
     --splash-text: "\e686  Experiment";
 }
 
+blockquote.conjecture {
+    --color: var(--orange);
+    --splash-text: "\f8ea  Conjecture";
+}
+
 .icon {
     font-family: var(--font-icons);
-    font-size: 2rem;
     vertical-align: middle;
     font-variation-settings:
         "FILL" 1,
@@ -459,14 +464,13 @@ blockquote.experiment {
     position: absolute;
     top: 0;
     right: 0;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
     background: var(--background-color);
     color: var(--text-color);
     border: none;
     border-radius: 0 0 0 10px;
-    padding: 5px;
-    font-size: 1.5rem;
+    font-size: 1rem;
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -482,6 +486,10 @@ blockquote.experiment {
     font-family: var(--font-icons);
     font-size: 2rem;
     z-index: 1000;
+}
+
+#back-to-top {
+    font-size: 2rem;
 }
 
 /* hover effects */

@@ -1,5 +1,3 @@
-const main = document.querySelector("main");
-
 function loadCSS(url) {
     return new Promise((resolve, reject) => {
         const link = document.createElement('link');
@@ -51,17 +49,15 @@ function initHamburger() {
         hamburgerButton.textContent = "menu";
         nav.prepend(hamburgerButton);
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const navLinks = document.querySelector("nav ul");
-            hamburgerButton.addEventListener("click", () => {
-                navLinks.style.display = navLinks.style.display === "block" ? "none" : "block";
-            });
+        const navLinks = document.querySelector("nav ul");
+        hamburgerButton.addEventListener("click", () => {
+            navLinks.style.display = navLinks.style.display === "block" ? "none" : "block";
         });
     }
 }
 
 // Create overview section
-function initSections() {
+function initOverview() {
     const overview = document.createElement("aside");
     overview.classList.add("overview");
 
@@ -80,7 +76,8 @@ function initSections() {
 
         const link = document.createElement("a");
         link.href = `#${id}`;
-        link.textContent = "§";
+        link.textContent = "link";
+        link.classList.add("icon");
         heading.prepend(link);
 
         const listItem = document.createElement("li");
@@ -101,7 +98,7 @@ function initSections() {
         }
     });
 
-    main.appendChild(overview);
+    document.querySelector("main").appendChild(overview);
 }
 
 function initNav() {
@@ -152,7 +149,7 @@ function initFooter() {
     document.body.appendChild(footer);
 }
 
-async function initCodeBlocks() {
+async function highlightCode() {
     const codeBlocks = document.querySelectorAll("code.block");
 
     if (codeBlocks.length === 0) {
@@ -162,30 +159,38 @@ async function initCodeBlocks() {
     await loadCSS("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css")
     await loadJS("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js");
 
-    document.querySelectorAll("code.block").forEach((block) => {
+    for (let block of codeBlocks) {
         hljs.highlightElement(block);
+    }
+}
 
-        // add copy button
-        const copyButton = document.createElement("button");
-        copyButton.textContent = "content_copy";
-        copyButton.classList.add("icon");
-        copyButton.classList.add("copy-button");
+function addCopyButtons () {
+    for (let block of document.querySelectorAll('code.block')) {
+        const copyButton = document.createElement('button');
+        copyButton.textContent = 'content_copy';
+        copyButton.classList.add('icon');
+        copyButton.classList.add('copy-button');
         block.appendChild(copyButton);
 
-        copyButton.addEventListener("click", () => {
+        copyButton.addEventListener('click', () => {
             navigator.clipboard.writeText(block.textContent).then(() => {
-                copyButton.textContent = "check";
+                copyButton.textContent = 'check';
                 setTimeout(() => {
-                    copyButton.textContent = "content_copy";
+                    copyButton.textContent = 'content_copy';
                 }, 1000);
             });
         });
-    });
+    }
 }
 
-initNav();
-initDarkMode();
-initHamburger();
-initSections();
-initFooter();
-initCodeBlocks();
+async function init() {
+    initDarkMode();
+
+    initNav();
+    initHamburger();
+    initOverview();
+    initFooter();
+
+    await highlightCode()
+    addCopyButtons();
+}
