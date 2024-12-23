@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
+@import url('https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --font: 'Bitter', "Poppins", Tahoma, sans-serif;
+    --font-icons: "Material Symbols Rounded";
+    --max-width: 80vw;
+    --border-radius: 10px;
+
+    --text-color: #333;
+    --body-color: #f4f4f9;
+    --background-color: #fff;
+}
+
+.dark {
+    --body-color: #202023;
+    --background-color: #252528;
+    --text-color: #eee;
+}
+
+body {
+    font-family: var(--font);
+    background-color: var(--body-color);
+    color: var(--text-color);
+    padding: 20px;
+    max-width: var(--max-width);
+    margin: auto;
+    padding-bottom: 70px;
+}
+
+* {
+    transition: background 0.2s;
+}
+
+.title {
+    text-align: center;
+    font-size: 3rem;
+    user-select: none;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2rem;
+}
+
+/* Quill editor */
+
+#editor.ql-container {
+    background: var(--background-color);
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    border: none;
+}
+
+.ql-editor {
+    font-size: 16px;
+    font-weight: 400;
+    font-family: var(--font);
+    max-width: 800px;
+    margin: auto;
+}
+
+#editor .ql-editor p {
+    margin: 6px 0;
+}
+
+body .ql-toolbar.ql-snow {
+    background: var(--background-color);
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: var(--font);
+    border: none;
+    border-bottom: 1px solid #0002;
+}
+
+body.dark .ql-toolbar.ql-snow * {
+    color: var(--text-color);
+    stroke: var(--text-color);
+}
+
+/* controls */
+
+#controls-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+#controls-container button {
+    font-family: var(--font);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    width: 100%;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#controls-container button:hover {
+    background-color: var(--body-color);
+}
+
+/* font container */
+
+.container {
+    display: flex;
+    gap: 10px;
+}
+
+.column {
+    background: var(--background-color);
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    word-break: break-word;
+}
+
+.column:first-of-type {
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+.column:last-of-type {
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+}
+
+input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #0003;
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: var(--font);
+    background-color: var(--body-color);
+    color: var(--text-color);
+}
+
+input.google-font {
+    background-color: #ff03;
+}
+
+.settings-container {
+    display: flex;
+    gap: 10px;
+}
+
+.settings-container div {
+    width: 50%;
+}
+
+.output {
+    font-size: 12pt;
+    font-weight: 400;
+}
+
+#dark-mode-button {
+    background-color: var(--text-color);
+    color: var(--background-color);
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    font-family: var(--font-icons);
+    font-size: 2rem;
+    z-index: 1000;
+    border: none;
+    border-radius: 50%;
+    user-select: none;
+}

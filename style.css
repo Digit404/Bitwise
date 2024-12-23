@@ -149,6 +149,7 @@ body {
     justify-content: space-around;
     flex-wrap: wrap;
     text-align: left;
+    margin-bottom: 5rem;
 }
 
 .tool-card {

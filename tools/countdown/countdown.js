@@ -1,8 +1,12 @@
-const countdownDate = new Date("March 8, 2024 23:59:59").getTime();
+const now = new Date();
+const nextYear = now.getFullYear() + (now.getMonth() < 3 ? 0 : 1);
+const countdownDate = new Date(nextYear, 0, 1).getTime();
 
 const countdown = document.getElementById("countdown");
-
+const YearSpan = document.getElementById("year");
 const body = document.querySelector("body")
+
+YearSpan.innerHTML = nextYear;
 
 function pad(d) {
     return d < 10 ? "0" + d.toString() : d.toString();
@@ -15,7 +19,7 @@ updateCountdown = () => {
     if (distance <= 0) {
         document.querySelector("h1").style.display = "none"
         document.querySelector("p").style.display = "none"
-        countdown.innerHTML = "SHUTDOWN";
+        countdown.innerHTML = "HAPPY NEW YEARS";
         body.style.backgroundColor = "#000"
         countdown.style.color = "#FFF"
     } else {
