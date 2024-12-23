@@ -4,15 +4,19 @@ const minusButton = document.querySelector("#minus");
 const plusButton = document.querySelector("#plus");
 const quill = new Quill("#editor", { theme: "snow" });
 
-let fontList = [];
+let fontList;
 let fontSettings = [];
 let loadedFonts = [];
+let columns;
 
 // fetch the font list from /api/font-list.json
 fetch("/api/font-list.json")
     .then((response) => response.json())
     .then((data) => {
-        fontList = data.font_families;
+        fontList = data;
+    }).then(() => {
+        columns = build();
+        update();
     });
 
 function build() {
@@ -36,6 +40,20 @@ function build() {
         if (settings.font != "Bitter") {
             fontInput.value = settings.font;
         }
+
+        // create a datalist for font suggestions
+        const datalist = document.createElement("datalist");
+        datalist.id = `font-suggestions-${i}`;
+        
+        // attach the datalist to the input
+        fontInput.setAttribute("list", datalist.id);
+
+        // populate the datalist with font options from google fonts
+        fontList.google_fonts.forEach(font => {
+            const option = document.createElement("option");
+            option.value = font;
+            datalist.appendChild(option);
+        });
 
         const fontLabel = document.createElement("label");
         fontLabel.innerHTML = "Font Name:";
@@ -79,6 +97,7 @@ function build() {
         // assemble elements into columns
         fontColumn.appendChild(fontLabel);
         fontColumn.appendChild(fontInput);
+        fontColumn.appendChild(datalist);
         weightDiv.appendChild(weightLabel);
         weightDiv.appendChild(weightInput);
         sizeDiv.appendChild(sizeLabel);
@@ -99,15 +118,13 @@ function build() {
     return document.querySelectorAll(".column");
 }
 
-let columns = build();
-
 // update the output based on input changes
 function update() {
     const content = quill.root.innerHTML;
     for (let column of columns) {
         const fontInput = column.querySelector(".font-input");
 
-        let font = findMatchingFont(fontInput.value || "Bitter");
+        let font = findMatchingFont(fontInput.value);
         let weight = column.querySelector(".weight-input").value || "400";
         let size = column.querySelector(".size-input").value || "12pt";
 
@@ -127,21 +144,35 @@ function update() {
         output.style.fontSize = size;
 
         // load the font from Google Fonts if it's in the font list
-        if (fontList.includes(font) && font !== "Bitter") {
+        if (fontList.google_fonts.includes(font) && font !== "Bitter") {
             loadGoogleFont(font);
+            fontInput.classList.remove("web-safe-font");
             fontInput.classList.add("google-font");
             fontInput.title = "This font is available from Google Fonts";
 
-        } else {
+        } else if (fontList.websafe_fonts.includes(font)) {
             fontInput.classList.remove("google-font");
+            fontInput.classList.add("web-safe-font");
+            fontInput.title = "This is a web-safe font";
+        } else {
+            fontInput.classList.remove("google-font", "web-safe-font");
+            fontInput.title = "";
         }
     }
 }
 
-// find a matching font from the font list
-function findMatchingFont(inputFont) {
-    let matchedFont = fontList.find((font) => font.toLowerCase() === inputFont.toLowerCase());
-    return matchedFont ? matchedFont : inputFont;
+// find a matching font from the font list return bitter if empty and the original string if not found
+function findMatchingFont(font) {
+    if (!font) {
+        return "Bitter";
+    }
+
+    const lowerCaseFont = font.toLowerCase();
+    let matchingFont = fontList.websafe_fonts.find((f) => f.toLowerCase() === lowerCaseFont);
+    if (!matchingFont) {
+        matchingFont = fontList.google_fonts.find((f) => f.toLowerCase() === lowerCaseFont);
+    }
+    return matchingFont || font;
 }
 
 // load the font from Google Fonts
@@ -166,13 +197,26 @@ quill.on("text-change", update);
 
 // handle minus button click to decrease fontNum
 minusButton.addEventListener("click", () => {
-    if (fontNum > 2) {
+    if (fontNum <= 1) {
+        return;
+    }
         fontNum--;
         columns.forEach((column) => column.remove());
         columns = build();
         update();
-    }
 });
+
+// handle plus button click to increase fontNum
+plusButton.addEventListener("click", () => {
+    if (fontNum >= 8) {
+        return;
+    }
+    fontNum++;
+    columns.forEach((column) => column.remove());
+    columns = build();
+    update();
+});
+
 
 // Initialize dark mode
 function initDarkMode() {
@@ -188,17 +232,7 @@ function toggleDarkMode() {
     const darkModeButton = document.getElementById("dark-mode-button");
     darkModeButton.textContent = document.body.classList.contains("dark") ? "dark_mode" : "light_mode";
 }
-
-// handle plus button click to increase fontNum
-plusButton.addEventListener("click", () => {
-    fontNum++;
-    columns.forEach((column) => column.remove());
-    columns = build();
-    update();
-});
-
 // initialize on window load
 window.onload = function () {
-    update();
     initDarkMode();
 };
