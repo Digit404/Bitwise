@@ -61,9 +61,12 @@ function build() {
         // create elements for weight input
         const weightDiv = document.createElement("div");
         const weightInput = document.createElement("input");
-        weightInput.type = "text";
+        weightInput.type = "range";
+        weightInput.min = "100";
+        weightInput.max = "1000";
+        weightInput.step = "10";
         weightInput.classList.add("weight-input");
-        weightInput.placeholder = "400";
+        weightInput.value = "400";
 
         if (settings.weight != "400") {
             weightInput.value = settings.weight;
@@ -71,16 +74,27 @@ function build() {
 
         const weightLabel = document.createElement("label");
         weightLabel.innerHTML = "Weight:";
+        const weightOutput = document.createElement("span");
+        weightOutput.classList.add("indicator", "weight-indicator");
+        weightOutput.innerHTML = "400";
+        weightOutput.contentEditable = true;
 
         // create elements for size input
         const sizeDiv = document.createElement("div");
         const sizeInput = document.createElement("input");
-        sizeInput.type = "text";
+        sizeInput.type = "range";
+        sizeInput.min = "5";
+        sizeInput.max = "100";
+        sizeInput.step = "0.5";
         sizeInput.classList.add("size-input");
+        sizeInput.value = "12";
 
         const sizeLabel = document.createElement("label");
         sizeLabel.innerHTML = "Size:";
-        sizeInput.placeholder = "12pt";
+        const sizeOutput = document.createElement("span");
+        sizeOutput.classList.add("indicator", "size-indicator");
+        sizeOutput.innerHTML = "12pt";
+        sizeOutput.contentEditable = true;
 
         if (settings.size != "12pt") {
             sizeInput.value = settings.size;
@@ -99,14 +113,27 @@ function build() {
         fontColumn.appendChild(fontInput);
         fontColumn.appendChild(datalist);
         weightDiv.appendChild(weightLabel);
+        weightLabel.appendChild(weightOutput);
         weightDiv.appendChild(weightInput);
         sizeDiv.appendChild(sizeLabel);
+        sizeLabel.appendChild(sizeOutput);
         sizeDiv.appendChild(sizeInput);
         settingsContainer.appendChild(weightDiv);
         settingsContainer.appendChild(sizeDiv);
         fontColumn.appendChild(settingsContainer);
         fontColumn.appendChild(output);
         container.appendChild(fontColumn);
+
+        // attach event listeners to indicators
+        weightOutput.addEventListener("focusout", () => {
+            weightInput.value = weightOutput.innerHTML;
+            update();
+        });
+
+        sizeOutput.addEventListener("focusout", () => {
+            sizeInput.value = sizeOutput.innerHTML.replace("pt", "");
+            update();
+        });
     }
 
     // attach event listeners to inputs
@@ -142,6 +169,10 @@ function update() {
         output.style.fontFamily = `"${font}"`;
         output.style.fontWeight = weight;
         output.style.fontSize = size;
+
+        // set indicators
+        column.querySelector(".weight-indicator").innerHTML = weight;
+        column.querySelector(".size-indicator").innerHTML = size;
 
         // load the font from Google Fonts if it's in the font list
         if (fontList.google_fonts.includes(font) && font !== "Bitter") {
@@ -217,7 +248,6 @@ plusButton.addEventListener("click", () => {
     update();
 });
 
-
 // Initialize dark mode
 function initDarkMode() {
     const darkModeButton = document.createElement("button");
@@ -232,6 +262,7 @@ function toggleDarkMode() {
     const darkModeButton = document.getElementById("dark-mode-button");
     darkModeButton.textContent = document.body.classList.contains("dark") ? "dark_mode" : "light_mode";
 }
+
 // initialize on window load
 window.onload = function () {
     initDarkMode();

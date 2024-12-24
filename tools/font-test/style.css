@@ -40,7 +40,6 @@ body {
 
 h1 {
     text-align: center;
-    font-size: 2rem;
 }
 
 /* Quill editor */
@@ -165,6 +164,18 @@ input.web-safe-font {
 
 .settings-container div {
     width: 50%;
+}
+
+.settings-container input[type=range] {
+    width: 100%;
+}
+
+.indicator {
+    color: var(--text-color);
+    opacity: 0.5;
+    padding: 5px;
+    font-size: 0.8em;
+    vertical-align: middle;
 }
 
 .output {
