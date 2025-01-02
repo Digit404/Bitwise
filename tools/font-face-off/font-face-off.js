@@ -63,7 +63,7 @@ function build() {
         const weightInput = document.createElement("input");
         weightInput.type = "range";
         weightInput.min = "100";
-        weightInput.max = "1000";
+        weightInput.max = "900";
         weightInput.step = "10";
         weightInput.classList.add("weight-input");
         weightInput.value = "400";
@@ -215,11 +215,16 @@ function loadGoogleFont(font) {
 
     console.log("Loading font:", font);
 
-    // pretty sure you can just load the font once and it will be available
+    // Loading each font twice is the only way to get both static and variable fonts to work together
     const link = document.createElement("link");
-    link.href = `https://fonts.googleapis.com/css2?family=${font.replace(/ /g, "+")}:wght@400;700&display=swap`;
+    link.href = `https://fonts.googleapis.com/css2?family=${font.replace(/ /g, "+")}:wght@100..900&display=swap`;
     link.rel = "stylesheet";
     document.head.appendChild(link);
+
+    const staticLink = document.createElement("link");
+    staticLink.href = `https://fonts.googleapis.com/css2?family=${font.replace(/ /g, "+")}:wght@100;200;300;400;500;600;700;800;900&display=swap`;
+    staticLink.rel = "stylesheet";
+    document.head.appendChild(staticLink);
 
     loadedFonts.push(font);
 }
