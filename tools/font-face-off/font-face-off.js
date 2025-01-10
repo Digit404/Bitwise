@@ -3,6 +3,7 @@ let fontNum = 3; // initial number of fonts to show
 const minusButton = document.querySelector("#minus");
 const plusButton = document.querySelector("#plus");
 const quill = new Quill("#editor", { theme: "snow" });
+const scaleSlider = document.getElementById("font-scale");
 
 let fontList;
 let fontSettings = [];
@@ -55,12 +56,20 @@ function build() {
             datalist.appendChild(option);
         });
 
+        // populate the datalist with font options from web safe fonts
+        fontList.websafe_fonts.forEach(font => {
+            const option = document.createElement("option");
+            option.value = font;
+            datalist.appendChild(option);
+        });
+
         const fontLabel = document.createElement("label");
         fontLabel.innerHTML = "Font Name:";
 
         // create elements for weight input
         const weightDiv = document.createElement("div");
         const weightInput = document.createElement("input");
+        weightInput.classList.add("small-slider")
         weightInput.type = "range";
         weightInput.min = "100";
         weightInput.max = "900";
@@ -82,6 +91,7 @@ function build() {
         // create elements for size input
         const sizeDiv = document.createElement("div");
         const sizeInput = document.createElement("input");
+        sizeInput.classList.add("small-slider")
         sizeInput.type = "range";
         sizeInput.min = "5";
         sizeInput.max = "100";
@@ -161,18 +171,16 @@ function update() {
         const index = Array.from(columns).indexOf(column);
         fontSettings[index] = { font, weight, size };
 
-        if (parseInt(size)) {
-            size += "pt";
-        }
+        size = size.match(/-?\d+(\.\d+)?/)[0]
+
+        // set indicators
+        column.querySelector(".weight-indicator").innerHTML = weight;
+        column.querySelector(".size-indicator").innerHTML = size + "pt";
 
         output.innerHTML = content;
         output.style.fontFamily = `"${font}"`;
         output.style.fontWeight = weight;
-        output.style.fontSize = size;
-
-        // set indicators
-        column.querySelector(".weight-indicator").innerHTML = weight;
-        column.querySelector(".size-indicator").innerHTML = size;
+        output.style.fontSize = size * scaleSlider.value + "pt";
 
         // load the font from Google Fonts if it's in the font list
         if (fontList.google_fonts.includes(font) && font !== "Bitter") {
@@ -231,19 +239,17 @@ function loadGoogleFont(font) {
 
 quill.on("text-change", update);
 
-// handle minus button click to decrease fontNum
-minusButton.addEventListener("click", () => {
+function reduceFontNum() {
     if (fontNum <= 1) {
         return;
     }
-        fontNum--;
-        columns.forEach((column) => column.remove());
-        columns = build();
-        update();
-});
+    fontNum--;
+    columns.forEach((column) => column.remove());
+    columns = build();
+    update();
+}
 
-// handle plus button click to increase fontNum
-plusButton.addEventListener("click", () => {
+function increaseFontNum() {
     if (fontNum >= 8) {
         return;
     }
@@ -251,6 +257,26 @@ plusButton.addEventListener("click", () => {
     columns.forEach((column) => column.remove());
     columns = build();
     update();
+}
+
+scaleSlider.addEventListener("input", update);
+
+// handle minus button click to decrease fontNum
+minusButton.addEventListener("click", reduceFontNum);
+
+// handle plus button click to increase fontNum
+plusButton.addEventListener("click", increaseFontNum);
+
+document.addEventListener("keydown", (event) => {
+    if (quill.hasFocus() || event.target.tagName.toLowerCase() === "input") {
+        return;
+    }
+
+    if (event.key === "+" || event.key === "=") {
+        increaseFontNum();
+    } else if (event.key === "-" || event.key === "_") {
+        reduceFontNum();
+    }
 });
 
 // Initialize dark mode

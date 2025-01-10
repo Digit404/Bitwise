@@ -80,14 +80,14 @@ body.dark .ql-toolbar.ql-snow * {
 
 /* controls */
 
-#controls-container {
+.controls-container {
     display: flex;
     justify-content: center;
     gap: 10px;
     margin: 10px 0;
 }
 
-#controls-container button {
+.controls-container button {
     font-family: var(--font);
     padding: 10px 20px;
     border: none;
@@ -100,8 +100,14 @@ body.dark .ql-toolbar.ql-snow * {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-#controls-container button:hover {
+.controls-container button:hover {
     background-color: var(--body-color);
+}
+
+.control {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 /* font container */
@@ -166,24 +172,24 @@ input.web-safe-font {
     width: 50%;
 }
 
-input[type="range"] {
+.small-slider {
     width: 100%;
     -webkit-appearance: none;
     appearance: none;
     background: transparent;
 }
 
-input[type="range"]:focus {
+.small-slider:focus {
     outline: none;
 }
 
-input[type="range"]::-webkit-slider-runnable-track {
+.small-slider::-webkit-slider-runnable-track {
     height: 8px;
     background: #ddd;
     border-radius: 4px;
 }
 
-input[type="range"]::-webkit-slider-thumb {
+.small-slider::-webkit-slider-thumb {
     width: 16px;
     height: 16px;
     background: var(--text-color);
@@ -191,6 +197,61 @@ input[type="range"]::-webkit-slider-thumb {
     cursor: pointer;
     -webkit-appearance: none;
     margin-top: -4px;
+}
+
+.large-slider {
+    --color: var(--text-color);
+    position: relative;
+    width: 100%;
+    height: 50px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    outline: none;
+    overflow: hidden;
+    background-color: #9993;
+    border-radius: 10px;
+}
+
+.large-slider:hover {
+    --color: #111;
+}
+
+.large-slider::-webkit-slider-runnable-track {
+    height: 10px;
+    -webkit-appearance: none;
+    margin-top: -1px;
+}
+
+.large-slider::-webkit-slider-thumb {
+    width: 0;
+    -webkit-appearance: none;
+    height: 0;
+    cursor: ew-resize;
+    box-shadow: -100vw 0 0 100vw var(--color);
+}
+
+.large-slider::before {
+    content: var(--slider-name);
+    font-family: var(--font);
+    position: absolute;
+    top: 0;
+    left: 10px;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    font-size: 1.5rem;
+    color: #fff;
+    mix-blend-mode: difference; 
+    font-weight: bold;
+    pointer-events: none;
+    user-select: none;
+}
+
+.scale-control > .large-slider {
+    --slider-name: 'Scale';
 }
 
 .indicator {
