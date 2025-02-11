@@ -131,6 +131,38 @@ aside a {
     font-weight: normal;
 }
 
+header {
+    background: linear-gradient(45deg, color-mix(in srgb, transparent 90%, var(--primary-color)), color-mix(in srgb, transparent 90%, var(--secondary-color)));
+    box-shadow: var(--big-shadow);
+    padding: 20px;
+    text-align: center;
+}
+
+header img {
+    width: 30rem;
+    max-width: 100%;
+}
+
+header h1 {
+    font-size: 4rem;
+    margin: 0;
+    padding: 20px;
+}
+
+footer a {
+    color: var(--middle);
+}
+
+footer a:hover {
+    color: var(--primary-color);
+}
+
+footer a:last-of-type {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(50%);
+}
+
 /* Restyled default tags */
 
 code {
@@ -142,7 +174,7 @@ code {
     font-size: .9rem;
 }
 
-code.block {
+pre code, code.block {
     background-color: var(--body-color);
     display: block;
     white-space: pre;
@@ -222,6 +254,12 @@ h6 {
     font-weight: bold;
 }
 
+h1 {
+    color: var(--text-color);
+    font-size: 3rem;
+    text-align: center;
+}
+
 h2 {
     color: var(--primary-color);
     font-size: 1.75rem;
@@ -249,17 +287,6 @@ figure img {
     border-radius: 10px;
     box-shadow: var(--shadow);
     transition: all 0.2s;
-}
-
-header {
-    text-align: center;
-    padding: 20px;
-}
-
-header h1 {
-    color: var(--primary-color);
-    font-size: 3.5rem;
-    margin: 0;
 }
 
 figcaption {

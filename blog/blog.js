@@ -150,13 +150,13 @@ function initFooter() {
 }
 
 async function highlightCode() {
-    const codeBlocks = document.querySelectorAll("code.block");
+    const codeBlocks = document.querySelectorAll("pre code, code.block");
 
     if (codeBlocks.length === 0) {
         return;
     }
 
-    await loadCSS("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css")
+    await loadCSS("/default-modern.css")
     await loadJS("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js");
 
     for (let block of codeBlocks) {
@@ -165,7 +165,7 @@ async function highlightCode() {
 }
 
 function addCopyButtons () {
-    for (let block of document.querySelectorAll('code.block')) {
+    for (let block of document.querySelectorAll('pre code, code.block')) {
         const copyButton = document.createElement('button');
         copyButton.textContent = 'content_copy';
         copyButton.classList.add('icon');
@@ -183,7 +183,43 @@ function addCopyButtons () {
     }
 }
 
+function formatBody () {
+    let main = document.querySelector('main');
+    let article = document.querySelector('article');
+
+    if (main && article) {
+        return;
+    }
+
+    let header = document.querySelector('header');
+    let mainTitle = document.querySelector('h1');
+
+    if (!header && mainTitle) {
+        header = document.createElement('header');
+        header.appendChild(mainTitle);
+        document.body.prepend(header);
+    }
+
+    let body = document.querySelector('body');
+    main = document.createElement('main');
+    article = document.createElement('article');
+
+    let children = [...body.childNodes];
+    children.forEach(child => {
+        if (child.tagName === 'HEADER') {
+            return;
+        }
+        
+        article.appendChild(child);
+    });
+
+    main.appendChild(article);
+
+    body.appendChild(main);
+}
+
 async function init() {
+    formatBody();
     initDarkMode();
 
     initNav();
@@ -194,3 +230,5 @@ async function init() {
     await highlightCode()
     addCopyButtons();
 }
+
+document.addEventListener("DOMContentLoaded", init);
