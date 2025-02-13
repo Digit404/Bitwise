@@ -78,6 +78,8 @@ body {
     --primary-color: var(--blue);
     --secondary-color: var(--cyan);
     --warning-color: var(--orange);
+
+    overflow-x: hidden;
 }
 
 article {
@@ -107,6 +109,8 @@ aside {
     width: calc(var(--reading-width) / 2);
     min-width: 15rem;
     margin-left: 25px;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 aside h3 {
@@ -129,6 +133,7 @@ aside>ul {
 
 aside a {
     font-weight: normal;
+    color: var(--text-color);
 }
 
 header {
@@ -235,7 +240,6 @@ mark {
     z-index: -1;
 } */
 
-code,
 del,
 nobr,
 kbd {
@@ -317,6 +321,10 @@ a.text-link::after {
     color: var(--primary-color);
     padding-left: 0.1em;
     font-family: var(--font-icons)
+}
+
+a.text-link.internal-link::after {
+    content: "°";
 }
 
 /*            */
@@ -490,6 +498,10 @@ blockquote.conjecture {
         "GRAD" 1;
 }
 
+.code-wrapper {
+    overflow: auto;      /* Enables scrolling when content overflows */
+}
+
 .copy-button {
     position: absolute;
     top: 0;
@@ -545,9 +557,9 @@ blockquote.conjecture {
         transition: transform 0.2s ease-out;
     }
 
-    a.text-link:hover::before {
+    /* a.text-link:hover::before {
         transform: scaleX(1);
-    }
+    } */
 
     figure img:hover {
         transform: scale(1.01);

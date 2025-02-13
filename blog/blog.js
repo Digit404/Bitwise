@@ -1,7 +1,7 @@
 function loadCSS(url) {
     return new Promise((resolve, reject) => {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
         link.href = url;
         link.onload = () => resolve();
         link.onerror = () => reject(new Error(`Failed to load CSS: ${url}`));
@@ -11,7 +11,7 @@ function loadCSS(url) {
 
 function loadJS(url) {
     return new Promise((resolve, reject) => {
-        const script = document.createElement('script');
+        const script = document.createElement("script");
         script.src = url;
         script.onload = () => resolve();
         script.onerror = () => reject(new Error(`Failed to load script: ${url}`));
@@ -128,7 +128,7 @@ function initNav() {
     nifiLink.textContent = "NiFi Overview";
     nifi.appendChild(nifiLink);
     ul.appendChild(nifi);
-    
+
     document.body.prepend(nav);
 }
 
@@ -140,9 +140,9 @@ function initFooter() {
     backToTop.classList.add("icon");
     backToTop.id = "back-to-top";
     footer.appendChild(backToTop);
-    
+
     const credit = document.createElement("a");
-    credit.href = "/"
+    credit.href = "/";
     credit.textContent = "rebitwise.com";
     footer.appendChild(credit);
 
@@ -156,7 +156,7 @@ async function highlightCode() {
         return;
     }
 
-    await loadCSS("/default-modern.css")
+    await loadCSS("/default-modern.css");
     await loadJS("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js");
 
     for (let block of codeBlocks) {
@@ -164,52 +164,72 @@ async function highlightCode() {
     }
 }
 
-function addCopyButtons () {
-    for (let block of document.querySelectorAll('pre code, code.block')) {
-        const copyButton = document.createElement('button');
-        copyButton.textContent = 'content_copy';
-        copyButton.classList.add('icon');
-        copyButton.classList.add('copy-button');
-        block.appendChild(copyButton);
+function addCopyButtons() {
+    for (let block of document.querySelectorAll("pre code, code.block")) {
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("code-wrapper");
 
-        copyButton.addEventListener('click', () => {
+        // Move the code block inside the new wrapper
+        block.parentNode.insertBefore(wrapper, block);
+        wrapper.appendChild(block);
+        
+        // Create and style the copy button
+        const copyButton = document.createElement("button");
+        copyButton.textContent = "content_copy";
+        copyButton.classList.add("icon");
+        copyButton.classList.add("copy-button");
+        wrapper.appendChild(copyButton);
+
+        // Set up the copy button functionality
+        copyButton.addEventListener("click", () => {
             navigator.clipboard.writeText(block.textContent).then(() => {
-                copyButton.textContent = 'check';
+                copyButton.textContent = "check";
                 setTimeout(() => {
-                    copyButton.textContent = 'content_copy';
+                    copyButton.textContent = "content_copy";
                 }, 1000);
             });
         });
     }
 }
 
-function formatBody () {
-    let main = document.querySelector('main');
-    let article = document.querySelector('article');
+function addLinks() {
+    for (let link of document.querySelectorAll("a")) {
+        if (link.href.startsWith(window.location.origin)) {
+            link.classList.add("internal-link", "text-link");
+        } else {
+            link.classList.add("text-link");
+            link.target = "_blank";
+        }
+    }
+}
+
+function formatBody() {
+    let main = document.querySelector("main");
+    let article = document.querySelector("article");
 
     if (main && article) {
         return;
     }
 
-    let header = document.querySelector('header');
-    let mainTitle = document.querySelector('h1');
+    let header = document.querySelector("header");
+    let mainTitle = document.querySelector("h1");
 
     if (!header && mainTitle) {
-        header = document.createElement('header');
+        header = document.createElement("header");
         header.appendChild(mainTitle);
         document.body.prepend(header);
     }
 
-    let body = document.querySelector('body');
-    main = document.createElement('main');
-    article = document.createElement('article');
+    let body = document.querySelector("body");
+    main = document.createElement("main");
+    article = document.createElement("article");
 
     let children = [...body.childNodes];
-    children.forEach(child => {
-        if (child.tagName === 'HEADER') {
+    children.forEach((child) => {
+        if (child.tagName === "HEADER") {
             return;
         }
-        
+
         article.appendChild(child);
     });
 
@@ -219,6 +239,7 @@ function formatBody () {
 }
 
 async function init() {
+    addLinks();
     formatBody();
     initDarkMode();
 
@@ -227,7 +248,7 @@ async function init() {
     initOverview();
     initFooter();
 
-    await highlightCode()
+    await highlightCode();
     addCopyButtons();
 }
 

@@ -1,29 +1,124 @@
 /* 
-Theme: Default Dark Modern
-Description: Dark theme used by VS Code for highlight.js
+Theme: Default Modern
+Description: Theme used by VS Code for highlight.js
 Author: Microsoft
  */
-pre code.hljs {
+.dark pre code.hljs {
     display: block;
     overflow-x: auto;
     padding: 1em;
 }
 
-code.hljs {
+.dark code.hljs {
     padding: 3px 5px;
 }
 
-.hljs {
+.dark .hljs {
     color: #CCCCCC;
     /* General text color */
     /* Editor background */
+}
+
+.dark .hljs-keyword,
+.dark .hljs-meta .hljs-keyword,
+.dark .hljs-template-tag,
+.dark .hljs-type {
+    color: #C586C0;
+    /* Keywords and related elements */
+}
+
+.dark .hljs-title,
+.dark .hljs-title.function_,
+.dark .hljs-name,
+.dark .hljs-attribute {
+    color: #DCDCAA;
+    /* Function names and similar elements */
+}
+
+.dark .hljs-string,
+.dark .hljs-meta-string {
+    color: #CE9178;
+    /* String literals */
+}
+
+.dark .hljs-deletion,
+.dark .hljs-tag {
+    color: #569CD6;
+    /* Tags and deletions */
+}
+
+.dark .hljs-title.class_,
+.dark .hljs-type {
+    color: #4EC9B0;
+    /* Class/type declarations */
+}
+
+.dark .hljs-number,
+.dark .hljs-literal,
+.dark .hljs-symbol,
+.dark .hljs-bullet {
+    color: #B5CEA8;
+    /* Numbers and literals */
+}
+
+.dark .hljs-variable,
+.dark .hljs-template-variable {
+    color: #9CDCFE;
+    /* Variables */
+}
+
+.dark .hljs-comment,
+.dark .hljs-quote,
+.dark .hljs-doctag {
+    color: #6A9955;
+    /* Comments and documentation */
+}
+
+.dark .hljs-meta,
+.dark .hljs-emphasis {
+    font-style: italic;
+}
+
+.dark .hljs-strong {
+    font-weight: bold;
+}
+
+.dark .hljs-addition {
+    color: #B5CEA8;
+    background-color: #033a16;
+    /* Additions */
+}
+
+.dark .hljs-deletion {
+    color: #CE9178;
+    background-color: #67060c;
+    /* Deletions */
+}
+
+/* LIGHT MODE COLORS */
+
+pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em;
+    /* Editor background */
+}
+
+code.hljs {
+    padding: 3px 5px;
+    /* Inline code block background */
+}
+
+.hljs {
+    color: #000000;
+    /* General text color */
 }
 
 .hljs-keyword,
 .hljs-meta .hljs-keyword,
 .hljs-template-tag,
 .hljs-type {
-    color: #C586C0;
+    color: #AF00DB;
     /* Keywords and related elements */
 }
 
@@ -31,25 +126,25 @@ code.hljs {
 .hljs-title.function_,
 .hljs-name,
 .hljs-attribute {
-    color: #DCDCAA;
+    color: #795E26;
     /* Function names and similar elements */
 }
 
 .hljs-string,
 .hljs-meta-string {
-    color: #CE9178;
+    color: #A31515;
     /* String literals */
 }
 
 .hljs-deletion,
 .hljs-tag {
-    color: #569CD6;
+    color: #000080;
     /* Tags and deletions */
 }
 
 .hljs-title.class_,
 .hljs-type {
-    color: #4EC9B0;
+    color: #267F99;
     /* Class/type declarations */
 }
 
@@ -57,20 +152,20 @@ code.hljs {
 .hljs-literal,
 .hljs-symbol,
 .hljs-bullet {
-    color: #B5CEA8;
+    color: #098658;
     /* Numbers and literals */
 }
 
 .hljs-variable,
 .hljs-template-variable {
-    color: #9CDCFE;
+    color: #001080;
     /* Variables */
 }
 
 .hljs-comment,
 .hljs-quote,
 .hljs-doctag {
-    color: #6A9955;
+    color: #008000;
     /* Comments and documentation */
 }
 
@@ -84,13 +179,13 @@ code.hljs {
 }
 
 .hljs-addition {
-    color: #B5CEA8;
-    background-color: #033a16;
+    color: #098658;
+    background-color: #EFFFF0;
     /* Additions */
 }
 
 .hljs-deletion {
-    color: #CE9178;
-    background-color: #67060c;
+    color: #A31515;
+    background-color: #FFF0F0;
     /* Deletions */
 }
