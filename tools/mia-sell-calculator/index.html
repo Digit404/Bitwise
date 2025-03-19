@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIA Sell Calculator</title>
+    <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body class="">
+    <div class="top-bar">
+        <div class="filter-group">
+            <input type="text" id="searchInput" placeholder="Search items..." />
+        </div>
+        <div class="button-group">
+            <button id="saveLocalBtn">Save</button>
+            <button id="loadLocalBtn">Load</button>
+            <!-- <button id="exportClipboardBtn">Export</button>
+            <button id="importClipboardBtn">Import</button> -->
+            <button id="resetButton" class="reset-button">Reset</button>
+        </div>
+    </div>
+    
+    <div class="sellers-container"></div>
+    
+    <div class="right-column">
+        <div class="total-container">
+            <h2>Totals</h2>
+            <div class="metrics">
+                <div>
+                    <span class="label">Total Value:</span>
+                    <span id="totalValue">0</span>
+                    <span class="unit">OC</span>
+                </div>
+                <div>
+                    <span class="label">Effective Value:</span>
+                    <span id="trueValue">0</span>
+                    <span class="unit">OC</span>
+                </div>
+            </div>
+        </div>
+        <div class="top-items-container">
+            <h2>Most Valuable Items</h2>
+            <div id="topItemsList"></div>
+        </div>
+    </div>
+    
+    <div id="popupModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
+</body>
+<script src="./calculator.js"></script>
+
+</html>

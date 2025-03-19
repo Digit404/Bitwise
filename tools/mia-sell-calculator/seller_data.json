@@ -1,0 +1,287 @@
+[
+    {
+        "name": "Boy, Lord of Currency",
+        "items": [
+            {
+                "name": "Orb Piercer Spike",
+                "quantity": "7",
+                "imageUrl": "https://wiki.mineinabyss.com/images/f/fa/Invicon_Orb_Piercer_Spike.png"
+            },
+            {
+                "name": "Orb Piercer Face Fragments",
+                "quantity": "4",
+                "imageUrl": "https://wiki.mineinabyss.com/images/c/c6/Invicon_Orb_Piercer_Face_Fragments.png"
+            },
+            {
+                "name": "Splitjaw Scales",
+                "quantity": "8",
+                "imageUrl": "https://wiki.mineinabyss.com/images/1/19/Invicon_Splitjaw_Scales.png"
+            },
+            {
+                "name": "Splitjaw Gunk",
+                "quantity": "9",
+                "imageUrl": "https://wiki.mineinabyss.com/images/5/5a/Invicon_Splitjaw_Gunk.png"
+            },
+            {
+                "name": "Tesuchi Scales",
+                "quantity": "6",
+                "imageUrl": "https://wiki.mineinabyss.com/images/d/d4/Invicon_Tesuchi_Scales.png"
+            },
+            {
+                "name": "Silkfang Eye",
+                "quantity": "4",
+                "imageUrl": "https://wiki.mineinabyss.com/images/f/f0/Invicon_Silkfang_Eye.png"
+            },
+            {
+                "name": "Silkfang Silk",
+                "quantity": "6",
+                "imageUrl": "https://wiki.mineinabyss.com/images/f/f2/Invicon_Silkfang_Silk.png"
+            },
+            {
+                "name": "Cyatoria Feather",
+                "quantity": "10",
+                "imageUrl": "https://wiki.mineinabyss.com/images/7/70/Invicon_Cyatoria_Feather.png"
+            },
+            {
+                "name": "Rohana Tail",
+                "quantity": "10",
+                "imageUrl": "https://wiki.mineinabyss.com/images/4/48/Invicon_Rohana_Tail.png"
+            },
+            {
+                "name": "Rohana Powder",
+                "quantity": "14",
+                "imageUrl": "https://wiki.mineinabyss.com/images/0/0b/Invicon_Rohana_Powder.png"
+            },
+            {
+                "name": "Dosetori Wing",
+                "quantity": "12",
+                "imageUrl": "https://wiki.mineinabyss.com/images/f/fb/Invicon_Dosetori_Wing.png"
+            },
+            {
+                "name": "Dosetori Bone",
+                "quantity": "10",
+                "imageUrl": "https://wiki.mineinabyss.com/images/0/01/Invicon_Dosetori_Bone.png"
+            },
+            {
+                "name": "Corpse Weeper Eye",
+                "quantity": "8",
+                "imageUrl": "https://wiki.mineinabyss.com/images/4/4a/Invicon_Corpse_Weeper_Eye.png"
+            },
+            {
+                "name": "Corpse Weeper Feather",
+                "quantity": "10",
+                "imageUrl": "https://wiki.mineinabyss.com/images/5/57/Invicon_Corpse_Weeper_Feather.png"
+            },
+            {
+                "name": "Hammerbeak Beak",
+                "quantity": "8",
+                "imageUrl": "https://wiki.mineinabyss.com/images/c/cc/Invicon_Hammerbeak_Beak.png"
+            },
+            {
+                "name": "Hammerbeak Feather",
+                "quantity": "10",
+                "imageUrl": "https://wiki.mineinabyss.com/images/c/c2/Invicon_Hammerbeak_Feather.png"
+            },
+            {
+                "name": "Onitsuchi Skull",
+                "quantity": "9",
+                "imageUrl": "https://wiki.mineinabyss.com/images/6/65/Invicon_Onitsuchi_Skull.png"
+            },
+            {
+                "name": "Onitsuchi Feather",
+                "quantity": "10",
+                "imageUrl": "https://wiki.mineinabyss.com/images/0/0b/Invicon_Onitsuchi_Feather.png"
+            },
+            {
+                "name": "Kuongatari Abdomen",
+                "quantity": "13",
+                "imageUrl": "https://wiki.mineinabyss.com/images/5/56/Invicon_Kuongatari_Abdomen.png"
+            },
+            {
+                "name": "Cooked Kuongatari Abdomen",
+                "quantity": "13",
+                "imageUrl": "https://wiki.mineinabyss.com/images/d/db/Invicon_Kuongatari_Abdomen_Cooked.png"
+            },
+            {
+                "name": "Kuongatari Juice",
+                "quantity": "13",
+                "imageUrl": "https://wiki.mineinabyss.com/images/7/70/Invicon_Kuongatari_Juice.png"
+            },
+            {
+                "name": "Madokajack Scales",
+                "quantity": "12",
+                "imageUrl": "https://wiki.mineinabyss.com/images/0/09/Invicon_Madokajack_Scales.png"
+            },
+            {
+                "name": "Madokajack Bone",
+                "quantity": "11",
+                "imageUrl": "https://wiki.mineinabyss.com/images/d/d8/Invicon_Madokajack_Bone.png"
+            },
+            {
+                "name": "Madokajack Poop",
+                "quantity": "10",
+                "imageUrl": "https://wiki.mineinabyss.com/images/6/65/Invicon_Madokajack_Poop.png"
+            },
+            {
+                "name": "Parasitic Watershrooms",
+                "quantity": "10",
+                "imageUrl": "https://wiki.mineinabyss.com/images/f/f7/Invicon_Parasitic_Watershrooms.png"
+            },
+            {
+                "name": "Chimokami Tail",
+                "quantity": "6",
+                "imageUrl": "https://wiki.mineinabyss.com/images/8/88/Invicon_Chimokami_Tail.png"
+            },
+            {
+                "name": "Chimokami Fang",
+                "quantity": "6",
+                "imageUrl": "https://wiki.mineinabyss.com/images/3/3f/Invicon_Chimokami_Fang.png"
+            },
+            {
+                "name": "Ashimite Antlers",
+                "quantity": "8",
+                "imageUrl": "https://wiki.mineinabyss.com/images/8/85/Invicon_Ashimite_Antlers.png"
+            },
+            {
+                "name": "Ashimite Hoof",
+                "quantity": "9",
+                "imageUrl": "https://wiki.mineinabyss.com/images/b/b1/Invicon_Ashimite_Hoof.png"
+            },
+            {
+                "name": "Hashofu Body",
+                "quantity": "7",
+                "imageUrl": "https://wiki.mineinabyss.com/images/3/32/Invicon_Hashofu_Body.png"
+            },
+            {
+                "name": "Hashofu Eye",
+                "quantity": "7",
+                "imageUrl": "https://wiki.mineinabyss.com/images/b/bb/Invicon_Hashofu_Eye.png"
+            },
+            {
+                "name": "Abyssal Snail Gunk",
+                "quantity": "7",
+                "imageUrl": "https://wiki.mineinabyss.com/images/a/a9/Invicon_Abyssal_Snail_Gunk.png"
+            },
+            {
+                "name": "Abyssal Snail Shell",
+                "quantity": "7",
+                "imageUrl": "https://wiki.mineinabyss.com/images/c/c8/Invicon_Abyssal_Snail_Shell.png"
+            },
+            {
+                "name": "Kakatsumuri Shell",
+                "quantity": "6",
+                "imageUrl": "https://wiki.mineinabyss.com/images/2/2f/Invicon_Kakatsumuri_Shell.png"
+            },
+            {
+                "name": "Kagi Tachikiri Pincer",
+                "quantity": "6",
+                "imageUrl": "https://wiki.mineinabyss.com/images/2/20/Invicon_Kagi_Tachikiri_Pincer.png"
+            },
+            {
+                "name": "Titanjaw Pearl",
+                "quantity": "5",
+                "imageUrl": "https://wiki.mineinabyss.com/images/5/5b/Invicon_Titanjaw_Pearl.png"
+            },
+            {
+                "name": "Titanjaw Scale",
+                "quantity": "7",
+                "imageUrl": "https://wiki.mineinabyss.com/images/f/f3/Invicon_Titanjaw_Scale.png"
+            },
+            {
+                "name": "Makihige Tentacle",
+                "quantity": "9",
+                "imageUrl": "https://wiki.mineinabyss.com/images/3/31/Invicon_Makihige_Tentacle.png"
+            },
+            {
+                "name": "Makihige Ink Sac",
+                "quantity": "9",
+                "imageUrl": "https://wiki.mineinabyss.com/images/5/55/Invicon_Makihige_Ink_Sac.png"
+            },
+            {
+                "name": "Kazura Squid Ink Sac",
+                "quantity": "10",
+                "imageUrl": "https://wiki.mineinabyss.com/images/d/d8/Invicon_Kazura_Squid_Ink_Sac.png"
+            },
+            {
+                "name": "Sakuranbo Dust",
+                "quantity": "5",
+                "imageUrl": "https://wiki.mineinabyss.com/images/3/36/Invicon_Sakuranbo_Dust.png"
+            }
+        ]
+    },
+    {
+        "name": "Benner, Also Lord of Currency",
+        "items": [
+            {
+                "name": "Mantoyer Horns",
+                "quantity": "10",
+                "imageUrl": "https://wiki.mineinabyss.com/images/f/f0/Invicon_Mantoyer_Horns.png"
+            },
+            {
+                "name": "Woodcrier Horn",
+                "quantity": "4",
+                "imageUrl": "https://wiki.mineinabyss.com/images/3/34/Invicon_Woodcrier_Horn.png"
+            },
+            {
+                "name": "Rockwalker Mandible",
+                "quantity": "14",
+                "imageUrl": "https://wiki.mineinabyss.com/images/b/b1/Invicon_Rockwalker_Mandible.png"
+            },
+            {
+                "name": "Hisoishi Claw",
+                "quantity": "16",
+                "imageUrl": "https://wiki.mineinabyss.com/images/d/dd/Invicon_Hisoishi_Claw.png"
+            },
+            {
+                "name": "Buroguro Stinger",
+                "quantity": "10",
+                "imageUrl": "https://wiki.mineinabyss.com/images/9/90/Invicon_Buroguro_Stinger.png"
+            },
+            {
+                "name": "Daikonchu Carapace",
+                "quantity": "9",
+                "imageUrl": "https://wiki.mineinabyss.com/images/0/03/Invicon_Daikonchu_Carapace.png"
+            },
+            {
+                "name": "Stinger Horn",
+                "quantity": "9",
+                "imageUrl": "https://wiki.mineinabyss.com/images/e/e1/Invicon_Stinger_Horn.png"
+            },
+            {
+                "name": "Spittleshrub Root",
+                "quantity": "7",
+                "imageUrl": "https://wiki.mineinabyss.com/images/c/c4/Invicon_Spittleshrub_Root.png"
+            },
+            {
+                "name": "Edusan Scale",
+                "quantity": "6",
+                "imageUrl": "https://wiki.mineinabyss.com/images/1/1c/Invicon_Edusan_Scale.png"
+            },
+            {
+                "name": "Swarmshocker Jelly",
+                "quantity": "7",
+                "imageUrl": "https://wiki.mineinabyss.com/images/f/f3/Invicon_Swarmshocker_Jelly.png"
+            },
+            {
+                "name": "Tachikatana Scale",
+                "quantity": "7",
+                "imageUrl": "https://wiki.mineinabyss.com/images/5/57/Invicon_Tachikatana_Scale.png"
+            },
+            {
+                "name": "Tachikatana Claw",
+                "quantity": "6",
+                "imageUrl": "https://wiki.mineinabyss.com/images/9/93/Invicon_Tachikatana_Claw.png"
+            },
+            {
+                "name": "Shiratsubi Wing",
+                "quantity": "10",
+                "imageUrl": "https://wiki.mineinabyss.com/images/d/d9/Invicon_Shiratsubi_Wing.png"
+            },
+            {
+                "name": "Spikewalker Meat",
+                "quantity": "10",
+                "imageUrl": "https://wiki.mineinabyss.com/images/8/80/Invicon_Spikewalker_Meat.png"
+            }
+        ]
+    }
+]
