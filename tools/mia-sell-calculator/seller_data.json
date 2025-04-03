@@ -29,12 +29,12 @@
             },
             {
                 "name": "Silkfang Eye",
-                "quantity": "9",
+                "quantity": "8",
                 "imageUrl": "https://wiki.mineinabyss.com/images/f/f0/Invicon_Silkfang_Eye.png"
             },
             {
                 "name": "Silkfang Silk",
-                "quantity": "6",
+                "quantity": "9",
                 "imageUrl": "https://wiki.mineinabyss.com/images/f/f2/Invicon_Silkfang_Silk.png"
             },
             {
@@ -94,17 +94,17 @@
             },
             {
                 "name": "Kuongatari Abdomen",
-                "quantity": "13",
+                "quantity": "8",
                 "imageUrl": "https://wiki.mineinabyss.com/images/5/56/Invicon_Kuongatari_Abdomen.png"
             },
             {
                 "name": "Cooked Kuongatari Abdomen",
-                "quantity": "13",
+                "quantity": "8",
                 "imageUrl": "https://wiki.mineinabyss.com/images/d/db/Invicon_Kuongatari_Abdomen_Cooked.png"
             },
             {
                 "name": "Kuongatari Juice",
-                "quantity": "13",
+                "quantity": "8",
                 "imageUrl": "https://wiki.mineinabyss.com/images/7/70/Invicon_Kuongatari_Juice.png"
             },
             {
@@ -219,7 +219,7 @@
             },
             {
                 "name": "Woodcrier Horn",
-                "quantity": "4",
+                "quantity": "10",
                 "imageUrl": "https://wiki.mineinabyss.com/images/3/34/Invicon_Woodcrier_Horn.png"
             },
             {
