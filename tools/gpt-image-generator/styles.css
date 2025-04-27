@@ -11,6 +11,7 @@
     --bg: #eee;
     --fg: #fff;
     --text-color: #333;
+    --text-color-hover: #111;
     --slot-border: #999;
     --font: "Poppins", sans-serif;
     --font-icons: "Material Symbols Rounded";
@@ -29,7 +30,8 @@ body {
 body.dark {
     --bg: #111;
     --fg: #222;
-    --text-color: #eee;
+    --text-color: #fff;
+    --text-color-hover: #bbb;
 }
 
 .container {
@@ -200,10 +202,10 @@ h3 {
     width: 100%;
     border: none;
     border-radius: 7px;
-    background: var(--green);
+    background: var(--text-color);
+    color: var(--bg);
     font-size: 18px;
     font-family: var(--font);
-    color: #111;
     font-weight: 600;
     transition: background .18s, box-shadow .18s;
     cursor: pointer;
@@ -211,14 +213,9 @@ h3 {
     box-shadow: 0 2px 8px rgba(40, 200, 60, .03);
 }
 
-.c-btn#downloadBtn {
-    background: var(--blue);
-    color: #fff;
-}
-
 .c-btn:hover,
 .c-btn:focus {
-    background: var(--green-hover);
+    background: var(--text-color-hover);
     box-shadow: 0 4px 12px rgba(40, 200, 60, .1);
 }
 

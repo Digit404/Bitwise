@@ -13,8 +13,8 @@
 }
 
 .dark {
-    --body-color: #202023;
-    --background-color: #252528;
+    --body-color: #111;
+    --background-color: #222;
     --text-color: #eee;
 }
 
@@ -199,6 +199,22 @@ input.web-safe-font {
     margin-top: -4px;
 }
 
+.small-slider::-moz-range-track {
+    height: 8px;
+    background: #ddd;
+    border-radius: 4px;
+}
+
+.small-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: var(--text-color);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+
 .large-slider {
     --color: var(--text-color);
     position: relative;
@@ -214,7 +230,7 @@ input.web-safe-font {
 }
 
 .large-slider:hover {
-    --color: #111;
+    --color: color-mix(in srgb, var(--text-color), var(--background-color) 10%);
 }
 
 .large-slider::-webkit-slider-runnable-track {
@@ -231,6 +247,28 @@ input.web-safe-font {
     box-shadow: -100vw 0 0 100vw var(--color);
 }
 
+.large-slider::-moz-range-track {
+    height: 10px;
+    background: #9993;
+    border-radius: 10px;
+    appearance: none;
+}
+
+.large-slider::-moz-range-progress {
+    height: 50px;
+    background: var(--color);
+    border-radius: 10px;
+}
+
+.large-slider::-moz-range-thumb {
+    width: 0;
+    height: 0;
+    color: transparent;
+    background: transparent;
+    cursor: ew-resize;
+    appearance: none;
+}
+
 .large-slider::before {
     content: var(--slider-name);
     font-family: var(--font);
@@ -244,13 +282,13 @@ input.web-safe-font {
     justify-content: left;
     font-size: 1.5rem;
     color: #fff;
-    mix-blend-mode: difference; 
+    mix-blend-mode: difference;
     font-weight: bold;
     pointer-events: none;
     user-select: none;
 }
 
-.scale-control > .large-slider {
+.scale-control>.large-slider {
     --slider-name: 'Scale';
 }
 

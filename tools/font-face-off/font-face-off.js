@@ -15,7 +15,8 @@ fetch("/api/font-list.json")
     .then((response) => response.json())
     .then((data) => {
         fontList = data;
-    }).then(() => {
+    })
+    .then(() => {
         columns = build();
         update();
     });
@@ -45,19 +46,19 @@ function build() {
         // create a datalist for font suggestions
         const datalist = document.createElement("datalist");
         datalist.id = `font-suggestions-${i}`;
-        
+
         // attach the datalist to the input
         fontInput.setAttribute("list", datalist.id);
 
         // populate the datalist with font options from google fonts
-        fontList.google_fonts.forEach(font => {
+        fontList.google_fonts.forEach((font) => {
             const option = document.createElement("option");
             option.value = font;
             datalist.appendChild(option);
         });
 
         // populate the datalist with font options from web safe fonts
-        fontList.websafe_fonts.forEach(font => {
+        fontList.websafe_fonts.forEach((font) => {
             const option = document.createElement("option");
             option.value = font;
             datalist.appendChild(option);
@@ -69,7 +70,7 @@ function build() {
         // create elements for weight input
         const weightDiv = document.createElement("div");
         const weightInput = document.createElement("input");
-        weightInput.classList.add("small-slider")
+        weightInput.classList.add("small-slider");
         weightInput.type = "range";
         weightInput.min = "100";
         weightInput.max = "900";
@@ -91,7 +92,7 @@ function build() {
         // create elements for size input
         const sizeDiv = document.createElement("div");
         const sizeInput = document.createElement("input");
-        sizeInput.classList.add("small-slider")
+        sizeInput.classList.add("small-slider");
         sizeInput.type = "range";
         sizeInput.min = "5";
         sizeInput.max = "100";
@@ -171,7 +172,7 @@ function update() {
         const index = Array.from(columns).indexOf(column);
         fontSettings[index] = { font, weight, size };
 
-        size = size.match(/-?\d+(\.\d+)?/)[0]
+        size = size.match(/-?\d+(\.\d+)?/)[0];
 
         // set indicators
         column.querySelector(".weight-indicator").innerHTML = weight;
@@ -188,7 +189,6 @@ function update() {
             fontInput.classList.remove("web-safe-font");
             fontInput.classList.add("google-font");
             fontInput.title = "This font is available from Google Fonts";
-
         } else if (fontList.websafe_fonts.includes(font)) {
             fontInput.classList.remove("google-font");
             fontInput.classList.add("web-safe-font");
@@ -278,23 +278,3 @@ document.addEventListener("keydown", (event) => {
         reduceFontNum();
     }
 });
-
-// Initialize dark mode
-function initDarkMode() {
-    const darkModeButton = document.createElement("button");
-    darkModeButton.id = "dark-mode-button";
-    darkModeButton.textContent = "light_mode";
-    document.body.appendChild(darkModeButton);
-    darkModeButton.addEventListener("click", toggleDarkMode);
-}
-
-function toggleDarkMode() {
-    document.body.classList.toggle("dark");
-    const darkModeButton = document.getElementById("dark-mode-button");
-    darkModeButton.textContent = document.body.classList.contains("dark") ? "dark_mode" : "light_mode";
-}
-
-// initialize on window load
-window.onload = function () {
-    initDarkMode();
-};
