@@ -2,57 +2,62 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPT Image Generator</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
 </head>
-<div class="container">
-    <div id="header">
-        <h1>GPT Image Generator</h1><input class="c-input" id="api-key" placeholder="API Key" type="password">
+
+<body>
+    <div class="container">
+        <div id="header">
+            <h1>GPT Image Generator</h1><input class="c-input" id="api-key" placeholder="API Key" type="password">
+        </div>
+        <div class="grid" id="refs"></div>
+        <div>
+            <div id="maskBtn">+ mask</div><input id="maskInput" type="file" accept="image/*">
+        </div><textarea class="c-input" id="prompt" placeholder="Prompt" rows="3"></textarea>
+        <div id="optionsBar"><select class="c-select" id="sizeSel">
+                <option value="auto">Size: auto</option>
+                <option value="1024x1024">1024 &times; 1024</option>
+                <option value="1536x1024">1536 &times; 1024 (landscape)</option>
+                <option value="1024x1536">1024 &times; 1536 (portrait)</option>
+            </select><select class="c-select" id="bgSel">
+                <option value="auto">Background: auto</option>
+                <option value="transparent">transparent</option>
+                <option value="opaque">opaque</option>
+            </select><select class="c-select" id="qualitySel">
+                <option value="auto">Quality: auto</option>
+                <option value="high">high</option>
+                <option value="medium">medium</option>
+                <option value="low">low</option>
+            </select>
+            <div id="maskBtn" style="display:none;">+ mask</div><input id="maskInput" type="file" accept="image/*">
+        </div><button class="c-btn" id="generateBtn">Generate</button>
+        <section>
+            <h3>Result</h3>
+            <div id="output"></div><button class="c-btn" id="downloadBtn" style="display:none;">Download Image</button>
+        </section>
     </div>
-    <div class="grid" id="refs"></div>
-    <div>
-        <div id="maskBtn">+ mask</div><input id="maskInput" type="file" accept="image/*">
-    </div><textarea class="c-input" id="prompt" placeholder="Prompt" rows="3"></textarea>
-    <div id="optionsBar"><select class="c-select" id="sizeSel">
-            <option value="auto">Size: auto</option>
-            <option value="1024x1024">1024 &times; 1024</option>
-            <option value="1536x1024">1536 &times; 1024 (landscape)</option>
-            <option value="1024x1536">1024 &times; 1536 (portrait)</option>
-        </select><select class="c-select" id="bgSel">
-            <option value="auto">Background: auto</option>
-            <option value="transparent">transparent</option>
-            <option value="opaque">opaque</option>
-        </select><select class="c-select" id="qualitySel">
-            <option value="auto">Quality: auto</option>
-            <option value="high">high</option>
-            <option value="medium">medium</option>
-            <option value="low">low</option>
-        </select>
-        <div id="maskBtn" style="display:none;">+ mask</div><input id="maskInput" type="file" accept="image/*">
-    </div><button class="c-btn" id="generateBtn">Generate</button>
-    <section>
-        <h3>Result</h3>
-        <div id="output"></div><button class="c-btn" id="downloadBtn" style="display:none;">Download Image</button>
-    </section>
-</div>
-<script type="module" src="index.js"></script>
-<div id="popup" style="display:none;">
-    <div id="popup-content" class="info">
-      <span id="popup-icon">ℹ️</span>
-      <div style="text-align:left; max-width:480px; margin:0 auto;" id="popup-text">
-        <strong>Heads up:</strong> As a general rule, you shouldn’t paste your API key into a website.<br>
-        This site is <b>100% static</b> and only talks to OpenAI.<br>
-        Source code: 
-        <a href="https://github.com/Digit404/Bitwise" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <hr style="margin:18px 0 12px 0; border:none; border-top:1px solid #e8e8e8;">
-        <ul style="text-align:left; padding-left:24px; font-size:0.98em; margin:0;">
-          <li>This site does <b>not</b> log, store, or access your API key or prompts. Everything stays on your device.</li>
-          <li>Only official OpenAI servers ever see your key.</li>
-          <li>For maximum safety, use a <b>restricted or temporary API key</b>.</li>
-          <li>Be careful with browser extensions—some can read anything on any website.</li>
-          <li>You can open DevTools and audit the whole source. No secrets here.</li>
-        </ul>
-      </div>
-      <button id="popup-close">OK, got it</button>
+    <script type="module" src="index.js"></script>
+    <div id="popup" style="display:none;">
+        <div id="popup-content" class="info">
+            <span id="popup-icon">ℹ️</span>
+            <div style="text-align:left; max-width:480px; margin:0 auto;" id="popup-text">
+                <strong>Heads up:</strong> As a general rule, you shouldn’t paste your API key into a website.<br> This
+                site is <b>100% static</b> and only talks to OpenAI.<br> Source code: <a
+                    href="https://github.com/Digit404/Bitwise" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <hr style="margin:18px 0 12px 0; border:none; border-top:1px solid #e8e8e8;">
+                <ul style="text-align:left; padding-left:24px; font-size:0.98em; margin:0;">
+                    <li>This site does <b>not</b> log, store, or access your API key or prompts. Everything stays on
+                        your device.</li>
+                    <li>Only official OpenAI servers ever see your key.</li>
+                    <li>For maximum safety, use a <b>restricted or temporary API key</b>.</li>
+                    <li>Be careful with browser extensions—some can read anything on any website.</li>
+                    <li>You can open DevTools and audit the whole source. No secrets here.</li>
+                </ul>
+            </div>
+            <button id="popup-close">OK, got it</button>
+        </div>
     </div>
-  </div>
+</body>
