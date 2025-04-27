@@ -1,13 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Bitter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bitter&family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
 :root {
-    --green: #3e7;
-    --green-hover: #2c7;
+    --green: #4e7;
+    --green-hover: #2b7;
     --blue: #37e;
-    --bg: #f3f3f3;
-    --input-border: #bababa;
-    --slot-border: #c8c6c6;
-    --font: "Bitter", sans-serif;
+    --red: #e44;
+    --red-hover: #b22;
+    --bg: #eee;
+    --fg: #fff;
+    --text-color: #333;
+    --slot-border: #999;
+    --font: "Poppins", sans-serif;
+    --font-icons: "Material Symbols Rounded";
 }
 
 body {
@@ -17,12 +22,19 @@ body {
     display: flex;
     justify-content: center;
     padding: 40px;
+    color: var(--text-color);
+}
+
+body.dark {
+    --bg: #111;
+    --fg: #222;
+    --text-color: #eee;
 }
 
 .container {
     width: 100%;
     max-width: 960px;
-    background: #fff;
+    background: var(--fg);
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, .05);
     padding: 32px;
@@ -40,12 +52,14 @@ body {
 #header input {
     width: 50%;
     padding: 12px 16px;
-    border: 1.5px solid var(--input-border);
+    border: 1.5px solid var(--bg);
     border-radius: 7px;
     font-size: 14px;
     box-sizing: border-box;
     outline: none;
     transition: border .2s;
+    background-color: var(--bg);
+    color: var(--text-color);
 }
 
 h2,
@@ -65,10 +79,11 @@ h3 {
     position: relative;
     width: 100%;
     padding-top: 50%;
-    border: 1px dashed var(--slot-border);
+    border: 2px dashed var(--slot-border);
     border-radius: 8px;
     background-size: cover;
     background-position: center;
+    color: #999;
     overflow: hidden;
     transition: padding-top .2s, transform .15s;
 }
@@ -91,7 +106,6 @@ h3 {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    color: #999;
     font-size: 1.02em;
     pointer-events: none;
     user-select: none;
@@ -113,7 +127,7 @@ h3 {
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    background: #000;
+    background: #111;
     color: #fff;
     font-size: 18px;
     line-height: 1;
@@ -126,14 +140,15 @@ h3 {
 
 .x-btn:hover,
 .x-btn:focus {
-    background: #e23b3b;
+    background: var(--red);
     color: #fff;
 }
 
 /* drag-over visual */
-.slot.drag-over {
-    border: 2px solid #2196f3;
+.slot.drag-over, .slot:hover {
+    border: 2px solid var(--blue);
     transform: scale(1.04);
+    color: var(--blue);
 }
 
 /* mask pill */
@@ -141,41 +156,37 @@ h3 {
     min-width: 48px;
     min-height: 32px;
     padding: 0 14px;
-    border: 1px dashed var(--slot-border);
+    border: 2px dashed var(--slot-border);
     border-radius: 16px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #666;
+    color: #999;
     font-size: 14px;
     cursor: pointer;
-    background: #fafafa;
+    background: var(--fg);
     background-size: cover;
     background-position: center;
     transition: border .2s;
-}
-
-#maskBtn.selected {
-    color: transparent;
-    border: none;
-    background: #eee;
 }
 
 #maskInput {
     display: none;
 }
 
-/* prompt & button */
+/* prompt */
 .c-input {
     font-size: 18px;
     padding: 18px 20px;
-    border: 1.5px solid var(--input-border);
+    border: 1.5px solid var(--bg);
     font-family: var(--font);
     border-radius: 7px;
     width: 100%;
     box-sizing: border-box;
     outline: none;
     transition: border .2s;
+    background: var(--bg);
+    color: var(--text-color);
 }
 
 .c-input:focus {
@@ -198,6 +209,11 @@ h3 {
     box-shadow: 0 2px 8px rgba(40, 200, 60, .03);
 }
 
+.c-btn#downloadBtn {
+    background: var(--blue);
+    color: #fff;
+}
+
 .c-btn:hover,
 .c-btn:focus {
     background: var(--green-hover);
@@ -205,8 +221,8 @@ h3 {
 }
 
 .c-btn:disabled {
-    background: #ddd;
-    color: #999;
+    background: #999;
+    color: #111;
     cursor: not-allowed;
     box-shadow: none;
 }
@@ -214,9 +230,11 @@ h3 {
 .c-select {
     font-size: 16px;
     padding: 12px 16px;
-    border: 1.5px solid var(--input-border);
+    border: 1.5px solid var(--bg);
     border-radius: 7px;
-    background: #fff;
+    background: var(--bg);
+    font-family: var(--font);
+    color: var(--text-color);
     outline: none;
     transition: border .2s;
 }
@@ -231,15 +249,19 @@ h3 {
     gap: 12px;
     margin-top: 8px;
     align-items: center;
+    justify-content: space-between;
 }
+
+ #optionsBar select {
+    flex: 1;
+ }
 
 /* output */
 #output {
     width: 100%;
     min-height: 320px;
-    border: 1px solid #c8c6c6;
     border-radius: 8px;
-    background: #fafafa center/64px no-repeat;
+    background: var(--bg) center/64px no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -266,7 +288,7 @@ h3 {
 
 /* centered box with soft drop shadow */
 #popup-content {
-    background: #fdfdfd;
+    background: var(--fg);
     border-radius: 12px;
     max-width: 94vw;
     min-width: 260px;
@@ -274,7 +296,6 @@ h3 {
     box-shadow: var(--popup-shadow);
     padding: 30px 32px 18px 32px;
     font-size: 1.16em;
-    color: #222e;
     letter-spacing: .01em;
     text-align: center;
     display: flex;
@@ -297,14 +318,14 @@ h3 {
 }
 
 #popup-content.error {
-    border: 1.5px solid #ec4343;
-    background: #fff6f6;
-    color: #b82a2a;
+    border: 1.5px solid var(--red);
+    background: color-mix(in srgb, var(--bg) 90%, var(--red) 10%);
+    color: var(--red-hover);
 }
 
 #popup-content.info {
     border: 1.5px solid var(--blue);
-    background: #f6fff6;
+    background: color-mix(in srgb, var(--bg) 90%, var(--blue) 10%);
     color: #2a3e2a;
 }
 
@@ -333,4 +354,20 @@ h3 {
     font-size: 2.3em;
     margin-bottom: 2px;
     display: block;
+}
+
+#dark-mode-button {
+    background-color: var(--text-color);
+    color: var(--bg);
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    font-family: var(--font-icons);
+    font-size: 2rem;
+    z-index: 1000;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
 }

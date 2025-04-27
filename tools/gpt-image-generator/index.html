@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
 </head>
 
-<body>
+<body class="dark">
     <div class="container">
         <div id="header">
             <h1>GPT Image Generator</h1><input class="c-input" id="api-key" placeholder="API Key" type="password">
@@ -17,16 +17,19 @@
         <div>
             <div id="maskBtn">+ mask</div><input id="maskInput" type="file" accept="image/*">
         </div><textarea class="c-input" id="prompt" placeholder="Prompt" rows="3"></textarea>
-        <div id="optionsBar"><select class="c-select" id="sizeSel">
+        <div id="optionsBar">
+            <select class="c-select" id="sizeSel">
                 <option value="auto">Size: auto</option>
                 <option value="1024x1024">1024 &times; 1024</option>
                 <option value="1536x1024">1536 &times; 1024 (landscape)</option>
                 <option value="1024x1536">1024 &times; 1536 (portrait)</option>
-            </select><select class="c-select" id="bgSel">
+            </select>
+            <select class="c-select" id="bgSel">
                 <option value="auto">Background: auto</option>
                 <option value="transparent">transparent</option>
                 <option value="opaque">opaque</option>
-            </select><select class="c-select" id="qualitySel">
+            </select>
+            <select class="c-select" id="qualitySel">
                 <option value="auto">Quality: auto</option>
                 <option value="high">high</option>
                 <option value="medium">medium</option>
