@@ -327,16 +327,8 @@ h3 {
     background: #1852a8;
 }
 
-.popup-err-icon {
+#popup-icon {
     font-size: 2.3em;
     margin-bottom: 2px;
-    color: #e53d3d;
-    display: block;
-}
-
-.popup-info-icon {
-    font-size: 2.3em;
-    margin-bottom: 2px;
-    color: var(--blue);
     display: block;
 }

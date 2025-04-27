@@ -6,6 +6,9 @@ const downloadBtn = document.getElementById("downloadBtn");
 const genBtn = document.getElementById("generateBtn");
 const popup = document.getElementById("popup");
 const popupContent = document.getElementById("popup-content");
+const popupClose = document.getElementById("popup-close");
+const popupText = document.getElementById("popup-text");
+const popupIcon = document.getElementById("popup-icon");
 const maskBtn = document.getElementById("maskBtn");
 const maskInput = document.getElementById("maskInput");
 const output = document.getElementById("output");
@@ -101,14 +104,18 @@ function showPopup(html, type = "info") {
     popup.style.display = "flex";
     if (type === "error") {
         popupContent.className = "error";
-        popupContent.innerHTML = `<span class="popup-err-icon">⚠️</span>${html}`;
+        popupIcon.innerText = "⚠️";
+        popupIcon.style.display = "inline-block";
+        popupClose.innerText = "Close";
     } else if (type === "info") {
         popupContent.className = "info";
-        popupContent.innerHTML = `<span class="popup-info-icon">ℹ️</span>${html}`;
+        popupIcon.innerText = "ℹ️";
+        popupIcon.style.display = "inline-block";
+        popupClose.innerText = "Okay, got it";
     } else {
         popupContent.className = "";
-        popupContent.innerHTML = html;
     }
+    popupText.innerHTML = html;
 }
 function hidePopup() {
     popup.style.display = "none";
@@ -138,12 +145,14 @@ genBtn.addEventListener("click", async () => {
     if (!api_key) {
         showPopup("Need an API key.", "error");
         genBtn.disabled = false;
+        genBtn.textContent = "Generate";
         return;
     }
     const prompt = document.getElementById("prompt").value.trim();
     if (!prompt) {
         showPopup("Need a prompt.", "error");
         genBtn.disabled = false;
+        genBtn.textContent = "Generate";
         return;
     }
 
@@ -227,9 +236,6 @@ genBtn.addEventListener("click", async () => {
 });
 
 if (!localStorage.getItem("notWarnedApiKey")) {
-    showPopup(
-        "As a general rule, you shouldn't paste your API key into a website.<br>However this website is completely static and doesn't store your key anywhere,<br>it doesn't even communicate with any server besides OpenAI.<br>You can read the source code here: <a href='https://github.com/Digit404/Bitwise' target='_blank'>GitHub</a>",
-        "info"
-    );
+    popup.style.display = "flex";
     localStorage.setItem("notWarnedApiKey", "1");
 }
