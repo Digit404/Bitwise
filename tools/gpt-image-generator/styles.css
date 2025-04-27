@@ -5,6 +5,7 @@
     --green: #4e7;
     --green-hover: #2b7;
     --blue: #37e;
+    --blue-hover: #15a;
     --red: #e44;
     --red-hover: #b22;
     --bg: #eee;
@@ -347,7 +348,15 @@ h3 {
 
 #popup-close:focus,
 #popup-close:hover {
-    background: #1852a8;
+    background: var(--blue-hover);
+}
+
+#popup-content.error #popup-close {
+    background: var(--red);
+}
+
+#popup-content.error #popup-close:hover {
+    background: var(--red-hover);
 }
 
 #popup-icon {
