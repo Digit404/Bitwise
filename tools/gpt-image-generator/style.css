@@ -52,7 +52,8 @@ body.dark {
     justify-content: space-between;
 }
 
-h1, h3 {
+h1,
+h3 {
     user-select: none;
 }
 
@@ -150,6 +151,8 @@ h1, h3 {
 .slot.drag-over,
 .slot:hover {
     border: 2px solid var(--blue);
+    outline: 2px dashed var(--blue);
+    outline-offset: 2px;
     transform: scale(1.04);
     color: var(--blue);
 }

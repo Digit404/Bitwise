@@ -124,7 +124,6 @@ document.getElementById("popup-close").onclick = hidePopup;
 
 // --- kick-off ---
 addSlot();
-initDarkMode();
 
 // --- mask Preview ---
 maskBtn.addEventListener("click", () => maskInput.click());

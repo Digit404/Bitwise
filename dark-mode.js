@@ -22,12 +22,26 @@ function initDarkMode() {
         cursor: "pointer",
         userSelect: "none",
     });
+
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const darkMode = localStorage.getItem("dark-mode") || (prefersDark ? "enabled" : "disabled");
+
+    if (darkMode === "enabled") {
+        document.body.classList.add("dark");
+        darkModeButton.textContent = "dark_mode";
+    } else {
+        document.body.classList.remove("dark");
+        darkModeButton.textContent = "light_mode";
+    }
+
+    localStorage.setItem("dark-mode", darkMode);
 }
 
 function toggleDarkMode() {
     document.body.classList.toggle("dark");
     const darkModeButton = document.getElementById("dark-mode-button");
     darkModeButton.textContent = document.body.classList.contains("dark") ? "dark_mode" : "light_mode";
+    localStorage.setItem("dark-mode", document.body.classList.contains("dark") ? "enabled" : "disabled");
 }
 
 // initialize on window load
