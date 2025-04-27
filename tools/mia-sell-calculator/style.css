@@ -38,6 +38,13 @@ body {
     gap: 20px;
 }
 
+.container {
+    display: flex;
+    margin: auto;
+    max-width: 1600px;
+    width: 100%;
+}
+
 /* top bar containing filter + buttons */
 .top-bar {
     position: fixed;
@@ -306,4 +313,75 @@ body {
     color: #000;
     text-decoration: none;
     cursor: pointer;
+}
+
+
+@media (max-width: 1024px) {
+
+    .container {
+        flex-direction: column;
+    }
+
+    .right-column {
+        width: 100%;
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    .item-container {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    }
+
+    .filter-group input {
+        width: 160px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    /* top bar becomes vertical */
+    .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .filter-group {
+        justify-content: space-between;
+        gap: 6px;
+    }
+
+    .filter-group input {
+        flex: 1 1 auto;
+        width: auto;
+    }
+
+    .button-group {
+        justify-content: flex-end;
+    }
+
+    .sellers-container {
+        padding: 12px;
+        margin-top: 100px;
+    }
+
+    .item-container {
+        grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+        gap: 8px;
+    }
+
+    .item {
+        padding: 8px;
+    }
+
+    .item img {
+        width: 42px;
+        height: 42px;
+    }
+
+    .modal-content {
+        width: 92%;
+        margin: 30% auto;
+    }
 }
