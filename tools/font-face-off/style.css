@@ -8,19 +8,19 @@
     --border-radius: 10px;
 
     --text-color: #333;
-    --body-color: #f4f4f9;
-    --background-color: #fff;
+    --bg: #f4f4f9;
+    --fg: #fff;
 }
 
 .dark {
-    --body-color: #111;
-    --background-color: #222;
+    --bg: #111;
+    --fg: #222;
     --text-color: #eee;
 }
 
 body {
     font-family: var(--font);
-    background-color: var(--body-color);
+    background-color: var(--bg);
     color: var(--text-color);
     padding: 20px;
     max-width: var(--max-width);
@@ -45,7 +45,7 @@ h1 {
 /* Quill editor */
 
 #editor.ql-container {
-    background: var(--background-color);
+    background: var(--fg);
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 0 0 var(--border-radius) var(--border-radius);
@@ -65,7 +65,7 @@ h1 {
 }
 
 body .ql-toolbar.ql-snow {
-    background: var(--background-color);
+    background: var(--fg);
     border-radius: 10px 10px 0 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     font-family: var(--font);
@@ -94,14 +94,14 @@ body.dark .ql-toolbar.ql-snow * {
     border-radius: 5px;
     font-size: 1.5rem;
     width: 100%;
-    background-color: var(--background-color);
+    background-color: var(--fg);
     color: var(--text-color);
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .controls-container button:hover {
-    background-color: var(--body-color);
+    background-color: var(--bg);
 }
 
 .control {
@@ -118,7 +118,7 @@ body.dark .ql-toolbar.ql-snow * {
 }
 
 .column {
-    background: var(--background-color);
+    background: var(--fg);
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     flex: 1;
@@ -151,7 +151,7 @@ input[type="text"] {
     border-radius: 4px;
     font-size: 16px;
     font-family: var(--font);
-    background-color: var(--body-color);
+    background-color: var(--bg);
     color: var(--text-color);
 }
 
@@ -230,7 +230,7 @@ input.web-safe-font {
 }
 
 .large-slider:hover {
-    --color: color-mix(in srgb, var(--text-color), var(--background-color) 10%);
+    --color: color-mix(in srgb, var(--text-color), var(--fg) 10%);
 }
 
 .large-slider::-webkit-slider-runnable-track {
