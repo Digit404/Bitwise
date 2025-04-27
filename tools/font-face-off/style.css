@@ -304,19 +304,3 @@ input.web-safe-font {
     font-size: 12pt;
     font-weight: 400;
 }
-
-#dark-mode-button {
-    background-color: var(--text-color);
-    color: var(--background-color);
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    font-family: var(--font-icons);
-    font-size: 2rem;
-    z-index: 1000;
-    border: none;
-    border-radius: 50%;
-    user-select: none;
-}

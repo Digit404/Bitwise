@@ -5,6 +5,23 @@ function initDarkMode() {
     darkModeButton.textContent = "light_mode";
     document.body.appendChild(darkModeButton);
     darkModeButton.addEventListener("click", toggleDarkMode);
+    
+    Object.assign(darkModeButton.style, {
+        backgroundColor: "var(--text-color)",
+        color: "var(--bg)",
+        position: "fixed",
+        bottom: "20px",
+        right: "20px",
+        width: "50px",
+        height: "50px",
+        fontFamily: "var(--font-icons)",
+        fontSize: "2rem",
+        zIndex: 1000,
+        border: "none",
+        borderRadius: "50%",
+        cursor: "pointer",
+        userSelect: "none",
+    });
 }
 
 function toggleDarkMode() {
