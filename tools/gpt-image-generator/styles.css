@@ -146,7 +146,8 @@ h3 {
 }
 
 /* drag-over visual */
-.slot.drag-over, .slot:hover {
+.slot.drag-over,
+.slot:hover {
     border: 2px solid var(--blue);
     transform: scale(1.04);
     color: var(--blue);
@@ -253,9 +254,9 @@ h3 {
     justify-content: space-between;
 }
 
- #optionsBar select {
+#optionsBar select {
     flex: 1;
- }
+}
 
 /* output */
 #output {
@@ -379,4 +380,25 @@ h3 {
     border: none;
     border-radius: 50%;
     cursor: pointer;
+}
+
+/* responsive design */
+@media (max-width: 600px) {
+    body {
+        padding: 16px;
+        padding-bottom: 80px;
+    }
+
+    .container {
+        padding: 16px;
+    }
+
+    #header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #header input {
+        width: 100%;
+    }
 }
