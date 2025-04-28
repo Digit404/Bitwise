@@ -41,7 +41,7 @@ function addSlot() {
     inp.accept = "image/*";
     const x = document.createElement("button");
     x.className = "x-btn";
-    x.textContent = "×";
+    x.innerText = "close";
 
     w.append(label, inp, x);
     refs.appendChild(w);

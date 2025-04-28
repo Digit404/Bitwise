@@ -4,8 +4,8 @@
 :root {
     --green: #4e7;
     --green-hover: #2b7;
-    --blue: #37e;
-    --blue-hover: #15a;
+    --blue: #47e;
+    --blue-hover: #25c;
     --red: #e44;
     --red-hover: #b22;
     --bg: #eee;
@@ -122,6 +122,7 @@ h3 {
 .x-btn {
     display: none;
     position: absolute;
+    font-family: var(--font-icons);
     top: 6px;
     right: 7px;
     z-index: 2;
@@ -130,15 +131,16 @@ h3 {
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    background: #111;
-    color: #fff;
-    font-size: 18px;
-    line-height: 1;
+    background: color-mix(in srgb, var(--text-color), transparent 50%);
+    color: var(--bg);
     transition: background .15s;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
 }
 
 .slot.filled .x-btn {
-    display: block;
+    display: flex;
 }
 
 .x-btn:hover,
@@ -326,7 +328,7 @@ h3 {
 
 #popup-content.info {
     border: 1.5px solid var(--blue);
-    background: color-mix(in srgb, var(--bg) 90%, var(--blue) 10%);
+    background: color-mix(in srgb, var(--bg), var(--blue) 5%);
 }
 
 #popup-close {
