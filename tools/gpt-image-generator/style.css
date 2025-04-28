@@ -327,7 +327,6 @@ h3 {
 #popup-content.info {
     border: 1.5px solid var(--blue);
     background: color-mix(in srgb, var(--bg) 90%, var(--blue) 10%);
-    color: #2a3e2a;
 }
 
 #popup-close {
