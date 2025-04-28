@@ -11,6 +11,7 @@
     --red: #f44;
     --red-hover: #d22;
     --green-overlay: #0904;
+    --blue-overlay: #0493;
     --font: "Poppins", sans-serif;
     --font-icons: "Material Symbols Rounded";
 }
@@ -184,7 +185,11 @@ body {
 }
 
 /* highlighted items */
-.enough-to-sell {
+.item.has-items {
+    background-color: var(--blue-overlay) !important;
+}
+
+.item.enough-to-sell {
     background-color: var(--green-overlay) !important;
 }
 
@@ -341,7 +346,7 @@ body {
 
     /* top bar becomes vertical */
     .top-bar {
-        flex-direction: column;
+        flex-direction: column-reverse;
         align-items: stretch;
         gap: 10px;
         padding: 12px;

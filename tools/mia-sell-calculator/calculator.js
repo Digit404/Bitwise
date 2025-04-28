@@ -78,6 +78,12 @@ function updateButtonStyles() {
             } else {
                 btn.classList.remove("enough-to-sell");
             }
+
+            if (count > 0) {
+                btn.classList.add("has-items");
+            } else {
+                btn.classList.remove("has-items");
+            }
         });
     });
 }
