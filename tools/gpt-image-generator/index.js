@@ -1,15 +1,15 @@
-const refs = document.getElementById("refs");
-const sizeSel = document.getElementById("sizeSel");
-const bgSel = document.getElementById("bgSel");
-const qualitySel = document.getElementById("qualitySel");
-const downloadBtn = document.getElementById("downloadBtn");
-const genBtn = document.getElementById("generateBtn");
+const referenceContainer = document.getElementById("refs");
+const sizeSelector = document.getElementById("sizeSel");
+const bgSelector = document.getElementById("bgSel");
+const qualitySelector = document.getElementById("qualitySel");
+const downloadButton = document.getElementById("downloadBtn");
+const generateButton = document.getElementById("generateBtn");
 const popup = document.getElementById("popup");
 const popupContent = document.getElementById("popup-content");
 const popupClose = document.getElementById("popup-close");
 const popupText = document.getElementById("popup-text");
 const popupIcon = document.getElementById("popup-icon");
-const maskBtn = document.getElementById("maskBtn");
+const maskButton = document.getElementById("maskBtn");
 const maskInput = document.getElementById("maskInput");
 const output = document.getElementById("output");
 
@@ -17,89 +17,92 @@ const maxSlots = 5;
 const testing = false;
 let slotCount = 0;
 
-// --- helpers ---
-const sneak = (w, f) => {
-    w.style.backgroundImage = `url(${URL.createObjectURL(f)})`;
-    w.classList.add("filled");
-};
-const clearSlot = (w, inp) => {
-    w.style.backgroundImage = "";
-    w.classList.remove("filled");
-    inp.value = "";
+// slot management
+const setBackgroundImage = (slot, image) => {
+    slot.style.backgroundImage = `url(${URL.createObjectURL(image)})`;
+    slot.classList.add("filled");
 };
 
-// --- slots ---
+const clearSlot = (slot, inputElement) => {
+    slot.style.backgroundImage = "";
+    slot.classList.remove("filled");
+    inputElement.value = "";
+};
+
 function addSlot() {
     if (slotCount >= maxSlots) return;
-    const w = document.createElement("div");
-    w.className = "slot";
+    const slot = document.createElement("div");
+    slot.className = "slot";
     const label = document.createElement("span");
     label.className = "slot-label";
     label.innerHTML = "Upload&nbsp;Image";
-    const inp = document.createElement("input");
-    inp.type = "file";
-    inp.accept = "image/*";
-    const x = document.createElement("button");
-    x.className = "x-btn";
-    x.innerText = "close";
+    const inputElement = document.createElement("input");
+    inputElement.type = "file";
+    inputElement.accept = "image/*";
+    const button = document.createElement("button");
+    button.className = "x-btn";
+    button.innerText = "close";
 
-    w.append(label, inp, x);
-    refs.appendChild(w);
+    slot.append(label, inputElement, button);
+    referenceContainer.appendChild(slot);
     slotCount++;
 
-    inp.addEventListener("change", () => {
-        if (!inp.files[0]) return;
-        sneak(w, inp.files[0]);
+    inputElement.addEventListener("change", () => {
+        if (!inputElement.files[0]) return;
+        setBackgroundImage(slot, inputElement.files[0]);
         ensureFreeSlot();
         updateMaskVisibility();
     });
-    x.addEventListener("click", (e) => {
+
+    button.addEventListener("click", (e) => {
         e.stopPropagation();
-        clearSlot(w, inp);
+        clearSlot(slot, inputElement);
         ensureFreeSlot(false);
         updateMaskVisibility();
     });
 
-    ["dragenter", "dragover"].forEach((ev) =>
-        w.addEventListener(ev, (e) => {
+    ["dragenter", "dragover"].forEach((eventString) =>
+        slot.addEventListener(eventString, (e) => {
             e.preventDefault();
-            w.classList.add("drag-over");
+            slot.classList.add("drag-over");
         })
     );
-    ["dragleave", "drop"].forEach((ev) => w.addEventListener(ev, () => w.classList.remove("drag-over")));
-    w.addEventListener("drop", (e) => {
+    ["dragleave", "drop"].forEach((eventString) => slot.addEventListener(eventString, () => slot.classList.remove("drag-over")));
+    slot.addEventListener("drop", (e) => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
         if (file) {
-            inp.files = e.dataTransfer.files;
-            inp.dispatchEvent(new Event("change"));
+            inputElement.files = e.dataTransfer.files;
+            inputElement.dispatchEvent(new Event("change"));
         }
     });
 }
 
+// shows mask button if any image is uploaded
 function updateMaskVisibility() {
-    const hasImage = [...refs.querySelectorAll(".slot.filled")].length > 0;
-    maskBtn.style.display = hasImage ? "inline-flex" : "none";
+    const hasImage = [...referenceContainer.querySelectorAll(".slot.filled")].length > 0;
+    maskButton.style.display = hasImage ? "inline-flex" : "none";
     if (!hasImage) {
         maskInput.value = "";
-        maskBtn.classList.remove("selected");
-        maskBtn.style.background = "";
-        maskBtn.textContent = "+ mask";
+        maskButton.classList.remove("selected");
+        maskButton.style.background = "";
+        maskButton.textContent = "+ mask";
     }
 }
 
+// make sure there's at least one empty slot, up to maxSlots
 function ensureFreeSlot(checkFilled = true) {
-    const empties = [...refs.querySelectorAll(".slot")].filter((s) => !s.classList.contains("filled"));
-    if (empties.length === 0 && slotCount < maxSlots) addSlot();
-    if (!checkFilled && empties.length > 1) {
-        empties.slice(1).forEach((s) => {
-            refs.removeChild(s);
+    const emptySlots = [...referenceContainer.querySelectorAll(".slot")].filter((slot) => !slot.classList.contains("filled"));
+    if (emptySlots.length === 0 && slotCount < maxSlots) addSlot();
+    if (!checkFilled && emptySlots.length > 1) {
+        emptySlots.slice(1).forEach((slot) => {
+            referenceContainer.removeChild(slot);
             slotCount--;
         });
     }
 }
 
-// --- popup ---
+// popup management
 function showPopup(html, type = "info") {
     popup.style.display = "flex";
     if (type === "error") {
@@ -122,58 +125,61 @@ function hidePopup() {
 }
 document.getElementById("popup-close").onclick = hidePopup;
 
-// --- kick-off ---
 addSlot();
 
-// --- mask Preview ---
-maskBtn.addEventListener("click", () => maskInput.click());
+// mask preview
+maskButton.addEventListener("click", () => maskInput.click());
 maskInput.addEventListener("change", (e) => {
     if (!e.target.files[0]) return;
-    sneak(maskBtn, e.target.files[0]);
-    maskBtn.textContent = "";
-    maskBtn.classList.add("selected");
+    setBackgroundImage(maskButton, e.target.files[0]);
+    maskButton.textContent = "";
+    maskButton.classList.add("selected");
 });
 updateMaskVisibility();
 
-// --- generate ---
-genBtn.addEventListener("click", async () => {
-    genBtn.disabled = true;
-    genBtn.textContent = "Generating...";
-    downloadBtn.style.display = "none";
+// generate
+generateButton.addEventListener("click", async () => {
+    generateButton.disabled = true;
+    generateButton.textContent = "Generating...";
+    downloadButton.style.display = "none";
 
+    // throw errors
     const api_key = document.getElementById("api-key").value.trim();
     if (!api_key) {
         showPopup("Need an API key.", "error");
-        genBtn.disabled = false;
-        genBtn.textContent = "Generate";
+        generateButton.disabled = false;
+        generateButton.textContent = "Generate";
         return;
     }
+
     const prompt = document.getElementById("prompt").value.trim();
     if (!prompt) {
         showPopup("Need a prompt.", "error");
-        genBtn.disabled = false;
-        genBtn.textContent = "Generate";
+        generateButton.disabled = false;
+        generateButton.textContent = "Generate";
         return;
     }
 
     output.innerHTML = '<span style="color:#aaa;">Loading…</span>';
-    const fileInputs = [...refs.querySelectorAll('input[type="file"]')];
-    const refFiles = fileInputs.map((i) => i.files[0]).filter(Boolean);
+    const fileInputs = [...referenceContainer.querySelectorAll('input[type="file"]')];
+    const referenceImages = fileInputs.map((i) => i.files[0]).filter(Boolean);
     const maskFile = maskInput.files[0] || null;
-    const hasImages = refFiles.length > 0 || maskFile;
+    const hasImages = referenceImages.length > 0 || maskFile;
 
     try {
         let json;
         if (!testing) {
+            // main API call
+            // if no images, use the generation endpoint, otherwise use the edit endpoint
             if (!hasImages) {
                 const body = {
                     model: "gpt-image-1",
                     prompt,
                     n: 1,
-                    size: sizeSel.value,
+                    size: sizeSelector.value,
                     output_format: "png",
-                    background: bgSel.value,
-                    quality: qualitySel.value,
+                    background: bgSelector.value,
+                    quality: qualitySelector.value,
                 };
                 const res = await fetch("https://api.openai.com/v1/images/generations", {
                     method: "POST",
@@ -186,24 +192,24 @@ genBtn.addEventListener("click", async () => {
                 json = await res.json();
                 if (!res.ok) throw new Error(json?.error?.message || "OpenAI error");
             } else {
-                const fd = new FormData();
-                fd.append("prompt", prompt);
-                fd.append("model", "gpt-image-1");
-                fd.append("n", "1");
-                fd.append("size", sizeSel.value);
-                fd.append("background", bgSel.value);
-                fd.append("quality", qualitySel.value);
-                fd.append("output_format", "png");
-                refFiles.forEach((f) => fd.append("image[]", f));
-                if (maskFile) fd.append("mask", maskFile);
+                const formData = new FormData();
+                formData.append("prompt", prompt);
+                formData.append("model", "gpt-image-1");
+                formData.append("n", "1");
+                formData.append("size", sizeSelector.value);
+                formData.append("background", bgSelector.value);
+                formData.append("quality", qualitySelector.value);
+                formData.append("output_format", "png");
+                referenceImages.forEach((f) => formData.append("image[]", f));
+                if (maskFile) formData.append("mask", maskFile);
 
-                const res = await fetch("https://api.openai.com/v1/images/edits", {
+                const response = await fetch("https://api.openai.com/v1/images/edits", {
                     method: "POST",
                     headers: { Authorization: `Bearer ${api_key}` },
-                    body: fd,
+                    body: formData,
                 });
-                json = await res.json();
-                if (!res.ok) throw new Error(json?.error?.message || "OpenAI error");
+                json = await response.json();
+                if (!response.ok) throw new Error(json?.error?.message || "OpenAI error");
             }
             const b64 = json.data?.[0]?.b64_json;
             if (!b64) throw new Error("No image returned from API.");
@@ -212,8 +218,8 @@ genBtn.addEventListener("click", async () => {
             output.innerHTML = `<img src="https://img.pokemondb.net/artwork/large/pikachu-hoenn-cap.jpg" />`;
         }
 
-        downloadBtn.style.display = "block";
-        downloadBtn.onclick = () => {
+        downloadButton.style.display = "block";
+        downloadButton.onclick = () => {
             const img = output.querySelector("img");
             if (!img) return;
             const url = img.src;
@@ -224,14 +230,30 @@ genBtn.addEventListener("click", async () => {
             a.click();
             document.body.removeChild(a);
         };
-        genBtn.disabled = false;
-        genBtn.textContent = "Generate";
+        generateButton.disabled = false;
+        generateButton.textContent = "Generate";
+
+        // play a sound
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        fetch("/res/sound/ping.wav")
+            .then((res) => res.arrayBuffer())
+            .then((buf) => audioContext.decodeAudioData(buf))
+            .then((decoded) => {
+                const src = audioContext.createBufferSource();
+                src.buffer = decoded;
+                src.playbackRate.value = 3.0;
+                src.connect(audioContext.destination);
+                src.start(0);
+            })
+            .catch((e) => {
+                console.error("Failed to play sound:", e);
+            });
     } catch (err) {
         console.error(err);
         output.innerHTML = "";
         showPopup(err.message, "error");
-        genBtn.disabled = false;
-        genBtn.textContent = "Generate";
+        generateButton.disabled = false;
+        generateButton.textContent = "Generate";
     }
 });
 
