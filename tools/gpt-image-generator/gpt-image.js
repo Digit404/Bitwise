@@ -144,6 +144,28 @@ function downloadImage(url) {
     document.body.removeChild(a);
 }
 
+function addHistoryItem(imageUrl, prompt, size, bg, quality) {
+    historySection.hidden = false;
+    const historyItem = document.createElement("div");
+    historyItem.className = "history-item";
+    const historyImage = document.createElement("img");
+    historyImage.src = imageUrl;
+    historyImage.alt = "Generated image";
+    historyItem.dataset.prompt = prompt;
+    historyItem.dataset.size = size;
+    historyItem.dataset.bg = bg;
+    historyItem.dataset.quality = quality;
+    historyItem.dataset.imageUrl = historyImage.src;
+
+    historyItem.appendChild(historyImage);
+    historyContainer.appendChild(historyItem);
+
+    historyItem.addEventListener("click", () => {
+        setImageSettings(historyItem.dataset.prompt, historyItem.dataset.size, historyItem.dataset.bg, historyItem.dataset.quality);
+        output.innerHTML = `<img src="${imageUrl}" />`;
+    });
+}
+
 historyTitle.addEventListener("click", () => {
     historyContainer.classList.toggle("hidden");
     historyTitle.classList.toggle("expanded");
@@ -184,11 +206,19 @@ generateButton.addEventListener("click", async () => {
         return;
     }
 
+    // disable clicking on history while generating
+    historySection.style.pointerEvents = "none";
+    historySection.classList.add("disabled");
+
     output.innerHTML = '<span style="color:#aaa;">Loading…</span>';
     const fileInputs = [...referenceContainer.querySelectorAll('input[type="file"]')];
     const referenceImages = fileInputs.map((i) => i.files[0]).filter(Boolean);
     const maskFile = maskInput.files[0] || null;
     const hasImages = referenceImages.length > 0 || maskFile;
+
+    const size = sizeSelector.value;
+    const bg = bgSelector.value;
+    const quality = qualitySelector.value;
 
     try {
         let json;
@@ -200,10 +230,10 @@ generateButton.addEventListener("click", async () => {
                     model: "gpt-image-1",
                     prompt,
                     n: 1,
-                    size: sizeSelector.value,
+                    size,
                     output_format: "png",
-                    background: bgSelector.value,
-                    quality: qualitySelector.value,
+                    background: bg,
+                    quality,
                 };
                 const res = await fetch("https://api.openai.com/v1/images/generations", {
                     method: "POST",
@@ -220,9 +250,9 @@ generateButton.addEventListener("click", async () => {
                 formData.append("prompt", prompt);
                 formData.append("model", "gpt-image-1");
                 formData.append("n", "1");
-                formData.append("size", sizeSelector.value);
-                formData.append("background", bgSelector.value);
-                formData.append("quality", qualitySelector.value);
+                formData.append("size", size);
+                formData.append("background", bg);
+                formData.append("quality", quality);
                 formData.append("output_format", "png");
                 referenceImages.forEach((f) => formData.append("image[]", f));
                 if (maskFile) formData.append("mask", maskFile);
@@ -239,6 +269,8 @@ generateButton.addEventListener("click", async () => {
             if (!b64) throw new Error("No image returned from API.");
             output.innerHTML = `<img src="data:image/png;base64,${b64}" />`;
         } else {
+            // wait for 2 seconds
+            await new Promise((resolve) => setTimeout(resolve, 2000));
             output.innerHTML = `<img src="https://img.pokemondb.net/artwork/large/pikachu-hoenn-cap.jpg" />`;
         }
 
@@ -252,32 +284,13 @@ generateButton.addEventListener("click", async () => {
 
         generateButton.disabled = false;
         generateButton.textContent = "Generate";
+        const imageUrl = output.querySelector("img").src;
 
-        // add to history
-        historySection.hidden = false;
-        const historyItem = document.createElement("div");
-        historyItem.className = "history-item";
-        const historyImage = document.createElement("img");
-        historyImage.src = output.querySelector("img").src;
-        historyImage.alt = "Generated image";
-        historyItem.dataset.prompt = prompt;
-        historyItem.dataset.size = sizeSelector.value;
-        historyItem.dataset.bg = bgSelector.value;
-        historyItem.dataset.quality = qualitySelector.value;
-        historyItem.dataset.imageUrl = historyImage.src;
+        addHistoryItem(imageUrl, prompt, size, bg, quality);
 
-        historyItem.appendChild(historyImage);
-        historyContainer.appendChild(historyItem);
-
-        historyItem.addEventListener("click", () => {
-            setImageSettings(
-                historyItem.dataset.prompt,
-                historyItem.dataset.size,
-                historyItem.dataset.bg,
-                historyItem.dataset.quality
-            );
-            output.innerHTML = `<img src="${historyItem.dataset.imageUrl}" />`;
-        });
+        // make history clickable again
+        historySection.style.pointerEvents = "auto";
+        historySection.classList.remove("disabled");
 
         // play a sound
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
