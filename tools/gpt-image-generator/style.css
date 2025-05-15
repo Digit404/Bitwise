@@ -43,7 +43,7 @@ body.dark {
     padding: 32px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 18px;
 }
 
 #header {
@@ -95,12 +95,54 @@ h3 {
     padding-top: 100%;
 }
 
-/* 16:10 */
 .slot input[type=file] {
     position: absolute;
     inset: 0;
     opacity: 0;
     cursor: pointer;
+}
+
+/* history */
+
+#history-title {
+    user-select: none;
+    cursor: pointer;
+}
+
+#history-title::before {
+    font-family: var(--font-icons);
+    content: 'expand_more';
+    display: inline-block;
+    transition: transform 0.2s;
+    font-size: 25px;
+    margin-right: 8px;
+    height: 100%;
+    vertical-align: bottom;
+}
+
+#history-title.expanded::before {
+    transform: rotate(-90deg);
+}
+
+.history-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 7px;
+    background: var(--bg);
+    box-shadow: 0 2px 8px rgba(40, 200, 60, .03);
+    transition: background .2s;
+    cursor: pointer;
+}
+
+.history-item img {
+    max-width: 100%;
+    border-radius: 7px;
+}
+
+#history.hidden {
+    display: none;
 }
 
 /* label */
@@ -109,7 +151,6 @@ h3 {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    font-size: 1.02em;
     pointer-events: none;
     user-select: none;
 }
@@ -184,7 +225,7 @@ h3 {
 
 /* prompt */
 .c-input {
-    font-size: 18px;
+    font-size: 16px;
     padding: 18px 20px;
     border: 1.5px solid transparent;
     font-family: var(--font);
@@ -272,6 +313,7 @@ h3 {
 
 #output img {
     max-width: 100%;
+    max-height: 75dvh;
     border-radius: 8px;
 }
 
@@ -298,7 +340,6 @@ h3 {
     min-height: 55px;
     box-shadow: var(--popup-shadow);
     padding: 30px 32px 18px 32px;
-    font-size: 1.16em;
     letter-spacing: .01em;
     text-align: center;
     display: flex;
@@ -338,7 +379,6 @@ h3 {
     background: var(--blue);
     color: #fff;
     border: none;
-    font-size: 1.04em;
     font-family: inherit;
     cursor: pointer;
     font-weight: 600;
@@ -361,7 +401,7 @@ h3 {
 }
 
 #popup-icon {
-    font-size: 2.3em;
+    font-size: 3em;
     margin-bottom: 2px;
     display: block;
 }

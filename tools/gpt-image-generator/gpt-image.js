@@ -12,6 +12,9 @@ const popupIcon = document.getElementById("popup-icon");
 const maskButton = document.getElementById("maskBtn");
 const maskInput = document.getElementById("maskInput");
 const output = document.getElementById("output");
+const historySection = document.getElementById("history-section");
+const historyContainer = document.getElementById("history");
+const historyTitle = document.getElementById("history-title");
 
 const maxSlots = 5;
 const testing = false;
@@ -125,6 +128,27 @@ function hidePopup() {
 }
 document.getElementById("popup-close").onclick = hidePopup;
 
+function setImageSettings(prompt, size, bg, quality) {
+    document.getElementById("prompt").value = prompt;
+    sizeSelector.value = size;
+    bgSelector.value = bg;
+    qualitySelector.value = quality;
+}
+
+function downloadImage(url) {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "gpt-image.png";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+historyTitle.addEventListener("click", () => {
+    historyContainer.classList.toggle("hidden");
+    historyTitle.classList.toggle("expanded");
+});
+
 addSlot();
 
 // mask preview
@@ -223,15 +247,37 @@ generateButton.addEventListener("click", async () => {
             const img = output.querySelector("img");
             if (!img) return;
             const url = img.src;
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "gpt-image.png";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            downloadImage(url);
         };
+
         generateButton.disabled = false;
         generateButton.textContent = "Generate";
+
+        // add to history
+        historySection.hidden = false;
+        const historyItem = document.createElement("div");
+        historyItem.className = "history-item";
+        const historyImage = document.createElement("img");
+        historyImage.src = output.querySelector("img").src;
+        historyImage.alt = "Generated image";
+        historyItem.dataset.prompt = prompt;
+        historyItem.dataset.size = sizeSelector.value;
+        historyItem.dataset.bg = bgSelector.value;
+        historyItem.dataset.quality = qualitySelector.value;
+        historyItem.dataset.imageUrl = historyImage.src;
+
+        historyItem.appendChild(historyImage);
+        historyContainer.appendChild(historyItem);
+
+        historyItem.addEventListener("click", () => {
+            setImageSettings(
+                historyItem.dataset.prompt,
+                historyItem.dataset.size,
+                historyItem.dataset.bg,
+                historyItem.dataset.quality
+            );
+            output.innerHTML = `<img src="${historyItem.dataset.imageUrl}" />`;
+        });
 
         // play a sound
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
