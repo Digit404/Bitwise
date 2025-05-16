@@ -6,157 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Generator</title>
     <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
-    <link rel="stylesheet" href="/style.css">
-    <script src="/background.js" defer></script>
-    <style>
-        .title {
-            margin-bottom: 1vh;
-        }
-
-        .subtitle {
-            margin-bottom: 5%;
-        }
-
-        .label {
-            margin-bottom: 1vh;
-            margin-top: 2vh;
-        }
-
-        .mainButton {
-            margin: 2vh 0;
-        }
-
-        .selection {
-            margin: 5px;
-            padding: 10px 15px;
-            border-radius: 10px;
-            transition: all 0.2s;
-        }
-
-        /* .selection:hover {
-            background-color: #202020;
-        } */
-        #banks {
-            position: absolute;
-            padding: 1vw;
-            font-family: "firacode";
-            font-size: 15px;
-            background-color: #101010;
-            color: white;
-            font-weight: normal;
-            border-style: solid;
-            border-width: 1px;
-            border-radius: 10px 0px 0px 10px;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        #inputBox {
-            border: 1px solid;
-            border-radius: 0px 10px 10px 10px;
-            max-width: 97%;
-        }
-
-        #outbox {
-            text-align: center;
-        }
-
-        #lengthBox {
-            width: 2em;
-            padding: 10px;
-        }
-
-        .slider {
-            width: 15vw;
-            vertical-align: center;
-            margin-bottom: 2px;
-        }
-
-        #alert {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000000a0;
-        }
-
-        #alertPopup {
-            background-color: #101010;
-            border: white 2px solid;
-            border-radius: 25px;
-            padding: 20px 50px;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-
-        #copyButton {
-            margin-bottom: 100px;
-        }
-
-        @media (max-width: 768px) {
-
-            /* Adjust breakpoint as needed */
-            #banks {
-                border-radius: 10px 10px 0 0;
-                position: relative;
-                width: 97%;
-            }
-
-            #inputBox {
-                border-radius: 0 0 10px 10px;
-                width: 97%;
-            }
-
-            .title {
-                font-size: 2em;
-            }
-
-            #lengthSlider {
-                width: 80%;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="./style.css">
+    <script src="/dark-mode.js"></script>
 </head>
 
 <body>
-    <h1 class="title">PASSWORD GENERATOR</h1>
-    <div class="label">
-        <label for="inputBox">Word Bank</label>
-    </div>
-    <div id="banks">
-        <p style="font-size:large;" onclick="Wordbank.enableAll()">Default:</p>
-    </div>
-    <textarea id="inputBox" rows="20" cols="80"></textarea>
-    <br>
-    <div>
-        <label for="lengthBox">Minimum Length:</label>
-        <input type="number" id="lengthBox" value="12">
-        <input type="range" id="lengthSlider" max="24" min="6" class="slider" value="12">
-        <button class="button mainButton" id="generateButton" onclick="generate()">GENERATE</button>
-    </div>
-    <div class="label">
-        <label for="outbox">Generated Password</label>
-    </div>
-    <textarea id="outbox"></textarea>
-    <br>
-    <p id="outLength">Length: </p>
-    <button class="button mainButton" onclick="copy()" id="copyButton">COPY</button>
-    <a id="footer" href="../">BACK</a>
-    <div id="alert" hidden>
-        <div id="alertPopup">
-            <h2 id="alertTitle">ALERT</h2>
-            <p id="alertText">[alert text]</p>
-            <button class="button mainButton" onclick="" id="alertButton">YES</button>
-            <button class="button mainButton" onclick="alertMessage.hide()" id="alertHide">NO</button>
+    <div class="container">
+        <h1 class="tool-title">Password Generator</h1>
+        <section class="wordbank-container">
+            <div id="banks">
+                <div class="bank-button" onclick="Wordbank.enableAll()">All</div>
+            </div>
+            <textarea autocomplete="off" spellcheck="false" id="input-box" rows="20" cols="80"></textarea>
+        </section>
+        <div class="length-block">
+            <label for="length-box">Minimum Length</label>
+            <input autocomplete="off" type="range" id="length-slider" class="small-slider" max="24" min="6" class="slider" value="12">
+            <input autocomplete="off" type="number" id="length-box" value="12">
+        </div>
+        <div class="button" id="generate-button" onclick="generate()">Generate</div>
+        <div id="output-container">
+            <textarea autocomplete="off" id="outbox" rows="1"></textarea>
+            <button class="button" onclick="copy()" id="copy-button">content_copy</button>
+            <span id="out-length">0</span>
         </div>
     </div>
+    <div id="popup" class="hidden">
+        <div id="popup-content">
+            <h2 id="popup-title">ALERT</h2>
+            <p id="popup-text">[alert text]</p>
+            <button class="button pill" onclick="" id="popup-action">YES</button>
+            <button class="button pill" onclick="alertMessage.hide()" id="popup-close">NO</button>
+        </div>
+    </div>
+    <a href="../" id="back-button">arrow_back</a>
     <script src="password-gen.js"></script>
 </body>
 

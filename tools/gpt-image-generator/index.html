@@ -12,35 +12,34 @@
 <body class="dark">
     <div class="container">
         <div id="header">
-            <h1>GPT Image</h1><input class="c-input" id="api-key" placeholder="API Key" type="password">
+            <h1>GPT Image</h1><input class="text-input" id="api-key" placeholder="API Key" type="password">
         </div>
-        <div class="grid" id="refs"></div>
+        <div class="grid" id="reference-container"></div>
         <div>
-            <div id="maskBtn">+ mask</div><input id="maskInput" type="file" accept="image/*">
-        </div><textarea class="c-input" id="prompt" placeholder="Prompt" rows="3"></textarea>
-        <div id="optionsBar">
-            <select class="c-select" id="sizeSel">
+            <div id="mask-button">+ mask</div><input id="mask-input" type="file" accept="image/*">
+        </div><textarea class="text-input" id="prompt" placeholder="Prompt" rows="3"></textarea>
+        <div id="options-bar">
+            <select class="option-select" id="size-select">
                 <option value="auto">Size: auto</option>
                 <option value="1024x1024">1024 &times; 1024</option>
                 <option value="1536x1024">1536 &times; 1024 (landscape)</option>
                 <option value="1024x1536">1024 &times; 1536 (portrait)</option>
             </select>
-            <select class="c-select" id="bgSel">
+            <select class="option-select" id="bg-select">
                 <option value="auto">Background: auto</option>
                 <option value="transparent">transparent</option>
                 <option value="opaque">opaque</option>
             </select>
-            <select class="c-select" id="qualitySel">
+            <select class="option-select" id="quality-select">
                 <option value="auto">Quality: auto</option>
                 <option value="high">high</option>
                 <option value="medium">medium</option>
                 <option value="low">low</option>
             </select>
-            <div id="maskBtn" style="display:none;">+ mask</div><input id="maskInput" type="file" accept="image/*">
-        </div><button class="c-btn" id="generateBtn">Generate</button>
+        </div><button class="button" id="generate-button">Generate</button>
         <section>
             <h3>Output</h3>
-            <div id="output"></div><button class="c-btn" id="downloadBtn" style="display:none;">Download Image</button>
+            <div id="output"></div><button class="button" id="download-button" style="display:none;">Download Image</button>
         </section>
         <section hidden id="history-section">
             <h3 id="history-title">History</h3>
@@ -68,4 +67,5 @@
             <button id="popup-close">OK, got it</button>
         </div>
     </div>
+    <a href="../" id="back-button">arrow_back</a>
 </body>

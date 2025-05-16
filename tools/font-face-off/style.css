@@ -147,7 +147,7 @@ input[type="text"] {
     width: calc(100% - 20px);
     padding: 8px;
     margin-bottom: 15px;
-    border: 1px solid #0003;
+    border: none;
     border-radius: 4px;
     font-size: 16px;
     font-family: var(--font);
@@ -213,7 +213,6 @@ input.web-safe-font {
     border-radius: 50%;
     cursor: pointer;
 }
-
 
 .large-slider {
     --color: var(--text-color);
@@ -303,4 +302,28 @@ input.web-safe-font {
 .output {
     font-size: 12pt;
     font-weight: 400;
+}
+
+#back-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    font-family: var(--font-icons);
+    background-color: var(--text-color);
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 24px;
+    text-decoration: none;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+}
+
+#back-button:hover {
+    background-color: var(--text-color-hover);
 }

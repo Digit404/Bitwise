@@ -10,21 +10,13 @@
     --red-hover: #b22;
     --bg: #eee;
     --fg: #fff;
+    --fg-hover: #f9f9f9;
     --text-color: #333;
     --text-color-hover: #111;
     --slot-border: #999;
     --font: "Poppins", sans-serif;
     --font-icons: "Material Symbols Rounded";
-}
-
-body {
-    margin: 0;
-    font-family: var(--font);
-    background: var(--bg);
-    display: flex;
-    justify-content: center;
-    padding: 40px;
-    color: var(--text-color);
+    --border-radius: 12px;
 }
 
 body.dark {
@@ -34,12 +26,20 @@ body.dark {
     --text-color-hover: #bbb;
 }
 
+body {
+    font-family: var(--font);
+    background: var(--bg);
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    color: var(--text-color);
+}
+
 .container {
     width: 100%;
     max-width: 960px;
     background: var(--fg);
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, .05);
+    border-radius: var(--border-radius);
     padding: 32px;
     display: flex;
     flex-direction: column;
@@ -61,13 +61,37 @@ h3 {
     width: 50%;
     padding: 12px 16px;
     border: 1.5px solid transparent;
-    border-radius: 7px;
+    border-radius: var(--border-radius);
     font-size: 14px;
     box-sizing: border-box;
     outline: none;
     transition: border .2s;
     background-color: var(--bg);
     color: var(--text-color);
+}
+
+#back-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    font-family: var(--font-icons);
+    background-color: var(--text-color);
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 24px;
+    text-decoration: none;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+}
+
+#back-button:hover {
+    background-color: var(--text-color-hover);
 }
 
 /* grid */
@@ -83,7 +107,7 @@ h3 {
     width: 100%;
     padding-top: 50%;
     border: 2px dashed var(--slot-border);
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     background-size: cover;
     background-position: center;
     color: #999;
@@ -129,9 +153,8 @@ h3 {
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    border-radius: 7px;
+    border-radius: var(--border-radius);
     background: var(--bg);
-    box-shadow: 0 2px 8px rgba(40, 200, 60, .03);
     transition: background .2s;
     cursor: pointer;
 }
@@ -142,7 +165,7 @@ h3 {
 
 .history-item img {
     max-width: 100%;
-    border-radius: 7px;
+    border-radius: var(--border-radius);
 }
 
 .disabled .history-item img {
@@ -168,7 +191,7 @@ h3 {
 }
 
 /* X btn */
-.x-btn {
+.x-button {
     display: none;
     position: absolute;
     font-family: var(--font-icons);
@@ -188,12 +211,12 @@ h3 {
     font-size: 20px;
 }
 
-.slot.filled .x-btn {
+.slot.filled .x-button {
     display: flex;
 }
 
-.x-btn:hover,
-.x-btn:focus {
+.x-button:hover,
+.x-button:focus {
     background: var(--red);
     color: #fff;
 }
@@ -209,7 +232,7 @@ h3 {
 }
 
 /* mask pill */
-#maskBtn {
+#mask-button {
     min-width: 48px;
     min-height: 32px;
     padding: 0 14px;
@@ -227,17 +250,22 @@ h3 {
     transition: border .2s;
 }
 
-#maskInput {
+#mask-button:hover {
+    border: 2px solid var(--blue);
+    color: var(--blue);
+}
+
+#mask-input {
     display: none;
 }
 
 /* prompt */
-.c-input {
+.text-input {
     font-size: 16px;
     padding: 18px 20px;
     border: 1.5px solid transparent;
     font-family: var(--font);
-    border-radius: 7px;
+    border-radius: var(--border-radius);
     width: 100%;
     box-sizing: border-box;
     outline: none;
@@ -246,44 +274,40 @@ h3 {
     color: var(--text-color);
 }
 
-.c-input:focus {
+.text-input:focus {
     border: 1.5px solid var(--blue);
 }
 
-.c-btn {
+.button {
     padding: 20px 0;
     width: 100%;
     border: none;
-    border-radius: 7px;
+    border-radius: var(--border-radius);
     background: var(--text-color);
     color: var(--bg);
     font-size: 18px;
     font-family: var(--font);
-    font-weight: 600;
-    transition: background .18s, box-shadow .18s;
+    transition: background .18s;
     cursor: pointer;
     margin-top: 8px;
-    box-shadow: 0 2px 8px rgba(40, 200, 60, .03);
 }
 
-.c-btn:hover,
-.c-btn:focus {
+.button:hover,
+.button:focus {
     background: var(--text-color-hover);
-    box-shadow: 0 4px 12px rgba(40, 200, 60, .1);
 }
 
-.c-btn:disabled {
+.button:disabled {
     background: #999;
     color: #111;
     cursor: not-allowed;
-    box-shadow: none;
 }
 
-.c-select {
+.option-select {
     font-size: 16px;
     padding: 12px 16px;
     border: 1.5px solid transparent;
-    border-radius: 7px;
+    border-radius: var(--border-radius);
     background: var(--bg);
     font-family: var(--font);
     color: var(--text-color);
@@ -291,11 +315,11 @@ h3 {
     transition: border .2s;
 }
 
-.c-select:focus {
+.option-select:focus {
     border: 1.5px solid var(--blue);
 }
 
-#optionsBar {
+#options-bar {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
@@ -304,7 +328,7 @@ h3 {
     justify-content: space-between;
 }
 
-#optionsBar select {
+#options-bar select {
     flex: 1;
 }
 
@@ -312,7 +336,7 @@ h3 {
 #output {
     width: 100%;
     min-height: 320px;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     background: var(--bg) center/64px no-repeat;
     display: flex;
     align-items: center;
@@ -322,7 +346,7 @@ h3 {
 #output img {
     max-width: 100%;
     max-height: 75dvh;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
 }
 
 /* popup */
@@ -330,37 +354,32 @@ h3 {
 #popup {
     position: fixed;
     inset: 0;
-    z-index: 99999;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(30, 39, 55, 0.18);
+    background: #0005;
     backdrop-filter: blur(1.5px);
-    transition: background .2s;
 }
 
 #popup-content {
     background: var(--fg);
-    border-radius: 12px;
-    max-width: 94vw;
-    min-width: 260px;
-    min-height: 55px;
-    box-shadow: var(--popup-shadow);
-    padding: 30px 32px 18px 32px;
-    letter-spacing: .01em;
+    border-radius: 20px;
+    max-width: 90vw;
+    min-width: 15em;
+    padding: 30px;
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 15px;
     position: relative;
-    animation: fadeInZoom .19s cubic-bezier(.44, 1.38, .17, 1.01);
+    animation: fadeInZoom .05s ease;
 }
 
 @keyframes fadeInZoom {
     0% {
-        opacity: .63;
-        transform: scale(.95);
+        opacity: .5;
+        transform: scale(.90);
     }
 
     100% {
@@ -382,15 +401,13 @@ h3 {
 
 #popup-close {
     margin: 12px auto 0 auto;
-    padding: 10px 38px 10px 38px;
-    border-radius: 7px;
+    padding: 10px 40px;
+    border-radius: var(--border-radius);
     background: var(--blue);
     color: #fff;
     border: none;
     font-family: inherit;
     cursor: pointer;
-    font-weight: 600;
-    box-shadow: 0 1.5px 6px 0 rgba(46, 78, 255, 0.09);
     transition: background .15s;
     outline: none;
 }

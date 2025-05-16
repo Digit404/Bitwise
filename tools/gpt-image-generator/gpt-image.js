@@ -1,16 +1,16 @@
-const referenceContainer = document.getElementById("refs");
-const sizeSelector = document.getElementById("sizeSel");
-const bgSelector = document.getElementById("bgSel");
-const qualitySelector = document.getElementById("qualitySel");
-const downloadButton = document.getElementById("downloadBtn");
-const generateButton = document.getElementById("generateBtn");
+const referenceContainer = document.getElementById("reference-container");
+const sizeSelector = document.getElementById("size-select");
+const bgSelector = document.getElementById("bg-select");
+const qualitySelector = document.getElementById("quality-select");
+const downloadButton = document.getElementById("download-button");
+const generateButton = document.getElementById("generate-button");
 const popup = document.getElementById("popup");
 const popupContent = document.getElementById("popup-content");
 const popupClose = document.getElementById("popup-close");
 const popupText = document.getElementById("popup-text");
 const popupIcon = document.getElementById("popup-icon");
-const maskButton = document.getElementById("maskBtn");
-const maskInput = document.getElementById("maskInput");
+const maskButton = document.getElementById("mask-button");
+const maskInput = document.getElementById("mask-input");
 const output = document.getElementById("output");
 const historySection = document.getElementById("history-section");
 const historyContainer = document.getElementById("history");
@@ -43,7 +43,7 @@ function addSlot() {
     inputElement.type = "file";
     inputElement.accept = "image/*";
     const button = document.createElement("button");
-    button.className = "x-btn";
+    button.className = "x-button";
     button.innerText = "close";
 
     slot.append(label, inputElement, button);

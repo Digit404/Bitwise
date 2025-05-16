@@ -1,45 +1,39 @@
-var outputBox = document.getElementById("outbox");
+const outputBox = document.getElementById("outbox");
 
 // wordbank
-var inputBox = document.getElementById("inputBox");
-var selectBanks = document.getElementById("banks");
+const inputBox = document.getElementById("input-box");
+const selectBanks = document.getElementById("banks");
 
 // length selector
-var lengthBox = document.getElementById("lengthBox");
-var lengthSlider = document.getElementById("lengthSlider");
+const lengthBox = document.getElementById("length-box");
+const lengthSlider = document.getElementById("length-slider");
+
+const outLength = document.getElementById("out-length");
+const copyButton = document.getElementById("copy-button");
 
 class Wordbank {
-    static banks = []
+    static banks = [];
 
     constructor(words, buttonID) {
         this.words = words;
         this.isActive = false;
 
-        // add button to 
-        this.button = document.createElement('p')
-        this.button.className = "selection"
-        this.button.innerHTML = buttonID
-        this.button.onclick = this.toggle.bind(this)
-        selectBanks.appendChild(this.button)
+        // add button to
+        this.button = document.createElement("p");
+        this.button.className = "bank-button";
+        this.button.innerText = buttonID;
+        this.button.onclick = this.toggle.bind(this);
+        selectBanks.appendChild(this.button);
 
         Wordbank.banks.push(this);
     }
 
     /**
      * Toggles wordbank
-     * @param {boolean} ignore Ignores errors, optional
      */
-    toggle(ignore) {
-        if (inputBox.value != Wordbank.allWords().join(", ") && ignore != true) {
-            replaceAlert.buttonAction = this.toggle.bind(this, true)
-            replaceAlert.show();
-            return;
-        } else if (ignore === true) {
-            alertMessage.hide();
-        }
+    toggle() {
         this.isActive = !this.isActive;
-        this.button.style.backgroundColor = this.isActive ? "white" : "#101010";
-        this.button.style.color = this.isActive ? "#101010" : "white";
+        this.button.classList.toggle("active");
         updateInputBox();
     }
 
@@ -69,8 +63,8 @@ class Wordbank {
      * Enables all banks, unless all banks are inactive then it disables all
      */
     static enableAll() {
-        if (Wordbank.banks.every(bank => bank.isActive)) {
-            Wordbank.banks.forEach(bank => bank.toggle());
+        if (Wordbank.banks.every((bank) => bank.isActive)) {
+            Wordbank.banks.forEach((bank) => bank.toggle());
         } else {
             for (let bank of Wordbank.banks) {
                 if (!bank.isActive) {
@@ -83,12 +77,11 @@ class Wordbank {
 
 // alert template
 class alertMessage {
-
-    static container = document.getElementById("alert");
-    static actionButton = document.getElementById("alertButton");
-    static hideButton = document.getElementById("alertHide");
-    static title = document.getElementById("alertTitle");
-    static body = document.getElementById("alertText");
+    static container = document.getElementById("popup");
+    static actionButton = document.getElementById("popup-action");
+    static hideButton = document.getElementById("popup-close");
+    static title = document.getElementById("popup-title");
+    static body = document.getElementById("popup-text");
 
     constructor(titleText, bodyText, hasButton, buttonAction) {
         // the title of the alert
@@ -108,104 +101,283 @@ class alertMessage {
             this.buttonText = "YES";
             this.hideText = "NO";
         } else {
-            this.hideText = "OK"
+            this.hideText = "OK";
         }
     }
 
     show() {
         // set text
-        alertMessage.title.innerHTML = this.titleText;
-        alertMessage.body.innerHTML = this.bodyText;
-        alertMessage.hideButton.innerHTML = this.hideText;
+        alertMessage.title.innerText = this.titleText;
+        alertMessage.body.innerText = this.bodyText;
+        alertMessage.hideButton.innerText = this.hideText;
 
         if (this.hasButton) {
             alertMessage.actionButton.hidden = false;
-            alertMessage.actionButton.innerHTML = this.buttonText;
+            alertMessage.actionButton.innerText = this.buttonText;
             alertMessage.actionButton.onclick = this.buttonAction;
         } else {
             alertMessage.actionButton.hidden = true;
         }
 
         // show popup
-        alertMessage.container.hidden = false;
+        alertMessage.container.classList.remove("hidden");
     }
 
-
     static hide() {
-        alertMessage.container.hidden = true;
+        alertMessage.container.classList.add("hidden");
     }
 }
 
 // alert messages
 
 // used if user tries to replace what's in the box
-var replaceAlert = new alertMessage("WAIT!", "The box has been edited. Replace what's there?", true);
+const replaceAlert = new alertMessage("WAIT!", "The box has been edited. Replace what's there?", true);
 // used if user tries to generate a password with nothing in the box
-var emptyAlert = new alertMessage("OOPS!", "Word bank empty!");
+const emptyAlert = new alertMessage("OOPS!", "Word bank empty!");
 // used if program fails to generate a password of target length
-var lengthAlert = new alertMessage("SORRY!", "We couldn't find a combination of words that met the length requirements. Try more words or a different target length");
+const lengthAlert = new alertMessage("SORRY!", "We couldn't find a combination of words that met the length requirements. Try more words or a different target length");
 
 // wordbanks
-var elements = new Wordbank(
+const elements = new Wordbank(
     [
-        "hydrogen", "helium", "lithium", "beryllium", "boron", "carbon", "nitrogen", "oxygen", "fluorine", "neon",
-        "sodium", "magnesium", "aluminum", "silicon", "phosphorus", "sulfur", "chlorine", "argon", "potassium",
-        "calcium", "scandium", "titanium", "vanadium", "chromium", "manganese", "cobalt", "nickel", "copper",
-        "zinc", "gallium", "germanium", "arsenic", "selenium", "bromine", "krypton", "cadmium", "iodine", "xenon",
-        "tungsten", "osmium", "iridium", "mercury", "thallium", "bismuth", "polonium", "radon", "radium", "thorium",
-        "uranium", "neptunium", "plutonium", "americium"
-    ], "Elements"
+        "hydrogen",
+        "helium",
+        "lithium",
+        "beryllium",
+        "boron",
+        "carbon",
+        "nitrogen",
+        "oxygen",
+        "fluorine",
+        "neon",
+        "sodium",
+        "magnesium",
+        "aluminum",
+        "silicon",
+        "phosphorus",
+        "sulfur",
+        "chlorine",
+        "argon",
+        "potassium",
+        "calcium",
+        "scandium",
+        "titanium",
+        "vanadium",
+        "chromium",
+        "manganese",
+        "cobalt",
+        "nickel",
+        "copper",
+        "zinc",
+        "gallium",
+        "germanium",
+        "arsenic",
+        "selenium",
+        "bromine",
+        "krypton",
+        "cadmium",
+        "iodine",
+        "xenon",
+        "tungsten",
+        "osmium",
+        "iridium",
+        "mercury",
+        "thallium",
+        "bismuth",
+        "polonium",
+        "radon",
+        "radium",
+        "thorium",
+        "uranium",
+        "neptunium",
+        "plutonium",
+        "americium",
+    ],
+    "Elements"
 );
 
-var moons = new Wordbank(
+const moons = new Wordbank(
     [
-        "luna", "phobos", "deimos", "europa", "ganymede", "callisto", "mimas", "enceladus", "tethys", "dione",
-        "rhea", "titan", "hyperion", "iapetus", "phoebe", "ariel", "umbriel", "oberon", "miranda", "triton",
-        "nereid", "vanth", "charon"
-    ], "Moons"
+        "luna",
+        "phobos",
+        "deimos",
+        "europa",
+        "ganymede",
+        "callisto",
+        "mimas",
+        "enceladus",
+        "tethys",
+        "dione",
+        "rhea",
+        "titan",
+        "hyperion",
+        "iapetus",
+        "phoebe",
+        "ariel",
+        "umbriel",
+        "oberon",
+        "miranda",
+        "triton",
+        "nereid",
+        "vanth",
+        "charon",
+    ],
+    "Moons"
 );
 
-var mythology = new Wordbank(
+const mythology = new Wordbank(
     [
-        'zeus', 'jupiter', 'juno', 'poseidon', 'neptune', 'kronos', 'saturn', 'aphrodite', 'venus', 'pluto',
-        'vulcan', 'demeter', 'apollo', 'athena', 'artemis', 'ares', 'mars', 'hermes', 'mercury', 'gaia', 'terra', 'uranus',
-        'aurora', 'luna', 'helios', 'sol', 'hercules', 'odysseus', 'ulysses', 'atlas', 'boreas', 'castor', 'chronos', 'hermes',
-        'kratos', 'morpheus', 'pollux', 'tartarus'
-    ], "Mythology"
-)
+        "zeus",
+        "jupiter",
+        "juno",
+        "poseidon",
+        "neptune",
+        "kronos",
+        "saturn",
+        "aphrodite",
+        "venus",
+        "pluto",
+        "vulcan",
+        "demeter",
+        "apollo",
+        "athena",
+        "artemis",
+        "ares",
+        "mars",
+        "hermes",
+        "mercury",
+        "gaia",
+        "terra",
+        "uranus",
+        "aurora",
+        "luna",
+        "helios",
+        "sol",
+        "hercules",
+        "odysseus",
+        "ulysses",
+        "atlas",
+        "boreas",
+        "castor",
+        "chronos",
+        "hermes",
+        "kratos",
+        "morpheus",
+        "pollux",
+        "tartarus",
+    ],
+    "Mythology"
+);
 
-var astrology = new Wordbank(
-    [
-        "aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces", 
-        "zodiac"
-    ], "Astrology"
-)
+const astrology = new Wordbank(["aries", "taurus", "gemini", "cancer", "leo", "virgo", "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces", "zodiac"], "Astrology");
 
-var geography = new Wordbank(
+const geography = new Wordbank(
     [
-        "himalayas", "andes", "caucasus", "appalachia", "ural", "alpine", "apennines", "cascade", "sierra", "carpathian",
-        "yellowstone", "sahara", "mohave", "everest", "amazon", "nile", "kilimanjaro", "taiga", "alaska", "yukon", "fuji", "etna",
-        "sinai", "danube", "tundra", "siberia", "corsica", "sicily", "borneo", "tahiti", "caspian", "tigris", "euphrates", "crete",
-        "rhine", "elbrus", "olympus", "negev", "gobi", "mississippi", "yosemite", "ibeza"
-    ], "Geography"
-)
+        "himalayas",
+        "andes",
+        "caucasus",
+        "appalachia",
+        "ural",
+        "alpine",
+        "apennines",
+        "cascade",
+        "sierra",
+        "carpathian",
+        "yellowstone",
+        "sahara",
+        "mohave",
+        "everest",
+        "amazon",
+        "nile",
+        "kilimanjaro",
+        "taiga",
+        "alaska",
+        "yukon",
+        "fuji",
+        "etna",
+        "sinai",
+        "danube",
+        "tundra",
+        "siberia",
+        "corsica",
+        "sicily",
+        "borneo",
+        "tahiti",
+        "caspian",
+        "tigris",
+        "euphrates",
+        "crete",
+        "rhine",
+        "elbrus",
+        "olympus",
+        "negev",
+        "gobi",
+        "mississippi",
+        "yosemite",
+        "ibeza",
+    ],
+    "Geography"
+);
 
-var cities = new Wordbank (
+const cities = new Wordbank(
     [
-        "amsterdam", "cairo", "dublin", "florence", "geneva", "havana", "istanbul", "kyoto", "tokyo", "lisbon", "marrakech", 
-        "oslo", "paris", "quito", "rome", "vienna", "warsaw", "brussels", "detroit", "glasgow", "moscow", "prague", "quebec", 
-        "budapest", "copenhagen", "denver", "hiroshima", "jerusalem", "munich", "orlando", "perth", "vancouver", "toronto", 
-        "odessa", "brisbane", "lubbock", "houston", "austin", "boston", "jericho", "laredo", "cleveland", "philadelphia", 
-        "nashville", "oxford", "albuquerque", "seoul", "berlin"
+        "amsterdam",
+        "cairo",
+        "dublin",
+        "florence",
+        "geneva",
+        "havana",
+        "istanbul",
+        "kyoto",
+        "tokyo",
+        "lisbon",
+        "marrakech",
+        "oslo",
+        "paris",
+        "quito",
+        "rome",
+        "vienna",
+        "warsaw",
+        "brussels",
+        "detroit",
+        "glasgow",
+        "moscow",
+        "prague",
+        "quebec",
+        "budapest",
+        "copenhagen",
+        "denver",
+        "hiroshima",
+        "jerusalem",
+        "munich",
+        "orlando",
+        "perth",
+        "vancouver",
+        "toronto",
+        "odessa",
+        "brisbane",
+        "lubbock",
+        "houston",
+        "austin",
+        "boston",
+        "jericho",
+        "laredo",
+        "cleveland",
+        "philadelphia",
+        "nashville",
+        "oxford",
+        "albuquerque",
+        "seoul",
+        "berlin",
     ],
     "Cities"
-)
+);
 
 // elements start on
 elements.toggle();
 
 // some wildcard characters to spice up the password
-var wildcards = ["!", "@", "#", "$", "%", "^", "&", "*", "?", "+"]
+const wildcards = ["!", "@", "#", "$", "%", "^", "&", "*", "?", "+"];
 
 /**
  * Generates a random integer in range (Inclusive)
@@ -255,7 +427,7 @@ function charReplace(string) {
     }
     if (string.slice(-1) === "o" && spin(2, 3)) {
         return charReplace(string.slice(0, -1)) + "0";
-    } else if (string.slice(-1) === 'i' && spin(2, 3)) {
+    } else if (string.slice(-1) === "i" && spin(2, 3)) {
         return charReplace(string.slice(0, -1)) + "1";
     } else {
         return charReplace(string.slice(0, -1)) + (spin(1, 2) ? string.slice(-1).toLowerCase() : string.slice(-1).toUpperCase());
@@ -266,16 +438,15 @@ function charReplace(string) {
  * Generates the password. Pulls random word from bank, randomizes the capitalization, adds numbers and a symbol.
  */
 function generate() {
-    // Lets the user know the length of the generated password:
-    let outLength = document.getElementById("outLength");
+    // Lets the user know the length of the generated password
 
     // set to target length - 3 to leave room for numbers and wildcard
     let length = lengthBox.value - 3;
 
     // init generated password
-    let genPass = ""
+    let genPass = "";
 
-    // if wordbank is empty 
+    // if wordbank is empty
     if (randWord() === "") {
         emptyAlert.show();
         return;
@@ -288,13 +459,12 @@ function generate() {
 
         // if it meets requirements, within 2 of the target length
         if (Math.abs(genPass.length - length) <= 2) {
-            console.log("Iterations: " + i);
             break;
         }
 
         // if it is too long and you haven't tried 255 times, start over
         if (genPass.length > length + 2 && i < 255) {
-            genPass = '';
+            genPass = "";
         }
 
         // if you have tried 255 times show an alert
@@ -331,42 +501,32 @@ function generate() {
     }
 
     // add a wildcard
-    genPass += wildcards[randomInt(0, wildcards.length - 1)]
+    genPass += wildcards[randomInt(0, wildcards.length - 1)];
 
     // update length indicator
-    outLength.innerHTML = "Length: " + genPass.length;
+    outLength.innerText = genPass.length;
 
     // output password
     outputBox.value = genPass;
-};
+}
 
 function updateInputBox() {
-    inputBox.value = Wordbank.allWords().join(', ');
-};
+    inputBox.value = Wordbank.allWords().join(", ");
+}
 
 /**
  * Copy function for copying the text to clipboard
-*/
+ */
 function copy() {
     navigator.clipboard.writeText(outputBox.value);
-    document.getElementById("copyButton").innerHTML = "COPIED!";
+    copyButton.innerText = "check";
 
     setTimeout(function () {
-        document.getElementById("copyButton").innerHTML = "COPY";
+        copyButton.innerText = "content_copy";
     }, 3000); // Change the text back to "COPY" after 3000 milliseconds (3 second)
-};
+}
 
 window.copy = copy;
-
-// Intervals
-
-function resize() {
-    if (window.innerWidth >= 768) {
-        selectBanks.style.left = (inputBox.offsetLeft - selectBanks.offsetWidth + 1) + "px";
-    }
-};
-
-setInterval(resize, 10);
 
 // Listeners
 
