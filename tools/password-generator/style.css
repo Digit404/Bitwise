@@ -299,6 +299,10 @@ body {
     background-color: var(--green);
 }
 
+#copy-button.check:hover {
+    background-color: var(--green-hover);
+}
+
 /* scrollbar */
 
 ::-webkit-scrollbar {
