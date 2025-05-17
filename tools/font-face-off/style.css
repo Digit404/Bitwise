@@ -8,14 +8,18 @@
     --border-radius: 10px;
 
     --text-color: #333;
+    --text-color-hover: #111;
     --bg: #eee;
     --fg: #fff;
+    --fg-hover: #ddd;
 }
 
 .dark {
     --bg: #111;
     --fg: #222;
+    --fg-hover: #333;
     --text-color: #eee;
+    --text-color-hover: #bbb;
 }
 
 body {
@@ -101,7 +105,8 @@ body.dark .ql-toolbar.ql-snow * {
 }
 
 .controls-container button:hover {
-    background-color: var(--bg);
+    background-color: var(--fg-hover);
+    box-shadow: 0 2px 5px transparent;
 }
 
 .control {
@@ -185,7 +190,7 @@ input.web-safe-font {
 
 .small-slider::-webkit-slider-runnable-track {
     height: 8px;
-    background: #ddd;
+    background: var(--bg);
     border-radius: 4px;
 }
 
@@ -201,7 +206,7 @@ input.web-safe-font {
 
 .small-slider::-moz-range-track {
     height: 8px;
-    background: #ddd;
+    background: var(--bg);
     border-radius: 4px;
 }
 
@@ -229,7 +234,7 @@ input.web-safe-font {
 }
 
 .large-slider:hover {
-    --color: color-mix(in srgb, var(--text-color), var(--fg) 10%);
+    --color: var(--text-color-hover);
 }
 
 .large-slider::-webkit-slider-runnable-track {

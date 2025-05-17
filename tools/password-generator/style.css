@@ -3,14 +3,14 @@
 
 :root {
     --green: #4e7;
-    --green-hover: #2b7;
+    --green-hover: #1b4;
     --blue: #47e;
     --blue-hover: #25c;
     --red: #e44;
     --red-hover: #b22;
     --bg: #eee;
     --fg: #fff;
-    --fg-hover: #f9f9f9;
+    --fg-hover: #ddd;
     --text-color: #333;
     --text-color-hover: #111;
     --font: "Poppins", sans-serif;
@@ -25,13 +25,14 @@
 body.dark {
     --bg: #111;
     --fg: #222;
+    --fg-hover: #333;
     --text-color: #fff;
     --text-color-hover: #bbb;
 }
 
 body {
     font-family: var(--font);
-    background: var(--bg);
+    background-color: var(--bg);
     display: flex;
     justify-content: center;
     padding-top: 40px;
@@ -48,7 +49,7 @@ body {
 .container {
     width: 100%;
     max-width: 960px;
-    background: var(--fg);
+    background-color: var(--fg);
     border-radius: var(--border-radius);
     padding: 32px;
     display: flex;
@@ -74,6 +75,7 @@ body {
     padding: 0;
     border: none;
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 #back-button:hover {
@@ -89,7 +91,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #0005;
+    background-color: #0005;
     backdrop-filter: blur(1.5px);
 }
 
@@ -98,7 +100,7 @@ body {
 }
 
 #popup-content {
-    background: var(--fg);
+    background-color: var(--fg);
     border-radius: 20px;
     max-width: 30vw;
     min-width: 15em;
@@ -155,6 +157,7 @@ body {
     align-items: center;
     justify-content: center;
     flex: 1;
+    transition: background-color 0.2s ease;
 }
 
 .bank-button:nth-of-type(0) {
@@ -167,7 +170,7 @@ body {
 }
 
 .bank-button:hover {
-    background-color: var(--bg);
+    background-color: var(--fg-hover);
 }
 
 .bank-button.active:hover {
@@ -222,13 +225,14 @@ body {
     padding: 20px 40px;
     border: none;
     border-radius: var(--border-radius);
-    background: var(--text-color);
+    background-color: var(--text-color);
     color: var(--bg);
     font-size: 18px;
     font-family: var(--font);
     cursor: pointer;
     text-align: center;
     user-select: none;
+    transition: background-color 0.2s ease;
 }
 
 .button.main {
@@ -240,7 +244,7 @@ body {
 }
 
 .button:hover {
-    background: var(--text-color-hover);
+    background-color: var(--text-color-hover);
 }
 
 /* output */
@@ -288,6 +292,11 @@ body {
     padding: 0;
     height: 100%;
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    transition: background-color 0.2s ease;
+}
+
+#copy-button.check {
+    background-color: var(--green);
 }
 
 /* scrollbar */
@@ -298,12 +307,12 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: #0000;
+    background-color: #0000;
     cursor: auto;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--text-color-hover);
+    background-color: var(--text-color-hover);
     border-radius: 5px;
     width: 3px;
     transition: all 0.3s;
@@ -312,7 +321,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--text-color);
+    background-color: var(--text-color);
 }
 
 textarea::-webkit-resizer,
@@ -329,7 +338,7 @@ textarea::-webkit-resizer,
 .small-slider {
     -webkit-appearance: none;
     appearance: none;
-    background: transparent;
+    background-color: transparent;
 }
 
 .small-slider:focus {
@@ -338,41 +347,42 @@ textarea::-webkit-resizer,
 
 .small-slider::-webkit-slider-runnable-track {
     height: 8px;
-    background: var(--bg);
+    background-color: var(--bg);
     border-radius: 4px;
 }
 
 .small-slider::-webkit-slider-thumb {
     width: 16px;
     height: 16px;
-    background: var(--text-color);
+    background-color: var(--text-color);
     border-radius: 50%;
     cursor: pointer;
     -webkit-appearance: none;
     margin-top: -4px;
+    transition: background-color 0.2s ease;
 }
 
 .small-slider::-moz-range-thumb:hover {
-    background: var(--text-color-hover);
+    background-color: var(--text-color-hover);
 }
 
 .small-slider::-moz-range-track {
     height: 8px;
-    background: var(--bg);
+    background-color: var(--bg);
     border-radius: 4px;
 }
 
 .small-slider::-moz-range-thumb {
     width: 16px;
     height: 16px;
-    background: var(--text-color);
+    background-color: var(--text-color);
     border: none;
     border-radius: 50%;
     cursor: pointer;
 }
 
 .small-slider::-moz-range-thumb:hover {
-    background: var(--text-color-hover);
+    background-color: var(--text-color-hover);
 }
 
 @media (max-width: 600px) {
