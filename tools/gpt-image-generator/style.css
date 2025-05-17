@@ -19,6 +19,10 @@
     --border-radius: 12px;
 }
 
+* {
+    margin: 0;
+}
+
 body.dark {
     --bg: #111;
     --fg: #222;

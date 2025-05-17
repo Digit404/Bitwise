@@ -1,0 +1,77 @@
+:root {
+    --bg: #eee;
+    --off-color: #333;
+    --on-color: #fff;
+
+    --border-radius: 2em;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    gap: 5em;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--bg);
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+    border-radius: var(--border-radius);
+    box-shadow: -20px -20px 40px #fff;
+}
+
+#grid .cell {
+    width: 10em;
+    height: 10em;
+    background-color: var(--off-color);
+    transition: all 0.5s ease;
+    box-shadow: inset 24px 24px 24px #000a,
+        0 0 0 #0000;
+}
+
+#grid .cell.on {
+    background-color: var(--on-color);
+    box-shadow: inset 0 0 0 #0000,
+        20px 20px 40px #0002;
+}
+
+.cell:nth-child(1) {
+    border-radius: var(--border-radius) 0 0 0;
+}
+
+.cell:nth-child(3) {
+    border-radius: 0 var(--border-radius) 0 0;
+}
+
+.cell:nth-child(7) {
+    border-radius: 0 0 0 var(--border-radius);
+}
+
+.cell:nth-child(9) {
+    border-radius: 0 0 var(--border-radius) 0;
+}
+
+.pattern-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    border-radius: var(--border-radius);
+    box-shadow: -5px -5px 10px #fff,
+        5px 5px 10px #0002;
+    --border-radius: 1em;
+}
+
+.pattern-grid>.cell {
+    width: 2em;
+    height: 2em;
+    background-color: var(--off-color);
+}
+
+.pattern-grid>.cell.on {
+    background-color: var(--on-color);
+}

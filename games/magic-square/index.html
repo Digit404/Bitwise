@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Square</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="pattern-grid">
+        <div class="cell"></div>
+        <div class="cell on"></div>
+        <div class="cell"></div>
+        <div class="cell on"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell on"></div>
+        <div class="cell"></div>
+    </div>
+    <div id="grid">
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+    </div>
+</body>
+<script>
+    const cells = document.querySelectorAll('.cell');
+
+    for (let cell of cells) {
+        cell.addEventListener('click', function () {
+            cell.classList.toggle('on');
+        });
+    }
+</script>
+
+</html>
