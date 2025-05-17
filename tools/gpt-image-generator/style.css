@@ -59,6 +59,7 @@ body {
 h1,
 h3 {
     user-select: none;
+    font-weight: 400;
 }
 
 #header input {
