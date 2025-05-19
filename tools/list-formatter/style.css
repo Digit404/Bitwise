@@ -52,6 +52,7 @@ body {
 
 textarea {
     height: 200px;
+    font-size: 16px;
     padding: 16px;
     border: none;
     outline: none;
