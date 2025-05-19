@@ -6,98 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List Maker</title>
     <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
-    <link rel="stylesheet" href="/style.css">
-    <script src="/background.js" defer></script>
-    <style>
-        .title {
-            margin-bottom: 5vh;
-        }
-
-        .option-block {
-            margin: 5vh;
-        }
-
-        .options {
-            margin: 1vh;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        .mainButton {
-            margin: 5vh;
-        }
-
-        .checkbox {
-            height: 20px;
-            width: 20px;
-            vertical-align: text-bottom;
-            outline: none;
-        }
-
-        #delimiters {
-            vertical-align: middle;
-            outline: none;
-            border: none;
-        }
-
-        .disabled {
-            opacity: 0.5;
-        }
-
-        input {
-            font-family: "firacode";
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="./style.css">
+    <script src="/dark-mode.js"></script>
 </head>
 
 <body>
-    <h1 class="title">LIST MAKER</h1>
-    <div class="label">
-        <label>Input</label>
-    </div>
-    <textarea id="input" rows="20" cols="100"></textarea>
-    <div class="option-block">
-        <div class="options">
-            <input type="checkbox" id="multiline" class="checkbox">
-            <label for="multiline" title="Tabbed multiline list">Multiline Output</label>
-            <input type="checkbox" id="quotes" class="checkbox">
-            <label for="quotes" title="Put quotes around everything">Quotes</label>
-            <input type="checkbox" id="checkAdv" class="checkbox">
-            <label for="checkAdv" title="Advanced options">Advanced Options</label>
+    <div class="container">
+        <h1 class="tool-title">List Formatter</h1>
+        <textarea id="input" rows="20" cols="100"></textarea>
+        <div class="option-block">
+            <div class="options-container">
+                <div class="checkbox-group">
+                    <div title="Tabbed multiline list" class="option-checkbox" id="multiline-check"> Multiline Output
+                    </div>
+                    <div title="Multiline wrap after 80 characters" class="option-checkbox disabled"
+                        id="word-wrap-check"> Word Wrap </div>
+                </div>
+                <div class="checkbox-group">
+                    <div title="Put quotes around everything" class="option-checkbox" id="quotes-check"> Quotes </div>
+                    <div title="Exclude quotes around numbers" class="option-checkbox disabled" id="raw-check"> Raw
+                        Numbers </div>
+                </div>
+            </div>
+            <div class="options-container">
+                <div class="delimiter-option">
+                    <label id="in-delim-check" for="in-delim-box">Input Delimiters</label>
+                    <div class="button help-button"
+                        title='Additional characters that split list. Newline and "," are default. Separate delimiters with "|"'>
+                        ?</div>
+                    <input type="text" id="in-delim-box" class="delimiter-input">
+                </div>
+                <div class="delimiter-option">
+                    <label for="out-delim-box">Output Delimiter</label>
+                    <div class="button help-button" title='Delimiter characters in the output'> ?</div>
+                    <input type="text" id="out-delim-box" value=",&nbsp" class="delimiter-input">
+                </div>
+            </div>
         </div>
-        <div class="options" id="advOptions" style="display: none;">
-            <input type="checkbox" id="wordWrap" class="checkbox" style="opacity: 0.5;" disabled>
-            <label for="wordWrap" title="Multiline wrap after 80 characters">Word Wrap</label>
-            <input type="checkbox" id="numQuote" class="checkbox" style="opacity: 0.5;" disabled>
-            <label for="numQuote" title="Exclude quotes around numbers">Raw Numbers</label>
-            <input type="checkbox" class="checkbox" id="showDelimCheck">
-            <label for="showDelimCheck" title="Show extra delimiter options">Show Delimiter Options</label>
+        <div class="out-list">
+            <textarea id="output" rows="20" cols="100" readonly></textarea>
+            <button class="button" onclick="copy()" id="copy-button">content_copy</button>
         </div>
-        <div class="options" id="delimOptions" style="display:none;">
-            <label
-                title='Additional characters that split list. Newline and "," are default. Separate delimiters with "|"'>Extra
-                Delimiters</label>
-            <input type="text" id="inputDelimBox" style="width: 50px;">
-            <label for="outDelimBox" title="Delimiter characters in the output">Output Delimiter</label>
-            <input type="text" id="outDelimBox" value=",&nbsp" style="width: 50px;">
-        </div>
+        <script src="list-maker.js" type="module"></script>
     </div>
-    <div class="label">
-        <label>Output</label>
-    </div>
-    <div>
-        <textarea id="output" rows="20" cols="100" readonly></textarea>
-        <br>
-        <button class="button mainButton" onclick="copy()" id="copyButton">COPY</button>
-    </div>
-    <script src="list-maker.js" type="module"></script>
-    <a id="footer" href="../">BACK</a>
-
+    <a href="../" id="back-button">arrow_back</a>
 </body>
 
 </html>
