@@ -1,15 +1,16 @@
 <!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPT Image Generator</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
     <script src="/dark-mode.js"></script>
     <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
 </head>
 
-<body class="dark">
+<body>
     <div class="container">
         <div id="header">
             <h1>GPT Image</h1><input class="text-input" id="api-key" placeholder="API Key" type="password">
@@ -39,7 +40,8 @@
         </div><button class="button" id="generate-button">Generate</button>
         <section>
             <h3>Output</h3>
-            <div id="output"></div><button class="button" id="download-button" style="display:none;">Download Image</button>
+            <div id="output"></div><button class="button" id="download-button" style="display:none;">Download
+                Image</button>
         </section>
         <section hidden id="history-section">
             <h3 id="history-title">History</h3>

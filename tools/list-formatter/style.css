@@ -18,8 +18,12 @@
     --border-radius: 12px;
 }
 
-* {
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
     margin: 0;
+    transition: background 0.2s;
 }
 
 body.dark {
@@ -35,19 +39,19 @@ body {
     background-color: var(--bg);
     display: flex;
     justify-content: center;
-    padding: 40px 0;
+    padding: 40px;
     color: var(--text-color);
 }
 
 .container {
     width: 100%;
     max-width: 960px;
-    background-color: var(--fg);
+    background: var(--fg);
     border-radius: var(--border-radius);
     padding: 32px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 18px;
 }
 
 textarea {
