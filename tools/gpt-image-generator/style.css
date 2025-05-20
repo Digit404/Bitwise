@@ -1,58 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bitter&family=Poppins&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
-
-:root {
-    --green: #4e7;
-    --green-hover: #2b7;
-    --blue: #47e;
-    --blue-hover: #25c;
-    --red: #e44;
-    --red-hover: #b22;
-    --bg: #eee;
-    --fg: #fff;
-    --fg-hover: #f9f9f9;
-    --text-color: #333;
-    --text-color-hover: #111;
-    --slot-border: #999;
-    --font: "Poppins", sans-serif;
-    --font-icons: "Material Symbols Rounded";
-    --border-radius: 12px;
-}
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    margin: 0;
-    transition: background 0.2s;
-}
-
-body.dark {
-    --bg: #111;
-    --fg: #222;
-    --text-color: #fff;
-    --text-color-hover: #bbb;
-}
-
-body {
-    font-family: var(--font);
-    background: var(--bg);
-    display: flex;
-    justify-content: center;
-    padding: 40px;
-    color: var(--text-color);
-}
-
-.container {
-    width: 100%;
-    max-width: 960px;
-    background: var(--fg);
-    border-radius: var(--border-radius);
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-}
+@import url("/tools/common.css");
 
 #header {
     display: flex;
@@ -73,7 +19,7 @@ h3 {
     font-size: 14px;
     outline: none;
     transition: border .2s;
-    background-color: var(--bg);
+    background-color: var(--bg-color);
     color: var(--text-color);
 }
 
@@ -85,7 +31,7 @@ h3 {
     height: 50px;
     font-family: var(--font-icons);
     background-color: var(--text-color);
-    color: var(--bg);
+    color: var(--bg-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -113,11 +59,11 @@ h3 {
     position: relative;
     width: 100%;
     padding-top: 50%;
-    border: 2px dashed var(--slot-border);
+    border: 2px dashed var(--half-color);
     border-radius: var(--border-radius);
     background-size: cover;
     background-position: center;
-    color: #999;
+    color: var(--half-color);
     overflow: hidden;
     transition: padding-top .2s, transform .15s;
 }
@@ -135,33 +81,13 @@ h3 {
 
 /* history */
 
-#history-title {
-    user-select: none;
-    cursor: pointer;
-}
-
-#history-title::before {
-    font-family: var(--font-icons);
-    content: 'expand_more';
-    display: inline-block;
-    transition: transform 0.2s;
-    font-size: 25px;
-    margin-right: 8px;
-    height: 100%;
-    vertical-align: bottom;
-}
-
-#history-title.expanded::before {
-    transform: rotate(-90deg);
-}
-
 .history-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
     border-radius: var(--border-radius);
-    background: var(--bg);
+    background: var(--bg-color);
     transition: background .2s;
     cursor: pointer;
 }
@@ -177,10 +103,6 @@ h3 {
 
 .disabled .history-item img {
     opacity: 0.5;
-}
-
-#history.hidden {
-    display: none;
 }
 
 /* label */
@@ -211,7 +133,7 @@ h3 {
     border-radius: 50%;
     cursor: pointer;
     background: color-mix(in srgb, var(--text-color), transparent 50%);
-    color: var(--bg);
+    color: var(--bg-color);
     transition: background .15s;
     justify-content: center;
     align-items: center;
@@ -243,7 +165,7 @@ h3 {
     min-width: 48px;
     min-height: 32px;
     padding: 0 14px;
-    border: 2px dashed var(--slot-border);
+    border: 2px dashed var(--half-color);
     border-radius: 16px;
     display: inline-flex;
     align-items: center;
@@ -251,7 +173,7 @@ h3 {
     color: #999;
     font-size: 14px;
     cursor: pointer;
-    background: var(--fg);
+    background: var(--fg-color);
     background-size: cover;
     background-position: center;
     transition: border .2s;
@@ -275,52 +197,11 @@ h3 {
     border-radius: var(--border-radius);
     outline: none;
     transition: border .2s;
-    background: var(--bg);
+    background: var(--bg-color);
     color: var(--text-color);
 }
 
 .text-input:focus {
-    border: 1.5px solid var(--blue);
-}
-
-.button {
-    padding: 20px 0;
-    width: 100%;
-    border: none;
-    border-radius: var(--border-radius);
-    background: var(--text-color);
-    color: var(--bg);
-    font-size: 18px;
-    font-family: var(--font);
-    transition: background .18s;
-    cursor: pointer;
-    margin-top: 8px;
-}
-
-.button:hover,
-.button:focus {
-    background: var(--text-color-hover);
-}
-
-.button:disabled {
-    background: #999;
-    color: #111;
-    cursor: not-allowed;
-}
-
-.option-select {
-    font-size: 16px;
-    padding: 12px 16px;
-    border: 1.5px solid transparent;
-    border-radius: var(--border-radius);
-    background: var(--bg);
-    font-family: var(--font);
-    color: var(--text-color);
-    outline: none;
-    transition: border .2s;
-}
-
-.option-select:focus {
     border: 1.5px solid var(--blue);
 }
 
@@ -342,7 +223,7 @@ h3 {
     width: 100%;
     min-height: 320px;
     border-radius: var(--border-radius);
-    background: var(--bg) center/64px no-repeat;
+    background: var(--bg-color) center/64px no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -368,7 +249,7 @@ h3 {
 }
 
 #popup-content {
-    background: var(--fg);
+    background: var(--fg-color);
     border-radius: 20px;
     max-width: 90vw;
     min-width: 15em;
@@ -381,27 +262,15 @@ h3 {
     animation: fadeInZoom .05s ease;
 }
 
-@keyframes fadeInZoom {
-    0% {
-        opacity: .5;
-        transform: scale(.90);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
 #popup-content.error {
     border: 1.5px solid var(--red);
-    background: color-mix(in srgb, var(--bg) 90%, var(--red) 10%);
+    background: color-mix(in srgb, var(--bg-color) 90%, var(--red) 10%);
     color: var(--red-hover);
 }
 
 #popup-content.info {
     border: 1.5px solid var(--blue);
-    background: color-mix(in srgb, var(--bg), var(--blue) 5%);
+    background: color-mix(in srgb, var(--bg-color), var(--blue) 5%);
 }
 
 #popup-close {
@@ -438,15 +307,6 @@ h3 {
 
 /* responsive design */
 @media (max-width: 600px) {
-    body {
-        padding: 16px;
-        padding-bottom: 80px;
-    }
-
-    .container {
-        padding: 16px;
-    }
-
     #header {
         flex-direction: column;
         align-items: center;

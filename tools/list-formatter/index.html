@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="main-container">
         <h1 class="tool-title">List Formatter</h1>
         <textarea id="input" rows="20" cols="100"></textarea>
         <div class="option-block">
@@ -24,31 +24,31 @@
                 <div class="checkbox-group">
                     <div title="Put quotes around everything" class="option-checkbox" id="quotes-check"> Quotes </div>
                     <div title="Exclude quotes around numbers" class="option-checkbox disabled" id="raw-check"> Raw
-                        Numbers </div>
+                        Values </div>
                 </div>
             </div>
             <div class="options-container">
                 <div class="delimiter-option">
                     <label id="in-delim-check" for="in-delim-box">Input Delimiters</label>
-                    <div class="button help-button"
+                    <div class="button hint-button"
                         title='Additional characters that split list. Newline and "," are default. Separate delimiters with "|"'>
                         ?</div>
                     <input type="text" id="in-delim-box" class="delimiter-input">
                 </div>
                 <div class="delimiter-option">
                     <label for="out-delim-box">Output Delimiter</label>
-                    <div class="button help-button" title='Delimiter characters in the output'> ?</div>
+                    <div class="button hint-button" title='Delimiter characters in the output'> ?</div>
                     <input type="text" id="out-delim-box" value=",&nbsp" class="delimiter-input">
                 </div>
             </div>
         </div>
         <div class="out-list">
             <textarea id="output" rows="20" cols="100" readonly></textarea>
-            <button class="button" onclick="copy()" id="copy-button">content_copy</button>
+            <button class="button copy-button corner-button" onclick="copy()" id="copy-button">content_copy</button>
         </div>
         <script src="list-maker.js" type="module"></script>
     </div>
-    <a href="../" id="back-button">arrow_back</a>
+    <a href="../" class="back-button">arrow_back</a>
 </body>
 
 </html>

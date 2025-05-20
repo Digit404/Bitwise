@@ -11,14 +11,13 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="main-container">
         <div id="header">
             <h1>GPT Image</h1><input class="text-input" id="api-key" placeholder="API Key" type="password">
         </div>
         <div class="grid" id="reference-container"></div>
-        <div>
-            <div id="mask-button">+ mask</div><input id="mask-input" type="file" accept="image/*">
-        </div><textarea class="text-input" id="prompt" placeholder="Prompt" rows="3"></textarea>
+        <div id="mask-button">+ mask</div><input id="mask-input" type="file" accept="image/*">
+        <textarea class="text-input" id="prompt" placeholder="Prompt" rows="3"></textarea>
         <div id="options-bar">
             <select class="option-select" id="size-select">
                 <option value="auto">Size: auto</option>
@@ -37,12 +36,11 @@
                 <option value="medium">medium</option>
                 <option value="low">low</option>
             </select>
-        </div><button class="button" id="generate-button">Generate</button>
-        <section>
-            <h3>Output</h3>
-            <div id="output"></div><button class="button" id="download-button" style="display:none;">Download
-                Image</button>
-        </section>
+        </div>
+        <button class="button" id="generate-button">Generate</button>
+        <h3>Output</h3>
+        <div id="output"></div>
+        <button class="button" id="download-button" style="display:none;">Save Image</button>
         <section hidden id="history-section">
             <h3 id="history-title">History</h3>
             <div class="grid" id="history"></div>

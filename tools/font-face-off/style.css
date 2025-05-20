@@ -9,22 +9,22 @@
 
     --text-color: #333;
     --text-color-hover: #111;
-    --bg: #eee;
-    --fg: #fff;
-    --fg-hover: #ddd;
+    --bg-color: #eee;
+    --fg-color: #fff;
+    --fg-color-hover: #ddd;
 }
 
 .dark {
-    --bg: #111;
-    --fg: #222;
-    --fg-hover: #333;
+    --bg-color: #111;
+    --fg-color: #222;
+    --fg-color-hover: #333;
     --text-color: #eee;
     --text-color-hover: #bbb;
 }
 
 body {
     font-family: var(--font);
-    background-color: var(--bg);
+    background-color: var(--bg-color);
     color: var(--text-color);
     padding: 20px;
     max-width: var(--max-width);
@@ -49,7 +49,7 @@ h1 {
 /* Quill editor */
 
 #editor.ql-container {
-    background: var(--fg);
+    background: var(--fg-color);
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 0 0 var(--border-radius) var(--border-radius);
@@ -69,7 +69,7 @@ h1 {
 }
 
 body .ql-toolbar.ql-snow {
-    background: var(--fg);
+    background: var(--fg-color);
     border-radius: 10px 10px 0 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     font-family: var(--font);
@@ -98,14 +98,14 @@ body.dark .ql-toolbar.ql-snow * {
     border-radius: 5px;
     font-size: 1.5rem;
     width: 100%;
-    background-color: var(--fg);
+    background-color: var(--fg-color);
     color: var(--text-color);
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .controls-container button:hover {
-    background-color: var(--fg-hover);
+    background-color: var(--fg-color-hover);
     box-shadow: 0 2px 5px transparent;
 }
 
@@ -123,7 +123,7 @@ body.dark .ql-toolbar.ql-snow * {
 }
 
 .column {
-    background: var(--fg);
+    background: var(--fg-color);
     padding: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     flex: 1;
@@ -156,7 +156,7 @@ input[type="text"] {
     border-radius: 4px;
     font-size: 16px;
     font-family: var(--font);
-    background-color: var(--bg);
+    background-color: var(--bg-color);
     color: var(--text-color);
 }
 
@@ -190,7 +190,7 @@ input.web-safe-font {
 
 .small-slider::-webkit-slider-runnable-track {
     height: 8px;
-    background: var(--bg);
+    background: var(--bg-color);
     border-radius: 4px;
 }
 
@@ -206,7 +206,7 @@ input.web-safe-font {
 
 .small-slider::-moz-range-track {
     height: 8px;
-    background: var(--bg);
+    background: var(--bg-color);
     border-radius: 4px;
 }
 
@@ -317,7 +317,7 @@ input.web-safe-font {
     height: 50px;
     font-family: var(--font-icons);
     background-color: var(--text-color);
-    color: var(--bg);
+    color: var(--bg-color);
     display: flex;
     align-items: center;
     justify-content: center;

@@ -2,8 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
 :root {
-    --bg: #eee;
-    --fg: #fff;
+    --bg-color: #eee;
+    --fg-color: #fff;
     --hover-color: #ddd;
     --text-color: #333;
     --text-color-hover: #111;
@@ -17,8 +17,8 @@
 }
 
 .dark {
-    --bg: #111;
-    --fg: #222;
+    --bg-color: #111;
+    --fg-color: #222;
     --hover-color: #000;
     --text-color: #ffffff;
     --dim-text-color: #bbb;
@@ -30,7 +30,7 @@
 
 body {
     font-family: var(--font);
-    background-color: var(--bg);
+    background-color: var(--bg-color);
     color: var(--text-color);
     margin: 0;
     padding: 0;
@@ -52,7 +52,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: var(--fg);
+    background-color: var(--fg-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -77,7 +77,7 @@ body {
     padding: 6px;
     font-size: 14px;
     border: none;
-    background-color: var(--bg);
+    background-color: var(--bg-color);
     color: var(--text-color);
     border-radius: 4px;
     outline: none;
@@ -94,7 +94,7 @@ body {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    background-color: var(--bg);
+    background-color: var(--bg-color);
     outline: none;
     font-size: 14px;
     font-family: var(--font);
@@ -108,7 +108,7 @@ body {
 
 .button-group .reset-button {
     background-color: var(--text-color);
-    color: var(--bg);
+    color: var(--bg-color);
     font-weight: bold;
 }
 
@@ -127,7 +127,7 @@ body {
 
 /* each seller block */
 .seller {
-    background-color: var(--fg);
+    background-color: var(--fg-color);
     margin-bottom: 20px;
     padding: 15px;
     border-radius: 8px;
@@ -151,7 +151,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--bg);
+    background-color: var(--bg-color);
     border: none;
     border-radius: 6px;
     padding: 10px;
@@ -205,7 +205,7 @@ body {
 
 /* totals container */
 .total-container {
-    background-color: var(--fg);
+    background-color: var(--fg-color);
     border: none;
     border-radius: 8px;
     padding: 15px;
@@ -244,7 +244,7 @@ body {
 
 /* container for top items / most valuable */
 .top-items-container {
-    background-color: var(--fg);
+    background-color: var(--fg-color);
     border: none;
     border-radius: 8px;
     padding: 15px;
@@ -292,7 +292,7 @@ body {
 }
 
 .modal-content {
-    background-color: var(--fg);
+    background-color: var(--fg-color);
     margin: 15% auto;
     padding: 20px;
     border: none;

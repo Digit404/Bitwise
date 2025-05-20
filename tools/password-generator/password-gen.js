@@ -520,11 +520,11 @@ function updateInputBox() {
 function copy() {
     navigator.clipboard.writeText(outputBox.value);
     copyButton.innerText = "check";
-    copyButton.classList.add("check");
+    copyButton.classList.add("green");
 
     setTimeout(function () {
         copyButton.innerText = "content_copy";
-        copyButton.classList.remove("check");
+        copyButton.classList.remove("green");
     }, 2000); // Change the text back to "COPY" after 3000 milliseconds (3 second)
 }
 
