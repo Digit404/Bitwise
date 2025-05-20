@@ -20,7 +20,8 @@
     --bg-color: #111;
     --fg-color: #222;
     --hover-color: #000;
-    --text-color: #ffffff;
+    --text-color: #fff;
+    --text-color-hover: #bbb;
     --dim-text-color: #bbb;
 }
 
