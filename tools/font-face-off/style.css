@@ -3,23 +3,7 @@
 
 :root {
     --font: 'Bitter', "Poppins", Tahoma, sans-serif;
-    --font-icons: "Material Symbols Rounded";
-    --max-width: 80vw;
-    --border-radius: 10px;
-
-    --text-color: #333;
-    --text-color-hover: #111;
-    --bg-color: #eee;
-    --fg-color: #fff;
-    --fg-color-hover: #ddd;
-}
-
-.dark {
-    --bg-color: #111;
-    --fg-color: #222;
-    --fg-color-hover: #333;
-    --text-color: #eee;
-    --text-color-hover: #bbb;
+    --max-width: 85vw;
 }
 
 body {
@@ -32,18 +16,11 @@ body {
     padding-bottom: 70px;
 }
 
-* {
-    transition: background 0.2s;
-}
-
 .title {
     text-align: center;
+    margin: 0.5em;
     font-size: 3rem;
     user-select: none;
-}
-
-h1 {
-    text-align: center;
 }
 
 /* Quill editor */
@@ -51,7 +28,6 @@ h1 {
 #editor.ql-container {
     background: var(--fg-color);
     padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 0 0 var(--border-radius) var(--border-radius);
     border: none;
 }
@@ -71,10 +47,8 @@ h1 {
 body .ql-toolbar.ql-snow {
     background: var(--fg-color);
     border-radius: 10px 10px 0 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     font-family: var(--font);
     border: none;
-    border-bottom: 1px solid #0002;
 }
 
 body.dark .ql-toolbar.ql-snow * {
@@ -85,6 +59,7 @@ body.dark .ql-toolbar.ql-snow * {
 /* controls */
 
 .controls-container {
+    position: relative;
     display: flex;
     justify-content: center;
     gap: 10px;
@@ -95,18 +70,16 @@ body.dark .ql-toolbar.ql-snow * {
     font-family: var(--font);
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     font-size: 1.5rem;
     width: 100%;
     background-color: var(--fg-color);
     color: var(--text-color);
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .controls-container button:hover {
     background-color: var(--fg-color-hover);
-    box-shadow: 0 2px 5px transparent;
 }
 
 .control {
@@ -125,7 +98,6 @@ body.dark .ql-toolbar.ql-snow * {
 .column {
     background: var(--fg-color);
     padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     flex: 1;
     word-break: break-word;
 }
@@ -148,34 +120,42 @@ label {
     font-weight: bold;
 }
 
-input[type="text"] {
-    width: calc(100% - 20px);
-    padding: 8px;
+.font-input {
+    width: 100%;
+    padding: 12px;
     margin-bottom: 15px;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     font-size: 16px;
     font-family: var(--font);
     background-color: var(--bg-color);
     color: var(--text-color);
 }
 
-input.google-font {
+.font-input:focus {
+    outline: none;
+    box-shadow: var(--focus-outline);
+}
+
+.font-input.google-font {
     background-color: #ff03;
 }
 
-input.web-safe-font {
+.font-input.web-safe-font {
     background-color: #0f03;
 }
 
 .settings-container {
     display: flex;
     gap: 10px;
+    margin-bottom: 1em;
 }
 
 .settings-container div {
     width: 50%;
 }
+
+/* small slider */
 
 .small-slider {
     width: 100%;
@@ -219,6 +199,8 @@ input.web-safe-font {
     cursor: pointer;
 }
 
+/* large slider */
+
 .large-slider {
     --color: var(--text-color);
     position: relative;
@@ -229,7 +211,7 @@ input.web-safe-font {
     background: transparent;
     outline: none;
     overflow: hidden;
-    background-color: #9993;
+    background-color: var(--fg-color-hover);
     border-radius: 10px;
 }
 
@@ -253,7 +235,6 @@ input.web-safe-font {
 
 .large-slider::-moz-range-track {
     height: 10px;
-    background: #9993;
     border-radius: 10px;
     appearance: none;
 }
@@ -261,30 +242,31 @@ input.web-safe-font {
 .large-slider::-moz-range-progress {
     height: 50px;
     background: var(--color);
-    border-radius: 10px;
 }
 
-.large-slider::-moz-range-thumb {
-    width: 0;
-    height: 0;
+ .large-slider::-moz-range-thumb {
     color: transparent;
     background: transparent;
+    display: none;
     cursor: ew-resize;
     appearance: none;
+    outline: none;
+    border: none;
 }
 
-.large-slider::before {
-    content: var(--slider-name);
+.scale-control::before {
+    content: "Scale";
     font-family: var(--font);
     position: absolute;
     top: 0;
     left: 10px;
     right: 0;
     bottom: 0;
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: left;
-    font-size: 1.5rem;
+    font-size: 2rem;
     color: #fff;
     mix-blend-mode: difference;
     font-weight: bold;
@@ -309,26 +291,6 @@ input.web-safe-font {
     font-weight: 400;
 }
 
-#back-button {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    width: 50px;
-    height: 50px;
-    font-family: var(--font-icons);
-    background-color: var(--text-color);
-    color: var(--bg-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-size: 24px;
-    text-decoration: none;
-    padding: 0;
-    border: none;
-    cursor: pointer;
-}
-
-#back-button:hover {
-    background-color: var(--text-color-hover);
+.output * {
+    margin: revert;
 }

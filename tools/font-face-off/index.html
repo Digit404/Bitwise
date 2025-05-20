@@ -8,6 +8,7 @@
     <script src="./font-face-off.js" defer></script>
     <script src="/dark-mode.js"></script>
     <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
+    <link rel="stylesheet" href="/tools/common.css">
     <link rel="stylesheet" href="./style.css">
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
@@ -22,14 +23,14 @@
     </div>
     <div class="controls-container">
         <div class="control scale-control">
-            <input type="range" id="font-scale" value="1" min="0" max="2" step="0.02" class="large-slider">
+            <input type="range" id="font-scale" autocomplete="off" value="1" min="0" max="2" step="0.02" class="large-slider">
         </div>
     </div>
     <div class="controls-container">
         <button id="minus">&minus;</button>
         <button id="plus">+</button>
     </div>
-    <a href="../" id="back-button">arrow_back</a>
+    <a href="../" class="button back-button">arrow_back</a>
 </body>
 
 </html>

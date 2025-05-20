@@ -220,7 +220,7 @@ generateButton.addEventListener("click", async () => {
 
     try {
         let json;
-        if (!testing) {
+        if (!testing && api_key !== "pikachu") { // secret key for testing
             // main API call
             // if no images, use the generation endpoint, otherwise use the edit endpoint
             if (!hasImages) {
