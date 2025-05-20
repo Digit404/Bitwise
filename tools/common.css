@@ -33,9 +33,9 @@
 }
 
 .dark {
-    --bg-color: #111113;
-    --fg-color: #222225;
-    --fg-color-hover: #333337;
+    --bg-color: #111112;
+    --fg-color: #222223;
+    --fg-color-hover: #333334;
     --text-color: #fff;
     --text-color-hover: #bbb;
 }
