@@ -1,31 +1,3 @@
-/* popup */
-
-#popup {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #0005;
-    backdrop-filter: blur(1.5px);
-}
-
-#popup-content {
-    background-color: var(--fg-color);
-    border-radius: 20px;
-    max-width: 30vw;
-    min-width: 15em;
-    box-shadow: var(--popup-shadow);
-    padding: 30px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    position: relative;
-    animation: fadeInZoom .05s ease;
-}
-
 /* wordbank */
 
 .wordbank-container {
@@ -46,8 +18,6 @@
 
 .bank-button {
     background-color: var(--fg-color);
-    border: none;
-    outline: none;
     border-radius: var(--border-radius);
     color: var(--text-color);
     padding: 16px;
@@ -70,8 +40,6 @@
 
 #input-box {
     background-color: var(--bg-color);
-    border: none;
-    outline: none;
     border-radius: 0 0 var(--border-radius) var(--border-radius);
     color: var(--text-color);
     padding: 16px;
@@ -94,8 +62,6 @@
 #length-box {
     background-color: var(--bg-color);
     border-radius: var(--border-radius);
-    border: none;
-    outline: none;
     padding: 12px;
     width: 4em;
     text-align: center;
@@ -113,8 +79,6 @@
 
 #outbox {
     background-color: var(--bg-color);
-    border: none;
-    outline: none;
     border-radius: var(--border-radius);
     color: var(--text-color);
     padding: 16px;

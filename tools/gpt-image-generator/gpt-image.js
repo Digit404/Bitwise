@@ -106,25 +106,31 @@ function ensureFreeSlot(checkFilled = true) {
 
 // popup management
 function showPopup(html, type = "info") {
-    popup.style.display = "flex";
+    popup.classList.remove("hidden");
+    popupContent.classList.remove("error", "info");
     if (type === "error") {
-        popupContent.className = "error";
+        popupContent.classList.add("error");
         popupIcon.innerText = "⚠️";
         popupIcon.style.display = "inline-block";
         popupClose.innerText = "Close";
     } else if (type === "info") {
-        popupContent.className = "info";
+        popupContent.classList.add("info");
         popupIcon.innerText = "ℹ️";
         popupIcon.style.display = "inline-block";
         popupClose.innerText = "Okay, got it";
     } else {
-        popupContent.className = "";
+        popupContent.classList.remove("error", "info");
+        popupIcon.style.display = "none";
+        popupClose.innerText = "Close";
     }
+
     popupText.innerHTML = html;
 }
+
 function hidePopup() {
-    popup.style.display = "none";
+    popup.classList.add("hidden");
 }
+
 document.getElementById("popup-close").onclick = hidePopup;
 
 function setImageSettings(prompt, size, bg, quality) {
@@ -220,7 +226,8 @@ generateButton.addEventListener("click", async () => {
 
     try {
         let json;
-        if (!testing && api_key !== "pikachu") { // secret key for testing
+        if (!testing && api_key !== "pikachu") {
+            // secret key for testing
             // main API call
             // if no images, use the generation endpoint, otherwise use the edit endpoint
             if (!hasImages) {
@@ -315,6 +322,6 @@ generateButton.addEventListener("click", async () => {
 });
 
 if (!localStorage.getItem("notWarnedApiKey")) {
-    popup.style.display = "flex";
+    popup.classList.remove("hidden");
     localStorage.setItem("notWarnedApiKey", "1");
 }

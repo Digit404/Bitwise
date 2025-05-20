@@ -52,9 +52,9 @@
         </section>
     </div>
     <script type="module" src="gpt-image.js"></script>
-    <div id="popup" style="display:none;">
-        <div id="popup-content" class="info">
-            <span id="popup-icon">ℹ️</span>
+    <div id="popup" class="popup-background hidden">
+        <div id="popup-content" class="popup-content info">
+            <span id="popup-icon" class="popup-header">ℹ️</span>
             <div style="text-align:left; max-width:480px; margin:0 auto;" id="popup-text">
                 <strong>Heads up:</strong> As a general rule, you shouldn’t paste your API key into a website.<br> This
                 site is <b>100% static</b> and only talks to OpenAI.<br> Source code: <a
@@ -69,7 +69,7 @@
                     <li>You can open DevTools and audit the whole source. No secrets here.</li>
                 </ul>
             </div>
-            <button id="popup-close">OK, got it</button>
+            <button id="popup-close" class="button pill">OK, got it</button>
         </div>
     </div>
     <a href="../" class="button back-button">arrow_back</a>

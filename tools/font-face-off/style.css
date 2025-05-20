@@ -69,7 +69,6 @@ body.dark .ql-toolbar.ql-snow * {
 .controls-container button {
     font-family: var(--font);
     padding: 10px 20px;
-    border: none;
     border-radius: var(--border-radius);
     font-size: 1.5rem;
     width: 100%;
@@ -124,7 +123,6 @@ label {
     width: 100%;
     padding: 12px;
     margin-bottom: 15px;
-    border: none;
     border-radius: var(--border-radius);
     font-size: 16px;
     font-family: var(--font);
@@ -133,7 +131,6 @@ label {
 }
 
 .font-input:focus {
-    outline: none;
     box-shadow: var(--focus-outline);
 }
 
@@ -159,44 +156,6 @@ label {
 
 .small-slider {
     width: 100%;
-    -webkit-appearance: none;
-    appearance: none;
-    background: transparent;
-}
-
-.small-slider:focus {
-    outline: none;
-}
-
-.small-slider::-webkit-slider-runnable-track {
-    height: 8px;
-    background: var(--bg-color);
-    border-radius: 4px;
-}
-
-.small-slider::-webkit-slider-thumb {
-    width: 16px;
-    height: 16px;
-    background: var(--text-color);
-    border-radius: 50%;
-    cursor: pointer;
-    -webkit-appearance: none;
-    margin-top: -4px;
-}
-
-.small-slider::-moz-range-track {
-    height: 8px;
-    background: var(--bg-color);
-    border-radius: 4px;
-}
-
-.small-slider::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    background: var(--text-color);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
 }
 
 /* large slider */
@@ -209,7 +168,6 @@ label {
     -webkit-appearance: none;
     appearance: none;
     background: transparent;
-    outline: none;
     overflow: hidden;
     background-color: var(--fg-color-hover);
     border-radius: 10px;
@@ -244,13 +202,12 @@ label {
     background: var(--color);
 }
 
- .large-slider::-moz-range-thumb {
+.large-slider::-moz-range-thumb {
     color: transparent;
     background: transparent;
     display: none;
     cursor: ew-resize;
     appearance: none;
-    outline: none;
     border: none;
 }
 

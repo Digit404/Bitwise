@@ -2,8 +2,6 @@ textarea {
     height: 200px;
     font-size: 16px;
     padding: 16px;
-    border: none;
-    outline: none;
     border-radius: var(--border-radius);
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -89,12 +87,10 @@ textarea {
     width: 100%;
     font-size: 16px;
     padding: 12px 16px;
-    border: 1.5px solid transparent;
     border-radius: var(--border-radius);
     background: var(--bg-color);
     font-family: var(--font);
     color: var(--text-color);
-    outline: none;
     transition: border .2s;
 }
 
