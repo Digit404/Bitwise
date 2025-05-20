@@ -35,18 +35,18 @@ const clearSlot = (slot, inputElement) => {
 function addSlot() {
     if (slotCount >= maxSlots) return;
     const slot = document.createElement("div");
-    slot.className = "slot";
+    slot.className = "file-upload";
     const label = document.createElement("span");
     label.className = "slot-label";
     label.innerHTML = "Upload&nbsp;Image";
     const inputElement = document.createElement("input");
     inputElement.type = "file";
     inputElement.accept = "image/*";
-    const button = document.createElement("button");
-    button.className = "x-button";
-    button.innerText = "close";
+    const xButton = document.createElement("button");
+    xButton.className = "x-button";
+    xButton.innerText = "close";
 
-    slot.append(label, inputElement, button);
+    slot.append(label, inputElement, xButton);
     referenceContainer.appendChild(slot);
     slotCount++;
 
@@ -57,7 +57,7 @@ function addSlot() {
         updateMaskVisibility();
     });
 
-    button.addEventListener("click", (e) => {
+    xButton.addEventListener("click", (e) => {
         e.stopPropagation();
         clearSlot(slot, inputElement);
         ensureFreeSlot(false);
@@ -83,11 +83,10 @@ function addSlot() {
 
 // shows mask button if any image is uploaded
 function updateMaskVisibility() {
-    const hasImage = [...referenceContainer.querySelectorAll(".slot.filled")].length > 0;
+    const hasImage = [...referenceContainer.querySelectorAll(".file-upload.filled")].length > 0;
     maskButton.style.display = hasImage ? "inline-flex" : "none";
     if (!hasImage) {
         maskInput.value = "";
-        maskButton.classList.remove("selected");
         maskButton.style.background = "";
         maskButton.textContent = "+ mask";
     }
@@ -95,7 +94,7 @@ function updateMaskVisibility() {
 
 // make sure there's at least one empty slot, up to maxSlots
 function ensureFreeSlot(checkFilled = true) {
-    const emptySlots = [...referenceContainer.querySelectorAll(".slot")].filter((slot) => !slot.classList.contains("filled"));
+    const emptySlots = [...referenceContainer.querySelectorAll(".file-upload")].filter((slot) => !slot.classList.contains("filled"));
     if (emptySlots.length === 0 && slotCount < maxSlots) addSlot();
     if (!checkFilled && emptySlots.length > 1) {
         emptySlots.slice(1).forEach((slot) => {
@@ -179,7 +178,6 @@ maskInput.addEventListener("change", (e) => {
     if (!e.target.files[0]) return;
     setBackgroundImage(maskButton, e.target.files[0]);
     maskButton.textContent = "";
-    maskButton.classList.add("selected");
 });
 updateMaskVisibility();
 

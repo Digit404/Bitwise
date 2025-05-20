@@ -1,15 +1,7 @@
-@import url("/tools/common.css");
-
 #header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-h1,
-h3 {
-    user-select: none;
-    font-weight: 400;
 }
 
 #header input {
@@ -18,33 +10,8 @@ h3 {
     border-radius: var(--border-radius);
     font-size: 14px;
     outline: none;
-    transition: border .2s;
     background-color: var(--bg-color);
     color: var(--text-color);
-}
-
-#back-button {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    width: 50px;
-    height: 50px;
-    font-family: var(--font-icons);
-    background-color: var(--text-color);
-    color: var(--bg-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    font-size: 24px;
-    text-decoration: none;
-    padding: 0;
-    border: none;
-    cursor: pointer;
-}
-
-#back-button:hover {
-    background-color: var(--text-color-hover);
 }
 
 /* grid */
@@ -55,7 +22,7 @@ h3 {
 }
 
 /* slot */
-.slot {
+.file-upload {
     position: relative;
     width: 100%;
     padding-top: 50%;
@@ -66,43 +33,49 @@ h3 {
     color: var(--half-color);
     overflow: hidden;
     transition: padding-top .2s, transform .15s;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
-.slot.filled {
+.file-upload.filled {
     padding-top: 100%;
 }
 
-.slot input[type=file] {
+.file-upload input[type=file] {
     position: absolute;
     inset: 0;
     opacity: 0;
     cursor: pointer;
 }
 
-/* history */
-
-.history-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    border-radius: var(--border-radius);
-    background: var(--bg-color);
-    transition: background .2s;
-    cursor: pointer;
+/* drag-over visual */
+.file-upload.drag-over,
+.file-upload:hover {
+    border: 2px solid var(--blue);
+    outline: 2px dashed var(--blue);
+    outline-offset: 2px;
+    transform: scale(1.04);
+    color: var(--blue);
 }
 
-.disabled .history-item {
-    cursor: not-allowed;
+.file-upload.small {
+    padding: 0;
 }
 
-.history-item img {
-    max-width: 100%;
-    border-radius: var(--border-radius);
+.file-upload.small.filled {
+    padding-top: 100%;
 }
 
-.disabled .history-item img {
-    opacity: 0.5;
+.file-upload.small.drag-over,
+.file-upload.small:hover {
+    transform: none;
+    outline: none;
+    color: var(--blue);
+}
+
+#mask-input {
+    display: none;
 }
 
 /* label */
@@ -115,7 +88,7 @@ h3 {
     user-select: none;
 }
 
-.slot.filled .slot-label {
+.file-upload.filled .slot-label {
     opacity: 0;
 }
 
@@ -134,13 +107,12 @@ h3 {
     cursor: pointer;
     background: color-mix(in srgb, var(--text-color), transparent 50%);
     color: var(--bg-color);
-    transition: background .15s;
     justify-content: center;
     align-items: center;
     font-size: 20px;
 }
 
-.slot.filled .x-button {
+.file-upload.filled .x-button {
     display: flex;
 }
 
@@ -150,59 +122,45 @@ h3 {
     color: #fff;
 }
 
-/* drag-over visual */
-.slot.drag-over,
-.slot:hover {
-    border: 2px solid var(--blue);
-    outline: 2px dashed var(--blue);
-    outline-offset: 2px;
-    transform: scale(1.04);
-    color: var(--blue);
-}
+/* history */
 
-/* mask pill */
-#mask-button {
-    min-width: 48px;
-    min-height: 32px;
-    padding: 0 14px;
-    border: 2px dashed var(--half-color);
-    border-radius: 16px;
-    display: inline-flex;
+.history-item {
+    display: flex;
     align-items: center;
-    justify-content: center;
-    color: #999;
-    font-size: 14px;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: var(--border-radius);
+    background: var(--bg-color);
     cursor: pointer;
-    background: var(--fg-color);
-    background-size: cover;
-    background-position: center;
-    transition: border .2s;
 }
 
-#mask-button:hover {
-    border: 2px solid var(--blue);
-    color: var(--blue);
+.disabled .history-item {
+    cursor: not-allowed;
 }
 
-#mask-input {
-    display: none;
+.history-item img {
+    max-width: 100%;
+    border-radius: var(--border-radius);
+}
+
+.disabled .history-item img {
+    opacity: 0.5;
 }
 
 /* prompt */
 .text-input {
     font-size: 16px;
     padding: 18px 20px;
-    border: 1.5px solid transparent;
+    border: none;
     font-family: var(--font);
     border-radius: var(--border-radius);
     outline: none;
-    transition: border .2s;
     background: var(--bg-color);
     color: var(--text-color);
 }
 
 .text-input:focus {
-    border: 1.5px solid var(--blue);
+    box-shadow: var(--focus-outline);
 }
 
 #options-bar {

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPT Image Generator</title>
+    <link rel="stylesheet" href="/tools/common.css">
     <link rel="stylesheet" href="./style.css">
     <script src="/dark-mode.js"></script>
     <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
@@ -13,10 +14,14 @@
 <body>
     <div class="main-container">
         <div id="header">
-            <h1>GPT Image</h1><input class="text-input" id="api-key" placeholder="API Key" type="password">
+            <h1>GPT Image</h1>
+            <input class="text-input" id="api-key" placeholder="API Key" type="password">
         </div>
         <div class="grid" id="reference-container"></div>
-        <div id="mask-button">+ mask</div><input id="mask-input" type="file" accept="image/*">
+        <div class="grid">
+            <div class="file-upload small" id="mask-button">+ mask</div>
+        </div>
+        <input id="mask-input" type="file" accept="image/*">
         <textarea class="text-input" id="prompt" placeholder="Prompt" rows="3"></textarea>
         <div id="options-bar">
             <select class="option-select" id="size-select">
@@ -67,5 +72,5 @@
             <button id="popup-close">OK, got it</button>
         </div>
     </div>
-    <a href="../" id="back-button">arrow_back</a>
+    <a href="../" class="back-button">arrow_back</a>
 </body>
