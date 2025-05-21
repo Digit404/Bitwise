@@ -8,15 +8,16 @@
     --blue-hover: #25c;
     --red: #e44;
     --red-hover: #b22;
-    --bg-color: #eee;
     --fg-color: #fff;
-    --half-color: #999;
+    --bg-color: #e8e8e8;
     --fg-color-hover: #ddd;
+    --half-color: #999;
+    --dim-text-color: #777;
     --text-color: #333;
     --text-color-hover: #111;
     --font: "Poppins", sans-serif;
     --font-icons: "Material Symbols Rounded";
-    --border-radius: 12px;
+    --border-radius: 10px;
 
     --focus-outline: inset 0 0 0 3px var(--blue);
     --transition-time: 0.2s
@@ -38,8 +39,9 @@
     --bg-color: #111112;
     --fg-color: #222223;
     --fg-color-hover: #333334;
-    --text-color: #fff;
+    --dim-text-color: #aaa;
     --text-color-hover: #bbb;
+    --text-color: #fff;
 }
 
 body {

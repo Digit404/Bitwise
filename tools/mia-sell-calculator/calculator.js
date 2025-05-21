@@ -24,7 +24,11 @@ function showModal(message, modalType = "info") {
 
     const modalContent = document.querySelector(".modal-content");
     // different color for different types
-    modalContent.style.backgroundColor = modalType === "error" ? "var(--danger)" : "var(--background-color)";
+    if (modalType === "error") {
+        modalContent.classList.add("error");
+    } else {
+        modalContent.classList.remove("error");
+    }
 
     setTimeout(() => {
         modal.style.display = "none";
@@ -222,12 +226,12 @@ function loadFromLocal(silent = false) {
                     }
                 });
                 calculateTotalValues();
-                if (!silent) {
+                if (silent !== true) {
                     showModal("Loaded!");
                 }
             }
         } else {
-            if (!silent) {
+            if (silent !== true) {
                 showModal("No saved data found.", "error"); // alert if no data
             }
         }

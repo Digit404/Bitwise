@@ -2,19 +2,14 @@
 function fitText(element) {
     let fontSize = 100;
     element.style.fontSize = fontSize + "px";
-    while (
-        element.scrollWidth > element.offsetWidth ||
-        element.scrollHeight > element.offsetHeight
-    ) {
+    while (element.scrollWidth > element.offsetWidth || element.scrollHeight > element.offsetHeight) {
         fontSize--;
         element.style.fontSize = fontSize + "px";
     }
 }
 
 // fit text on window resize
-window.addEventListener("resize", () =>
-    document.querySelectorAll(".choice-text").forEach(fitText)
-);
+window.addEventListener("resize", () => document.querySelectorAll(".choice-text").forEach(fitText));
 
 // function to combine arrays during merge sort
 async function merge(left, right, compare) {
@@ -68,50 +63,41 @@ async function mergeInsertionSort(arr, compare) {
 // set superlative
 let superlative = "best";
 document.querySelector("#input-screen>.input").textContent = superlative;
-document.querySelector("#comparison-screen>.title>.input").textContent =
-    superlative;
+document.querySelector("#comparison-screen>.title>.input").textContent = superlative;
 
 let sorted = [];
 
 // start button event listener
-document
-    .getElementById("start-button")
-    .addEventListener("click", async function (e) {
-        // get and process choices
-        const choices = document
-            .getElementById("choices-input")
-            .value.split(/[\n,]+/)
-            .map((choice) => choice.trim())
-            .filter(
-                (choice, index, self) =>
-                    choice !== "" && self.indexOf(choice) === index
-            );
+document.getElementById("start-button").addEventListener("click", async function (e) {
+    // get and process choices
+    const choices = document
+        .getElementById("choices-input")
+        .value.split(/[\n,]+/)
+        .map((choice) => choice.trim())
+        .filter((choice, index, self) => choice !== "" && self.indexOf(choice) === index);
 
-        // require at least 2 unique choices
-        if (choices.length < 2) {
-            e.target.innerHTML = "Please enter at least 2 unique choices";
-            e.target.classList.add("error");
-            setTimeout(() => {
-                e.target.classList.remove("error");
-                e.target.innerHTML = "Start Comparison";
-            }, 2000);
-            return;
-        }
+    // require at least 2 unique choices
+    if (choices.length < 2) {
+        e.target.innerHTML = "Please enter at least 2 unique choices";
+        e.target.classList.add("error");
+        setTimeout(() => {
+            e.target.classList.remove("error");
+            e.target.innerHTML = "Start Comparison";
+        }, 2000);
+        return;
+    }
 
-        superlative = document.querySelector(
-            "#input-screen>.input"
-        ).textContent;
-        document.querySelector("#comparison-screen>.title>.input").textContent =
-            superlative;
+    superlative = document.querySelector("#input-screen>.input").textContent;
+    document.querySelector("#comparison-screen>.title>.input").textContent = superlative;
 
-        // switch to comparison screen
-        document.getElementById("input-screen").style.display = "none";
-        document.getElementById("comparison-screen").style.display = "block";
+    // switch to comparison screen
+    document.getElementById("input-screen").style.display = "none";
+    document.getElementById("comparison-screen").style.display = "block";
 
-        sorted = await mergeInsertionSort(choices, presentChoice);
+    sorted = await mergeInsertionSort(choices, presentChoice);
 
-        buildResults(sorted);
-    });
+    buildResults(sorted);
+});
 
 // function to build results list
 function buildResults(sorted) {
@@ -158,32 +144,26 @@ function presentChoice(a, b) {
             choice.classList.add("appear");
         });
         setTimeout(() => {
-            choiceElements.forEach((choice) =>
-                choice.classList.remove("appear")
-            );
+            choiceElements.forEach((choice) => choice.classList.remove("appear"));
         }, 500);
 
         // choice 1 click event
-        document
-            .querySelector("#choice-1")
-            .addEventListener("click", function () {
-                this.classList.add("win");
-                document.querySelector("#choice-2").classList.add("lose");
-                setTimeout(() => {
-                    resolve(a);
-                }, 1000);
-            });
+        document.querySelector("#choice-1").addEventListener("click", function () {
+            this.classList.add("win");
+            document.querySelector("#choice-2").classList.add("lose");
+            setTimeout(() => {
+                resolve(a);
+            }, 1000);
+        });
 
         // choice 2 click event
-        document
-            .querySelector("#choice-2")
-            .addEventListener("click", function () {
-                this.classList.add("win");
-                document.querySelector("#choice-1").classList.add("lose");
-                setTimeout(() => {
-                    resolve(b);
-                }, 1000);
-            });
+        document.querySelector("#choice-2").addEventListener("click", function () {
+            this.classList.add("win");
+            document.querySelector("#choice-1").classList.add("lose");
+            setTimeout(() => {
+                resolve(b);
+            }, 1000);
+        });
     });
 }
 
@@ -196,10 +176,8 @@ document.getElementById("copy-button").addEventListener("click", function () {
     });
 });
 
-document
-    .getElementById("restart-button")
-    .addEventListener("click", function () {
-        document.getElementById("results-screen").style.display = "none";
-        document.getElementById("input-screen").style.display = "flex";
-        document.body.style.overflow = "hidden";
-    });
+document.getElementById("restart-button").addEventListener("click", function () {
+    document.getElementById("results-screen").style.display = "none";
+    document.getElementById("input-screen").style.display = "flex";
+    document.body.style.overflow = "hidden";
+});

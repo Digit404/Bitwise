@@ -1,43 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Bitter&family=Poppins&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
-
 :root {
-    --bg-color: #eee;
-    --fg-color: #fff;
-    --hover-color: #ddd;
-    --text-color: #333;
-    --text-color-hover: #111;
-    --dim-text-color: #666;
-    --red: #f44;
-    --red-hover: #d22;
     --green-overlay: #0904;
     --blue-overlay: #0493;
-    --font: "Poppins", sans-serif;
-    --font-icons: "Material Symbols Rounded";
-}
-
-.dark {
-    --bg-color: #111;
-    --fg-color: #222;
-    --hover-color: #000;
-    --text-color: #fff;
-    --text-color-hover: #bbb;
-    --dim-text-color: #bbb;
-}
-
-* {
-    box-sizing: border-box;
 }
 
 body {
-    font-family: var(--font);
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
 }
 
 .container {
@@ -58,7 +25,6 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     z-index: 99;
 }
 
@@ -75,13 +41,11 @@ body {
 
 .filter-group input {
     width: 200px;
-    padding: 6px;
+    padding: 8px;
     font-size: 14px;
-    border: none;
     background-color: var(--bg-color);
     color: var(--text-color);
-    border-radius: 4px;
-    outline: none;
+    border-radius: var(--border-radius);
     font-family: var(--font);
 }
 
@@ -91,12 +55,10 @@ body {
 }
 
 .button-group button {
-    padding: 6px 8px;
-    border: none;
-    border-radius: 4px;
+    padding: 8px 10px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     background-color: var(--bg-color);
-    outline: none;
     font-size: 14px;
     font-family: var(--font);
     color: var(--text-color);
@@ -104,7 +66,7 @@ body {
 }
 
 .button-group button:hover {
-    background-color: var(--hover-color);
+    background-color: var(--fg-color-hover);
 }
 
 .button-group .reset-button {
@@ -131,8 +93,7 @@ body {
     background-color: var(--fg-color);
     margin-bottom: 20px;
     padding: 15px;
-    border-radius: 8px;
-    border: none;
+    border-radius: var(--border-radius);
 }
 
 .seller h2 {
@@ -153,8 +114,7 @@ body {
     flex-direction: column;
     align-items: center;
     background-color: var(--bg-color);
-    border: none;
-    border-radius: 6px;
+    border-radius: var(--border-radius);
     padding: 10px;
     cursor: pointer;
     position: relative;
@@ -163,7 +123,7 @@ body {
 }
 
 .item:hover {
-    background-color: var(--hover-color);
+    background-color: var(--fg-color-hover);
 }
 
 .item img {
@@ -207,10 +167,8 @@ body {
 /* totals container */
 .total-container {
     background-color: var(--fg-color);
-    border: none;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     padding: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .total-container h2 {
@@ -246,10 +204,8 @@ body {
 /* container for top items / most valuable */
 .top-items-container {
     background-color: var(--fg-color);
-    border: none;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     padding: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .top-items-container h2 {
@@ -296,27 +252,35 @@ body {
     background-color: var(--fg-color);
     margin: 15% auto;
     padding: 20px;
-    border: none;
     width: 80%;
     max-width: 400px;
     position: relative;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
 }
 
-.close {
+.modal-content.error {
+    background-color: var(--red);
+    color: #fff;
+}
+
+.modal-content.error .close {
+    color: #fff;
+}
+
+.modal-content .close {
     position: absolute;
     right: 20px;
     top: 10px;
-    color: #aaa;
+    color: var(--dim-text-color);
     float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
 }
 
-.close:hover,
-.close:focus {
-    color: #000;
+.modal-content .close:hover,
+.modal-content .close:focus {
+    color: var(--text-color);
     text-decoration: none;
     cursor: pointer;
 }
