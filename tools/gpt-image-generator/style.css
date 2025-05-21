@@ -7,7 +7,7 @@
 #header input {
     padding: 12px 16px;
     border-radius: var(--border-radius);
-    font-size: 14px;
+    font-size: 16px;
     background-color: var(--bg-color);
     color: var(--text-color);
 }
@@ -152,10 +152,6 @@
     border-radius: var(--border-radius);
     background: var(--bg-color);
     color: var(--text-color);
-}
-
-.text-input:focus {
-    box-shadow: var(--focus-outline);
 }
 
 #options-bar {

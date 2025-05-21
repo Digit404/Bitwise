@@ -64,8 +64,18 @@ function build() {
             datalist.appendChild(option);
         });
 
+        const optionsContainer = document.createElement("div");
+        optionsContainer.classList.add("options-container");
+
         const fontLabel = document.createElement("label");
         fontLabel.innerHTML = "Font Name:";
+
+        const transformLabel = document.createElement("label");
+        transformLabel.innerHTML = "Transform:";
+        const transformButton = document.createElement("button");
+        transformButton.classList.add("button");
+        transformButton.innerHTML = "none";
+        transformButton.style.textTransform = "capitalize";
 
         // create elements for weight input
         const weightDiv = document.createElement("div");
@@ -120,9 +130,11 @@ function build() {
         output.classList.add("output", "quill-output");
 
         // assemble elements into columns
-        fontColumn.appendChild(fontLabel);
-        fontColumn.appendChild(fontInput);
-        fontColumn.appendChild(datalist);
+        optionsContainer.appendChild(fontLabel);
+        optionsContainer.appendChild(fontInput);
+        optionsContainer.appendChild(datalist);
+        optionsContainer.appendChild(transformLabel);
+        optionsContainer.appendChild(transformButton);
         weightDiv.appendChild(weightLabel);
         weightLabel.appendChild(weightOutput);
         weightDiv.appendChild(weightInput);
@@ -131,7 +143,8 @@ function build() {
         sizeDiv.appendChild(sizeInput);
         settingsContainer.appendChild(weightDiv);
         settingsContainer.appendChild(sizeDiv);
-        fontColumn.appendChild(settingsContainer);
+        optionsContainer.appendChild(settingsContainer);
+        fontColumn.appendChild(optionsContainer);
         fontColumn.appendChild(output);
         container.appendChild(fontColumn);
 
@@ -143,6 +156,17 @@ function build() {
 
         sizeOutput.addEventListener("focusout", () => {
             sizeInput.value = sizeOutput.innerHTML.replace("pt", "");
+            update();
+        });
+
+        // attach event listener to transform button
+        transformButton.addEventListener("click", () => {
+            const transforms = ["none", "uppercase", "lowercase"];
+            const currentTransform = transformButton.innerText;
+            const transformIndex = transforms.indexOf(currentTransform.toLowerCase());
+            const nextTransform = transforms[(transformIndex + 1) % transforms.length];
+            transformButton.innerHTML = nextTransform;
+            output.style.textTransform = nextTransform;
             update();
         });
     }

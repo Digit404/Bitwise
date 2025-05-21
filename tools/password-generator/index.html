@@ -16,7 +16,7 @@
         <h1 class="tool-title">Password Generator</h1>
         <section class="wordbank-container">
             <div id="banks">
-                <div class="bank-button" onclick="Wordbank.enableAll()">All</div>
+                <button class="button bank-button" onclick="Wordbank.enableAll()">All</button>
             </div>
             <textarea spellcheck="false" id="input-box" rows="20" cols="80"></textarea>
         </section>
@@ -26,7 +26,7 @@
                 class="slider" value="12">
             <input autocomplete="off" type="number" id="length-box" value="12">
         </div>
-        <div class="button" id="generate-button" onclick="generate()">Generate</div>
+        <button class="button main" id="generate-button" onclick="generate()">Generate</button>
         <div id="output-container">
             <textarea autocomplete="off" id="outbox" rows="1"></textarea>
             <button class="button copy-button side-button" onclick="copy()" id="copy-button">content_copy</button>

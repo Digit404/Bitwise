@@ -19,8 +19,8 @@ class Wordbank {
         this.isActive = false;
 
         // add button to
-        this.button = document.createElement("p");
-        this.button.className = "bank-button";
+        this.button = document.createElement("button");
+        this.button.classList.add("bank-button", "button");
         this.button.innerText = buttonID;
         this.button.onclick = this.toggle.bind(this);
         selectBanks.appendChild(this.button);

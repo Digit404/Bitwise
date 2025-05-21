@@ -78,6 +78,22 @@ h5 {
     font-weight: 400;
 }
 
+hr {
+    border: 0;
+    height: 0.2em;
+    border-radius: 100px;
+    background-color: var(--text-color);
+}
+
+a {
+    text-decoration: none;
+    color: var(--blue);
+}
+
+a:hover {
+    color: var(--blue-hover);
+}
+
 .main-container {
     width: 100%;
     max-width: 960px;
@@ -150,11 +166,11 @@ h5 {
 /* buttons */
 
 .button {
-    padding: 20px 40px;
+    padding: 12px 16px;
+    font-size: 16px;
     border-radius: var(--border-radius);
     background-color: var(--text-color);
     color: var(--bg-color);
-    font-size: 18px;
     font-family: var(--font);
     cursor: pointer;
     text-align: center;
@@ -162,7 +178,13 @@ h5 {
 }
 
 .button.main {
-    width: 100%;
+    padding: 18px 40px;
+    font-size: 18px;
+}
+
+.button.secondary {
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 .button.pill {
@@ -173,6 +195,10 @@ h5 {
 .button:disabled {
     background: var(--half-color);
     cursor: not-allowed;
+}
+
+button:focus-visible {
+    box-shadow: var(--focus-outline);
 }
 
 /* special buttons */
@@ -244,6 +270,7 @@ h5 {
 .option-select {
     font-size: 16px;
     padding: 12px 16px;
+    text-align: center;
     border-radius: var(--border-radius);
     background: var(--bg-color);
     font-family: var(--font);
@@ -252,6 +279,41 @@ h5 {
 
 .option-select:focus {
     box-shadow: var(--focus-outline);
+}
+
+/* pseudo checkbox */
+
+.option-checkbox {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-radius: var(--border-radius);
+    padding: 12px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+    user-select: none;
+}
+
+.option-checkbox:hover {
+    background-color: var(--fg-color-hover);
+}
+
+.option-checkbox.checked {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+.option-checkbox.checked:hover {
+    background-color: var(--text-color-hover);
+}
+
+.option-checkbox.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
 }
 
 /* copy buttons */
@@ -303,10 +365,6 @@ h5 {
     margin-top: -4px;
 }
 
-.small-slider::-moz-range-thumb:hover {
-    background-color: var(--text-color-hover);
-}
-
 .small-slider::-moz-range-track {
     height: 8px;
     background-color: var(--bg-color);
@@ -323,6 +381,14 @@ h5 {
 
 .small-slider::-moz-range-thumb:hover {
     background-color: var(--text-color-hover);
+}
+
+.small-slider:focus::-moz-range-thumb {
+    background-color: var(--blue);
+}
+
+.small-slider:focus::-moz-range-thumb:hover {
+    background-color: var(--blue-hover);
 }
 
 /* scrollbar */
@@ -385,6 +451,10 @@ textarea::-webkit-resizer,
 @media (hover: hover) {
     .button:hover {
         background-color: var(--text-color-hover);
+    }
+
+    .button.secondary:hover {
+        background-color: var(--fg-color-hover);
     }
 
     .button:disabled:hover {

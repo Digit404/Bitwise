@@ -15,38 +15,6 @@ textarea {
     justify-content: center;
 }
 
-.option-checkbox {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    border-radius: var(--border-radius);
-    padding: 12px 24px;
-    font-size: 16px;
-    cursor: pointer;
-    flex: 1;
-    text-align: center;
-    transition: background-color 0.2s ease;
-    user-select: none;
-}
-
-.option-checkbox:hover {
-    background-color: var(--fg-color-hover);
-}
-
-.option-checkbox.checked {
-    background-color: var(--text-color);
-    color: var(--bg-color);
-}
-
-.option-checkbox.checked:hover {
-    background-color: var(--text-color-hover);
-}
-
-.option-checkbox.disabled {
-    opacity: 0.5;
-    pointer-events: none;
-    cursor: not-allowed;
-}
-
 .checkbox-group {
     display: flex;
     flex-direction: row;

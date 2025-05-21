@@ -23,6 +23,10 @@ body {
     user-select: none;
 }
 
+.button {
+    font-weight: bold;
+}
+
 /* Quill editor */
 
 #editor.ql-container {
@@ -115,14 +119,12 @@ body.dark .ql-toolbar.ql-snow * {
 
 label {
     display: block;
-    margin: 10px 0 5px;
     font-weight: bold;
 }
 
 .font-input {
     width: 100%;
     padding: 12px;
-    margin-bottom: 15px;
     border-radius: var(--border-radius);
     font-size: 16px;
     font-family: var(--font);
@@ -142,10 +144,15 @@ label {
     background-color: #0f03;
 }
 
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .settings-container {
     display: flex;
     gap: 10px;
-    margin-bottom: 1em;
 }
 
 .settings-container div {
