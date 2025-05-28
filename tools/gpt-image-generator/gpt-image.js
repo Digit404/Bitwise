@@ -168,6 +168,7 @@ function addHistoryItem(imageUrl, prompt, size, bg, quality) {
     historyItem.addEventListener("click", () => {
         setImageSettings(historyItem.dataset.prompt, historyItem.dataset.size, historyItem.dataset.bg, historyItem.dataset.quality);
         output.innerHTML = `<img src="${imageUrl}" />`;
+        downloadButton.style.display = "block";
     });
 }
 
