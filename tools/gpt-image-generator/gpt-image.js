@@ -211,7 +211,6 @@ generateButton.addEventListener("click", async () => {
     }
 
     // disable clicking on history while generating
-    historySection.style.pointerEvents = "none";
     historySection.classList.add("disabled");
 
     output.innerHTML = '<span style="color:#aaa;">Loading…</span>';
@@ -294,7 +293,6 @@ generateButton.addEventListener("click", async () => {
         addHistoryItem(imageUrl, prompt, size, bg, quality);
 
         // make history clickable again
-        historySection.style.pointerEvents = "auto";
         historySection.classList.remove("disabled");
 
         // play a sound
@@ -318,6 +316,21 @@ generateButton.addEventListener("click", async () => {
         showPopup(err.message, "error");
         generateButton.disabled = false;
         generateButton.textContent = "Generate";
+        historySection.classList.remove("disabled");
+        // play error sound
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        fetch("/res/sound/error.wav")
+            .then((res) => res.arrayBuffer())
+            .then((buf) => audioContext.decodeAudioData(buf))
+            .then((decoded) => {
+                const src = audioContext.createBufferSource();
+                src.buffer = decoded;
+                src.connect(audioContext.destination);
+                src.start(0);
+            })
+            .catch((e) => {
+                console.error("Failed to play sound:", e);
+            });
     }
 });
 
