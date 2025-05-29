@@ -61,11 +61,11 @@ body {
     align-items: center;
 }
 
-input[type='text']:focus,
-input[type='number']:focus,
-input[type='email']:focus,
-input[type='password']:focus,
-textarea:focus {
+input[type='text']:focus-visible,
+input[type='number']:focus-visible,
+input[type='email']:focus-visible,
+input[type='password']:focus-visible,
+textarea:focus-visible {
     box-shadow: var(--focus-outline);
 }
 
@@ -220,6 +220,7 @@ button:focus-visible {
     text-decoration: none;
     padding: 0;
     cursor: pointer;
+    font-weight: bold;
 }
 
 .hint-button {
@@ -277,7 +278,7 @@ button:focus-visible {
     color: var(--text-color);
 }
 
-.option-select:focus {
+.option-select:focus-visible {
     box-shadow: var(--focus-outline);
 }
 
@@ -320,24 +321,16 @@ button:focus-visible {
 
 .copy-button {
     font-family: var(--font-icons);
-    position: absolute;
     font-size: 24px;
     padding: 0;
 }
 
 .corner-button {
+    position: absolute;
     top: 0;
     right: 0;
     padding: 10px;
     border-radius: 0 var(--border-radius) 0 var(--border-radius);
-}
-
-.side-button {
-    top: 0;
-    right: 0;
-    width: 50px;
-    height: 100%;
-    border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
 
 /* slider */
@@ -362,6 +355,7 @@ button:focus-visible {
     cursor: pointer;
     -webkit-appearance: none;
     border: none;
+    outline: none;
     margin-top: -4px;
 }
 
@@ -376,6 +370,8 @@ button:focus-visible {
     height: 16px;
     background-color: var(--text-color);
     border-radius: 50%;
+    border: none;
+    outline: none;
     cursor: pointer;
 }
 
@@ -383,11 +379,11 @@ button:focus-visible {
     background-color: var(--text-color-hover);
 }
 
-.small-slider:focus::-moz-range-thumb {
+.small-slider:focus-visible::-moz-range-thumb {
     background-color: var(--blue);
 }
 
-.small-slider:focus::-moz-range-thumb:hover {
+.small-slider:focus-visible::-moz-range-thumb:hover {
     background-color: var(--blue-hover);
 }
 
@@ -451,10 +447,12 @@ textarea::-webkit-resizer,
 @media (hover: hover) {
     .button:hover {
         background-color: var(--text-color-hover);
+        color: var(--bg-color);
     }
 
     .button.secondary:hover {
         background-color: var(--fg-color-hover);
+        color: var(--text-color);
     }
 
     .button:disabled:hover {
