@@ -218,6 +218,10 @@ label {
     border: none;
 }
 
+.large-slider:focus-visible {
+    box-shadow: var(--focus-outline);
+}
+
 .scale-control::before {
     content: "Scale";
     font-family: var(--font);

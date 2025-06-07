@@ -22,9 +22,7 @@ fetch("/api/font-list.json")
     });
 
 function build() {
-    const container = document.createElement("div");
-    container.classList.add("container");
-    document.body.appendChild(container);
+    const container = document.getElementById("font-container");
 
     for (let i = 0; i < fontNum; i++) {
         // load settings
@@ -36,7 +34,7 @@ function build() {
         // create elements for font input
         const fontInput = document.createElement("input");
         fontInput.type = "text";
-        fontInput.classList.add("font-input");
+        fontInput.classList.add("text-input");
         fontInput.placeholder = "Bitter";
 
         if (settings.font != "Bitter") {
@@ -184,7 +182,7 @@ function build() {
 function update() {
     const content = quill.root.innerHTML;
     for (let column of columns) {
-        const fontInput = column.querySelector(".font-input");
+        const fontInput = column.querySelector(".text-input");
 
         let font = findMatchingFont(fontInput.value);
         let weight = column.querySelector(".weight-input").value || "400";

@@ -22,7 +22,7 @@
     --focus-outline: inset 0 0 0 3px var(--blue);
     --transition-time: 0.2s;
 
-    --shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow: 4px 4px 8px rgba(0, 0, 0, 0.1); /* shadows only where contrast is needed */
     --inset-shadow: inset var(--shadow);
 }
 
@@ -88,6 +88,10 @@ hr {
     background-color: var(--text-color);
 }
 
+button {
+    font-family: var(--font);
+}
+
 a {
     text-decoration: none;
     color: var(--blue);
@@ -124,6 +128,15 @@ a:hover {
 .no-transitions *:before,
 .no-transitions *:after {
     transition: none !important;
+}
+
+.text-input {
+    font-size: 16px;
+    padding: 12px 16px;
+    font-family: var(--font);
+    border-radius: var(--border-radius);
+    background: var(--bg-color);
+    color: var(--text-color);
 }
 
 /* popup */
@@ -224,6 +237,10 @@ button:focus-visible {
     padding: 0;
     cursor: pointer;
     font-weight: bold;
+}
+
+.back-button:focus-visible {
+    box-shadow: var(--focus-outline);
 }
 
 .hint-button {

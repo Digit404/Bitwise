@@ -30,7 +30,7 @@
     background-position: center;
     color: var(--half-color);
     overflow: hidden;
-    transition: padding-top .2s, transform .15s;
+    transition: padding-top .2s, transform .15s, box-shadow .2s;
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -45,6 +45,10 @@
     inset: 0;
     opacity: 0;
     cursor: pointer;
+}
+
+.file-upload:has(input[type="file"]:focus-visible) {
+    box-shadow: var(--focus-outline);
 }
 
 /* drag-over visual */
@@ -143,16 +147,6 @@
 
 .disabled .history-item img {
     opacity: 0.5;
-}
-
-/* prompt */
-.text-input {
-    font-size: 16px;
-    padding: 18px 20px;
-    font-family: var(--font);
-    border-radius: var(--border-radius);
-    background: var(--bg-color);
-    color: var(--text-color);
 }
 
 #options-bar {
