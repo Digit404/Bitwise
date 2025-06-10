@@ -147,11 +147,11 @@ class Tile {
         const bottomRight = Tile.tiles[this.y + 1]?.[this.x + 1];
 
         function isFg(...tiles) {
-            return tiles.every((tile) => tile && tile.isFlipped && !tile.isMine && !tile.isFlagged);
+            return tiles.every((tile) => tile && tile.isFlipped && !tile.isMine);
         }
 
         function isBg(...tiles) {
-            return tiles.every((tile) => tile && !tile.isFlipped && !tile.isFlagged);
+            return tiles.every((tile) => tile && !tile.isFlipped);
         }
 
         if (!this.isFlipped || this.isMine || this.isFlagged) {
