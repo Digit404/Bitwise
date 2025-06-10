@@ -1,168 +1,78 @@
 const fieldWidth = 30;
 const fieldHeight = 16;
-const tileSize = 64;
-const scale = .75;
 const mineCount = 100;
 
-const fieldCanvas = document.getElementById("field");
+const field = document.getElementById("field");
+const mineCounter = document.getElementById("mine-count");
+const hint = document.querySelector(".hint");
 
-const mineCounter = document.querySelector("#mine-count");
+field.style.setProperty("--field-width", fieldWidth);
 
-fieldCanvas.width = fieldWidth * tileSize * scale;
-fieldCanvas.height = fieldHeight * tileSize * scale;
-
-const ctx = fieldCanvas.getContext("2d");
-
-const tileSheet = new Image();
-
-const newGameButton = document.querySelector("#newGame");
-
-tileSheet.src = "/games/minesweeper/res/minesweeper.png";
-
-let firstClick;
+let gameStarted = false;
+let gameOver = false;
 let flaggedCount = 0;
+let detonationTimeouts = [];
 
 class Tile {
     static tiles = [];
 
-    constructor(mineCount, x, y) {
+    constructor(x, y) {
         this.isFlipped = false;
         this.isFlagged = false;
-        this.mineCount = mineCount;
+        this.isMine = false;
         this.x = x;
         this.y = y;
-        Tile.tiles[y].push(this);
+        this.mineCount = 0;
     }
 
-    draw() {
-        console.log("drawing ", this, " with ", this.getTileCoords());
-        ctx.drawImage(
-            tileSheet, // source image
-            this.getTileCoords().x, // crop x
-            this.getTileCoords().y, // crop y
-            tileSize, // crop size x
-            tileSize, // crop size y
-            this.x * tileSize * scale, // position x
-            this.y * tileSize * scale, // position y
-            tileSize * scale, // scale x
-            tileSize * scale // scale y
-        );
-    }
-
-    static drawField() {
-        for (let row of Tile.tiles) {
-            for (let tile of row) {
-                tile.draw();
-            }
-        }
-    }
-
-    getTileCoords() {
-        let x, y;
-        if (this.isFlagged) {
-            x = 4;
-            y = 1;
-        } else if (!this.isFlipped) {
-            x = 3;
-            y = 1;
-        } else if (this.mineCount === -1) {
-            x = 5;
-            y = 1;
-        } else {
-            x = this.mineCount % 6;
-            y = Math.floor(this.mineCount / 6);
+    flip() {
+        if (!gameStarted) {
+            gameStarted = true;
+            Tile.fill(this);
+            Tile.updateAllBorders();
+            hint.classList.add("hidden");
         }
 
-        x *= tileSize;
-        y *= tileSize;
-        return { x, y };
-    }
+        if (this.isFlagged || this.isFlipped) return;
 
-    static initialize() {
-        firstClick = true;
-        for (let j = 0; j < fieldHeight; j++) {
-            Tile.tiles.push([]);
-            for (let i = 0; i < fieldWidth; i++) {
-                new Tile(0, i, j);
-            }
-        }
-        Tile.drawField();
-    }
+        this.isFlipped = true;
+        this.element.classList.add("flipped");
+        Tile.runSurrounding(this.x, this.y, (tile) => {
+            tile.updateBorder();
+        });
 
-    static fill() {
-        for (let row of Tile.tiles) for (let tile of row) tile.mineCount = 0;
-        for (let i = 0; i < mineCount; i++) {
-            let x = Math.floor(Math.random() * fieldWidth);
-            let y = Math.floor(Math.random() * fieldHeight);
-
-            let tile = Tile.tiles[y][x];
-
-            if (tile.mineCount === -1) {
-                i--;
-                continue;
-            }
-
-            tile.mineCount = -1;
-
-            this.runSurrounding(x, y, (nextTile) => {
-                if (nextTile.mineCount !== -1) {
-                    nextTile.mineCount++;
-                }
+        if (this.mineCount === 0 && !this.isMine) {
+            Tile.runSurrounding(this.x, this.y, (tile) => {
+                tile.flip();
             });
         }
     }
 
-    static runSurrounding(x, y, func) {
-        for (let j = y - 1; j <= y + 1; j++) {
-            for (let i = x - 1; i <= x + 1; i++) {
-                // Check if the indices are within the valid range
-                if (
-                    j >= 0 &&
-                    j < Tile.tiles.length &&
-                    i >= 0 &&
-                    i < Tile.tiles[j].length
-                ) {
-                    let tile = Tile.tiles[j][i];
-                    func(tile);
+    detonate() {
+        if (this.isFlagged) return;
+        gameOver = true;
+        Tile.tiles.forEach((row) => {
+            row.forEach((tile) => {
+                if (tile.isMine) {
+                    const distance = Math.sqrt(Math.pow(tile.x - this.x, 2) + Math.pow(tile.y - this.y, 2));
+                    const id = setTimeout(() => {
+                        tile.flip();
+                    }, distance * 100);
+                    detonationTimeouts.push(id);
                 }
-            }
-        }
-    }
+            });
+        });
 
-    flip() {
-        if (!this.isFlipped && !this.isFlagged) {
-            this.isFlipped = true;
-            this.draw();
-            console.log(this.mineCount);
-            if (this.mineCount === 0) {
-                Tile.runSurrounding(this.x, this.y, (tile) => {
-                    tile.flip();
-                });
-            } else if (this.mineCount === -1) {
-                mineCounter.innerHTML = "YOU LOSE"
-            }
-        }
-    }
-
-    click() {
-        if (!this.isFlipped) {
-            this.flip();
-        } else {
-            this.chord();
-        }
+        mineCounter.innerHTML = "RESTART";
     }
 
     chord() {
+        if (!this.isFlipped || this.isFlagged || this.isMine) return;
         let count = 0;
         for (let j = this.y - 1; j <= this.y + 1; j++) {
             for (let i = this.x - 1; i <= this.x + 1; i++) {
                 // Check if the indices are within the valid range
-                if (
-                    j >= 0 &&
-                    j < Tile.tiles.length &&
-                    i >= 0 &&
-                    i < Tile.tiles[j].length
-                ) {
+                if (j >= 0 && j < Tile.tiles.length && i >= 0 && i < Tile.tiles[j].length) {
                     let tile = Tile.tiles[j][i];
                     if (tile.isFlagged) {
                         count++;
@@ -179,59 +89,176 @@ class Tile {
     }
 
     flag() {
-        if (!this.isFlipped) {
-            if (this.isFlagged) {
-                this.isFlagged = false;
-                flaggedCount--;
-            } else if (!this.isFlagged) {
-                this.isFlagged = true;
-                flaggedCount++;
+        if (this.isFlipped) return;
+
+        this.isFlagged = !this.isFlagged;
+        this.element.classList.toggle("flagged", this.isFlagged);
+
+        if (this.isFlagged) {
+            flaggedCount++;
+        } else {
+            flaggedCount--;
+        }
+
+        mineCounter.innerHTML = mineCount - flaggedCount;
+
+        Tile.runSurrounding(this.x, this.y, (tile) => {
+            tile.updateBorder();
+        });
+    }
+
+    click() {
+        if (gameOver) return;
+        if (this.isFlipped) {
+            this.chord();
+        } else if (this.isMine) {
+            this.detonate();
+        } else {
+            this.flip();
+        }
+    }
+
+    createTileElement() {
+        const tileElement = document.createElement("div");
+        tileElement.classList.add("tile");
+
+        tileElement.addEventListener("click", (e) => {
+            this.click();
+        });
+
+        tileElement.addEventListener("contextmenu", (e) => {
+            e.preventDefault();
+            this.flag();
+        });
+
+        this.element = tileElement;
+        return tileElement;
+    }
+
+    updateBorder() {
+        const top = Tile.tiles[this.y - 1]?.[this.x];
+        const left = Tile.tiles[this.y]?.[this.x - 1];
+        const bottom = Tile.tiles[this.y + 1]?.[this.x];
+        const right = Tile.tiles[this.y]?.[this.x + 1];
+
+        const topLeft = Tile.tiles[this.y - 1]?.[this.x - 1];
+        const topRight = Tile.tiles[this.y - 1]?.[this.x + 1];
+        const bottomLeft = Tile.tiles[this.y + 1]?.[this.x - 1];
+        const bottomRight = Tile.tiles[this.y + 1]?.[this.x + 1];
+
+        function isFg(...tiles) {
+            return tiles.every((tile) => tile && tile.isFlipped && !tile.isMine && !tile.isFlagged);
+        }
+
+        function isBg(...tiles) {
+            return tiles.every((tile) => tile && !tile.isFlipped && !tile.isFlagged);
+        }
+
+        if (!this.isFlipped || this.isMine || this.isFlagged) {
+            this.element.classList.toggle("round-top-left", isFg(top, left));
+            this.element.classList.toggle("round-top-right", isFg(top, right));
+            this.element.classList.toggle("round-bottom-left", isFg(bottom, left));
+            this.element.classList.toggle("round-bottom-right", isFg(bottom, right));
+        } else {
+            this.element.classList.toggle("round-top-left", isBg(top, left, topLeft));
+            this.element.classList.toggle("round-top-right", isBg(top, right, topRight));
+            this.element.classList.toggle("round-bottom-left", isBg(bottom, left, bottomLeft));
+            this.element.classList.toggle("round-bottom-right", isBg(bottom, right, bottomRight));
+        }
+    }
+
+    static reset() {
+        Tile.tiles = [];
+        field.innerHTML = "";
+        Tile.buildField(fieldWidth, fieldHeight);
+        hint.classList.remove("hidden");
+        gameStarted = false;
+        gameOver = false;
+        flaggedCount = 0;
+        for (let timeout of detonationTimeouts) {
+            clearTimeout(timeout);
+        }
+    }
+
+    static runSurrounding(x, y, func) {
+        for (let j = y - 1; j <= y + 1; j++) {
+            for (let i = x - 1; i <= x + 1; i++) {
+                // Check if the indices are within the valid range
+                if (j >= 0 && j < Tile.tiles.length && i >= 0 && i < Tile.tiles[j].length) {
+                    let tile = Tile.tiles[j][i];
+                    func(tile);
+                }
             }
         }
-        mineCounter.innerHTML = mineCount - flaggedCount
-        this.draw();
+    }
+
+    static fill(safeTile = null) {
+        for (let row of Tile.tiles) {
+            for (let tile of row) {
+                tile.mineCount = 0;
+                tile.isMine = false;
+                tile.isFlipped = false;
+                tile.isFlagged = false;
+                tile.element.classList = "tile";
+            }
+        }
+
+        for (let i = 0; i < mineCount; i++) {
+            let x = Math.floor(Math.random() * fieldWidth);
+            let y = Math.floor(Math.random() * fieldHeight);
+
+            let tile = Tile.tiles[y][x];
+
+            const tooClose = safeTile && Math.abs(safeTile.x - x) <= 1 && Math.abs(safeTile.y - y) <= 1;
+
+            if (tile.isMine || tooClose) {
+                i--;
+                continue;
+            }
+
+            tile.isMine = true;
+            tile.element.classList = "tile mine";
+
+            this.runSurrounding(x, y, (nextTile) => {
+                if (!nextTile.isMine) {
+                    nextTile.mineCount++;
+                    nextTile.element.classList = "tile mine-count-" + nextTile.mineCount;
+                }
+            });
+        }
+
+        Tile.updateAllBorders();
+    }
+
+    static updateAllBorders() {
+        Tile.tiles.forEach((row) => {
+            row.forEach((tile) => {
+                tile.updateBorder();
+            });
+        });
+    }
+
+    static buildField(width, height) {
+        for (let i = 0; i < height; i++) {
+            Tile.tiles[i] = [];
+            const row = document.createElement("div");
+            row.classList.add("tile-row");
+            for (let j = 0; j < width; j++) {
+                const tile = new Tile(j, i);
+                const tileElement = tile.createTileElement();
+                row.appendChild(tileElement);
+                Tile.tiles[i].push(tile);
+            }
+            field.appendChild(row);
+        }
+
+        Tile.updateAllBorders();
+        mineCounter.innerHTML = mineCount;
     }
 }
 
-tileSheet.onload = function () {
-    Tile.initialize({ x: fieldWidth, y: fieldHeight });
-};
+Tile.buildField(fieldWidth, fieldHeight);
 
-function getTile(x, y) {
-    const rect = fieldCanvas.getBoundingClientRect();
-
-    // Calculate the relative X and Y coordinates inside the canvas
-    const xRelative = x - rect.left;
-    const yRelative = y - rect.top;
-
-    // Calculate the tile indices based on the relative coordinates
-    const xTileIndex = Math.floor(xRelative / (tileSize * scale));
-    const yTileIndex = Math.floor(yRelative / (tileSize * scale));
-
-    // Access the tile and do your desired actions (assuming Tile is a 2D array)
-    return Tile.tiles[yTileIndex][xTileIndex];
-}
-
-fieldCanvas.addEventListener("click", (e) => {
-    let tile = getTile(e.clientX, e.clientY);
-
-    if (firstClick) {
-        do {
-            Tile.fill();
-        } while (tile.mineCount !== 0);
-        firstClick = false;
-    }
-
-    tile.click();
-});
-
-fieldCanvas.addEventListener("contextmenu", (e) => {
-    e.preventDefault();
-    let tile = getTile(e.clientX, e.clientY);
-
-    tile.flag();
-});
-
-newGameButton.addEventListener("click", function () {
-    Tile.initialize({ x: fieldWidth, y: fieldHeight });
+mineCounter.addEventListener("click", () => {
+    Tile.reset();
 });

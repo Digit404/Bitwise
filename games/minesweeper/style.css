@@ -1,0 +1,236 @@
+:root {
+    --one: #29c;
+    --two: #2c2;
+    --three: #c44;
+    --four: #22c;
+    --five: #800;
+    --six: #080;
+    --seven: #82c;
+    --eight: #222;
+    --mine-color: #f22;
+    --flag-color: #f80;
+}
+
+.dark {
+    --one: #5cf;
+    --two: #5f5;
+    --three: #f77;
+    --four: #55f;
+    --five: #a22;
+    --six: #2a2;
+    --seven: #a5f;
+    --eight: #eee;
+}
+
+.main-container {
+    max-width: 1400px;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    gap: 0;
+}
+
+#mine-count {
+    display: flex;
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    width: 5em;
+    justify-content: center;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    cursor: pointer;
+}
+
+.hint {
+    position: absolute;
+    top: 50%;
+    color: var(--bg-color);
+    font-size: 2em;
+    user-select: none;
+    animation: breathe 5s infinite ease-in-out;
+    pointer-events: none;
+}
+
+#field {
+    --field-width: 30;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    background-color: magenta; /* debug color */
+    z-index: 0;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.tile-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.tile {
+    --border-radius: 25%;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    height: auto;
+    background-color: var(--text-color);
+    transition: background-color 0.2s, border-radius 0.2s;
+    border-top-left-radius: var(--border-top-left);
+    border-top-right-radius: var(--border-top-right);
+    border-bottom-left-radius: var(--border-bottom-left);
+    border-bottom-right-radius: var(--border-bottom-right);
+}
+
+.tile::before, .tile.flipped.mine::before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    content: "";
+    background-color: var(--bg-color);
+    transition: none;
+    transition: background-color 0.2s;
+}
+
+.tile::after {
+    position: absolute;
+    display: flex;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    content: " ";
+    font-size: clamp(0.5rem, 3vw, 3rem);
+}
+
+.tile.flagged {
+    background-color: var(--flag-color);
+}
+
+.tile.flipped {
+    background-color: var(--bg-color);
+}
+
+.tile.flipped::before {
+    background-color: var(--text-color);
+}
+
+.tile.flipped.mine {
+    background-color: var(--mine-color);
+}
+
+.tile.flipped.mine::after {
+    content: "bomb";
+    font-family: var(--font-icons);
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+    animation: grow-and-shake 0.5s ease-in-out;
+}
+
+.tile.flagged::after {
+    content: "flag";
+    color: #111;
+    font-family: var(--font-icons);
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+.tile.round-top-left {
+    --border-top-left: var(--border-radius);
+}
+
+.tile.round-top-right {
+    --border-top-right: var(--border-radius);
+}
+
+.tile.round-bottom-left {
+    --border-bottom-left: var(--border-radius);
+}
+
+.tile.round-bottom-right {
+    --border-bottom-right: var(--border-radius);
+}
+
+.tile.flipped.mine-count-1::after {
+    content: "1";
+    color: var(--one);
+}
+
+.tile.flipped.mine-count-2::after {
+    content: "2";
+    color: var(--two);
+}
+
+.tile.flipped.mine-count-3::after {
+    content: "3";
+    color: var(--three);
+}
+
+.tile.flipped.mine-count-4::after {
+    content: "4";
+    color: var(--four);
+}
+
+.tile.flipped.mine-count-5::after {
+    content: "5";
+    color: var(--five);
+}
+
+.tile.flipped.mine-count-6::after {
+    content: "6";
+    color: var(--six);
+}
+
+.tile.flipped.mine-count-7::after {
+    content: "7";
+    color: var(--seven);
+}
+
+.tile.flipped.mine-count-8::after {
+    content: "8";
+    color: var(--eight);
+}
+
+@keyframes grow-and-shake {
+    0% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.5) rotate(15deg);
+    }
+    50% {
+        transform: scale(1) rotate(-15deg);
+    }
+    75% {
+        transform: rotate(15deg);
+    }
+    100% {
+        transform: rotate(0);
+    }
+}
+
+@keyframes breathe {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
