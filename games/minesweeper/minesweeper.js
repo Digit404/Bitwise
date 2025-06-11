@@ -7,6 +7,7 @@ const mineCount = 99;
 const field = document.getElementById("field");
 const mineCounter = document.getElementById("mine-count");
 const hint = document.querySelector(".hint");
+const container = document.querySelector(".main-container");
 
 field.style.setProperty("--field-width", fieldWidth);
 
@@ -18,8 +19,10 @@ let detonationTimeouts = [];
 
 // sound effects
 const failSound = new Audio("/res/sound/fail.wav");
+failSound.volume = 0.5;
 failSound.load();
 const successSound = new Audio("/res/sound/ultimate.wav");
+successSound.volume = 0.5;
 successSound.load();
 
 class Tile {
@@ -70,6 +73,14 @@ class Tile {
         // keep the flagged mines so that the player can see them
         if (this.isFlagged) return;
 
+        container.classList.add("shaking");
+        // play the boom sound
+        const boomInterval = setInterval(() => {
+            const boomSound = new Audio("/res/sound/pop_bang.wav");
+            boomSound.volume = 0.5;
+            boomSound.play();
+        }, 50);
+
         // play the fail sound
         failSound.currentTime = 0;
         failSound.play();
@@ -77,12 +88,15 @@ class Tile {
         gameOver = true;
 
         // get the distance to each mine and detonate them with a delay, to create a chain reaction effect
+        let maxDelay = 0;
         Tile.tiles.forEach((tile) => {
             if (tile.isMine) {
                 const distance = Math.sqrt(Math.pow(tile.x - this.x, 2) + Math.pow(tile.y - this.y, 2));
+                const delay = distance * 50;
+                if (delay > maxDelay) maxDelay = delay;
                 const id = setTimeout(() => {
                     tile.flip();
-                }, distance * 50);
+                }, delay);
                 detonationTimeouts.push(id);
             }
         });
@@ -90,13 +104,18 @@ class Tile {
         // fail styles
         mineCounter.innerHTML = "RESTART";
         field.classList.add("fail");
+
+        setTimeout(() => {
+            container.classList.remove("shaking");
+            clearInterval(boomInterval);
+        }, maxDelay + 50);
     }
 
     chord() {
         // flips all surrounding tiles if the tile is flipped and has the correct number of flags around it
         if (!this.isFlipped || this.isFlagged || this.isMine) return;
         let count = 0;
-        
+
         // count the number of flagged tiles around this tile
         for (let j = this.y - 1; j <= this.y + 1; j++) {
             for (let i = this.x - 1; i <= this.x + 1; i++) {
@@ -294,7 +313,7 @@ class Tile {
                 i--;
                 continue;
             }
-            
+
             // place mine
             tile.isMine = true;
             tile.element.classList = "tile mine";

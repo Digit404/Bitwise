@@ -52,6 +52,9 @@
     justify-content: center;
     border-radius: var(--border-radius) var(--border-radius) 0 0;
     cursor: pointer;
+    /* make sure it is always touching field */
+    margin-bottom: -5px;
+    padding-bottom: 5px;
 }
 
 .hint {
@@ -75,6 +78,10 @@
     overflow: hidden;
 }
 
+.shaking {
+    animation: shake 0.3s infinite linear;
+}
+
 .tile-row {
     display: flex;
     flex-direction: row;
@@ -83,11 +90,14 @@
 .tile {
     --border-radius: 25%;
     position: relative;
-    width: 100%;
     aspect-ratio: 1;
-    height: 100%;
     background-color: var(--text-color);
     transition: background-color 0.2s, border-radius 0.2s;
+
+    /* fix for subpixel gaps */
+    flex: 0 0 calc(100% / var(--field-width) + 1px);
+    margin: -0.5px;
+
     border-top-left-radius: var(--border-top-left);
     border-top-right-radius: var(--border-top-right);
     border-bottom-left-radius: var(--border-bottom-left);
@@ -266,7 +276,46 @@
     }
 }
 
+@keyframes shake {
+    0% {
+        transform: translate(0px, 0px);
+    }
+
+    12% {
+        transform: translate(-7px, -6px);
+    }
+
+    24% {
+        transform: translate(9px, 5px);
+    }
+
+    36% {
+        transform: translate(-10px, 8px);
+    }
+
+    48% {
+        transform: translate(7px, -10px);
+    }
+
+    60% {
+        transform: translate(-6px, 10px);
+    }
+
+    72% {
+        transform: translate(10px, -4px);
+    }
+
+    84% {
+        transform: translate(-9px, 8px);
+    }
+
+    100% {
+        transform: translate(0px, 0px);
+    }
+}
+
 @media (min-width: 701px) {
+
     /* border radius for rounding */
     .tile.round-top-left {
         --border-top-left: var(--border-radius);
