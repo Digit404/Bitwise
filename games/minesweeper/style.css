@@ -65,7 +65,6 @@
 }
 
 #field {
-    --field-width: 30;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -86,7 +85,7 @@
     position: relative;
     width: 100%;
     aspect-ratio: 1;
-    height: auto;
+    height: 100%;
     background-color: var(--text-color);
     transition: background-color 0.2s, border-radius 0.2s;
     border-top-left-radius: var(--border-top-left);
@@ -106,6 +105,7 @@
     transition: background-color 0.2s;
 }
 
+/* the number or symbol that appears on a tile */
 .tile::after {
     position: absolute;
     pointer-events: none;
@@ -122,14 +122,17 @@
     background-color: var(--bg-color);
 }
 
+/* the corner roundness of a flipped tile */
 .tile.flipped::before {
     background-color: var(--text-color);
 }
 
+/* treat flipped mines as if they were unflipped */
 .tile.flipped.mine {
     background-color: var(--text-color);
 }
 
+/* the actual mine icon */
 .tile.flipped.mine::after {
     content: "bomb";
     font-family: var(--font-icons);
@@ -144,6 +147,7 @@
     border-radius: var(--border-radius);
 }
 
+/* the actual flag icon */
 .tile.flagged::after {
     content: "flag";
     color: var(--mine-color);
@@ -153,28 +157,20 @@
         'wght' 400,
         'GRAD' 0,
         'opsz' 24;
+    animation: stamp 0.1s linear;
 }
 
+/* wiggle flags on win */
 .success .tile.flagged::after {
     animation: grow-and-shake 0.5s ease-in-out;
 }
 
-.tile.round-top-left {
-    --border-top-left: var(--border-radius);
+/* simple selector to find all erroneous flags */
+.fail .tile.flagged:not(.mine)::after {
+    color: #999;
 }
 
-.tile.round-top-right {
-    --border-top-right: var(--border-radius);
-}
-
-.tile.round-bottom-left {
-    --border-bottom-left: var(--border-radius);
-}
-
-.tile.round-bottom-right {
-    --border-bottom-right: var(--border-radius);
-}
-
+/* mine count styles */
 .tile.flipped.mine-count-1::after {
     content: "1";
     color: var(--one);
@@ -215,6 +211,7 @@
     color: var(--eight);
 }
 
+/* turn the text grey on win or lose */
 .success .tile.flipped::after,
 .fail .tile.flipped::after {
     color: var(--text-color);
@@ -249,12 +246,81 @@
     }
 
     50% {
-        transform: scale(1.05);
+        transform: scale(1.1);
         opacity: 0.8;
     }
 
     100% {
         transform: scale(1);
         opacity: 1;
+    }
+}
+
+@keyframes stamp {
+    0% {
+        transform: scale(2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@media (min-width: 701px) {
+    /* border radius for rounding */
+    .tile.round-top-left {
+        --border-top-left: var(--border-radius);
+    }
+
+    .tile.round-top-right {
+        --border-top-right: var(--border-radius);
+    }
+
+    .tile.round-bottom-left {
+        --border-bottom-left: var(--border-radius);
+    }
+
+    .tile.round-bottom-right {
+        --border-bottom-right: var(--border-radius);
+    }
+}
+
+@media (max-width: 700px) {
+
+    /* fake a vertical display by reorienting the field */
+    #field {
+        flex-direction: row-reverse;
+    }
+
+    .tile-row {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .tile {
+        --border-top-left: 0;
+        --border-top-right: 0;
+        --border-bottom-left: 0;
+        --border-bottom-right: 0;
+    }
+
+    .tile.round-top-left {
+        --border-top-right: var(--border-radius);
+    }
+
+    .tile.round-bottom-left {
+        --border-top-left: var(--border-radius);
+    }
+
+    .tile.round-top-right {
+        --border-bottom-right: var(--border-radius);
+    }
+
+    .tile.round-bottom-right {
+        --border-bottom-left: var(--border-radius);
+    }
+
+    .tile::after {
+        font-size: clamp(0.5rem, 2vh, 2rem);
     }
 }
