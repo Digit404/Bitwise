@@ -7,7 +7,7 @@ const mineCount = 99;
 const field = document.getElementById("field");
 const mineCounter = document.getElementById("mine-count");
 const hint = document.querySelector(".hint");
-const container = document.querySelector(".main-container");
+const modeToggle = document.getElementById("mode-toggle");
 
 field.style.setProperty("--field-width", fieldWidth);
 
@@ -73,7 +73,7 @@ class Tile {
         // keep the flagged mines so that the player can see them
         if (this.isFlagged) return;
 
-        container.classList.add("shaking");
+        field.classList.add("shaking");
         // play the boom sound
         const boomInterval = setInterval(() => {
             const boomSound = new Audio("/res/sound/pop_bang.wav");
@@ -106,7 +106,7 @@ class Tile {
         field.classList.add("fail");
 
         setTimeout(() => {
-            container.classList.remove("shaking");
+            field.classList.remove("shaking");
             clearInterval(boomInterval);
         }, maxDelay + 50);
     }
@@ -143,7 +143,7 @@ class Tile {
 
     flag() {
         // toggle the flag on the tile
-        if (this.isFlipped || gameOver) return;
+        if (this.isFlipped || gameOver || !gameStarted) return;
         if (flaggedCount >= mineCount && !this.isFlagged) return;
 
         this.isFlagged = !this.isFlagged;
@@ -168,6 +168,8 @@ class Tile {
         if (gameOver) return;
         if (this.isFlipped) {
             this.chord();
+        } else if (modeToggle.checked) {
+            this.flag();
         } else if (this.isMine) {
             this.detonate();
         } else {
@@ -180,7 +182,7 @@ class Tile {
         tileElement.classList.add("tile");
 
         // add event listeners
-        tileElement.addEventListener("click", (e) => {
+        tileElement.addEventListener("click", () => {
             this.click();
         });
 
@@ -361,4 +363,21 @@ Tile.buildField(fieldWidth, fieldHeight);
 
 mineCounter.addEventListener("click", () => {
     Tile.reset();
+});
+
+addEventListener("keydown", (e) => {
+    if (gameOver) return;
+
+    // reset the game on enter
+    if (e.code === "Enter") {
+        Tile.reset();
+        return;
+    }
+
+    if (e.code === "Space") {
+        // toggle the flag mode
+        modeToggle.checked = !modeToggle.checked;
+        modeToggle.dispatchEvent(new Event("change"));
+        return;
+    }
 });
