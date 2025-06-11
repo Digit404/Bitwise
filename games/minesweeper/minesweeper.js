@@ -13,6 +13,11 @@ let gameOver = false;
 let flaggedCount = 0;
 let detonationTimeouts = [];
 
+const failSound = new Audio("/res/sound/fail.wav");
+failSound.load();
+const successSound = new Audio("/res/sound/win.wav");
+successSound.load();
+
 class Tile {
     static tiles = [];
 
@@ -50,6 +55,8 @@ class Tile {
 
     detonate() {
         if (this.isFlagged) return;
+        failSound.currentTime = 0;
+        failSound.play();
         gameOver = true;
         Tile.tiles.forEach((row) => {
             row.forEach((tile) => {
@@ -64,6 +71,7 @@ class Tile {
         });
 
         mineCounter.innerHTML = "RESTART";
+        field.classList.add("fail");
     }
 
     chord() {
@@ -83,7 +91,13 @@ class Tile {
 
         if (count === this.mineCount) {
             Tile.runSurrounding(this.x, this.y, (tile) => {
-                tile.flip();
+                if (!tile.isFlipped && !tile.isFlagged) {
+                    if (tile.isMine) {
+                        tile.detonate();
+                    } else {
+                        tile.flip();
+                    }
+                }
             });
         }
     }
@@ -172,9 +186,11 @@ class Tile {
         field.innerHTML = "";
         Tile.buildField(fieldWidth, fieldHeight);
         hint.classList.remove("hidden");
+        field.classList.remove("fail");
         gameStarted = false;
         gameOver = false;
         flaggedCount = 0;
+
         for (let timeout of detonationTimeouts) {
             clearTimeout(timeout);
         }
