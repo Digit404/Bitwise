@@ -16,6 +16,8 @@ let gameStarted = false;
 let gameOver = false;
 let flaggedCount = 0;
 let detonationTimeouts = [];
+let cheatCode = "";
+let buddha = false;
 
 // sound effects
 const failSound = new Audio("/res/sound/fail.wav");
@@ -131,7 +133,7 @@ class Tile {
             Tile.runSurrounding(this.x, this.y, (tile) => {
                 if (!tile.isFlipped && !tile.isFlagged) {
                     // this can still end the game if a flag is misplaced
-                    if (tile.isMine) {
+                    if (tile.isMine && !buddha) {
                         tile.detonate();
                     } else {
                         tile.flip();
@@ -170,7 +172,7 @@ class Tile {
             this.chord();
         } else if (modeToggle.checked) {
             this.flag();
-        } else if (this.isMine) {
+        } else if (this.isMine && !buddha) {
             this.detonate();
         } else {
             this.flip();
@@ -248,7 +250,8 @@ class Tile {
         field.innerHTML = "";
         Tile.buildField(fieldWidth, fieldHeight);
         hint.classList.remove("hidden");
-        field.classList.remove("fail", "success");
+        field.classList = "";
+        buddha = false;
 
         // reset game variables
         gameStarted = false;
@@ -258,6 +261,26 @@ class Tile {
         // kill the detonation animation
         for (let timeout of detonationTimeouts) {
             clearTimeout(timeout);
+        }
+    }
+
+    static lazarus() {
+        // revive player
+        gameOver = false;
+        gameStarted = true;
+
+        field.classList.remove("fail");
+        mineCounter.innerHTML = mineCount - flaggedCount;
+
+        for (let timeout of detonationTimeouts) {
+            clearTimeout(timeout);
+        }
+
+        for (let tile of Tile.tiles) {
+            if (tile.isMine) {
+                tile.element.classList.remove("flipped");
+                tile.isFlipped = false;
+            }
         }
     }
 
@@ -366,18 +389,63 @@ mineCounter.addEventListener("click", () => {
 });
 
 addEventListener("keydown", (e) => {
-    if (gameOver) return;
-
-    // reset the game on enter
-    if (e.code === "Enter") {
-        Tile.reset();
-        return;
+    if (!gameOver) {
+        // reset the game on enter
+        if (e.code === "Enter") {
+            Tile.reset();
+            return;
+        } else if (e.code === "Space") {
+            // toggle the flag mode
+            modeToggle.checked = !modeToggle.checked;
+            modeToggle.dispatchEvent(new Event("change"));
+            return;
+        }
     }
 
-    if (e.code === "Space") {
-        // toggle the flag mode
-        modeToggle.checked = !modeToggle.checked;
-        modeToggle.dispatchEvent(new Event("change"));
-        return;
+    // handle cheat code
+    cheatCode += e.key;
+    if (cheatCode.endsWith("lazarus")) {
+        if (!gameOver) return;
+
+        Tile.lazarus();
+        cheatCode = "";
+        console.log("Lazarus cheat activated!");
+        mineCounter.innerHTML = "LAZARUS";
+        setTimeout(() => {
+            mineCounter.innerHTML = mineCount - flaggedCount;
+        }, 1000);
+    } else if (cheatCode.endsWith("odin")) {
+        if (gameOver) return;
+        field.classList.toggle("odin");
+        field.classList.remove("horus");
+
+        cheatCode = "";
+        console.log("Odin cheat activated!");
+        mineCounter.innerHTML = "ODIN";
+
+        setTimeout(() => {
+            mineCounter.innerHTML = mineCount - flaggedCount;
+        }, 1000);
+    } else if (cheatCode.endsWith("horus")) {
+        if (gameOver) return;
+        field.classList.toggle("horus");
+        field.classList.remove("odin");
+
+        cheatCode = "";
+        console.log("Horus cheat activated!");
+        mineCounter.innerHTML = "HORUS";
+
+        setTimeout(() => {
+            mineCounter.innerHTML = mineCount - flaggedCount;
+        }, 1000);
+    } else if (cheatCode.endsWith("buddha")) {
+        buddha = !buddha;
+        cheatCode = "";
+        console.log("Buddha cheat activated!");
+        mineCounter.innerHTML = "BUDDHA";
+
+        setTimeout(() => {
+            mineCounter.innerHTML = mineCount - flaggedCount;
+        }, 1000);
     }
 });
