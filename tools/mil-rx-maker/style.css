@@ -79,7 +79,7 @@
     font-size: 2.25rem;
     justify-content: space-between;
     align-items: center;
-} 
+}
 
 .rx-phone-number {
     font-size: 0.7em;
@@ -169,6 +169,7 @@
     height: 100%;
     transform: rotate(-90deg) translateX(-27rem) translateY(1rem);
     transform-origin: top left;
+    pointer-events: none;
 }
 
 .rx-barcode-label {
@@ -179,6 +180,7 @@
     font-family: var(--font-normal);
     text-align: center;
     margin-top: 0.8rem;
+    pointer-events: all;
 }
 
 .barcode {

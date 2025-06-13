@@ -122,25 +122,11 @@ label {
     font-weight: bold;
 }
 
-.font-input {
-    width: 100%;
-    padding: 12px;
-    border-radius: var(--border-radius);
-    font-size: 16px;
-    font-family: var(--font);
-    background-color: var(--bg-color);
-    color: var(--text-color);
-}
-
-.font-input:focus {
-    box-shadow: var(--focus-outline);
-}
-
-.font-input.google-font {
+.text-input.google-font {
     background-color: #ff03;
 }
 
-.font-input.web-safe-font {
+.text-input.web-safe-font {
     background-color: #0f03;
 }
 
