@@ -1,0 +1,205 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+:root {
+    --font: 'Barlow Condensed', sans-serif;
+    --font-normal: 'Barlow', sans-serif;
+}
+
+* {
+    line-height: 1em;
+}
+
+.col {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.rx {
+    display: flex;
+    width: 900px;
+    background-color: var(--fg-color);
+}
+
+.rx-patient {
+    font-size: 3rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    background-color: #fe5;
+    padding: 0 0 0.75rem 0.5rem;
+}
+
+.rx-name-container {
+    position: relative;
+}
+
+.rx-name {
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: lowercase;
+    height: 6rem;
+    padding: 0.5rem;
+}
+
+.rx-quantity {
+    font-size: 2rem;
+    font-weight: 500;
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+}
+
+.rx-quantity::before {
+    content: '#';
+}
+
+.rx-instructions {
+    background-color: #def4ff;
+    height: 11rem;
+    padding: 0 0.5rem;
+}
+
+.rx-instruction-text {
+    font-size: 3rem;
+    font-weight: 600;
+    position: relative;
+    top: -1.2rem;
+}
+
+.rx-primary-info {
+    display: flex;
+    background-color: black;
+    color: white;
+    padding: 0.2em 0.25em;
+    font-size: 2.25rem;
+    justify-content: space-between;
+    align-items: center;
+} 
+
+.rx-phone-number {
+    font-size: 0.7em;
+    text-transform: uppercase;
+}
+
+.rx-phone-number::before {
+    content: 'REFILLS/INFO: ';
+}
+
+.rx-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.3em 0.5em;
+    font-size: 1.4rem;
+    font-weight: 600;
+    gap: 0.2em;
+    text-transform: uppercase;
+}
+
+.rx-refills {
+    text-transform: none;
+}
+
+.rx-medication-information {
+    display: flex;
+    flex-direction: column;
+    background-color: #fe5;
+    width: 36rem;
+}
+
+.rx-qr-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1em;
+}
+
+.rx-scan-label {
+    font-size: 2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.rx-qr-code-container {
+    height: 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rx-qr-code {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rx-disclaimer {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    padding: 0.3em 0.5em;
+    border-top: 5px solid black;
+}
+
+.rx-disclaimer.mini {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.5rem 0.8rem;
+    border-top: 5px solid black;
+}
+
+.barcode-container {
+    display: flex;
+    width: 15em;
+    position: relative;
+}
+
+.rotate-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg) translateX(-27rem) translateY(1rem);
+    transform-origin: top left;
+}
+
+.rx-barcode-label {
+    width: 22rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: var(--font-normal);
+    text-align: center;
+    margin-top: 0.8rem;
+}
+
+.barcode {
+    height: 4em;
+    width: 22rem;
+    background-image: url("https://barcodeapi.org/api/128/FAKE_PRESCRIPTION?&text=none");
+    background-position: center;
+}
+
+.rx-birth-date {
+    font-size: 2.7rem;
+    font-weight: 600;
+    position: absolute;
+    left: -1rem;
+    top: 0.2rem;
+}
+
+.rx-unknown {
+    position: absolute;
+    font-size: 1.5rem;
+    font-weight: 600;
+    bottom: 1rem;
+    right: -1rem;
+}

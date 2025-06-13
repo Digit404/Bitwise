@@ -1,0 +1,170 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+:root {
+    --font-condensed: 'Barlow Semi Condensed', sans-serif;
+    --font-serif: 'Noto Serif', serif;
+    --font: "Barlow", sans-serif;
+    --theme-color: #49d;
+}
+
+* {
+    line-height: 1em;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.rx {
+    display: flex;
+    width: 700px;
+    padding: 20px;
+    background-color: var(--fg-color);
+}
+
+.left {
+    width: 100%;
+    position: relative;
+}
+
+.rx-header {
+    gap: 20px
+}
+
+.rx-logo {
+    font-size: 6.8rem;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    line-height: 0.8em;
+}
+
+.rx-brand {
+    font-size: 3.2rem;
+    font-family: var(--font-condensed);
+    font-weight: 600;
+    color: var(--theme-color);
+    line-height: 1em;
+    transform: scaleX(1.1) translateX(3%);
+}
+
+.rx-details {
+    font-size: 1.1rem;
+    font-family: var(--font);
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.number-container {
+    height: 5em;
+    display: flex;
+    align-items: center;
+}
+
+.rx-number {
+    background-color: #fe5;
+    font-family: var(--font-condensed);
+    font-size: 2rem;
+    font-weight: 500;
+    width: fit-content;
+    padding: 0 0.2em;
+}
+
+.rx-number::before {
+    content: 'NO';
+    font-size: .5em;
+    font-weight: 600;
+    margin-right: 0.5em;
+}
+
+.rx-patient {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    text-transform: uppercase;
+}
+
+.rx-patient-name {
+    font-family: var(--font-condensed);
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.rx-info {
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    text-transform: uppercase;
+}
+
+.rx-instructions {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.rx-name {
+    font-size: 3rem;
+    font-weight: 700;
+    display: flex;
+    gap: 1em;
+}
+
+.rx-quantity-info {
+    width: 100%;
+    font-size: 1.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-transform: uppercase;
+}
+
+.rx-provider-details {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 0;
+    top: 4rem;
+    justify-content: right;
+    text-align: right;
+    gap: 1em;
+}
+
+.rx-phone-number {
+    font-size: 2rem;
+    font-weight: 700;
+    font-family: var(--font-condensed);
+}
+
+.rx-prescriber {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.rx-date {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.barcode-container {
+    display: flex;
+    width: 6em;
+    overflow: hidden;
+    position: relative;
+}
+
+.barcode {
+    height: 4em;
+    width: 20em;
+    background-image: url("https://barcodeapi.org/api/128/FAKE_PRESCRIPTION?&text=none");
+    position: absolute;
+    transform: rotate(90deg) translateY(-100%) translateY(-1em);
+    transform-origin: top left;
+    top: 4em
+}

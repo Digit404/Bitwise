@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prescription Label Maker</title>
+    <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
+    <link rel="stylesheet" href="/tools/common.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="screen-centered">
+    <div class="rx" spellcheck="false">
+        <div class="col">
+            <div class="rx-patient" contenteditable>Donaldson, Jimmy</div>
+            <div class="rx-name-container">
+                <div class="rx-name" contenteditable>asbestos 500mg tablet</div>
+                <div class="rx-quantity" contenteditable>120</div>
+            </div>
+            <div class="rx-instructions">
+                <div class="rx-instruction-text" contenteditable> Take all the tablets at once. Coward. </div>
+            </div>
+            <div class="rx-primary-info">
+                <div class="rx-number" contenteditable>05489984562</div>
+                <div class="rx-phone-number" contenteditable>500.548.6815</div>
+            </div>
+            <div class="rx-info">
+                <div class="rx-refills" contenteditable>Refills: 7 before 4/28/26</div>
+                <div class="rx-dates" contenteditable>Filled: 4/20/26 | Orig: 4/19/26 | Discard by: 4/21/26</div>
+                <div class="rx-provider" contenteditable> Provider: Rogers, Norville S </div>
+                <div class="rx-address" contenteditable>PharmaC - Yonkers, NY 10703</div>
+            </div>
+        </div>
+        <div class="barcode-container">
+            <div class="rx-birth-date" contenteditable>05/07/98</div>
+            <div class="rx-unknown">DG\BW</div>
+            <div class="rotate-container">
+                <div class="barcode"></div>
+                <div class="rx-barcode-label" contenteditable>Keep out of the reach of children</div>
+            </div>
+        </div>
+        <div class="col rx-medication-information">
+            <div class="rx-qr-row">
+                <div class="rx-scan-label" contenteditable>Scan for medication information:</div>
+                <div class="rx-qr-code-container">
+                    <img class="rx-qr-code"
+                        src="https://api.qrserver.com/v1/create-qr-code/?data=fakeprescription&size=200x200&bgcolor=255-238-85"
+                        alt="QR Code for Medication Information">
+                </div>
+            </div>
+            <div class="rx-disclaimer" contenteditable> May cause dementia. May cause dementia. May cause dementia. May
+                cause dementia. May cause dementia. May cause dementia. </div>
+            <div class="rx-disclaimer" contenteditable> If you are pregnant, plan to become pregnant, or are breast -
+                feeding, take 2 bottles to enhance your baby. </div>
+            <div class="rx-disclaimer mini" contenteditable> This medicine may be taken with or without food. Do not
+                take with alcohol, as it may cause dizziness. </div>
+        </div>
+    </div>
+</body>
+
+</html>
