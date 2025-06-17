@@ -8,6 +8,8 @@ const field = document.getElementById("field");
 const mineCounter = document.getElementById("mine-count");
 const hint = document.querySelector(".hint");
 const modeToggle = document.getElementById("mode-toggle");
+const messageContainer = document.getElementById("message-container");
+const timer = document.getElementById("timer");
 
 field.style.setProperty("--field-width", fieldWidth);
 
@@ -16,6 +18,7 @@ let gameStarted = false;
 let gameOver = false;
 let flaggedCount = 0;
 let detonationTimeouts = [];
+let timerInterval = null;
 let cheatCode = "";
 let buddha = false;
 
@@ -42,11 +45,7 @@ class Tile {
     flip() {
         // first click starts the game
         if (!gameStarted) {
-            gameStarted = true;
-            // fill after the first click so that the clicked tile is always 0
-            Tile.fill(this);
-            Tile.updateAllBorders();
-            hint.classList.add("hidden");
+            this.startGame();
         }
 
         if (this.isFlagged || this.isFlipped) return;
@@ -122,7 +121,8 @@ class Tile {
         for (let j = this.y - 1; j <= this.y + 1; j++) {
             for (let i = this.x - 1; i <= this.x + 1; i++) {
                 const tile = Tile.getTile(i, j);
-                if (tile && tile.isFlagged) {
+                // count tiles that are flagged or mines that are flipped for buddha mode
+                if ((tile && tile.isFlagged) || (tile && tile.isMine && tile.isFlipped)) {
                     count++;
                 }
             }
@@ -237,6 +237,15 @@ class Tile {
         }
     }
 
+    startGame() {
+        gameStarted = true;
+        // fill after the first click so that the clicked tile is always 0
+        Tile.fill(this);
+        Tile.updateAllBorders();
+        hint.classList.add("hidden");
+        startTimer();
+    }
+
     // get a tile by its coordinates
     static getTile(x, y) {
         if (x < 0 || x >= fieldWidth || y < 0 || y >= fieldHeight) return null;
@@ -252,6 +261,8 @@ class Tile {
         hint.classList.remove("hidden");
         field.classList = "";
         buddha = false;
+        timer.innerHTML = "00:00.0";
+        clearInterval(timerInterval);
 
         // reset game variables
         gameStarted = false;
@@ -388,6 +399,42 @@ mineCounter.addEventListener("click", () => {
     Tile.reset();
 });
 
+function showMessage(message) {
+    const messageDiv = document.createElement("div");
+    messageDiv.classList.add("message");
+    messageDiv.innerHTML = message;
+    messageContainer.appendChild(messageDiv);
+
+    setTimeout(() => {
+        messageDiv.classList.add("hide");
+        messageDiv.addEventListener(
+            "transitionend",
+            () => {
+                messageDiv.remove();
+            },
+            { once: true }
+        );
+    }, 3000);
+}
+
+function startTimer() {
+    let time = 0;
+    timer.innerHTML = "00:00.0";
+
+    timerInterval = setInterval(() => {
+        if (gameOver) {
+            clearInterval(timerInterval);
+            return;
+        }
+
+        time += 100; // increment by 100ms
+        const minutes = Math.floor(time / 60000);
+        const seconds = Math.floor((time % 60000) / 1000);
+        const milliseconds = Math.floor((time % 1000) / 100);
+        timer.innerHTML = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}.${milliseconds}`;
+    }, 100);
+}
+
 addEventListener("keydown", (e) => {
     if (!gameOver) {
         // reset the game on enter
@@ -410,10 +457,7 @@ addEventListener("keydown", (e) => {
         Tile.lazarus();
         cheatCode = "";
         console.log("Lazarus cheat activated!");
-        mineCounter.innerHTML = "LAZARUS";
-        setTimeout(() => {
-            mineCounter.innerHTML = mineCount - flaggedCount;
-        }, 1000);
+        showMessage("Resurrection!");
     } else if (cheatCode.endsWith("odin")) {
         if (gameOver) return;
         field.classList.toggle("odin");
@@ -421,11 +465,12 @@ addEventListener("keydown", (e) => {
 
         cheatCode = "";
         console.log("Odin cheat activated!");
-        mineCounter.innerHTML = "ODIN";
 
-        setTimeout(() => {
-            mineCounter.innerHTML = mineCount - flaggedCount;
-        }, 1000);
+        if (field.classList.contains("odin")) {
+            showMessage("Odin's Wisdom Activated.");
+        } else {
+            showMessage("Odin's Wisdom Deactivated.");
+        }
     } else if (cheatCode.endsWith("horus")) {
         if (gameOver) return;
         field.classList.toggle("horus");
@@ -433,19 +478,20 @@ addEventListener("keydown", (e) => {
 
         cheatCode = "";
         console.log("Horus cheat activated!");
-        mineCounter.innerHTML = "HORUS";
 
-        setTimeout(() => {
-            mineCounter.innerHTML = mineCount - flaggedCount;
-        }, 1000);
+        if (field.classList.contains("horus")) {
+            showMessage("Eye of Horus Activated.");
+        } else {
+            showMessage("Eye of Horus Deactivated.");
+        }
     } else if (cheatCode.endsWith("buddha")) {
         buddha = !buddha;
         cheatCode = "";
         console.log("Buddha cheat activated!");
-        mineCounter.innerHTML = "BUDDHA";
-
-        setTimeout(() => {
-            mineCounter.innerHTML = mineCount - flaggedCount;
-        }, 1000);
+        if (buddha) {
+            showMessage("Buddha's Blessing Activated.");
+        } else {
+            showMessage("Buddha's Blessing Deactivated.");
+        }
     }
 });

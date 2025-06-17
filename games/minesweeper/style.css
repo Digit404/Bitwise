@@ -272,6 +272,53 @@
     color: var(--text-color);
 }
 
+#message-container {
+    position: absolute;
+    bottom: 0.4em;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+
+.message {
+    font-size: 2em;
+    text-align: center;
+    user-select: none;
+    background-color: var(--fg-color);
+    padding: 0.5em 1em;
+    border-radius: var(--border-radius);
+    transition:
+        opacity 0.4s,
+        max-height 0.4s,
+        margin 0.4s,
+        padding 0.4s;
+    opacity: 1;
+    margin: 0.2em;
+    max-height: 300px;
+    overflow: hidden;
+}
+
+.message.hide {
+    opacity: 0;
+    max-height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+#timer {
+    position: absolute;
+    font-family: "Fira Code", monospace;
+    left: 30px;
+    top: 20px;
+    font-size: 1.5em;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    padding: 0.2em;
+    border-radius: var(--border-radius);
+}
+
 @keyframes grow-and-shake {
     0% {
         transform: scale(1);
@@ -433,5 +480,14 @@
 
     #mode-toggle::after {
         font-size: 3em;
+    }
+
+    #timer {
+        position: fixed;
+        left: 50%;
+        top: auto;
+        bottom: 1em;
+        transform: translateX(-50%);
+        background-color:  var(--fg-color);
     }
 }
