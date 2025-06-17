@@ -21,6 +21,7 @@ let detonationTimeouts = [];
 let timerInterval = null;
 let cheatCode = "";
 let buddha = false;
+let time = 0;
 
 // sound effects
 const failSound = new Audio("/res/sound/fail.wav");
@@ -287,6 +288,10 @@ class Tile {
             clearTimeout(timeout);
         }
 
+        let oldTime = time;
+        startTimer();
+        time = oldTime + 345_600_000; // add 4 days to the timer
+
         for (let tile of Tile.tiles) {
             if (tile.isMine) {
                 tile.element.classList.remove("flipped");
@@ -418,7 +423,7 @@ function showMessage(message) {
 }
 
 function startTimer() {
-    let time = 0;
+    time = 0;
     timer.innerHTML = "00:00.0";
 
     timerInterval = setInterval(() => {
@@ -428,10 +433,30 @@ function startTimer() {
         }
 
         time += 100; // increment by 100ms
-        const minutes = Math.floor(time / 60000);
-        const seconds = Math.floor((time % 60000) / 1000);
-        const milliseconds = Math.floor((time % 1000) / 100);
-        timer.innerHTML = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}.${milliseconds}`;
+
+        let ms = time % 1000;
+        let totalSeconds = Math.floor(time / 1000);
+
+        let days = Math.floor(totalSeconds / 86400);
+        let hours = Math.floor((totalSeconds % 86400) / 3600);
+        let minutes = Math.floor((totalSeconds % 3600) / 60);
+        let seconds = totalSeconds % 60;
+        let milliseconds = Math.floor(ms / 100);
+
+        let timeString = "";
+
+        if (days > 0) {
+            timeString += `${days}:`;
+            timeString += `${hours.toString().padStart(2, "0")}:`;
+        } else if (hours > 0) {
+            timeString += `${hours}:`;
+        }
+
+        timeString += `${minutes.toString().padStart(2, "0")}:`;
+        timeString += `${seconds.toString().padStart(2, "0")}.`;
+        timeString += `${milliseconds}`;
+
+        timer.innerHTML = timeString;
     }, 100);
 }
 
@@ -493,5 +518,8 @@ addEventListener("keydown", (e) => {
         } else {
             showMessage("Buddha's Blessing Deactivated.");
         }
+    } else if (cheatCode.endsWith("xyzzy")) {
+        field.classList.toggle("xyzzy");
+        cheatCode = "";
     }
 });

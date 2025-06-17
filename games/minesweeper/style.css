@@ -116,6 +116,16 @@
     overflow: hidden;
 }
 
+#field.xyzzy:has(.tile.mine:hover)::after {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 2px;
+    content: "";
+    background-color: var(--text-color);
+}
+
 .shaking {
     animation: shake 0.3s infinite linear;
 }
@@ -488,6 +498,6 @@
         top: auto;
         bottom: 1em;
         transform: translateX(-50%);
-        background-color:  var(--fg-color);
+        background-color: var(--fg-color);
     }
 }
