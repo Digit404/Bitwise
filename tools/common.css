@@ -22,7 +22,8 @@
     --focus-outline: inset 0 0 0 3px var(--blue);
     --transition-time: 0.2s;
 
-    --shadow: 4px 4px 8px rgba(0, 0, 0, 0.1); /* shadows only where contrast is needed */
+    --shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+    /* shadows only where contrast is needed */
     --inset-shadow: inset var(--shadow);
 }
 
@@ -99,6 +100,15 @@ a {
 
 a:hover {
     color: var(--blue-hover);
+}
+
+.icon {
+    font-family: var(--font-icons);
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
 }
 
 .main-container {
