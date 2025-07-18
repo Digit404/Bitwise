@@ -1,102 +1,46 @@
 /* 
 Theme: Default Modern
 Description: Theme used by VS Code for highlight.js
-Author: Microsoft
- */
-.dark pre code.hljs {
-    display: block;
-    overflow-x: auto;
-    padding: 1em;
+Author: Digit
+*/
+
+/* Default (light) and nested dark (.dark .dark) variables */
+:root,
+.light,
+.dark .dark {
+    --hljs-text: #000000;
+    --hljs-keyword: #AF00DB;
+    --hljs-title: #795E26;
+    --hljs-string: #A31515;
+    --hljs-tag: #000080;
+    --hljs-class: #267F99;
+    --hljs-number: #098658;
+    --hljs-variable: #001080;
+    --hljs-comment: #008000;
+    --hljs-addition: #098658;
+    --hljs-addition-bg: #EFFFF0;
+    --hljs-deletion: #A31515;
+    --hljs-deletion-bg: #FFF0F0;
 }
 
-.dark code.hljs {
-    padding: 3px 5px;
+/* Dark theme variables */
+.dark {
+    --hljs-text: #CCCCCC;
+    --hljs-keyword: #C586C0;
+    --hljs-title: #DCDCAA;
+    --hljs-string: #CE9178;
+    --hljs-tag: #569CD6;
+    --hljs-class: #4EC9B0;
+    --hljs-number: #B5CEA8;
+    --hljs-variable: #9CDCFE;
+    --hljs-comment: #6A9955;
+    --hljs-addition: #B5CEA8;
+    --hljs-addition-bg: #033a16;
+    --hljs-deletion: #CE9178;
+    --hljs-deletion-bg: #67060c;
 }
 
-.dark .hljs {
-    color: #CCCCCC;
-    /* General text color */
-    /* Editor background */
-}
-
-.dark .hljs-keyword,
-.dark .hljs-meta .hljs-keyword,
-.dark .hljs-template-tag,
-.dark .hljs-type {
-    color: #C586C0;
-    /* Keywords and related elements */
-}
-
-.dark .hljs-title,
-.dark .hljs-title.function_,
-.dark .hljs-name,
-.dark .hljs-attribute {
-    color: #DCDCAA;
-    /* Function names and similar elements */
-}
-
-.dark .hljs-string,
-.dark .hljs-meta-string {
-    color: #CE9178;
-    /* String literals */
-}
-
-.dark .hljs-deletion,
-.dark .hljs-tag {
-    color: #569CD6;
-    /* Tags and deletions */
-}
-
-.dark .hljs-title.class_,
-.dark .hljs-type {
-    color: #4EC9B0;
-    /* Class/type declarations */
-}
-
-.dark .hljs-number,
-.dark .hljs-literal,
-.dark .hljs-symbol,
-.dark .hljs-bullet {
-    color: #B5CEA8;
-    /* Numbers and literals */
-}
-
-.dark .hljs-variable,
-.dark .hljs-template-variable {
-    color: #9CDCFE;
-    /* Variables */
-}
-
-.dark .hljs-comment,
-.dark .hljs-quote,
-.dark .hljs-doctag {
-    color: #6A9955;
-    /* Comments and documentation */
-}
-
-.dark .hljs-meta,
-.dark .hljs-emphasis {
-    font-style: italic;
-}
-
-.dark .hljs-strong {
-    font-weight: bold;
-}
-
-.dark .hljs-addition {
-    color: #B5CEA8;
-    background-color: #033a16;
-    /* Additions */
-}
-
-.dark .hljs-deletion {
-    color: #CE9178;
-    background-color: #67060c;
-    /* Deletions */
-}
-
-/* LIGHT MODE COLORS */
-
+/* Apply the variables to elements */
 pre code.hljs {
     display: block;
     overflow-x: auto;
@@ -110,63 +54,54 @@ code.hljs {
 }
 
 .hljs {
-    color: #000000;
-    /* General text color */
+    color: var(--hljs-text);
 }
 
 .hljs-keyword,
 .hljs-meta .hljs-keyword,
 .hljs-template-tag,
 .hljs-type {
-    color: #AF00DB;
-    /* Keywords and related elements */
+    color: var(--hljs-keyword);
 }
 
 .hljs-title,
 .hljs-title.function_,
 .hljs-name,
 .hljs-attribute {
-    color: #795E26;
-    /* Function names and similar elements */
+    color: var(--hljs-title);
 }
 
 .hljs-string,
 .hljs-meta-string {
-    color: #A31515;
-    /* String literals */
+    color: var(--hljs-string);
 }
 
 .hljs-deletion,
 .hljs-tag {
-    color: #000080;
-    /* Tags and deletions */
+    color: var(--hljs-tag);
 }
 
 .hljs-title.class_,
 .hljs-type {
-    color: #267F99;
-    /* Class/type declarations */
+    color: var(--hljs-class);
 }
 
 .hljs-number,
 .hljs-literal,
 .hljs-symbol,
 .hljs-bullet {
-    color: #098658;
-    /* Numbers and literals */
+    color: var(--hljs-number);
 }
 
 .hljs-variable,
 .hljs-template-variable {
-    color: #001080;
-    /* Variables */
+    color: var(--hljs-variable);
 }
 
 .hljs-comment,
 .hljs-quote,
 .hljs-doctag {
-    color: #008000;
-    /* Comments and documentation */
+    color: var(--hljs-comment);
 }
 
 .hljs-meta,
@@ -179,13 +114,11 @@ code.hljs {
 }
 
 .hljs-addition {
-    color: #098658;
-    background-color: #EFFFF0;
-    /* Additions */
+    color: var(--hljs-addition);
+    background-color: var(--hljs-addition-bg);
 }
 
 .hljs-deletion {
-    color: #A31515;
-    background-color: #FFF0F0;
-    /* Deletions */
+    color: var(--hljs-deletion);
+    background-color: var(--hljs-deletion-bg);
 }
