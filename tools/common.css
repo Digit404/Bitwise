@@ -104,7 +104,7 @@ a:hover {
 }
 
 .icon {
-    font-family: var(--font-icons);
+    font-family: var(--font-icons) !important;
     font-variation-settings:
         'FILL' 1,
         'wght' 400,
