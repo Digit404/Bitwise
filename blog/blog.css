@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
-@import url('https://fonts.googleapis.com/css2?family=Nunito&family=Lexend&family=Fira+Code&family=Bitter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fira+Code:wght@300..700&family=Roboto+Slab:wght@100..900&display=swap');
 
 * {
     transition: background 0.3s;
@@ -23,10 +23,10 @@
     --middle: #aaa;
 
     /* Fonts */
-    --font-main: "Poppins", "Roboto", sans-serif;
-    --font-title: "Bitter", "Roboto", sans-serif;
+    --font-main: "DM Sans", "Roboto", sans-serif;
+    --font-title: "Roboto Slab", "Roboto", sans-serif;
     --font-mono: "Cascadia Code", "Fira Code", monospace;
-    --font-logo: "Bitter", "Nunito", "Roboto", sans-serif;
+    --font-logo: "Roboto Slab", "Roboto", sans-serif;
     --font-icons: "Material Symbols Rounded";
 
     --body-color: #f8f8fa;
@@ -100,6 +100,7 @@ main {
     margin: auto;
     padding: 25px;
     width: fit-content;
+    font-size: 1.1rem
 }
 
 aside {
@@ -116,7 +117,7 @@ aside {
 aside h3 {
     color: var(--primary-color);
     border-bottom: 2px solid var(--primary-color);
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     margin: 0;
     margin-top: 2rem;
     padding: 0;
@@ -176,7 +177,7 @@ code {
     font-family: var(--font-mono);
     padding: 5px;
     border-radius: 5px;
-    font-size: .9rem;
+    font-size: 0.9em;
 }
 
 pre code, code.block {
@@ -294,7 +295,7 @@ figure img {
 }
 
 figcaption {
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     color: var(--fig-color);
     text-align: center;
     margin-top: 5px;
@@ -432,7 +433,6 @@ blockquote {
 
 blockquote p {
     display: inline;
-    font-size: 1rem;
     color: var(--fig-color);
 }
 
@@ -445,7 +445,7 @@ blockquote:before {
         "FILL" 1,
         "GRAD" 1;
     color: var(--color);
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     display: block;
     font-weight: bold;
     margin-bottom: 0px;
