@@ -188,6 +188,7 @@ pre code, code.block {
     padding: 10px 20px;
     border-left: 5px solid var(--primary-color); 
     overflow-x: auto;
+    max-width: 100%;
 }
 
 hr {
@@ -276,12 +277,19 @@ h3 {
 }
 
 /* Section tags for headers (created by js) */
-h2>a,
-h3>a {
+.title-link {
     position: absolute;
     color: #9993;
     left: -1.5em;
     font-size: 1em;
+    opacity: 0;
+    transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+h2:hover .title-link,
+h3:hover .title-link,
+.title-link:hover {
+    opacity: 1;
 }
 
 figure img {
@@ -624,8 +632,7 @@ blockquote.conjecture {
 
     /* No section tags on mobile */
 
-    h2>a,
-    h3>a {
+    .title-link {
         display: none;
     }
 

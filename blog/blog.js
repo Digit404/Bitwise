@@ -77,7 +77,7 @@ function initOverview() {
         const link = document.createElement("a");
         link.href = `#${id}`;
         link.textContent = "link";
-        link.classList.add("icon");
+        link.classList.add("icon", "title-link");
         heading.prepend(link);
 
         const listItem = document.createElement("li");
