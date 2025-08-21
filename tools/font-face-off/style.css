@@ -47,6 +47,22 @@ code {
     border-radius: var(--border-radius);
 }
 
+pre {
+    font-family: inherit;
+}
+
+pre code,
+code.block {
+    background-color: var(--bg-color);
+    display: block;
+    white-space: pre;
+    color: var(--text-color);
+    padding: 10px 20px;
+    box-shadow: inset 105px 0 0 -100px var(--text-color);
+    overflow-x: auto;
+    font-family: inherit;
+}
+
 .title {
     text-align: center;
     margin: 0.5em;
