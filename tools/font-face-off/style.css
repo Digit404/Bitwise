@@ -16,6 +16,37 @@ body {
     padding-bottom: 70px;
 }
 
+/* markdown stuff */
+
+hr {
+    margin: 5px 0;
+    background-color: var(--bg-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: bold;
+    user-select: auto;
+}
+
+h1 {
+    color: var(--text-color);
+    font-size: 2rem;
+    text-align: center;
+}
+
+code {
+    background: var(--bg-color);
+    color: var(--red);
+    font-family: inherit;
+    padding: 2.5px 5px;
+    border-radius: var(--border-radius);
+}
+
 .title {
     text-align: center;
     margin: 0.5em;
@@ -27,37 +58,35 @@ body {
     font-weight: bold;
 }
 
-/* Quill editor */
+/* markdown editor */
 
-#editor.ql-container {
-    background: var(--fg-color);
-    padding: 20px;
-    border-radius: 0 0 var(--border-radius) var(--border-radius);
-    border: none;
-}
-
-.ql-editor {
-    font-size: 16px;
-    font-weight: 400;
-    font-family: var(--font);
-    max-width: 800px;
+.editor-container {
+    display: flex;
+    max-width: var(--max-width);
     margin: auto;
-}
+    width: 100%;
+    background-color: var(--fg-color);
+    border-radius: var(--border-radius);
 
-#editor .ql-editor p {
-    margin: 1em 0;
-}
+    #editor {
+        background: var(--fg-color);
+        padding: 20px;
+        border: none;
+        font-size: 16px;
+        font-family: var(--font-mono);
+        max-width: 800px;
+        width: 100%;
+        height: 40dvh;
+        max-height: 450px;
+        overflow: auto;
+        resize: none;
+        margin: auto;
+        color: var(--text-color);
 
-body .ql-toolbar.ql-snow {
-    background: var(--fg-color);
-    border-radius: 10px 10px 0 0;
-    font-family: var(--font);
-    border: none;
-}
-
-body.dark .ql-toolbar.ql-snow * {
-    color: var(--text-color);
-    stroke: var(--text-color);
+        &:focus-visible {
+            box-shadow: none;
+        }
+    }
 }
 
 /* controls */
@@ -68,21 +97,21 @@ body.dark .ql-toolbar.ql-snow * {
     justify-content: center;
     gap: 10px;
     margin: 10px 0;
-}
 
-.controls-container button {
-    font-family: var(--font);
-    padding: 10px 20px;
-    border-radius: var(--border-radius);
-    font-size: 1.5rem;
-    width: 100%;
-    background-color: var(--fg-color);
-    color: var(--text-color);
-    cursor: pointer;
-}
+    button {
+        font-family: var(--font);
+        padding: 10px 20px;
+        border-radius: var(--border-radius);
+        font-size: 1.5rem;
+        width: 100%;
+        background-color: var(--fg-color);
+        color: var(--text-color);
+        cursor: pointer;
 
-.controls-container button:hover {
-    background-color: var(--fg-color-hover);
+        &:hover {
+            background-color: var(--fg-color-hover);
+        }
+    }
 }
 
 .control {
@@ -103,18 +132,18 @@ body.dark .ql-toolbar.ql-snow * {
     padding: 20px;
     flex: 1;
     word-break: break-word;
-}
 
-.column:first-of-type {
-    border-radius: var(--border-radius) 0 0 var(--border-radius);
-}
+    &:first-of-type {
+        border-radius: var(--border-radius) 0 0 var(--border-radius);
+    }
 
-.column:last-of-type {
-    border-radius: 0 var(--border-radius) var(--border-radius) 0;
-}
+    &:last-of-type {
+        border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    }
 
-.column:only-of-type {
-    border-radius: var(--border-radius);
+    &:only-of-type {
+        border-radius: var(--border-radius);
+    }
 }
 
 label {
@@ -139,10 +168,10 @@ label {
 .settings-container {
     display: flex;
     gap: 10px;
-}
 
-.settings-container div {
-    width: 50%;
+    div {
+        width: 50%;
+    }
 }
 
 /* small slider */
@@ -164,48 +193,48 @@ label {
     overflow: hidden;
     background-color: var(--fg-color-hover);
     border-radius: 10px;
-}
 
-.large-slider:hover {
-    --color: var(--text-color-hover);
-}
+    &:hover {
+        --color: var(--text-color-hover);
+    }
 
-.large-slider::-webkit-slider-runnable-track {
-    height: 10px;
-    -webkit-appearance: none;
-    margin-top: -1px;
-}
+    &::-webkit-slider-runnable-track {
+        height: 10px;
+        -webkit-appearance: none;
+        margin-top: -1px;
+    }
 
-.large-slider::-webkit-slider-thumb {
-    width: 0;
-    -webkit-appearance: none;
-    height: 0;
-    cursor: ew-resize;
-    box-shadow: -100vw 0 0 100vw var(--color);
-}
+    &::-webkit-slider-thumb {
+        width: 0;
+        -webkit-appearance: none;
+        height: 0;
+        cursor: ew-resize;
+        box-shadow: -100vw 0 0 100vw var(--color);
+    }
 
-.large-slider::-moz-range-track {
-    height: 10px;
-    border-radius: 10px;
-    appearance: none;
-}
+    &::-moz-range-track {
+        height: 10px;
+        border-radius: 10px;
+        appearance: none;
+    }
 
-.large-slider::-moz-range-progress {
-    height: 50px;
-    background: var(--color);
-}
+    &::-moz-range-progress {
+        height: 50px;
+        background: var(--color);
+    }
 
-.large-slider::-moz-range-thumb {
-    color: transparent;
-    background: transparent;
-    display: none;
-    cursor: ew-resize;
-    appearance: none;
-    border: none;
-}
+    &::-moz-range-thumb {
+        color: transparent;
+        background: transparent;
+        display: none;
+        cursor: ew-resize;
+        appearance: none;
+        border: none;
+    }
 
-.large-slider:focus-visible {
-    box-shadow: var(--focus-outline);
+    &:focus-visible {
+        box-shadow: var(--focus-outline);
+    }
 }
 
 .scale-control::before {
@@ -228,10 +257,6 @@ label {
     user-select: none;
 }
 
-.scale-control>.large-slider {
-    --slider-name: 'Scale';
-}
-
 .indicator {
     color: var(--text-color);
     opacity: 0.5;
@@ -243,8 +268,8 @@ label {
 .output {
     font-size: 12pt;
     font-weight: 400;
-}
 
-.output * {
-    margin: revert;
+    * {
+        margin: revert;
+    }
 }

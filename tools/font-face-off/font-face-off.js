@@ -2,13 +2,20 @@ let fontNum = 3; // initial number of fonts to show
 
 const minusButton = document.querySelector("#minus");
 const plusButton = document.querySelector("#plus");
-const quill = new Quill("#editor", { theme: "snow" });
+const editor = document.getElementById("editor");
 const scaleSlider = document.getElementById("font-scale");
 
 let fontList;
 let fontSettings = [];
 let loadedFonts = [];
 let columns;
+
+// Use markdown-it
+const md = window.markdownit();
+md.set({
+    breaks: true,
+    html: true,
+});
 
 // fetch the font list from /api/font-list.json
 fetch("/api/font-list.json")
@@ -125,7 +132,7 @@ function build() {
 
         // create output div
         const output = document.createElement("div");
-        output.classList.add("output", "quill-output");
+        output.classList.add("output");
 
         // assemble elements into columns
         optionsContainer.appendChild(fontLabel);
@@ -180,7 +187,9 @@ function build() {
 
 // update the output based on input changes
 function update() {
-    const content = quill.root.innerHTML;
+    const content = editor.value;
+    const rendered = md.render(content); // Parse markdown
+
     for (let column of columns) {
         const fontInput = column.querySelector(".text-input");
 
@@ -200,7 +209,8 @@ function update() {
         column.querySelector(".weight-indicator").innerHTML = weight;
         column.querySelector(".size-indicator").innerHTML = size + "pt";
 
-        output.innerHTML = content;
+        // output.innerHTML = content;
+        output.innerHTML = rendered;
         output.style.fontFamily = `"${font}"`;
         output.style.fontWeight = weight;
         output.style.fontSize = size * scaleSlider.value + "pt";
@@ -259,8 +269,6 @@ function loadGoogleFont(font) {
     loadedFonts.push(font);
 }
 
-quill.on("text-change", update);
-
 function reduceFontNum() {
     if (fontNum <= 1) {
         return;
@@ -289,8 +297,10 @@ minusButton.addEventListener("click", reduceFontNum);
 // handle plus button click to increase fontNum
 plusButton.addEventListener("click", increaseFontNum);
 
+editor.addEventListener("input", update);
+
 document.addEventListener("keydown", (event) => {
-    if (quill.hasFocus() || event.target.tagName.toLowerCase() === "input") {
+    if (document.activeElement === editor || event.target.tagName.toLowerCase() === "input") {
         return;
     }
 
