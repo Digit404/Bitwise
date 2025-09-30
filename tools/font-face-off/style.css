@@ -26,13 +26,12 @@ h3,
 h4,
 h5,
 h6 {
-    font-weight: bold;
+    font-weight: inherit;
     user-select: auto;
 }
 
 h1 {
     color: var(--text-color);
-    font-size: 2rem;
     text-align: center;
 }
 
