@@ -25,7 +25,7 @@
     --red-hover: #b22;
 
     /* shadows only where contrast is needed */
-    --shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+    --shadow: 4px 4px 10px rgba(0, 0, 0, 0.05);
     --inset-shadow: inset var(--shadow);
 }
 
@@ -34,7 +34,7 @@
     --fg: #222;
     --fg-hover: #333;
     --text-hover: #bbb;
-    --text: #eee;
+    --text: #f8f8f8;
 }
 
 *,
@@ -70,8 +70,16 @@ textarea:focus-visible {
 }
 
 hr {
-    margin: 5px 0;
+    border: 0;
+    height: 0.2em;
+    border-radius: 100px;
     background-color: var(--bg);
+}
+
+kbd {
+    background: var(--bg);
+    border-radius: var(--border-radius);
+    padding: 0.1rem 0.3rem;
 }
 
 blockquote {
@@ -81,7 +89,7 @@ blockquote {
     padding: 10px 20px;
     position: relative;
 
-    &::before {
+    &::after {
         content: '';
         position: absolute;
         left: 5px;

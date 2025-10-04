@@ -172,7 +172,7 @@ function addCopyButtons() {
         // Move the code block inside the new wrapper
         block.parentNode.insertBefore(wrapper, block);
         wrapper.appendChild(block);
-        
+
         // Create and style the copy button
         const copyButton = document.createElement("button");
         copyButton.textContent = "content_copy";
@@ -253,3 +253,13 @@ async function init() {
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
+document.addEventListener("keydown", (e) => {
+    if (e.key === "s") {
+        const css = document.querySelectorAll('link[rel="stylesheet"]');
+
+        for (const sheet of css) {
+            sheet.disabled = !sheet.disabled;
+        }
+    }
+});
