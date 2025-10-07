@@ -83,8 +83,7 @@ kbd {
 }
 
 blockquote {
-    background: color-mix(in srgb, var(--half) 19.5%, transparent);
-    /* approximately the difference between bg and fg */
+    background: var(--bg);
     border-radius: var(--border-radius);
     padding: 10px 20px;
     position: relative;
@@ -95,7 +94,7 @@ blockquote {
         left: 5px;
         top: 5px;
         bottom: 5px;
-        width: 5px;
+        width: 4px;
         background-color: var(--half);
         border-radius: 1337px;
     }
@@ -622,6 +621,13 @@ input[type="color"] {
     align-items: center;
 }
 
+.viewport {
+    position: relative;
+    max-width: 100%;
+    overflow-x: auto;
+    border-radius: var(--border-radius);
+}
+
 .col {
     display: flex;
     flex-direction: column;
@@ -634,6 +640,11 @@ input[type="color"] {
 
 .spacer {
     flex: 1;
+}
+
+.sans {
+    --font: "DM Sans", Arial, sans-serif;
+    font-family: var(--font);
 }
 
 .serif {
