@@ -12,6 +12,9 @@
 
     /* Layout */
     --reading-width: 1000px;
+    
+    /* for anchor tags */
+    scroll-padding-top: 100px;
 }
 
 .dark {
@@ -57,7 +60,7 @@ aside {
     position: sticky;
     align-self: start;
     top: 10%;
-    width: calc(var(--reading-width) / 2);
+    max-width: calc(var(--reading-width) / 2);
     min-width: 15rem;
     margin-left: 25px;
     max-height: 90vh;
