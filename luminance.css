@@ -8,14 +8,14 @@
     --font-icons: "Material Symbols Rounded";
     --border-radius: 10px;
     --focus-outline: inset 0 0 0 3px var(--blue);
-    --transition-time: 0.2s;
+    --qtime: 0.2s;
 
     --fg: #fff;
     --bg: #e8e8e8;
     --fg-hover: #ddd;
     --half: #888;
-    --text: #111;
     --text-hover: #333;
+    --text: #111;
 
     --green: #4e7;
     --green-hover: #1b4;
@@ -42,9 +42,9 @@
 *::after {
     box-sizing: border-box;
     margin: 0;
-    transition: background var(--transition-time),
-        color var(--transition-time),
-        box-shadow var(--transition-time);
+    transition: background var(--qtime),
+        color var(--qtime),
+        box-shadow var(--qtime);
     border: none;
     outline: none;
 }
@@ -143,13 +143,16 @@ input[type='reset'] {
     background-color: var(--text);
     color: var(--fg);
     border-radius: var(--border-radius);
-    padding: 10px 20px;
     font-size: 1em;
     font-family: var(--font);
     cursor: pointer;
-    transition: background-color var(--transition-time),
-        color var(--transition-time),
-        box-shadow var(--transition-time);
+    transition: background-color var(--qtime),
+        color var(--qtime),
+        box-shadow var(--qtime);
+
+    &.btn {
+        padding: 10px 20px;
+    }
 
     &.secondary {
         background-color: var(--bg);
@@ -250,12 +253,12 @@ progress {
 
     &::-webkit-progress-value {
         background-color: var(--text);
-        transition: width 0.2s ease-in-out;
+        transition: width var(--qtime) ease-in-out;
     }
 
     &::-moz-progress-bar {
         background-color: var(--text);
-        transition: width 0.2s ease-in-out;
+        transition: width var(--qtime) ease-in-out;
     }
 }
 
@@ -289,7 +292,7 @@ details {
             left: 15px;
             top: 0.4em;
             transform: rotate(-90deg);
-            transition: transform var(--transition-time) ease-in-out;
+            transition: transform var(--qtime) ease-in-out;
             font-size: 1.5em;
         }
     }
@@ -351,7 +354,7 @@ input[type="checkbox"] {
         border-radius: 1337px;
         position: relative;
         cursor: pointer;
-        transition: background-color 0.2s ease-in-out;
+        transition: background-color var(--qtime) ease-in-out;
         box-shadow: var(--inset-shadow);
 
         &:checked {
@@ -376,8 +379,8 @@ input[type="checkbox"] {
             border-radius: 1337px;
             transition: left 0.2s ease-in-out,
                 right 0.3s ease-in-out,
-                box-shadow 0.2s ease-in-out,
-                background-color 0.2s ease-in-out;
+                box-shadow var(--qtime) ease-in-out,
+                background-color var(--qtime) ease-in-out;
             box-shadow: var(--shadow);
         }
 
@@ -407,7 +410,7 @@ input[type="checkbox"] {
         border-radius: calc(var(--border-radius) / 2);
         /* Checkbox is so small, we have to use a smaller radius */
         cursor: pointer;
-        transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        transition: background-color var(--qtime) ease-in-out, box-shadow var(--qtime) ease-in-out;
         box-shadow: var(--inset-shadow);
 
         &::after {
@@ -460,7 +463,7 @@ input[type="radio"] {
     cursor: pointer;
     position: relative;
     box-shadow: var(--inset-shadow);
-    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: background-color var(--qtime) ease-in-out, box-shadow var(--qtime) ease-in-out;
 
     &::after {
         content: '';
@@ -472,7 +475,7 @@ input[type="radio"] {
         height: 10px;
         background-color: var(--fg);
         border-radius: 50%;
-        transition: transform 0.2s ease-in-out;
+        transition: transform var(--qtime) ease-in-out;
     }
 
     &:checked {
@@ -519,9 +522,9 @@ input[type="file"] {
         padding: 10px 20px;
         font-family: var(--font);
         cursor: pointer;
-        transition: background-color var(--transition-time),
-            color var(--transition-time),
-            box-shadow var(--transition-time);
+        transition: background-color var(--qtime),
+            color var(--qtime),
+            box-shadow var(--qtime);
     }
 }
 
@@ -678,7 +681,7 @@ input[type="color"] {
         transform: translateY(-50%);
         color: var(--half);
         pointer-events: none;
-        transition: all 0.2s ease;
+        transition: all var(--qtime) ease;
         padding: 0 5px;
         user-select: none;
     }
@@ -744,7 +747,7 @@ input[type="color"] {
     background-color: var(--text-hover);
     border-radius: 5px;
     width: 3px;
-    transition: all 0.3s;
+    transition: all var(--qtime);
     border: 2px solid var(--bg);
     cursor: auto;
 }
