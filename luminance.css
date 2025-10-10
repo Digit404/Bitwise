@@ -614,6 +614,10 @@ input[type="color"] {
     align-items: center;
 }
 
+.padded {
+    padding: 20px;
+}
+
 .wide {
     width: 100%;
 }
