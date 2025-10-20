@@ -47,6 +47,7 @@
         box-shadow var(--qtime);
     border: none;
     outline: none;
+    box-decoration-break: clone;
 }
 
 *::selection {
@@ -80,6 +81,18 @@ kbd {
     background: var(--bg);
     border-radius: var(--border-radius);
     padding: 0.1rem 0.3rem;
+}
+
+mark {
+    background: linear-gradient(75deg,
+            transparent 10px,
+            #fc04 10px,
+            #fc04 calc(100% - 10px),
+            transparent calc(100% - 10px));
+    color: inherit;
+    z-index: 1;
+    margin: 0 -10px;
+    padding: 0 10px;
 }
 
 blockquote {
@@ -212,6 +225,7 @@ code {
     padding: 2.5px 5px;
     border-radius: var(--border-radius);
     font-size: 1em;
+    display: inline-block;
 }
 
 pre code,
@@ -672,6 +686,22 @@ input[type="color"] {
 .card {
     background-color: var(--fg);
     border-radius: var(--border-radius);
+
+    &.anti {
+        background-color: var(--bg);
+    }
+}
+
+.reading-width {
+    max-width: 65ch;
+
+    &.padded {
+        max-width: calc(65ch + 40px);
+    }
+}
+
+.space-between {
+    justify-content: space-between;
 }
 
 .labelled-input {

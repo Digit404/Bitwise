@@ -12,7 +12,7 @@
 
     /* Layout */
     --reading-width: 1000px;
-    
+
     /* for anchor tags */
     scroll-padding-top: 100px;
 }
@@ -91,6 +91,20 @@ aside {
     a {
         font-weight: normal;
         color: var(--text);
+
+        @media (hover: hover) {
+            & {
+                background: linear-gradient(var(--blue));
+                background-repeat: no-repeat;
+                background-size: 0% 2px;
+                background-position: 0 95%;
+                transition: background-size ease-in-out var(--qtime);
+            }
+
+            &:hover {
+                background-size: 100% 2px;
+            }
+        }
     }
 }
 
@@ -145,6 +159,7 @@ footer {
 del {
     text-decoration: none;
     position: relative;
+    white-space: nowrap;
 
     &::before {
         content: '';
@@ -160,13 +175,6 @@ del {
     }
 }
 
-mark {
-    background-color: #fc04;
-    color: inherit;
-    z-index: 1;
-}
-
-del,
 nobr,
 kbd {
     white-space: nowrap;
