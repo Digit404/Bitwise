@@ -100,8 +100,9 @@ aside {
                 background-size: 0% 2px;
                 background-position: 0 95%;
                 transition:
-                    background-size ease-in-out var(--qtime),
+                    background-size ease-in-out 0.5s,
                     color var(--qtime);
+                box-decoration-break: slice;
             }
 
             &:hover {
@@ -408,15 +409,16 @@ nav {
 
 blockquote {
     --color: var(--half);
+    --text-color: color-mix(in oklab, var(--color), var(--text) 25%);
     --splash-text: "";
-    background: color-mix(in srgb, var(--color) 15%, transparent);
+    background: color-mix(in oklab, var(--color) 15%, transparent);
     padding: 20px;
     padding-left: 30px;
     margin: 20px 0;
 
     p {
         display: inline;
-        color: var(--color);
+        color: var(--text-color);
     }
 
     /* header for block quote */
@@ -449,7 +451,7 @@ blockquote {
     }
 
     &.warning {
-        --color: var(--warning-color);
+        --color: var(--red);
         --splash-text: "\e002  Warning";
     }
 
