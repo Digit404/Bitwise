@@ -225,7 +225,6 @@ code {
     padding: 2.5px 5px;
     border-radius: var(--border-radius);
     font-size: 1em;
-    display: inline-block;
 }
 
 pre code,
