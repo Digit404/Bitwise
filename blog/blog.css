@@ -91,14 +91,17 @@ aside {
     a {
         font-weight: normal;
         color: var(--text);
+        transition: color var(--qtime);
 
         @media (hover: hover) {
             & {
-                background: linear-gradient(var(--blue));
+                background-image: linear-gradient(currentColor);
                 background-repeat: no-repeat;
                 background-size: 0% 2px;
                 background-position: 0 95%;
-                transition: background-size ease-in-out var(--qtime);
+                transition:
+                    background-size ease-in-out var(--qtime),
+                    color var(--qtime);
             }
 
             &:hover {
@@ -278,11 +281,17 @@ a {
 
         @media (hover: hover) {
             & {
-                background: linear-gradient(var(--blue));
+                /*
+                    css treats background color differently than background image,
+                    so we have to make a fake gradient so we can move it
+                */
+                background: linear-gradient(currentColor);
                 background-repeat: no-repeat;
                 background-size: 0% 2px;
                 background-position: 50% 95%;
-                transition: background-size ease-in-out var(--qtime);
+                transition:
+                    background-size ease-in-out var(--qtime),
+                    color var(--qtime);
             }
 
             &:hover {
