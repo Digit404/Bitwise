@@ -23,6 +23,8 @@
     --blue-hover: #25c;
     --red: #e44;
     --red-hover: #b22;
+    --yellow: #fb3;
+    --yellow-hover: #d80;
 
     /* shadows only where contrast is needed */
     --shadow: 4px 4px 10px rgba(0, 0, 0, 0.05);
@@ -625,6 +627,22 @@ input[type="color"] {
     flex-direction: inherit;
     gap: 15px;
     align-items: center;
+
+    &.start {
+        align-items: flex-start;
+    }
+
+    &.end {
+        align-items: flex-end;
+    }
+
+    &.center {
+        align-items: center;
+    }
+
+    &.stretch {
+        align-items: stretch;
+    }
 }
 
 .padded {
@@ -689,6 +707,18 @@ input[type="color"] {
     &.anti {
         background-color: var(--bg);
     }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
 }
 
 .reading-width {
