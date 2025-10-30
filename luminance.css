@@ -649,6 +649,10 @@ input[type="color"] {
     padding: 20px;
 }
 
+.very-padded {
+    padding: 50px;
+}
+
 .wide {
     width: 100%;
 }
