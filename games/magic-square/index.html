@@ -5,41 +5,135 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Magic Square</title>
+    <link rel="stylesheet" href="/luminance.css">
     <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-    <div class="pattern-grid">
-        <div class="cell"></div>
-        <div class="cell on"></div>
-        <div class="cell"></div>
-        <div class="cell on"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell on"></div>
-        <div class="cell"></div>
+    <div id="game" class="hidden">
+        <div class="pattern-row">
+            <div class="pattern-grid">
+                <div class="cell"></div>
+                <div class="cell on"></div>
+                <div class="cell"></div>
+                <div class="cell on"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell on"></div>
+                <div class="cell"></div>
+            </div>
+        </div>
+        <div id="grid">
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+        </div>
     </div>
-    <div id="grid">
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
+    <div id="skill-screen">
+        <h1>Select Skill</h1>
+        <div class="row">
+            <div id="single" class="skill icon"> ◼️ </div>
+            <div id="triple" class="skill icon"> ◼️◼️◼️ </div>
+        </div>
     </div>
 </body>
 <script>
     const cells = document.querySelectorAll('.cell');
+    const grid = document.getElementById('grid');
+    const gameScreen = document.getElementById('game');
+    const skillScreen = document.getElementById('skill-screen');
+    const singleSkill = document.getElementById('single');
+    const tripleSkill = document.getElementById('triple');
+    const patternRow = document.querySelector('.pattern-row');
+
+    function startGame() {
+        skillScreen.classList.add('fade');
+        gameScreen.classList.remove('hidden');
+        // start music here
+    }
+
+    function flipCoin() {
+        return Math.random() < 0.5;
+    }
 
     for (let cell of cells) {
         cell.addEventListener('click', function () {
             cell.classList.toggle('on');
         });
     }
+
+    singleSkill.addEventListener('click', () => {
+        patternRow.innerHTML = '';
+
+        const pattern = document.createElement('div');
+        pattern.classList.add('pattern-grid');
+
+        for (let i = 0; i < 9; i++) {
+            const patternCell = document.createElement('div');
+            patternCell.classList.add('cell');
+            pattern.appendChild(patternCell);
+        }
+
+        patternRow.appendChild(pattern);
+        startGame();
+    });
+
+    tripleSkill.addEventListener('click', () => {
+        patternRow.innerHTML = '';
+
+        for (let i = 0; i < 3; i++) {
+            const pattern = document.createElement('div');
+            pattern.classList.add('pattern-grid');
+
+            for (let j = 0; j < 9; j++) {
+                const patternCell = document.createElement('div');
+                patternCell.classList.add('cell');
+
+                if (flipCoin()) {
+                    patternCell.classList.add('on');
+                }
+
+                pattern.appendChild(patternCell);
+            }
+
+            pattern.addEventListener('click', () => {
+                if (pattern.classList.contains('active')) {
+                    pattern.classList.remove('active');
+                    pattern.classList.add('inactive');
+                } else if (pattern.classList.contains('inactive')) {
+                    pattern.classList.remove('inactive');
+                } else {
+                    pattern.classList.add('active');
+                }
+            });
+
+            patternRow.appendChild(pattern);
+        }
+        startGame();
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'h') {
+            grid.classList.toggle('hide');
+        }
+        if (event.key === 'w') {
+            grid.classList.add('win');
+            grid.classList.remove('hide');
+            setTimeout(() => {
+                grid.classList.remove('win');
+                setTimeout(() => {
+                    grid.classList.add('hide');
+                }, 50);
+            }, 2500);
+        }
+    });
 </script>
 
 </html>
