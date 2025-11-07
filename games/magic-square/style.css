@@ -22,6 +22,13 @@ body {
     gap: 50px;
     justify-content: center;
     align-items: center;
+    max-height: 100dvh;
+    max-width: 100dvw;
+    width: 40rem;
+    height: 90rem;
+
+    /* experimental feature, supported in 90% of browsers */
+    container-type: size;
 }
 
 #grid {
@@ -31,8 +38,7 @@ body {
     gap: 5px;
     border-radius: var(--border-radius);
     box-shadow: -20px -20px 40px #fff;
-    width: 90dvw;
-    max-width: 40em;
+    width: min(90cqw, 60cqh);
     aspect-ratio: 1;
 
     .cell {
@@ -55,7 +61,7 @@ body {
 
         &.on {
             box-shadow: inset 0 0 0 #0000,
-                24px 24px 24px #0002;
+                24px 24px 32px #0002;
         }
     }
 
@@ -132,8 +138,8 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 30px;
-    height: 8em;
+    gap: 5cqw;
+    height: 20cqh;
 }
 
 .pattern-grid {
@@ -143,8 +149,7 @@ body {
     border-radius: var(--border-radius);
     box-shadow: -5px -5px 10px #fff,
         5px 5px 10px #0002;
-    width: 6em;
-    height: 6em;
+    width: min(18cqh, 18cqw);
     aspect-ratio: 1;
     --border-radius: 1em;
     transition: all 0.5s ease;
@@ -154,8 +159,7 @@ body {
     }
 
     &.active {
-        width: 8em;
-        height: 8em;
+        width: min(25cqh, 25cqw);
     }
 }
 
