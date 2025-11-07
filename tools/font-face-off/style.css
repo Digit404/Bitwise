@@ -1,24 +1,20 @@
 :root {
     --font: 'Bitter', "DM Sans", Tahoma, sans-serif;
     --max-width: 85vw;
+
+    --bg-color: var(--bg);
+    --text-color: var(--text);
+    --text-color-hover: var(--text-hover);
 }
 
-body {
-    font-family: var(--font);
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    padding: 20px;
+body.flex {
     max-width: var(--max-width);
     margin: auto;
     padding-bottom: 70px;
+    gap: 10px;
 }
 
 /* markdown stuff */
-
-hr {
-    margin: 5px 0;
-    background-color: var(--bg-color);
-}
 
 h1,
 h2,
@@ -30,35 +26,6 @@ h6 {
     user-select: auto;
 }
 
-h1 {
-    color: var(--text-color);
-    text-align: center;
-}
-
-code {
-    background: var(--bg-color);
-    color: var(--red);
-    font-family: inherit;
-    padding: 2.5px 5px;
-    border-radius: var(--border-radius);
-}
-
-pre {
-    font-family: inherit;
-}
-
-pre code,
-code.block {
-    background-color: var(--bg-color);
-    display: block;
-    white-space: pre;
-    color: var(--text-color);
-    padding: 10px 20px;
-    box-shadow: inset 105px 0 0 -100px var(--text-color);
-    overflow-x: auto;
-    font-family: inherit;
-}
-
 .title {
     text-align: center;
     margin: 0.5em;
@@ -68,68 +35,44 @@ code.block {
 
 .button {
     font-weight: bold;
+    padding: 10px;
 }
 
 /* markdown editor */
 
 .editor-container {
     display: flex;
-    max-width: var(--max-width);
-    margin: auto;
-    width: 100%;
-    background-color: var(--fg-color);
+    justify-content: center;
+    background-color: var(--fg);
     border-radius: var(--border-radius);
 
     #editor {
-        background: var(--fg-color);
+        background: transparent;
         padding: 20px;
-        border: none;
         font-size: 16px;
         font-family: var(--font-mono);
-        border-radius: var(--border-radius);
         max-width: 800px;
         width: 100%;
         height: 40dvh;
         max-height: 450px;
         overflow: auto;
         resize: none;
-        margin: auto;
-        color: var(--text-color);
 
         &:focus-visible {
             box-shadow: none;
         }
     }
+
+    &:has(#editor:focus-visible) {
+        box-shadow: var(--focus-outline);
+    }
 }
 
 /* controls */
 
-.controls-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin: 10px 0;
-
-    button {
-        font-family: var(--font);
-        padding: 10px 20px;
-        border-radius: var(--border-radius);
-        font-size: 1.5rem;
-        width: 100%;
-        background-color: var(--fg-color);
-        color: var(--text-color);
-        cursor: pointer;
-
-        &:hover {
-            background-color: var(--fg-color-hover);
-        }
-    }
-}
-
-.control {
-    display: flex;
-    flex-direction: column;
+.count-button {
+    padding: 10px 20px;
+    font-size: 1.5rem;
     width: 100%;
 }
 
@@ -137,30 +80,70 @@ code.block {
 
 .container {
     display: flex;
+    flex-direction: row;
+    max-width: var(--max-width);
+    overflow: scroll;
     gap: 10px;
-}
 
-.column {
-    background: var(--fg-color);
-    padding: 20px;
-    flex: 1;
-    word-break: break-word;
+    .column {
+        display: flex;
+        flex-direction: column;
+        background: var(--fg);
+        padding: 20px;
+        flex: 1;
+        word-break: break-word;
 
-    &:first-of-type {
-        border-radius: var(--border-radius) 0 0 var(--border-radius);
+        &:first-of-type {
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+        }
+
+        &:last-of-type {
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+
+        &:only-of-type {
+            border-radius: var(--border-radius);
+        }
     }
 
-    &:last-of-type {
-        border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    @media (max-width: 1000px) {
+        flex-direction: column;
+
+        .column {
+            flex-direction: row;
+            gap: 20px;
+
+            .settings-container {
+                flex-direction: column;
+
+                div {
+                    width: 100%;
+                }
+            }
+
+            &:first-of-type {
+                border-radius: var(--border-radius) var(--border-radius) 0 0;
+            }
+
+            &:last-of-type {
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
+            }
+
+            &:only-of-type {
+                border-radius: var(--border-radius);
+            }
+        }
     }
 
-    &:only-of-type {
-        border-radius: var(--border-radius);
+    @media (max-width: 600px) {
+        .column {
+            flex-direction: column;
+            gap: 0;
+        }
     }
 }
 
 label {
-    display: block;
     font-weight: bold;
 }
 
@@ -195,25 +178,25 @@ label {
 
 /* large slider */
 
-.large-slider {
-    --color: var(--text-color);
+input[type=range].large-slider {
+    --color: var(--text);
     position: relative;
     width: 100%;
     height: 50px;
     -webkit-appearance: none;
     appearance: none;
-    background: transparent;
     overflow: hidden;
-    background-color: var(--fg-color-hover);
-    border-radius: 10px;
+    background-color: var(--fg-hover);
+    border-radius: var(--border-radius);
 
     &:hover {
-        --color: var(--text-color-hover);
+        --color: var(--text-hover);
     }
 
     &::-webkit-slider-runnable-track {
         height: 10px;
         -webkit-appearance: none;
+        background-color: transparent;
         margin-top: -1px;
     }
 
@@ -227,12 +210,13 @@ label {
 
     &::-moz-range-track {
         height: 10px;
-        border-radius: 10px;
+        background-color: transparent;
         appearance: none;
     }
 
     &::-moz-range-progress {
         height: 50px;
+        border-radius: 0;
         background: var(--color);
     }
 
@@ -271,11 +255,31 @@ label {
 }
 
 .indicator {
-    color: var(--text-color);
+    color: var(--text);
     opacity: 0.5;
     padding: 5px;
     font-size: 0.8em;
     vertical-align: middle;
+}
+
+.back-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    font-family: var(--font-icons);
+    color: var(--bg) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 24px;
+    text-decoration: none;
+
+    &:focus-visible {
+        box-shadow: var(--focus-outline);
+    }
 }
 
 .output {

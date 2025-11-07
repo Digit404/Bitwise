@@ -152,9 +152,7 @@ table {
 }
 
 button,
-input[type='submit'],
-input[type='button'],
-input[type='reset'] {
+.button {
     background-color: var(--text);
     color: var(--fg);
     border-radius: var(--border-radius);
@@ -171,6 +169,17 @@ input[type='reset'] {
 
     &.secondary {
         background-color: var(--bg);
+        color: var(--text);
+
+        @media (hover: hover) {
+            &:hover {
+                background-color: var(--fg-hover);
+            }
+        }
+    }
+
+    &.tertiary {
+        background-color: var(--fg);
         color: var(--text);
 
         @media (hover: hover) {
@@ -566,6 +575,12 @@ input[type="range"] {
         margin-top: -4px;
     }
 
+    &::-moz-range-progress {
+        height: 8px;
+        background-color: var(--text);
+        border-radius: 1337px 0 0 1337px;
+    }
+
     &::-moz-range-track {
         height: 8px;
         background-color: var(--bg);
@@ -678,6 +693,10 @@ input[type="color"] {
 .row {
     display: flex;
     flex-direction: row;
+}
+
+.rel {
+    position: relative;
 }
 
 .spacer {

@@ -8,12 +8,12 @@
     <script src="./font-face-off.js" defer></script>
     <script src="/dark-mode.js"></script>
     <link rel="shortcut icon" href="/res/favicon.png" type="image/png">
-    <link rel="stylesheet" href="/tools/common.css">
+    <link rel="stylesheet" href="/luminance.css">
     <link rel="stylesheet" href="./style.css">
     <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
 </head>
 
-<body>
+<body class="flex col stretch">
     <h1 class="title">Font Face-Off</h1>
     <div class="editor-container">
         <textarea id="editor" autocorrect="off" autocapitalize="off" spellcheck="false" autocomplete="off">
@@ -24,15 +24,15 @@ Nullam ornare finibus natoque venenatis semper quis. Condimentum inceptos pharet
 
 Parturient risus dictum nisl praesent ex. Natoque bibendum egestas finibus finibus lorem; proin consectetur tempus. Congue porta hendrerit per phasellus feugiat platea mauris tempor. Ad blandit cursus netus ex natoque. Blandit justo elit laoreet egestas aenean vulputate? Urna dignissim metus ultrices mattis aenean imperdiet; imperdiet montes.</textarea>
     </div>
-    <div class="controls-container">
-        <div class="control scale-control">
+    <div class="rel">
+        <div class="flex scale-control">
             <input type="range" id="font-scale" autocomplete="off" value="1" min="0" max="2" step="0.02"
                 class="large-slider">
         </div>
     </div>
-    <div class="controls-container">
-        <button class="button" id="minus">&minus;</button>
-        <button class="button" id="plus">+</button>
+    <div class="flex row">
+        <button class="count-button tertiary" id="minus">&minus;</button>
+        <button class="count-button tertiary" id="plus">+</button>
     </div>
     <div id="font-container" class="container"></div>
     <a href="../" class="button back-button">arrow_back</a>
