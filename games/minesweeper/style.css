@@ -472,7 +472,7 @@
     }
 
     .tile::after {
-        font-size: clamp(0.5rem, 2vh, 2rem);
+        font-size: clamp(0.5rem, 2.5vh, 2rem);
     }
 
     .main-container {
