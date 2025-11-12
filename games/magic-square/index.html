@@ -63,6 +63,25 @@
         return Math.random() < 0.5;
     }
 
+    function wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function winGame() {
+        for (let cell of cells) {
+            cell.classList.remove('on');
+        }
+        gameScreen.classList.add('win');
+
+        setTimeout(() => {
+            // hides classes are identical to win, but without the animation, for better transitions
+            gameScreen.classList.remove('win');
+            grid.classList.add('hide');
+            patternRow.classList.add('hide');
+
+        }, 2500);
+    }
+
     for (let cell of cells) {
         cell.addEventListener('click', function () {
             cell.classList.toggle('on');
@@ -124,14 +143,7 @@
             grid.classList.toggle('hide');
         }
         if (event.key === 'w') {
-            grid.classList.add('win');
-            grid.classList.remove('hide');
-            setTimeout(() => {
-                grid.classList.remove('win');
-                setTimeout(() => {
-                    grid.classList.add('hide');
-                }, 50);
-            }, 2500);
+            winGame();
         }
     });
 </script>

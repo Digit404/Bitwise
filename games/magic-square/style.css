@@ -65,21 +65,25 @@ body {
         }
     }
 
+    .win & {
+        box-shadow: none;
+
+        .cell {
+            animation: winning-cell-alt 2s ease forwards;
+            /* calc for the animation */
+            --f: calc(abs(1 - mod(var(--index) - 1, 3)) + 1 - mod(round(down, (var(--index) - 1) / 3), 2));
+            animation-delay: calc(var(--f) * 0.2s);
+            pointer-events: none;
+        }
+    }
+
     &.hide {
         box-shadow: none;
 
         .cell {
             box-shadow: none;
-            background-color: var(--on-color);
+            background-color: var(--bg);
             pointer-events: none;
-        }
-    }
-
-    &.win {
-        .cell {
-            animation: winning-cell 2s ease forwards;
-            --f: calc(abs(1 - mod(var(--index) - 1, 3)) + 1 - mod(round(down, (var(--index) - 1) / 3), 2));
-            animation-delay: calc(var(--f) * 0.2s);
         }
     }
 }
@@ -160,6 +164,14 @@ body {
 
     &.active {
         width: min(25cqh, 25cqw);
+    }
+
+    .win &,
+    .pattern-row.hide & {
+        .cell {
+            background-color: var(--bg);
+            box-shadow: none;
+        }
     }
 }
 
@@ -270,5 +282,48 @@ body {
         background-color: var(--off-color);
         box-shadow: inset 24px 24px 24px #000a,
             0 0 0 #0000;
+    }
+}
+
+@keyframes winning-cell-alt {
+    0% {
+        background-color: var(--off-color);
+        box-shadow: inset 24px 24px 24px #000a,
+            0 0 0 #0000;
+    }
+
+    17% {
+        background-color: var(--on-color);
+        box-shadow: inset 0 0 0 #0000,
+            24px 24px 24px #0002;
+    }
+
+    33% {
+        background-color: var(--off-color);
+        box-shadow: inset 24px 24px 24px #000a,
+            0 0 0 #0000;
+    }
+
+    50% {
+        background-color: var(--on-color);
+        box-shadow: inset 0 0 0 #0000,
+            24px 24px 24px #0002;
+    }
+
+    67% {
+        background-color: var(--off-color);
+        box-shadow: inset 24px 24px 24px #000a,
+            0 0 0 #0000;
+    }
+
+    83% {
+        background-color: var(--on-color);
+        box-shadow: inset 0 0 0 #0000,
+            24px 24px 24px #0002;
+    }
+
+    100% {
+        background-color: var(--bg);
+        box-shadow: none;
     }
 }
