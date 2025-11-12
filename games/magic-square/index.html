@@ -78,7 +78,6 @@
             gameScreen.classList.remove('win');
             grid.classList.add('hide');
             patternRow.classList.add('hide');
-
         }, 2500);
     }
 
@@ -141,6 +140,7 @@
     document.addEventListener('keydown', (event) => {
         if (event.key === 'h') {
             grid.classList.toggle('hide');
+            patternRow.classList.toggle('hide');
         }
         if (event.key === 'w') {
             winGame();
