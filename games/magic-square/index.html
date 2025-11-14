@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Magic Square</title>
     <link rel="stylesheet" href="/luminance.css">
     <link rel="stylesheet" href="./style.css">
@@ -39,10 +39,17 @@
     <div id="skill-screen">
         <h1>Select Skill</h1>
         <div class="row">
-            <div id="single" class="skill icon"> ◼️ </div>
-            <div id="triple" class="skill icon"> ◼️◼️◼️ </div>
+            <div id="single" class="skill icon">
+                <div class="square"></div>
+            </div>
+            <div id="triple" class="skill icon">
+                <div class="square"></div>
+                <div class="square"></div>
+                <div class="square"></div>
+            </div>
         </div>
     </div>
+    <div id="win-button"> WIN </div>
 </body>
 <script>
     const cells = document.querySelectorAll('.cell');
@@ -146,6 +153,8 @@
             winGame();
         }
     });
+
+    document.querySelector('#win-button').addEventListener('click', winGame);
 </script>
 
 </html>
