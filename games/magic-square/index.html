@@ -49,6 +49,9 @@
             </div>
         </div>
     </div>
+    <div id="results" class="faded">
+        <h1>YOU WIN</h1>
+    </div>
     <div id="win-button"> WIN </div>
 </body>
 <script>
@@ -59,6 +62,7 @@
     const singleSkill = document.getElementById('single');
     const tripleSkill = document.getElementById('triple');
     const patternRow = document.querySelector('.pattern-row');
+    const resultsScreen = document.getElementById('results');
 
     function startGame() {
         skillScreen.classList.add('fade');
@@ -85,6 +89,9 @@
             gameScreen.classList.remove('win');
             grid.classList.add('hide');
             patternRow.classList.add('hide');
+            setTimeout(() => {
+                resultsScreen.classList.remove('faded');
+            }, 500);
         }, 2500);
     }
 
@@ -145,6 +152,7 @@
     });
 
     document.addEventListener('keydown', (event) => {
+        resultsScreen.classList.add('faded');
         if (event.key === 'h') {
             grid.classList.toggle('hide');
             patternRow.classList.toggle('hide');

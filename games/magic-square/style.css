@@ -269,6 +269,29 @@ body {
     }
 }
 
+#results {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2em 4em;
+    max-width: 90dvw;
+    border-radius: 2em;
+    box-shadow: -20px -20px 40px #fff,
+        20px 20px 40px #0003;
+    font-size: 2rem;
+    user-select: none;
+    transition: all 0.5s ease;
+
+    &.faded {
+        box-shadow: none;
+        display: flex;
+        color: transparent;
+        pointer-events: none;
+    }
+}
+
 @keyframes winning-cell {
     0% {
         background-color: var(--off-color);
