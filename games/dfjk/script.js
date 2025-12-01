@@ -27,6 +27,7 @@ const settingsButton = document.getElementById("settings-button");
 const settingsDialog = document.getElementById("settings-dialog");
 const lightModeCheckbox = document.getElementById("light-mode");
 const extraKeyCheckbox = document.getElementById("extra-key");
+const allowJacksCheckbox = document.getElementById("allow-jacks");
 const scaleInput = document.getElementById("scale");
 const lengthInput = document.getElementById("length");
 const hpInput = document.getElementById("hp");
@@ -317,6 +318,11 @@ extraKeyCheckbox.onchange = () => {
     updateKeyInput();
 };
 
+allowJacksCheckbox.onchange = () => {
+    Sound.play("click");
+    newChart(length);
+}
+
 modeSelect.onchange = () => {
     Sound.play("click");
     mode = modeSelect.value;
@@ -464,6 +470,8 @@ function activateNightmareMode() {
     lightModeCheckbox.disabled = true;
     extraKeyCheckbox.checked = true;
     extraKeyCheckbox.disabled = true;
+    allowJacksCheckbox.checked = true;
+    allowJacksCheckbox.disabled = true;
     modeSelect.value = "advanced";
     modeSelect.querySelector("option[value='advanced']").innerHTML = "NIGHTMARE";
     modeSelect.disabled = true;
@@ -550,9 +558,10 @@ function extendChart(length) {
 
         let newKey = rng.choice(Key.keys).key;
 
-        if (mode === "no-jacks") {
+        if (!allowJacksCheckbox.checked) {
             // don't allow the same key twice in a row
-            while (newBeats.length > 0 && chart[chart.length - 1].includes(newKey)) {
+            const lastBeat = chart[chart.length - 1];
+            while (newBeats.length > 0 && lastBeat.includes(newKey) && lastBeat.length === 1) {
                 newKey = rng.choice(Key.keys).key;
             }
         }
@@ -720,9 +729,12 @@ function win() {
     }
 
     const timeString = time.toFixed(2) + "s";
-    const modeString = nightmare ? "N" : mode === "advanced" ? "A" : mode === "no-jacks" ? "E" : "";
+    let modeString = nightmare ? "N" : mode === "advanced" ? "A" : "";
+    if (allowJacksCheckbox.checked) {
+        modeString += "J";
+    }
 
-    // keystring is the keys active in the current chart
+    // keyString is the keys active in the current chart
     const keyString = Key.Keys.join("").toUpperCase();
 
     resultTime.textContent = timeString;
@@ -810,7 +822,7 @@ function fail() {
     if (endless) {
         const time = (performance.now() - startTime) / 1000;
         const cps = hits / time;
-        const modeString = nightmare ? "Nightmare" : mode === "advanced" ? "Advanced" : mode === "no-jacks" ? "Easy" : "Normal";
+        const modeString = nightmare ? "Nightmare" : mode === "advanced" ? "Advanced" : "Normal";
 
         statusBar.textContent = `You hit ${hits} keys at ${cps.toFixed(2)} CPS on ${modeString}`;
     } else {

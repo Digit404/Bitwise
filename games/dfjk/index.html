@@ -56,9 +56,12 @@
             <label for="endless">Endless</label>
         </div>
         <div>
+            <input type="checkbox" id="allow-jacks">
+            <label for="allow-jacks">Allow Jacks</label>
+        </div>
+        <div>
             <label for="mode-select">Mode</label>
-            <select id="mode-select" name="mode">
-                <option value="no-jacks">No Jacks</option>
+            <select id="mode-select" name="mode" autocomplete="off">
                 <option value="normal" selected>Normal</option>
                 <option value="advanced">Advanced</option>
             </select>
@@ -75,7 +78,7 @@
             <label for="hp">HP <span id="hp-indicator">10</span> </label>
             <input type="range" id="hp" name="hp" min="1" max="16" value="10">
         </div>
-        <p id="key-input" contenteditable="true">DFJK</p>
+        <p id="key-input" contenteditable="true" spellcheck="false">DFJK</p>
     </div>
     <div id="results" hidden>
         <p id="result-chart-no">#</p>
