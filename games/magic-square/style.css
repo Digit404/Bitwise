@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100..900;1,100..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fira+Code:wght@300..700&family=Roboto+Slab:wght@100..900&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap");
+
 :root {
     --bg: #eee;
     --off-color: #333;
@@ -14,6 +16,18 @@ body {
     height: 100dvh;
     overflow: clip;
     background-color: var(--bg);
+    font-family: "DM Sans", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    transition: box-shadow var(--qtime);
+    border: none;
+    outline: none;
+    box-decoration-break: clone;
 }
 
 #game {
@@ -200,7 +214,9 @@ body {
     .row {
         border-radius: 1337px;
         box-shadow: -20px -20px 40px #fff,
-            20px 20px 40px #0003;
+            20px 20px 40px #0003,
+            inset 5px 5px 20px -5px #fff,
+            inset -5px -5px 20px -5px #0003;
         display: flex;
         flex-direction: row;
         width: 600px;
@@ -272,11 +288,12 @@ body {
 #results {
     position: absolute;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     width: 560px;
-    height: 200px;
+    height: 300px;
     max-width: 90dvw;
     border-radius: 2em;
     box-shadow: -20px -20px 40px #fff,
@@ -287,6 +304,22 @@ body {
 
     h1 {
         transition: opacity 0.2s ease;
+    }
+
+    .perfect-star {
+        font-size: 0;
+        font-family: "Material Symbols Rounded";
+        font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+        color: transparent;
+        
+        .perfect & {
+            font-size: 8rem;
+            animation: star-in 1s ease forwards;
+        }
     }
 
     &.faded {
@@ -384,6 +417,25 @@ body {
     100% {
         background-color: var(--bg);
         box-shadow: none;
+    }
+}
+
+@keyframes star-in {
+    0% {
+        text-shadow: 0 0 0 #fff0,
+        0 0 0 #0000;
+        transform: scale(0.5);
+        color: var(--on-color);
+    }
+    50% {
+        text-shadow: -8px -8px 12px #fff,
+        8px 8px 12px #0003;
+        transform: scale(1.2);
+        color: var(--on-color);
+    }
+    100% {
+        transform: scale(1);
+        color: #fd3;
     }
 }
 

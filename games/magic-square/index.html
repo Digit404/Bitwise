@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Magic Square</title>
-    <link rel="stylesheet" href="/luminance.css">
     <link rel="stylesheet" href="./style.css">
 </head>
 
@@ -50,6 +49,9 @@
         </div>
     </div>
     <div id="results" class="faded">
+        <div class="perfect-star">
+            star
+        </div>
         <h1>YOU WIN</h1>
     </div>
     <div id="win-button"> WIN </div>
@@ -89,6 +91,7 @@
             patternRow.classList.add('hide');
             setTimeout(() => {
                 resultsScreen.classList.remove('faded');
+                resultsScreen.classList.add('perfect');
             }, 500);
         }, 2500);
     }
@@ -150,12 +153,13 @@
     });
 
     document.addEventListener('keydown', (event) => {
-        resultsScreen.classList.add('faded');
         if (event.key === 'h') {
+            resultsScreen.classList.add('faded');
             grid.classList.toggle('hide');
             patternRow.classList.toggle('hide');
         }
         if (event.key === 'w') {
+            resultsScreen.classList.add('faded');
             winGame();
         }
     });
