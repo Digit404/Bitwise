@@ -45,7 +45,7 @@ body {
     container-type: size;
 }
 
-#grid {
+#board {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -152,7 +152,7 @@ body {
     }
 }
 
-.pattern-row {
+#stages {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -160,7 +160,7 @@ body {
     height: 20cqh;
 }
 
-.pattern-grid {
+.pattern {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -181,7 +181,7 @@ body {
     }
 
     .win &,
-    .pattern-row.hide & {
+    .stages.hide & {
         .cell {
             background-color: var(--bg);
             box-shadow: none;
@@ -189,7 +189,7 @@ body {
     }
 }
 
-#skill-screen {
+#select-mode {
     position: absolute;
     gap: 50px;
     display: flex;
@@ -222,7 +222,7 @@ body {
         width: 600px;
         max-width: 90dvw;
 
-        .skill {
+        .mode {
             border-radius: 1337px;
             flex: 1;
             user-select: none;
@@ -315,7 +315,7 @@ body {
             'GRAD' 0,
             'opsz' 24;
         color: transparent;
-        
+
         .perfect & {
             font-size: 8rem;
             animation: star-in 1s ease forwards;
@@ -423,16 +423,18 @@ body {
 @keyframes star-in {
     0% {
         text-shadow: 0 0 0 #fff0,
-        0 0 0 #0000;
+            0 0 0 #0000;
         transform: scale(0.5);
         color: var(--on-color);
     }
+
     50% {
         text-shadow: -8px -8px 12px #fff,
-        8px 8px 12px #0003;
+            8px 8px 12px #0003;
         transform: scale(1.2);
         color: var(--on-color);
     }
+
     100% {
         transform: scale(1);
         color: #fd3;

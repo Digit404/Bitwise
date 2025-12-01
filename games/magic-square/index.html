@@ -10,8 +10,8 @@
 
 <body>
     <div id="game" class="hidden">
-        <div class="pattern-row">
-            <div class="pattern-grid">
+        <div id="stages">
+            <div class="pattern">
                 <div class="cell"></div>
                 <div class="cell on"></div>
                 <div class="cell"></div>
@@ -23,7 +23,7 @@
                 <div class="cell"></div>
             </div>
         </div>
-        <div id="grid">
+        <div id="board">
             <div class="cell"></div>
             <div class="cell"></div>
             <div class="cell"></div>
@@ -35,13 +35,13 @@
             <div class="cell"></div>
         </div>
     </div>
-    <div id="skill-screen">
-        <h1>Select Skill</h1>
+    <div id="select-mode">
+        <h1>Select Mode</h1>
         <div class="row">
-            <div id="single" class="skill icon">
+            <div id="single" class="mode icon">
                 <div class="square"></div>
             </div>
-            <div id="triple" class="skill icon">
+            <div id="multi" class="mode icon">
                 <div class="square"></div>
                 <div class="square"></div>
                 <div class="square"></div>
@@ -49,25 +49,23 @@
         </div>
     </div>
     <div id="results" class="faded">
-        <div class="perfect-star">
-            star
-        </div>
+        <div class="perfect-star"> star </div>
         <h1>YOU WIN</h1>
     </div>
     <div id="win-button"> WIN </div>
 </body>
 <script>
     const cells = document.querySelectorAll('.cell');
-    const grid = document.getElementById('grid');
+    const board = document.getElementById('board');
     const gameScreen = document.getElementById('game');
-    const skillScreen = document.getElementById('skill-screen');
-    const singleSkill = document.getElementById('single');
-    const tripleSkill = document.getElementById('triple');
-    const patternRow = document.querySelector('.pattern-row');
+    const selectMode = document.getElementById('select-mode');
+    const singleMode = document.getElementById('single');
+    const multiMode = document.getElementById('multi');
+    const stages = document.getElementById('stages');
     const resultsScreen = document.getElementById('results');
 
     function startGame() {
-        skillScreen.classList.add('fade');
+        selectMode.classList.add('fade');
         gameScreen.classList.remove('hidden');
         // start music here
     }
@@ -88,7 +86,7 @@
 
         setTimeout(() => {
             // hides classes are identical to win, but without the animation, for better transitions
-            patternRow.classList.add('hide');
+            stages.classList.add('hide');
             setTimeout(() => {
                 resultsScreen.classList.remove('faded');
                 resultsScreen.classList.add('perfect');
@@ -102,11 +100,11 @@
         });
     }
 
-    singleSkill.addEventListener('click', () => {
-        patternRow.innerHTML = '';
+    singleMode.addEventListener('click', () => {
+        stages.innerHTML = '';
 
         const pattern = document.createElement('div');
-        pattern.classList.add('pattern-grid');
+        pattern.classList.add('pattern');
 
         for (let i = 0; i < 9; i++) {
             const patternCell = document.createElement('div');
@@ -114,16 +112,16 @@
             pattern.appendChild(patternCell);
         }
 
-        patternRow.appendChild(pattern);
+        stages.appendChild(pattern);
         startGame();
     });
 
-    tripleSkill.addEventListener('click', () => {
-        patternRow.innerHTML = '';
+    multiMode.addEventListener('click', () => {
+        stages.innerHTML = '';
 
         for (let i = 0; i < 3; i++) {
             const pattern = document.createElement('div');
-            pattern.classList.add('pattern-grid');
+            pattern.classList.add('pattern');
 
             for (let j = 0; j < 9; j++) {
                 const patternCell = document.createElement('div');
@@ -147,7 +145,7 @@
                 }
             });
 
-            patternRow.appendChild(pattern);
+            stages.appendChild(pattern);
         }
         startGame();
     });
@@ -155,8 +153,8 @@
     document.addEventListener('keydown', (event) => {
         if (event.key === 'h') {
             resultsScreen.classList.add('faded');
-            grid.classList.toggle('hide');
-            patternRow.classList.toggle('hide');
+            board.classList.toggle('hide');
+            stages.classList.toggle('hide');
         }
         if (event.key === 'w') {
             resultsScreen.classList.add('faded');
