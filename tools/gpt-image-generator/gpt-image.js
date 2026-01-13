@@ -232,12 +232,13 @@ generateButton.addEventListener("click", async () => {
             // if no images, use the generation endpoint, otherwise use the edit endpoint
             if (!hasImages) {
                 const body = {
-                    model: "gpt-image-1",
+                    model: "gpt-image-1.5",
                     prompt,
                     n: 1,
                     size,
                     output_format: "png",
                     background: bg,
+                    moderation: "low",
                     quality,
                 };
                 const res = await fetch("https://api.openai.com/v1/images/generations", {
@@ -332,6 +333,26 @@ generateButton.addEventListener("click", async () => {
             .catch((e) => {
                 console.error("Failed to play sound:", e);
             });
+    }
+});
+
+document.addEventListener("paste", (e) => {
+    const items = e.clipboardData.items;
+    if (!items) return;
+
+    for (const item of items) {
+        if (item.kind !== "file") continue;
+        if (!item.type.startsWith("image/")) continue;
+        const file = item.getAsFile();
+        if (!file) continue;
+        if (file.type.indexOf("image/") === -1) continue;
+
+        const emptySlot = [...referenceContainer.querySelectorAll(".file-upload")].find((slot) => !slot.classList.contains("filled"));
+        if (emptySlot) {
+            const inputElement = emptySlot.querySelector('input[type="file"]');
+            inputElement.files = e.clipboardData.files;
+            inputElement.dispatchEvent(new Event("change"));
+        }
     }
 });
 

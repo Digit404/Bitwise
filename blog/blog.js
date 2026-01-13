@@ -106,7 +106,7 @@ function initNav() {
 
     const title = document.createElement("a");
     title.href = "/";
-    title.textContent = "Bitwise";
+    title.textContent = "Rebitwise";
     nav.appendChild(title);
 
     const ul = document.createElement("ul");
